@@ -1,0 +1,53 @@
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+.env
+.venv/
+venv/
+env/
+
+# Large local data assets. Keep raw data on disk, but do not push multi-GB
+# CSV/ZIP/OSM/EXE assets to a normal GitHub repository.
+data/raw_data/**
+!data/raw_data/
+!data/raw_data/README.md
+
+# Derived data can be regenerated from scripts unless promoted manually.
+data/interim/**
+!data/interim/
+!data/interim/.gitkeep
+data/processed/**
+!data/processed/
+!data/processed/.gitkeep
+data/external/**
+!data/external/
+!data/external/.gitkeep
+
+# Local logs and heavyweight ad hoc outputs.
+*.log
+logs/
+tmp/
+temp/
+
+# LaTeX build artifacts.
+writing/paper/*.aux
+writing/paper/*.bbl
+writing/paper/*.blg
+writing/paper/*.fdb_latexmk
+writing/paper/*.fls
+writing/paper/*.log
+writing/paper/*.out
+writing/paper/*.synctex.gz
+writing/paper/*.toc
+
+# OS/editor files.
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

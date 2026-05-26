@@ -1,0 +1,30 @@
+project:
+  name: Recoverable Urban Resilience
+  raw_data_dir: data/raw_data
+  output_dir: results/data_mining
+
+analysis:
+  random_seed: 20260526
+  rainfall_threshold_quantile: 0.90
+  max_speed_rows_per_city: 2500000
+  chunk_size: 500000
+  minimum_observations_per_tmc: 12
+  event_window_hours: 12
+
+figures:
+  dpi: 180
+  style: whitegrid
+  palette: colorblind
+
+tracked_outputs:
+  tables:
+    - city_data_inventory.csv
+    - rainfall_event_summary.csv
+    - speed_deficit_summary.csv
+    - demand_network_summary.csv
+    - idea_data_fit_scores.csv
+  figures:
+    - city_data_coverage.png
+    - rainfall_speed_signal.png
+    - demand_network_structure.png
+    - idea_data_fit_radar.png
