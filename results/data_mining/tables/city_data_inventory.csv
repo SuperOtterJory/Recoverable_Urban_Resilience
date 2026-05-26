@@ -1,0 +1,12 @@
+city,speed_dir,demand_dir,speed_csv,speed_csv_present,speed_csv_name,speed_csv_size_gb,rainfall_csv,tmc_identification_csv,resilience_index_csv,demand_csv,link_performance_csv,link_performance_summary_csv,node_csv,link_csv,demand_dir_size_mb
+New York,True,True,True,True,NYC_201906.csv,4.944,True,True,True,True,True,True,True,True,469.3
+Los Angeles,True,True,False,True,LA_201912.csv,0.0,True,True,False,True,True,True,True,True,323.5
+Chicago,True,True,True,True,Chicago_201907.csv,2.775,True,True,True,True,True,True,True,True,416.7
+Houston,True,True,True,True,Houston_201904.csv,2.644,True,True,True,True,True,True,True,True,511.3
+Phoenix,True,True,False,False,,0.0,True,False,False,True,True,True,True,True,500.0
+Philadelphia,True,True,True,True,PA_2023.csv,3.443,True,True,False,True,True,True,True,True,503.6
+San Antonio,True,True,True,True,SanAnto_2024.csv,1.994,True,True,False,True,True,True,True,True,417.2
+San Diego,True,True,False,False,,0.0,True,False,False,True,True,True,True,True,317.1
+Dallas,True,True,True,True,Dallas_2019.csv,4.396,True,True,False,True,True,True,True,True,450.4
+San Jose,True,True,False,False,,0.0,True,False,False,True,True,True,True,True,327.6
+Austin,True,True,True,True,Austin_2024.csv,1.133,True,True,False,True,True,True,True,True,285.0

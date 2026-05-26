@@ -43,3 +43,12 @@ The current data-mining stage asks:
 2. Are speed deficits, rainfall shocks, network demand, and OD dependence aligned enough to estimate functional loss?
 3. Is there cross-city heterogeneity in disruption severity, recovery speed, and network concentration that could support a recoverability law?
 4. Which parts can be supported directly by data, and which parts require the optimization/counterfactual model?
+
+## Current Data-Mining Outputs
+
+- Main Chinese report: `results/data_mining/reports/data_mining_report_zh.md`
+- Final conclusion memo: `docs/final_conclusion_zh.md`
+- Tables: `results/data_mining/tables/`
+- Figures: `results/data_mining/figures/`
+
+The current conclusion is that the data provide a strong empirical basis for observed disruption, endogenous recovery proxies, spatial heterogeneity, demand/network dependence, and potential targeting leverage. The central recoverable-resilience claim, however, requires the optimization/counterfactual layer because intervention effectiveness, budgets, response delay, and alternative allocation decisions are not directly observed in the raw data.

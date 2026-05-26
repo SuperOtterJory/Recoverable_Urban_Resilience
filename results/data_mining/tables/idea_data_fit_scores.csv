@@ -1,0 +1,12 @@
+city,coverage_score_0_5,deficit_signal_score_0_5,rainfall_alignment_score_0_5,recovery_dynamics_score_0_5,functional_dependence_score_0_5,overall_data_support_score_0_5,counterfactual_model_need_0_5,interpretation
+New York,5.0,4.57,2.76,5.0,4.59,4.39,4.25,"strong empirical basis, counterfactual model still essential"
+Los Angeles,3.75,0.0,0.0,0.0,4.11,1.57,5.0,weak direct basis for this city without additional data
+Chicago,5.0,5.0,4.63,5.0,4.35,4.8,4.25,"strong empirical basis, counterfactual model still essential"
+Houston,5.0,2.59,1.49,5.0,4.08,3.63,4.25,"moderate empirical basis, model needed for recoverability"
+Phoenix,3.25,0.0,0.0,0.0,4.04,1.46,5.0,weak direct basis for this city without additional data
+Philadelphia,5.0,2.99,1.6,2.5,4.22,3.26,5.0,"moderate empirical basis, model needed for recoverability"
+San Antonio,5.0,2.66,2.94,2.5,3.98,3.42,5.0,"moderate empirical basis, model needed for recoverability"
+San Diego,3.25,0.0,0.0,0.0,3.89,1.43,5.0,weak direct basis for this city without additional data
+Dallas,5.0,2.46,1.21,2.5,4.04,3.04,5.0,"moderate empirical basis, model needed for recoverability"
+San Jose,3.25,0.0,0.0,0.0,3.91,1.43,5.0,weak direct basis for this city without additional data
+Austin,5.0,3.09,2.38,2.5,3.78,3.35,5.0,"moderate empirical basis, model needed for recoverability"

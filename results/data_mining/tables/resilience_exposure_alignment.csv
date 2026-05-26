@@ -1,0 +1,12 @@
+city,alignment_available,resilience_rows,matched_link_rows,match_rate,loss_auc_vs_volume_spearman,max_pct_loss_vs_volume_spearman,recovery_time_vs_volume_spearman,loss_auc_vs_DOC_spearman,high_volume_mean_loss_auc,low_volume_mean_loss_auc,high_vs_low_volume_loss_ratio,top10pct_volume_share_of_loss_auc,reason
+New York,True,31497.0,31497.0,1.0,0.07996522704227794,0.08882364298225341,0.05188846542267396,0.0749013826402328,35.99585141669578,27.69311414995854,1.2998123368061034,0.1495049170122605,
+Los Angeles,False,,,,,,,,,,,,no resilience index
+Chicago,True,47850.0,47850.0,1.0,0.2142654121465715,0.26751502112444087,0.13303706929325582,0.14222496153851294,37.31324800227918,22.435761135811646,1.663114871673344,0.13079321240772607,
+Houston,True,18128.0,18128.0,1.0,0.009187675234185332,0.16927953942229326,0.001660975547994749,0.022826081869605656,30.95495106670343,39.31758207423407,0.7873055623883111,0.08671638552010597,
+Phoenix,False,,,,,,,,,,,,no resilience index
+Philadelphia,False,,,,,,,,,,,,no resilience index
+San Antonio,False,,,,,,,,,,,,no resilience index
+San Diego,False,,,,,,,,,,,,no resilience index
+Dallas,False,,,,,,,,,,,,no resilience index
+San Jose,False,,,,,,,,,,,,no resilience index
+Austin,False,,,,,,,,,,,,no resilience index

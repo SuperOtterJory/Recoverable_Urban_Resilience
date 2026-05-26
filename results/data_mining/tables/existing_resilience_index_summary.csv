@@ -1,0 +1,12 @@
+city,resilience_index_available,resilience_rows,resilience_unique_tmc,speed_auc_mean,speed_auc_p10,speed_pct_min_mean,speed_recovery_median
+New York,True,31497.0,6501.0,-29.141666709974334,-60.10770636075485,-30.305998876527166,1.0
+Los Angeles,False,,,,,,
+Chicago,True,47850.0,5961.0,-29.395253504609585,-54.83440467099057,-26.917600231133953,1.0
+Houston,True,18128.0,4414.0,-32.937781380139185,-72.64508715072425,-20.786480805163546,1.1666666666666667
+Phoenix,False,,,,,,
+Philadelphia,False,,,,,,
+San Antonio,False,,,,,,
+San Diego,False,,,,,,
+Dallas,False,,,,,,
+San Jose,False,,,,,,
+Austin,False,,,,,,

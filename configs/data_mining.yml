@@ -6,7 +6,8 @@ project:
 analysis:
   random_seed: 20260526
   rainfall_threshold_quantile: 0.90
-  max_speed_rows_per_city: 2500000
+  full_speed_temporal_scan: true
+  max_speed_distribution_rows_per_city: 500000
   chunk_size: 500000
   minimum_observations_per_tmc: 12
   event_window_hours: 12
@@ -21,10 +22,15 @@ tracked_outputs:
     - city_data_inventory.csv
     - rainfall_event_summary.csv
     - speed_deficit_summary.csv
+    - speed_tmc_deficit_concentration.csv
+    - speed_tmc_hotspots.csv
     - demand_network_summary.csv
+    - resilience_exposure_alignment.csv
     - idea_data_fit_scores.csv
   figures:
     - city_data_coverage.png
     - rainfall_speed_signal.png
+    - speed_deficit_concentration.png
     - demand_network_structure.png
+    - resilience_exposure_alignment.png
     - idea_data_fit_radar.png
