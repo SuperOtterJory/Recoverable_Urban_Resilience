@@ -26,6 +26,8 @@ class RecoveryLPParameters:
     eta: dict[str, np.ndarray]
     cost: dict[str, np.ndarray]
     u_cap: dict[str, np.ndarray] | None
+    u_segment_cap: dict[str, np.ndarray] | None
+    segment_effectiveness: dict[str, np.ndarray] | None
     period_budget: np.ndarray
     total_budget: float
     delays: dict[str, int]
@@ -46,6 +48,14 @@ class RecoveryLPParameters:
             self.u_cap = {
                 key: np.full((self.n_units, self.horizon), np.inf, dtype=float)
                 for key in INTERVENTIONS
+            }
+        if self.u_segment_cap is not None:
+            self.u_segment_cap = {
+                key: np.asarray(value, dtype=float) for key, value in self.u_segment_cap.items()
+            }
+        if self.segment_effectiveness is not None:
+            self.segment_effectiveness = {
+                key: np.asarray(value, dtype=float) for key, value in self.segment_effectiveness.items()
             }
         self.validate()
 
@@ -84,6 +94,17 @@ class RecoveryLPParameters:
                 raise ValueError(f"cost[{key}] must have shape (n_units, horizon).")
             if np.asarray(self.u_cap[key]).shape != (n, self.horizon):
                 raise ValueError(f"u_cap[{key}] must have shape (n_units, horizon).")
+            if self.u_segment_cap is not None or self.segment_effectiveness is not None:
+                if self.u_segment_cap is None or self.segment_effectiveness is None:
+                    raise ValueError("u_segment_cap and segment_effectiveness must be supplied together.")
+                if key not in self.u_segment_cap or key not in self.segment_effectiveness:
+                    raise ValueError(f"Missing PWL data for intervention {key}.")
+                if self.u_segment_cap[key].ndim != 3 or self.u_segment_cap[key].shape[:2] != (n, self.horizon):
+                    raise ValueError(f"u_segment_cap[{key}] must have shape (n_units, horizon, segments).")
+                if self.segment_effectiveness[key].shape != (self.u_segment_cap[key].shape[2],):
+                    raise ValueError(f"segment_effectiveness[{key}] must match segment count.")
+                if not np.all(np.diff(self.segment_effectiveness[key]) <= 1e-9):
+                    raise ValueError(f"segment_effectiveness[{key}] must be nonincreasing.")
         row_sums = self.q.sum(axis=1)
         if not np.allclose(row_sums, 1.0, atol=1e-5):
             raise ValueError("Each row of q must sum to 1.")
@@ -104,6 +125,8 @@ class RecoveryLPParameters:
             eta={k: v.copy() for k, v in self.eta.items()},
             cost={k: v.copy() for k, v in self.cost.items()},
             u_cap={k: v.copy() for k, v in (self.u_cap or {}).items()},
+            u_segment_cap={k: v.copy() for k, v in (self.u_segment_cap or {}).items()} or None,
+            segment_effectiveness={k: v.copy() for k, v in (self.segment_effectiveness or {}).items()} or None,
             period_budget=self.period_budget * budget_scale,
             total_budget=float(self.total_budget * budget_scale),
             delays=dict(delays or self.delays),
@@ -170,6 +193,12 @@ def solve_recovery_lp(
         key: model.addVars(n, horizon, lb=0.0, ub=1.0, name=f"e_{key}")
         for key in INTERVENTIONS
     }
+    use_pwl = params.u_segment_cap is not None and params.segment_effectiveness is not None
+    u_segment = {}
+    if use_pwl:
+        for key in INTERVENTIONS:
+            segment_count = params.u_segment_cap[key].shape[2]
+            u_segment[key] = model.addVars(n, horizon, segment_count, lb=0.0, name=f"uSeg_{key}")
 
     model.setObjective(
         params.delta_t * gp.quicksum(float(params.p[i]) * ell[i, t] for i in units for t in state_times),
@@ -199,10 +228,31 @@ def solve_recovery_lp(
                 name=f"rS_transition[{i},{t}]",
             )
             for key in INTERVENTIONS:
-                model.addConstr(
-                    e[key][i, t] <= float(params.eta[key][i, t]) * u[key][i, t],
-                    name=f"effectiveness[{key},{i},{t}]",
-                )
+                if use_pwl:
+                    segment_count = params.u_segment_cap[key].shape[2]
+                    model.addConstr(
+                        u[key][i, t] == gp.quicksum(u_segment[key][i, t, s] for s in range(segment_count)),
+                        name=f"segment_sum[{key},{i},{t}]",
+                    )
+                    for s in range(segment_count):
+                        model.addConstr(
+                            u_segment[key][i, t, s] <= float(params.u_segment_cap[key][i, t, s]),
+                            name=f"segment_cap[{key},{i},{t},{s}]",
+                        )
+                    model.addConstr(
+                        e[key][i, t]
+                        <= float(params.eta[key][i, t])
+                        * gp.quicksum(
+                            float(params.segment_effectiveness[key][s]) * u_segment[key][i, t, s]
+                            for s in range(segment_count)
+                        ),
+                        name=f"pwl_effectiveness[{key},{i},{t}]",
+                    )
+                else:
+                    model.addConstr(
+                        e[key][i, t] <= float(params.eta[key][i, t]) * u[key][i, t],
+                        name=f"effectiveness[{key},{i},{t}]",
+                    )
                 model.addConstr(
                     u[key][i, t] <= float(params.u_cap[key][i, t]),
                     name=f"deployment_cap[{key},{i},{t}]",
@@ -285,6 +335,8 @@ def solve_recovery_lp(
                         "e": e[key][i, t].X,
                         "cost": float(params.cost[key][i, t]),
                         "effective_cost": float(params.cost[key][i, t]) * u[key][i, t].X,
+                        "available_u_cap": float(params.u_cap[key][i, t]),
+                        "pwl_enabled": use_pwl,
                     }
                 )
 
@@ -368,6 +420,8 @@ def summarize_solution(
         summary[f"total_u_{key}"] = float(row["total_u"])
         summary[f"total_e_{key}"] = float(row["total_e"])
         summary[f"total_cost_{key}"] = float(row["total_cost"])
+        available = interventions.loc[interventions["intervention"] == key, "available_u_cap"].sum()
+        summary[f"cap_utilization_{key}"] = float(row["total_u"] / available) if available > 0 else np.nan
     return summary
 
 

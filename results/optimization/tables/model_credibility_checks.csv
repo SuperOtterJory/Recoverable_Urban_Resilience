@@ -1,0 +1,10 @@
+check,passed,detail
+all_scenarios_optimal,True,Every city-scenario LP should solve to OPTIMAL.
+optimized_not_worse_than_baseline,True,Managed counterfactual objective should not exceed the no-intervention baseline.
+recoverable_fraction_bounds,True,"Recoverable fraction should stay within [0, 1]."
+budget_feasible,True,Total used intervention cost should not exceed total budget.
+deployment_caps_respected,True,Total primitive deployment should not exceed available continuous caps.
+scenario_budget_monotonicity,True,Austin: OK; Chicago: OK; Houston: OK; New York: OK; San Antonio: OK
+response_delay_monotonicity,True,Austin: OK; Chicago: OK; Houston: OK; New York: OK; San Antonio: OK
+tuning_budget_monotonicity,True,Chicago/base: OK; Chicago/fast: OK; Chicago/slow: OK; Houston/base: OK; Houston/fast: OK; Houston/slow: OK; New York/base: OK; New York/fast: OK; New York/slow: OK
+optimized_beats_best_heuristic,True,Optimized LP should be at least as good as the best evaluated heuristic policy.

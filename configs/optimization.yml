@@ -37,6 +37,13 @@ interventions:
     R: 0.18
     C: 0.12
     S: 0.07
+  pwl_diminishing_returns:
+    enabled: true
+    segment_cap_shares: [0.35, 0.35, 0.30]
+    effectiveness_multipliers:
+      R: [1.00, 0.70, 0.42]
+      C: [1.00, 0.62, 0.34]
+      S: [1.00, 0.55, 0.28]
   delays:
     R: 2
     C: 0

@@ -34,6 +34,9 @@ logs/
 tmp/
 temp/
 
+# Heavy optimization detail output; summaries/reports/figures remain tracked.
+results/optimization/tables/policy_trajectories.csv
+
 # LaTeX build artifacts.
 writing/paper/*.aux
 writing/paper/*.bbl

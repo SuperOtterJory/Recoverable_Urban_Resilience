@@ -60,3 +60,10 @@ The current conclusion is that the data provide a strong empirical basis for obs
 - Optimization config: `configs/optimization.yml`
 - Optimization report: `results/optimization/reports/optimization_report_zh.md`
 - Optimization tables and figures: `results/optimization/`
+
+The current LP keeps the draft model's continuous structure while adding two credibility refinements that remain linear:
+
+- primitive-specific continuous deployment caps;
+- concave piecewise-linear diminishing returns through continuous segment variables.
+
+The optimization outputs also include model credibility checks and heuristic policy comparisons. The latter compares optimized allocation against damage-based, exposure-based, and access-based non-optimized policies to quantify decision leverage.

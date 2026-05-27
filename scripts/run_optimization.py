@@ -9,6 +9,7 @@ import pandas as pd
 
 from recoverable_resilience.calibration import calibrate_city, load_yaml, save_params
 from recoverable_resilience.paths import find_repo_root
+from recoverable_resilience.policy_eval import evaluate_default_policies
 from recoverable_resilience.recovery_lp import solve_with_baseline
 
 
@@ -35,6 +36,8 @@ def main() -> None:
     summary_rows = []
     trajectory_frames = []
     intervention_frames = []
+    policy_frames = []
+    policy_trajectory_frames = []
     solver = config.get("solver", {})
     for city in cities:
         for scenario in scenarios:
@@ -55,6 +58,11 @@ def main() -> None:
             row["recoverable_fraction"] = optimized.recoverable_fraction
             row["budget_intensity"] = scenario.get("budget_intensity", config["interventions"]["budget_intensity"])
             summary_rows.append(row)
+            policies, policy_trajectories = evaluate_default_policies(params, baseline_objective=baseline.objective)
+            policies["scenario"] = scenario_name
+            policy_frames.append(policies)
+            policy_trajectories["scenario"] = scenario_name
+            policy_trajectory_frames.append(policy_trajectories)
             traj = optimized.trajectory.copy()
             traj["scenario"] = scenario_name
             trajectory_frames.append(traj)
@@ -65,6 +73,8 @@ def main() -> None:
     pd.DataFrame(summary_rows).to_csv(table_dir / "optimization_summary.csv", index=False)
     pd.concat(trajectory_frames, ignore_index=True).to_csv(table_dir / "optimization_trajectories.csv", index=False)
     pd.concat(intervention_frames, ignore_index=True).to_csv(table_dir / "optimization_interventions.csv", index=False)
+    pd.concat(policy_frames, ignore_index=True).to_csv(table_dir / "policy_comparison.csv", index=False)
+    pd.concat(policy_trajectory_frames, ignore_index=True).to_csv(table_dir / "policy_trajectories.csv", index=False)
     print(f"Wrote optimization outputs to {output_dir}")
 
 

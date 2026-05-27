@@ -20,10 +20,11 @@ subject to:
 - linear effectiveness `e^k <= eta^k u^k`;
 - response delays;
 - continuous primitive-specific deployment caps;
+- concave piecewise-linear diminishing returns represented through continuous segment variables;
 - period and total budgets;
 - bounded state variables in `[0, 1]`.
 
-The current implementation uses identity spatial effect matrices for `M^R`, `M^C`, and `M^S`. This keeps the first empirical version tractable and directly interpretable. It also includes continuous deployment caps for each primitive and unit-period, which remain linear and prevent unrealistic unlimited use of a single intervention type. The parameter object is structured so non-identity effect matrices can be added later.
+The current implementation uses identity spatial effect matrices for `M^R`, `M^C`, and `M^S`. This keeps the first empirical version tractable and directly interpretable. It also includes continuous deployment caps and concave piecewise-linear diminishing returns for each primitive and unit-period. Both additions remain linear and prevent unrealistic unlimited use of a single intervention type. The parameter object is structured so non-identity effect matrices can be added later.
 
 ## Calibration
 
