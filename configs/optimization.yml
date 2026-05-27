@@ -1,0 +1,99 @@
+project:
+  raw_data_dir: data/raw_data
+  data_mining_tables_dir: results/data_mining/tables
+  output_dir: results/optimization
+
+calibration:
+  cities:
+    - Chicago
+    - New York
+    - Houston
+    - Austin
+    - San Antonio
+  unit_count: 35
+  horizon_steps: 12
+  delta_t_hours: 1.0
+  od_chunk_size: 500000
+  fallback_speed_deficit: 0.06
+  vulnerability_blend: 0.55
+  rainfall_shock_scale: 0.45
+  min_recovery_tau_hours: 6.0
+  max_recovery_tau_hours: 24.0
+  default_recovery_tau_hours: 12.0
+  dependence_self_loop_floor: 0.05
+
+interventions:
+  delta_C: 0.35
+  delta_S: 0.55
+  eta:
+    R: 0.18
+    C: 0.28
+    S: 0.35
+  cost:
+    R: 1.25
+    C: 0.85
+    S: 0.65
+  delays:
+    R: 2
+    C: 0
+    S: 1
+  budget_intensity: 0.18
+  period_budget_share: 0.28
+  total_budget_multiplier: 1.25
+
+scenarios:
+  - name: base
+    budget_intensity: 0.18
+    delays:
+      R: 2
+      C: 0
+      S: 1
+  - name: low_budget
+    budget_intensity: 0.09
+    delays:
+      R: 2
+      C: 0
+      S: 1
+  - name: high_budget
+    budget_intensity: 0.30
+    delays:
+      R: 2
+      C: 0
+      S: 1
+  - name: delayed_response
+    budget_intensity: 0.18
+    delays:
+      R: 4
+      C: 2
+      S: 2
+  - name: fast_response
+    budget_intensity: 0.18
+    delays:
+      R: 0
+      C: 0
+      S: 0
+
+tuning:
+  cities:
+    - Chicago
+    - New York
+    - Houston
+  budget_intensity_grid: [0.06, 0.12, 0.18, 0.24, 0.30]
+  response_delay_grid:
+    fast:
+      R: 0
+      C: 0
+      S: 0
+    base:
+      R: 2
+      C: 0
+      S: 1
+    slow:
+      R: 4
+      C: 2
+      S: 2
+
+solver:
+  output_flag: false
+  method: -1
+  time_limit_seconds: 120
