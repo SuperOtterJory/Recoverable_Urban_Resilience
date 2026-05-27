@@ -77,7 +77,7 @@ def calibrate_city(
     b0 = calibrate_initial_deficit(data_mining, vulnerability, calibration)
     a = calibrate_recovery_operator(data_mining, vulnerability, calibration)
     h = calibrate_disturbance(data_mining, vulnerability, calibration)
-    eta, cost = calibrate_intervention_parameters(interventions, vulnerability, h.shape[1] - 1)
+    eta, cost, u_cap = calibrate_intervention_parameters(interventions, vulnerability, b0, h)
     period_budget, total_budget = calibrate_budgets(interventions, b0, h.shape[1] - 1)
 
     metadata = {
@@ -99,6 +99,7 @@ def calibrate_city(
         h=h,
         eta=eta,
         cost=cost,
+        u_cap=u_cap,
         period_budget=period_budget,
         total_budget=total_budget,
         delays={k: int(v) for k, v in interventions["delays"].items()},
@@ -252,17 +253,23 @@ def calibrate_disturbance(
 def calibrate_intervention_parameters(
     interventions: dict[str, Any],
     vulnerability: np.ndarray,
-    horizon: int,
-) -> tuple[dict[str, np.ndarray], dict[str, np.ndarray]]:
+    b0: np.ndarray,
+    h: np.ndarray,
+) -> tuple[dict[str, np.ndarray], dict[str, np.ndarray], dict[str, np.ndarray]]:
+    horizon = h.shape[1] - 1
     eta: dict[str, np.ndarray] = {}
     cost: dict[str, np.ndarray] = {}
+    u_cap: dict[str, np.ndarray] = {}
     difficulty = 0.8 + 0.4 * vulnerability
+    local_need = np.clip(b0 + h.sum(axis=1), 0.02, 1.0)
     for key in INTERVENTIONS:
         base_eta = float(interventions["eta"][key])
         base_cost = float(interventions["cost"][key])
         eta[key] = np.tile(base_eta * (0.85 + 0.30 * vulnerability)[:, None], (1, horizon))
         cost[key] = np.tile(base_cost * difficulty[:, None], (1, horizon))
-    return eta, cost
+        effective_cap = float(interventions["max_effective_deployment_fraction"][key]) * local_need
+        u_cap[key] = np.tile((effective_cap / np.maximum(eta[key][:, 0], 1e-9))[:, None], (1, horizon))
+    return eta, cost, u_cap
 
 
 def calibrate_budgets(
@@ -290,6 +297,7 @@ def params_to_jsonable(params: RecoveryLPParameters) -> dict[str, Any]:
         "h": params.h.tolist(),
         "eta": {k: v.tolist() for k, v in params.eta.items()},
         "cost": {k: v.tolist() for k, v in params.cost.items()},
+        "u_cap": {k: v.tolist() for k, v in (params.u_cap or {}).items()},
         "period_budget": params.period_budget.tolist(),
         "total_budget": params.total_budget,
         "delays": params.delays,
@@ -311,6 +319,7 @@ def params_from_jsonable(data: dict[str, Any]) -> RecoveryLPParameters:
         h=np.asarray(data["h"], dtype=float),
         eta={k: np.asarray(v, dtype=float) for k, v in data["eta"].items()},
         cost={k: np.asarray(v, dtype=float) for k, v in data["cost"].items()},
+        u_cap={k: np.asarray(v, dtype=float) for k, v in data.get("u_cap", {}).items()} or None,
         period_budget=np.asarray(data["period_budget"], dtype=float),
         total_budget=float(data["total_budget"]),
         delays={k: int(v) for k, v in data["delays"].items()},

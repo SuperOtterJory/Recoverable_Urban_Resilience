@@ -25,6 +25,7 @@ class RecoveryLPParameters:
     h: np.ndarray
     eta: dict[str, np.ndarray]
     cost: dict[str, np.ndarray]
+    u_cap: dict[str, np.ndarray] | None
     period_budget: np.ndarray
     total_budget: float
     delays: dict[str, int]
@@ -41,6 +42,11 @@ class RecoveryLPParameters:
         self.h = np.asarray(self.h, dtype=float)
         self.period_budget = np.asarray(self.period_budget, dtype=float)
         self.metadata = self.metadata or {}
+        if self.u_cap is None:
+            self.u_cap = {
+                key: np.full((self.n_units, self.horizon), np.inf, dtype=float)
+                for key in INTERVENTIONS
+            }
         self.validate()
 
     @property
@@ -70,10 +76,14 @@ class RecoveryLPParameters:
         for key in INTERVENTIONS:
             if key not in self.eta or key not in self.cost:
                 raise ValueError(f"Missing eta/cost for intervention {key}.")
+            if key not in self.u_cap:
+                raise ValueError(f"Missing u_cap for intervention {key}.")
             if np.asarray(self.eta[key]).shape != (n, self.horizon):
                 raise ValueError(f"eta[{key}] must have shape (n_units, horizon).")
             if np.asarray(self.cost[key]).shape != (n, self.horizon):
                 raise ValueError(f"cost[{key}] must have shape (n_units, horizon).")
+            if np.asarray(self.u_cap[key]).shape != (n, self.horizon):
+                raise ValueError(f"u_cap[{key}] must have shape (n_units, horizon).")
         row_sums = self.q.sum(axis=1)
         if not np.allclose(row_sums, 1.0, atol=1e-5):
             raise ValueError("Each row of q must sum to 1.")
@@ -93,6 +103,7 @@ class RecoveryLPParameters:
             h=self.h.copy(),
             eta={k: v.copy() for k, v in self.eta.items()},
             cost={k: v.copy() for k, v in self.cost.items()},
+            u_cap={k: v.copy() for k, v in (self.u_cap or {}).items()},
             period_budget=self.period_budget * budget_scale,
             total_budget=float(self.total_budget * budget_scale),
             delays=dict(delays or self.delays),
@@ -191,6 +202,10 @@ def solve_recovery_lp(
                 model.addConstr(
                     e[key][i, t] <= float(params.eta[key][i, t]) * u[key][i, t],
                     name=f"effectiveness[{key},{i},{t}]",
+                )
+                model.addConstr(
+                    u[key][i, t] <= float(params.u_cap[key][i, t]),
+                    name=f"deployment_cap[{key},{i},{t}]",
                 )
                 if no_intervention or t < int(params.delays.get(key, 0)):
                     model.addConstr(u[key][i, t] == 0.0, name=f"delay_or_zero[{key},{i},{t}]")

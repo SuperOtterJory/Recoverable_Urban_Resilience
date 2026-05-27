@@ -52,3 +52,11 @@ The current data-mining stage asks:
 - Figures: `results/data_mining/figures/`
 
 The current conclusion is that the data provide a strong empirical basis for observed disruption, endogenous recovery proxies, spatial heterogeneity, demand/network dependence, and potential targeting leverage. The central recoverable-resilience claim, however, requires the optimization/counterfactual layer because intervention effectiveness, budgets, response delay, and alternative allocation decisions are not directly observed in the raw data.
+
+## Current Optimization Outputs
+
+- LP implementation: `src/recoverable_resilience/recovery_lp.py`
+- Calibration utilities: `src/recoverable_resilience/calibration.py`
+- Optimization config: `configs/optimization.yml`
+- Optimization report: `results/optimization/reports/optimization_report_zh.md`
+- Optimization tables and figures: `results/optimization/`
