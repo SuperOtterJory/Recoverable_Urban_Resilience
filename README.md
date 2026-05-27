@@ -67,3 +67,11 @@ The current LP keeps the draft model's continuous structure while adding two cre
 - concave piecewise-linear diminishing returns through continuous segment variables.
 
 The optimization outputs also include model credibility checks and heuristic policy comparisons. The latter compares optimized allocation against damage-based, exposure-based, and access-based non-optimized policies to quantify decision leverage.
+
+## Current Law-Potential Analysis
+
+- Law-potential report: `results/law_potential/reports/law_potential_report_zh.md`
+- Correlation, response-curve, primitive-mix, and surrogate-fit tables: `results/law_potential/tables/`
+- Figures: `results/law_potential/figures/`
+
+This analysis asks whether current optimization outputs already contain learnable structure for later learning-to-optimize, XAI, and symbolic-regression modules. The current conclusion is that budget-response, delay-penalty, decision-leverage, and primitive-mix structures are strong enough to justify the next stage, while cross-city structural laws remain preliminary because only five optimized cities are available.
