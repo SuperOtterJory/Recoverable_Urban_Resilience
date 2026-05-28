@@ -1,4 +1,4 @@
-"""Build event-level rainfall impact tables from hourly rainfall and speed loss."""
+"""Build event-level rainfall impact tables with matched temporal baselines."""
 
 from __future__ import annotations
 
@@ -13,7 +13,8 @@ from recoverable_resilience.paths import find_repo_root
 
 
 WINDOW_HOURS = 12
-BASELINE_HOURS = 6
+PRE_EVENT_HOURS = 6
+RAIN_INFLUENCE_HOURS = 12
 
 
 @dataclass(frozen=True)
@@ -36,6 +37,7 @@ def main() -> None:
 
     summary_rows: list[dict[str, Any]] = []
     detail_rows: list[dict[str, Any]] = []
+    abnormal_frames: list[pd.DataFrame] = []
     for speed_dir in speed_dirs:
         city = parse_city(speed_dir)
         rain_path = speed_dir / "rainfall.csv"
@@ -45,19 +47,26 @@ def main() -> None:
         rain = load_rainfall(rain_path)
         events = detect_positive_rainfall_events(city, rain)
         city_speed = hourly_speed[hourly_speed["city"] == city].copy()
-        city_details = [event_to_row(event, city_speed) for event in events]
+        abnormal = build_abnormal_speed_series(city_speed, rain, events)
+        if not abnormal.empty:
+            abnormal_frames.append(abnormal)
+        city_details = [event_to_row(event, abnormal) for event in events]
         detail_rows.extend(city_details)
-        summary_rows.append(summarize_city(city, rain, events, city_details, city_speed))
+        summary_rows.append(summarize_city(city, rain, events, city_details, abnormal))
 
     summary = pd.DataFrame(summary_rows).sort_values("city")
     detail = pd.DataFrame(detail_rows).sort_values(["city", "event_start"])
+    abnormal_all = pd.concat(abnormal_frames, ignore_index=True) if abnormal_frames else pd.DataFrame()
     summary_path = table_dir / "rainfall_event_impact_summary.csv"
     detail_path = table_dir / "rainfall_event_impact_details.csv"
+    abnormal_path = table_dir / "speed_hourly_abnormal_deficit.csv"
     summary.to_csv(summary_path, index=False)
     detail.to_csv(detail_path, index=False)
-    write_report(report_dir / "rainfall_event_impact_report_zh.md", summary, detail)
+    abnormal_all.to_csv(abnormal_path, index=False)
+    write_report(report_dir / "rainfall_event_impact_report_zh.md", summary)
     print(f"Wrote {summary_path}")
     print(f"Wrote {detail_path}")
+    print(f"Wrote {abnormal_path}")
 
 
 def parse_city(speed_dir: Path) -> str:
@@ -134,7 +143,69 @@ def build_event(city: str, event_id: int, data: dict[str, Any]) -> RainEvent:
     )
 
 
-def event_to_row(event: RainEvent, city_speed: pd.DataFrame) -> dict[str, Any]:
+def build_abnormal_speed_series(
+    city_speed: pd.DataFrame,
+    rain: pd.DataFrame,
+    events: list[RainEvent],
+) -> pd.DataFrame:
+    if city_speed.empty:
+        return pd.DataFrame()
+    speed = city_speed.copy()
+    speed["hour"] = pd.to_datetime(speed["hour"], errors="coerce")
+    speed = speed.dropna(subset=["hour"]).sort_values("hour")
+    rain = rain.copy()
+    speed = speed.merge(rain, on="hour", how="left")
+    speed["precipitation"] = pd.to_numeric(speed["precipitation"], errors="coerce").fillna(0.0)
+    speed["hour_of_week"] = speed["hour"].dt.dayofweek * 24 + speed["hour"].dt.hour
+    speed["hour_of_day"] = speed["hour"].dt.hour
+    speed["rain_hour"] = speed["precipitation"] > 0
+    speed["rain_influence_hour"] = False
+
+    speed_start = speed["hour"].min()
+    speed_end = speed["hour"].max()
+    for event in events:
+        if event.end < speed_start or event.start > speed_end:
+            continue
+        mask = (
+            (speed["hour"] >= event.start - pd.Timedelta(hours=PRE_EVENT_HOURS))
+            & (speed["hour"] <= event.end + pd.Timedelta(hours=RAIN_INFLUENCE_HOURS))
+        )
+        speed.loc[mask, "rain_influence_hour"] = True
+
+    baseline_pool = speed[(~speed["rain_hour"]) & (~speed["rain_influence_hour"])].copy()
+    if baseline_pool.empty:
+        baseline_pool = speed[~speed["rain_hour"]].copy()
+    if baseline_pool.empty:
+        baseline_pool = speed.copy()
+    how_baseline = baseline_pool.groupby("hour_of_week")["mean_deficit"].median()
+    hod_baseline = baseline_pool.groupby("hour_of_day")["mean_deficit"].median()
+    global_baseline = float(baseline_pool["mean_deficit"].median())
+
+    speed["expected_deficit_how"] = speed["hour_of_week"].map(how_baseline)
+    speed["expected_deficit_hod"] = speed["hour_of_day"].map(hod_baseline)
+    speed["expected_deficit"] = speed["expected_deficit_how"].fillna(speed["expected_deficit_hod"]).fillna(global_baseline)
+    speed["abnormal_deficit"] = speed["mean_deficit"] - speed["expected_deficit"]
+    speed["positive_abnormal_deficit"] = speed["abnormal_deficit"].clip(lower=0.0)
+    return speed[
+        [
+            "city",
+            "hour",
+            "mean_deficit",
+            "p90_deficit",
+            "observation_count",
+            "precipitation",
+            "hour_of_week",
+            "hour_of_day",
+            "expected_deficit",
+            "abnormal_deficit",
+            "positive_abnormal_deficit",
+            "rain_hour",
+            "rain_influence_hour",
+        ]
+    ]
+
+
+def event_to_row(event: RainEvent, abnormal: pd.DataFrame) -> dict[str, Any]:
     base: dict[str, Any] = {
         "city": event.city,
         "event_id": event.event_id,
@@ -145,49 +216,56 @@ def event_to_row(event: RainEvent, city_speed: pd.DataFrame) -> dict[str, Any]:
         "peak_precip": event.peak_precip,
         "speed_overlap": False,
     }
-    if city_speed.empty:
+    if abnormal.empty:
         return base
 
-    speed_start = city_speed["hour"].min()
-    speed_end = city_speed["hour"].max()
+    speed_start = abnormal["hour"].min()
+    speed_end = abnormal["hour"].max()
     if event.end < speed_start or event.start > speed_end:
         return base
 
-    before = city_speed[
-        (city_speed["hour"] >= event.start - pd.Timedelta(hours=BASELINE_HOURS))
-        & (city_speed["hour"] < event.start)
+    before = abnormal[
+        (abnormal["hour"] >= event.start - pd.Timedelta(hours=PRE_EVENT_HOURS))
+        & (abnormal["hour"] < event.start)
     ]
-    after = city_speed[
-        (city_speed["hour"] >= event.start)
-        & (city_speed["hour"] <= event.end + pd.Timedelta(hours=WINDOW_HOURS))
+    after = abnormal[
+        (abnormal["hour"] >= event.start)
+        & (abnormal["hour"] <= event.end + pd.Timedelta(hours=WINDOW_HOURS))
     ]
-    if before.empty or after.empty:
+    if after.empty:
         return {**base, "speed_overlap": True, "impact_available": False}
 
-    baseline = float(before["mean_deficit"].mean())
-    peak_idx = after["mean_deficit"].idxmax()
-    peak_hour = pd.Timestamp(city_speed.loc[peak_idx, "hour"])
-    peak_deficit = float(city_speed.loc[peak_idx, "mean_deficit"])
-    peak_p90_deficit = float(after["p90_deficit"].max())
-    peak_extra = peak_deficit - baseline
-    mean_extra = float(after["mean_deficit"].mean() - baseline)
-    target = baseline + 0.2 * peak_extra if peak_extra > 0 else np.nan
+    peak_idx = after["positive_abnormal_deficit"].idxmax()
+    peak_hour = pd.Timestamp(abnormal.loc[peak_idx, "hour"])
+    peak_positive = float(abnormal.loc[peak_idx, "positive_abnormal_deficit"])
+    peak_raw = float(after["mean_deficit"].max())
+    start_row = after.sort_values("hour").head(1)
+    start_positive = float(start_row["positive_abnormal_deficit"].iloc[0])
+    pre_positive = float(before["positive_abnormal_deficit"].mean()) if not before.empty else np.nan
+    legacy_baseline = float(before["mean_deficit"].mean()) if not before.empty else np.nan
+    legacy_peak_extra = peak_raw - legacy_baseline if np.isfinite(legacy_baseline) else np.nan
+    mean_positive = float(after["positive_abnormal_deficit"].mean())
+    target = 0.2 * peak_positive if peak_positive > 0 else np.nan
     recovery_hours = np.nan
-    if peak_extra > 0:
+    if peak_positive > 0:
         post_peak = after[after["hour"] > peak_hour]
-        recovered = post_peak[post_peak["mean_deficit"] <= target]
+        recovered = post_peak[post_peak["positive_abnormal_deficit"] <= target]
         if not recovered.empty:
             recovery_hours = float((recovered["hour"].iloc[0] - peak_hour).total_seconds() / 3600)
-    affected_hours = int((after["mean_deficit"] > baseline + max(peak_extra, 0.0) * 0.2).sum())
+    affected_hours = int((after["positive_abnormal_deficit"] > target).sum()) if peak_positive > 0 else 0
     return {
         **base,
         "speed_overlap": True,
         "impact_available": True,
-        "baseline_mean_deficit_prev_6h": baseline,
-        "peak_mean_deficit_window": peak_deficit,
-        "peak_p90_deficit_window": peak_p90_deficit,
-        "peak_extra_deficit": peak_extra,
-        "mean_extra_deficit_window": mean_extra,
+        "baseline_method": "hour_of_week_non_rain_then_hour_of_day",
+        "pre_event_mean_positive_abnormal_deficit": pre_positive,
+        "start_positive_abnormal_deficit": start_positive,
+        "peak_positive_abnormal_deficit": peak_positive,
+        "mean_positive_abnormal_deficit_window": mean_positive,
+        "legacy_baseline_mean_deficit_prev_6h": legacy_baseline,
+        "legacy_peak_extra_deficit_prev_6h": legacy_peak_extra,
+        "peak_mean_deficit_window": peak_raw,
+        "peak_p90_deficit_window": float(after["p90_deficit"].max()),
         "peak_hour": peak_hour,
         "recovery_hours_after_peak": recovery_hours,
         "affected_hours_in_window": affected_hours,
@@ -200,7 +278,7 @@ def summarize_city(
     rain: pd.DataFrame,
     events: list[RainEvent],
     details: list[dict[str, Any]],
-    city_speed: pd.DataFrame,
+    abnormal: pd.DataFrame,
 ) -> dict[str, Any]:
     detail = pd.DataFrame(details)
     overlap = detail[detail.get("speed_overlap", False) == True] if not detail.empty else pd.DataFrame()
@@ -210,13 +288,13 @@ def summarize_city(
         else pd.DataFrame()
     )
     positive_impacts = (
-        impacts[pd.to_numeric(impacts["peak_extra_deficit"], errors="coerce") > 0]
-        if not impacts.empty and "peak_extra_deficit" in impacts.columns
+        impacts[pd.to_numeric(impacts["peak_positive_abnormal_deficit"], errors="coerce") > 0]
+        if not impacts.empty and "peak_positive_abnormal_deficit" in impacts.columns
         else pd.DataFrame()
     )
     worst = (
-        positive_impacts.sort_values("peak_extra_deficit", ascending=False).head(1)
-        if "peak_extra_deficit" in positive_impacts.columns
+        positive_impacts.sort_values("peak_positive_abnormal_deficit", ascending=False).head(1)
+        if "peak_positive_abnormal_deficit" in positive_impacts.columns
         else pd.DataFrame()
     )
     positive_rain = rain.loc[rain["precipitation"] > 0, "precipitation"]
@@ -230,43 +308,43 @@ def summarize_city(
         "positive_precip_p75": safe_float(positive_rain.quantile(0.75)) if not positive_rain.empty else np.nan,
         "positive_precip_p90": safe_float(positive_rain.quantile(0.90)) if not positive_rain.empty else np.nan,
         "max_hourly_precip": safe_float(rain["precipitation"].max()),
-        "speed_overlap_start": safe_date(city_speed["hour"].min()) if not city_speed.empty else "",
-        "speed_overlap_end": safe_date(city_speed["hour"].max()) if not city_speed.empty else "",
+        "speed_overlap_start": safe_date(abnormal["hour"].min()) if not abnormal.empty else "",
+        "speed_overlap_end": safe_date(abnormal["hour"].max()) if not abnormal.empty else "",
         "rain_events_in_speed_overlap": int(len(overlap)),
         "events_with_impact_window": int(len(impacts)),
         "events_with_positive_speed_impact": int(len(positive_impacts)),
-        "mean_peak_extra_deficit": safe_float(positive_impacts["peak_extra_deficit"].mean()) if not positive_impacts.empty else np.nan,
-        "median_peak_extra_deficit": safe_float(positive_impacts["peak_extra_deficit"].median()) if not positive_impacts.empty else np.nan,
-        "max_peak_extra_deficit": safe_float(positive_impacts["peak_extra_deficit"].max()) if not positive_impacts.empty else np.nan,
+        "mean_peak_positive_abnormal_deficit": safe_float(positive_impacts["peak_positive_abnormal_deficit"].mean()) if not positive_impacts.empty else np.nan,
+        "median_peak_positive_abnormal_deficit": safe_float(positive_impacts["peak_positive_abnormal_deficit"].median()) if not positive_impacts.empty else np.nan,
+        "max_peak_positive_abnormal_deficit": safe_float(positive_impacts["peak_positive_abnormal_deficit"].max()) if not positive_impacts.empty else np.nan,
         "mean_affected_hours": safe_float(positive_impacts["affected_hours_in_window"].mean()) if not positive_impacts.empty else np.nan,
         "median_recovery_hours_after_peak": safe_float(positive_impacts["recovery_hours_after_peak"].median()) if not positive_impacts.empty else np.nan,
         "worst_event_start": safe_date(worst["event_start"].iloc[0]) if not worst.empty else "",
         "worst_event_total_precip": safe_float(worst["total_precip"].iloc[0]) if not worst.empty else np.nan,
-        "worst_event_peak_extra_deficit": safe_float(worst["peak_extra_deficit"].iloc[0]) if not worst.empty else np.nan,
+        "worst_event_peak_positive_abnormal_deficit": safe_float(worst["peak_positive_abnormal_deficit"].iloc[0]) if not worst.empty else np.nan,
     }
 
 
-def write_report(path: Path, summary: pd.DataFrame, detail: pd.DataFrame) -> None:
-    available = summary.copy()
+def write_report(path: Path, summary: pd.DataFrame) -> None:
     lines = [
-        "# 降雨事件与速度损失影响分析",
+        "# Rainfall Event Impact With Matched Baselines",
         "",
-        "事件定义：连续正降雨小时段被视作一次 rainfall event。速度影响只在该城市 speed 数据覆盖的月份内计算；无 speed overlap 的城市只统计降雨事件数量，不估计速度影响。",
+        "事件定义：连续正降雨小时段为一次 rainfall event。速度影响只在 speed 数据覆盖月份内估计。",
         "",
-        "## 城市汇总",
+        "新的 impact 不再使用事件前 6 小时作为主 baseline，而是先用非降雨、非事件影响窗口中的 same-hour-of-week median speed deficit 作为 expected deficit；若样本不足，则回退到 same-hour-of-day median，再回退到全局非雨 median。",
         "",
-        "| city | full rain events | overlap events | positive impact events | mean peak extra deficit | max peak extra deficit | median recovery h | worst event |",
+        "| city | full rain events | overlap events | positive abnormal impact events | mean peak abnormal | max peak abnormal | median recovery h | worst event |",
         "|---|---:|---:|---:|---:|---:|---:|---|",
     ]
-    for row in available.sort_values(["events_with_positive_speed_impact", "max_peak_extra_deficit"], ascending=False).itertuples():
+    ordered = summary.sort_values(["events_with_positive_speed_impact", "max_peak_positive_abnormal_deficit"], ascending=False)
+    for row in ordered.itertuples():
         lines.append(
             "| {city} | {events} | {overlap} | {positive} | {mean_peak} | {max_peak} | {recovery} | {worst} |".format(
                 city=row.city,
                 events=int(row.positive_rain_event_count),
                 overlap=int(row.rain_events_in_speed_overlap),
                 positive=int(row.events_with_positive_speed_impact),
-                mean_peak=format_float(row.mean_peak_extra_deficit),
-                max_peak=format_float(row.max_peak_extra_deficit),
+                mean_peak=format_float(row.mean_peak_positive_abnormal_deficit),
+                max_peak=format_float(row.max_peak_positive_abnormal_deficit),
                 recovery=format_float(row.median_recovery_hours_after_peak),
                 worst=row.worst_event_start if isinstance(row.worst_event_start, str) else "",
             )
@@ -274,11 +352,7 @@ def write_report(path: Path, summary: pd.DataFrame, detail: pd.DataFrame) -> Non
     lines.extend(
         [
             "",
-            "## 解释",
-            "",
-            "- `peak_extra_deficit` 是事件窗口内最大平均速度损失减去事件前 6 小时平均速度损失；它刻画该事件相对事前状态的额外损失。",
-            "- `affected_hours_in_window` 是事件开始到事件结束后 12 小时内，高于事前基准加 20% 峰值冲击的小时数；它是时间范围，不是空间覆盖范围。",
-            "- `speed_observations_in_window` 是用于计算事件窗口速度损失的原始速度观测量聚合计数，可作为统计支撑强弱的 proxy。",
+            "解释：positive abnormal impact event 表示事件窗口内出现了高于 matched temporal baseline 的正速度损失异常。它比前 6 小时比较更能降低早晚高峰和平峰切换造成的偏误，但仍不是严格因果识别。",
         ]
     )
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")

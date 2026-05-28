@@ -1,0 +1,47 @@
+control_set,feature,target,controls,n_events,n_cities,partial_pearson,abs_partial_pearson
+control_rain_and_observed_shock,a_retention,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,-0.34703584561501977,0.34703584561501977
+control_rain_and_observed_shock,link_volume_hhi,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,-0.21640104556274267,0.21640104556274267
+control_rain_and_observed_shock,q_density,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,-0.20168515860229955,0.20168515860229955
+control_rain_and_observed_shock,od_sparsity,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,0.20168515860229952,0.20168515860229952
+control_rain_and_observed_shock,od_density_observed,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,-0.20161121604707866,0.20161121604707866
+control_rain_and_observed_shock,destination_volume_hhi,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,-0.19281763748327638,0.19281763748327638
+control_rain_and_observed_shock,top10_link_volume_share,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,-0.1875229426909172,0.1875229426909172
+control_rain_and_observed_shock,log_n_units,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,0.1869975964064895,0.1869975964064895
+control_rain_and_observed_shock,log_od_rows,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,0.18625546286496694,0.18625546286496694
+control_rain_and_observed_shock,within_zone_volume_share,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,-0.18165502095071762,0.18165502095071762
+control_rain_and_observed_shock,rain_kernel_sum,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,0.17994735266489978,0.17994735266489978
+control_rain_and_observed_shock,top10_destination_volume_share,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,-0.1567774935905604,0.1567774935905604
+control_rain_and_observed_shock,destination_volume_gini,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,0.1442389620344599,0.1442389620344599
+control_rain_and_observed_shock,origin_zone_count,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,0.12741336570934272,0.12741336570934272
+control_rain_and_observed_shock,n_units,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,0.1272636744467155,0.1272636744467155
+control_rain_and_observed_shock,destination_zone_count,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,0.1272636744467155,0.1272636744467155
+control_rain_and_observed_shock,od_rows,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,0.12129608100056134,0.12129608100056134
+control_rain_and_observed_shock,q_nnz,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,0.12129562161646128,0.12129562161646128
+control_rain_and_observed_shock,congested_volume_share_speed_ratio_lt_0_8,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,0.10443698099449523,0.10443698099449523
+control_rain_and_observed_shock,volume_weighted_speed_kmph,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,-0.05509680774705895,0.05509680774705895
+control_rain_and_observed_shock,doc_over_1_volume_share,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,0.05504638523184454,0.05504638523184454
+control_rain_and_observed_shock,tmc_deficit_gini,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,-0.04395779723836955,0.04395779723836955
+control_rain_and_observed_shock,top_10pct_tmc_deficit_share,recoverable_fraction,"event_total_precip, event_peak_precip, weighted_b0, weighted_h_total",105,7,-0.026585838150345875,0.026585838150345875
+control_rain_intensity,a_retention,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,-0.4415902599318885,0.4415902599318885
+control_rain_intensity,rain_kernel_sum,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,0.2531596646347606,0.2531596646347606
+control_rain_intensity,q_density,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,-0.23967771126455623,0.23967771126455623
+control_rain_intensity,od_sparsity,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,0.23967771126455614,0.23967771126455614
+control_rain_intensity,od_density_observed,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,-0.23953656607512663,0.23953656607512663
+control_rain_intensity,link_volume_hhi,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,-0.23616832870450594,0.23616832870450594
+control_rain_intensity,destination_volume_hhi,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,-0.21636925690772474,0.21636925690772474
+control_rain_intensity,log_n_units,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,0.21001750533732025,0.21001750533732025
+control_rain_intensity,log_od_rows,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,0.20015835581710986,0.20015835581710986
+control_rain_intensity,top10_link_volume_share,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,-0.18895081608135592,0.18895081608135592
+control_rain_intensity,top10_destination_volume_share,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,-0.16902440234277827,0.16902440234277827
+control_rain_intensity,destination_volume_gini,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,0.15433406430879668,0.15433406430879668
+control_rain_intensity,congested_volume_share_speed_ratio_lt_0_8,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,0.15298425985528236,0.15298425985528236
+control_rain_intensity,origin_zone_count,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,0.14207583263439405,0.14207583263439405
+control_rain_intensity,n_units,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,0.14196997743615952,0.14196997743615952
+control_rain_intensity,destination_zone_count,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,0.14196997743615952,0.14196997743615952
+control_rain_intensity,within_zone_volume_share,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,-0.14130071907373404,0.14130071907373404
+control_rain_intensity,od_rows,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,0.1263327065518842,0.1263327065518842
+control_rain_intensity,q_nnz,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,0.12633243331183514,0.12633243331183514
+control_rain_intensity,volume_weighted_speed_kmph,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,-0.08374322395068534,0.08374322395068534
+control_rain_intensity,top_10pct_tmc_deficit_share,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,0.05356258438404167,0.05356258438404167
+control_rain_intensity,doc_over_1_volume_share,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,0.040672555268185764,0.040672555268185764
+control_rain_intensity,tmc_deficit_gini,recoverable_fraction,"event_total_precip, event_peak_precip",105,7,0.03264475179597334,0.03264475179597334

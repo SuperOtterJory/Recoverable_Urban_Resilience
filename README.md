@@ -31,8 +31,10 @@ From the repository root:
 ```powershell
 python -m pip install -e .
 python scripts/run_data_mining.py --config configs/data_mining.yml
-python scripts/run_optimization.py --config configs/optimization.yml
-python scripts/analyze_city_structure.py
+python scripts/analyze_rainfall_event_impacts.py
+python scripts/calibrate_event_dynamics.py
+python scripts/run_event_optimization.py --config configs/optimization.yml
+python scripts/analyze_event_city_structure.py
 ```
 
 In the Codex desktop environment, use the bundled Python runtime if available.
@@ -55,27 +57,27 @@ The current data-mining stage asks:
 
 The current conclusion is that the data provide a strong empirical basis for observed disruption, endogenous recovery proxies, spatial heterogeneity, demand/network dependence, and potential targeting leverage. The central recoverable-resilience claim, however, requires the optimization/counterfactual layer because intervention effectiveness, budgets, response delay, and alternative allocation decisions are not directly observed in the raw data.
 
-## Current Optimization Outputs
+## Current Event-Level Optimization Outputs
 
 - LP implementation: `src/recoverable_resilience/recovery_lp.py`
-- Calibration utilities: `src/recoverable_resilience/calibration.py`
+- Event calibration utilities: `src/recoverable_resilience/event_calibration.py`
 - Optimization config: `configs/optimization.yml`
-- Optimization tables and figures: `results/optimization/`
-- City-structure outputs: `results/city_structure/`
+- Dynamic calibration outputs: `results/event_calibration/`
+- Observed-event optimization outputs: `results/event_optimization/`
+- Event city-structure outputs: `results/event_city_structure/`
 
 The current LP keeps the draft model's continuous structure while adding two credibility refinements that remain linear:
 
 - primitive-specific continuous deployment caps;
 - concave piecewise-linear diminishing returns through continuous segment variables.
 
-The optimization uses all available OD zones for the seven cities with usable speed data, with a sparse functional-dependence matrix so the LP remains tractable at hundreds to thousands of units. The optimization outputs also include heuristic policy comparisons against damage-based, exposure-based, and access-based non-optimized policies to quantify decision leverage.
+The canonical optimization now uses all available OD zones for the seven cities with usable speed-overlap data, with a sparse functional-dependence matrix so the LP remains tractable at hundreds to thousands of units. Each positive rainfall-impact event becomes its own 12-hour LP scenario. The older one-city-one-representative-scenario workflow remains in `scripts/run_optimization.py` for comparison only, not as the main analysis path.
 
 ## Current City-Structure Analysis
 
-- City-structure report: `results/city_structure/reports/city_structure_report_zh.md`
-- Intervention-structure report: `results/city_structure/reports/intervention_structure_report_zh.md`
-- City-structure tables and figures: `results/city_structure/`
+- Event city-structure report: `results/event_city_structure/reports/event_city_structure_report_zh.md`
+- Event city-structure tables and figures: `results/event_city_structure/`
 - Calibration explanation: `docs/calibration_explanation_zh.md`
 - Rainfall-event definitions: `docs/rainfall_event_definitions_zh.md`
 
-The current structural analysis fixes the recovery regime and asks whether cross-city structural variables explain recoverability and decision leverage. The strongest current hypotheses involve functional-dependence scale and sparsity, rainfall-event speed impact, speed-deficit severity, congestion exposure, and deficit-burden concentration. These are preliminary because the optimized full-zone sample currently contains seven cities.
+The current structural analysis fixes the recovery regime and asks whether cross-city structural variables explain event-level recoverability after moving away from aggregate rainfall scenarios. The strongest hypotheses are expected to involve functional-dependence scale and sparsity, event abnormal-speed-loss shape, congestion exposure, and whether optimized R/C/S resources target high-activity zones or less obvious dependence positions. These remain preliminary because the speed-overlap city sample currently contains seven cities.

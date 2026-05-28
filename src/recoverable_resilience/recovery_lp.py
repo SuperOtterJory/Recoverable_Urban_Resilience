@@ -300,6 +300,13 @@ def solve_recovery_lp(
             name="total_budget",
         )
 
+    if not no_intervention:
+        try:
+            model.Params.LPWarmStart = 2
+        except Exception:
+            pass
+        apply_no_intervention_warm_start(params, b, r_c, d, r_s, ell, u, e, u_segment if use_pwl else None)
+
     model.optimize()
     status = status_name(model.Status)
     if model.Status not in {GRB.OPTIMAL, GRB.TIME_LIMIT, GRB.SUBOPTIMAL} or model.SolCount == 0:
@@ -466,3 +473,45 @@ def q_row_terms(q: np.ndarray | sparse.csr_matrix) -> list[list[tuple[int, float
         [(int(j), float(v)) for j, v in enumerate(dense[i]) if abs(float(v)) > 1e-12]
         for i in range(dense.shape[0])
     ]
+
+
+def apply_no_intervention_warm_start(
+    params: RecoveryLPParameters,
+    b: Any,
+    r_c: Any,
+    d: Any,
+    r_s: Any,
+    ell: Any,
+    u: dict[str, Any],
+    e: dict[str, Any],
+    u_segment: dict[str, Any] | None,
+) -> None:
+    """Give Gurobi a feasible zero-intervention primal start for hard LPs."""
+
+    n = params.n_units
+    horizon = params.horizon
+    b_start = np.zeros((n, horizon + 1), dtype=float)
+    b_start[:, 0] = params.b0
+    for t in range(horizon):
+        b_start[:, t + 1] = np.clip(params.a * b_start[:, t] + params.h[:, t + 1], 0.0, 1.0)
+    ell_start = np.zeros_like(b_start)
+    for t in range(horizon + 1):
+        ell_start[:, t] = np.clip(params.q @ b_start[:, t], 0.0, 1.0)
+    try:
+        for i in range(n):
+            for t in range(horizon + 1):
+                b[i, t].PStart = float(b_start[i, t])
+                r_c[i, t].PStart = 0.0
+                d[i, t].PStart = float(b_start[i, t])
+                r_s[i, t].PStart = 0.0
+                ell[i, t].PStart = float(ell_start[i, t])
+            for t in range(horizon):
+                for key in INTERVENTIONS:
+                    u[key][i, t].PStart = 0.0
+                    e[key][i, t].PStart = 0.0
+                    if u_segment is not None:
+                        segment_count = params.u_segment_cap[key].shape[2]
+                        for s in range(segment_count):
+                            u_segment[key][i, t, s].PStart = 0.0
+    except Exception:
+        return

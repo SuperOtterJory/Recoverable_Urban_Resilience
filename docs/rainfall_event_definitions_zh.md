@@ -2,7 +2,7 @@
 
 ## 什么是 rainfall event
 
-当前把 **连续正降雨小时段** 定义为一次 rainfall event。
+当前把连续的正降雨小时段定义为一次 rainfall event。
 
 例如：
 
@@ -17,51 +17,70 @@
 
 ## 什么是 speed overlap event
 
-rainfall 数据覆盖 2019-2024 的多个年份，但 speed 数据通常只覆盖一个月。例如 New York 的 speed 数据覆盖：
+rainfall 数据覆盖多个年份，但 speed 数据通常只覆盖一个月。因此不是所有降雨事件都有同步速度观测。
+
+以 New York 为例：
 
 ```text
-2019-06-01 00:00:00 到 2019-07-01 23:00:00
-```
-
-因此：
-
-- New York 全部 rainfall 数据中有 868 次正降雨事件；
-- 其中只有 26 次落在 speed 数据覆盖月份内；
-- 这 26 次才叫 speed overlap events；
-- 其他 842 次虽然真实发生过降雨，但没有同步 speed 数据，不能估计速度影响。
-
-所以 `speed overlap` 的含义不是“只有 26 次下雨”，而是：
-
-> 只有 26 次降雨事件可以和当前可用 speed observations 对齐。
-
-## 什么是 positive speed impact
-
-对每个 speed-overlap rainfall event，计算：
-
-```text
-baseline = event_start 前 6 小时 mean speed deficit
-peak = event_start 到 event_end 后 12 小时窗口内的最大 mean speed deficit
-peak_extra_deficit = peak - baseline
-```
-
-如果：
-
-```text
-peak_extra_deficit > 0
-```
-
-就记为一次 positive speed impact event。
-
-因此 New York 的结果：
-
-```text
+speed coverage = 2019-06-01 00:00:00 到 2019-07-01 23:00:00
 full rainfall events = 868
-speed overlap events = 26
-positive speed impact events = 23
+speed-overlap rainfall events = 26
+positive abnormal impact events = 24
 ```
 
-应该解释为：
+含义是：2019-2024 的降雨记录中有 868 次正降雨事件，但只有 26 次发生在当前拥有 speed observations 的月份内；这 26 次中有 24 次在事件窗口内出现了高于匹配时间基线的正异常速度损失。
 
-> 2019-2024 全部降雨记录中有 868 次正降雨事件；其中 26 次发生在有 speed 数据的月份；这 26 次里有 23 次在事件窗口内出现了相对事件前 6 小时更高的平均速度损失。
+## 为什么不再用事件前 6 小时作 baseline
 
-这不是严格因果声明。它说明 rainfall event 与 speed deficit increase 在时间窗口上对齐，但仍可能包含通勤高峰、事故、施工、其他天气因素等混杂。
+事件前 6 小时很容易受到早晚高峰、平峰、夜间低流量等周期规律影响。例如一场雨从早上 8 点开始，如果只和凌晨 2-7 点比较，速度损失上升可能主要来自通勤高峰，而不是降雨。
+
+因此新版 rainfall impact 使用 matched temporal baseline：
+
+```text
+expected_deficit(hour)
+  = 非降雨、非事件影响窗口中的 same-hour-of-week median speed deficit
+```
+
+如果 same-hour-of-week 样本不足，则依次回退到：
+
+```text
+same-hour-of-day median
+global non-rain median
+```
+
+然后定义：
+
+```text
+abnormal_deficit = observed_mean_deficit - expected_deficit
+positive_abnormal_deficit = max(abnormal_deficit, 0)
+```
+
+这不是严格因果识别，但比“前 6 小时比较”更能排除日内周期和星期周期带来的机械波动。
+
+## 什么是 positive abnormal impact event
+
+对每个 speed-overlap rainfall event，取事件开始到事件结束后 12 小时的窗口，计算窗口内是否出现正异常速度损失峰值：
+
+```text
+peak_positive_abnormal_deficit > 0
+```
+
+若成立，就记为 positive abnormal impact event。
+
+它的含义不是“降雨已被严格证明造成速度下降”，而是：
+
+> 在降雨事件窗口内，观测速度损失高于该城市该星期小时通常会出现的非降雨速度损失。
+
+这个定义已经尽量剥离了高峰/平峰周期，但仍可能混有事故、施工、其他天气、传感器覆盖差异等因素。因此它适合作为 data-informed event scenario 的输入，而不是最终因果结论。
+
+## 输出表
+
+主要输出位于：
+
+```text
+results/data_mining/tables/rainfall_event_impact_summary.csv
+results/data_mining/tables/rainfall_event_impact_details.csv
+results/data_mining/tables/speed_hourly_abnormal_deficit.csv
+```
+
+其中 `rainfall_event_impact_details.csv` 是事件级表，后续 event-level LP 只使用 speed-overlap 且 `peak_positive_abnormal_deficit > 0` 的事件。

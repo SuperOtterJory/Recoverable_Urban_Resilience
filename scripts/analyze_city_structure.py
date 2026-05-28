@@ -21,7 +21,12 @@ PRIMARY_STRUCTURAL_FEATURES = {
     "dependence": ["q_density", "od_density_observed", "destination_volume_hhi", "top10_destination_volume_share"],
     "traffic": ["congested_volume_share_speed_ratio_lt_0_8", "doc_over_1_volume_share", "volume_weighted_speed_kmph"],
     "disruption": ["mean_deficit", "p90_deficit", "severe_deficit_share_20pct"],
-    "rainfall": ["positive_rain_event_count", "mean_peak_extra_deficit", "max_peak_extra_deficit", "mean_affected_hours"],
+    "rainfall": [
+        "positive_rain_event_count",
+        "mean_peak_positive_abnormal_deficit",
+        "max_peak_positive_abnormal_deficit",
+        "mean_affected_hours",
+    ],
     "concentration": ["tmc_deficit_gini", "top_10pct_tmc_deficit_share", "high_deficit_tmc_share_mean_gt_0_2"],
 }
 
@@ -206,8 +211,8 @@ def build_rankings(dataset: pd.DataFrame) -> pd.DataFrame:
         "q_density",
         "od_density_observed",
         "p90_deficit",
-        "mean_peak_extra_deficit",
-        "max_peak_extra_deficit",
+        "mean_peak_positive_abnormal_deficit",
+        "max_peak_positive_abnormal_deficit",
         "top_10pct_tmc_deficit_share",
         "congested_volume_share_speed_ratio_lt_0_8",
     ]
@@ -219,7 +224,12 @@ def make_figures(dataset: pd.DataFrame, correlations: pd.DataFrame, figure_dir: 
     make_bar_figure(dataset, figure_dir / "full_zone_recoverability_by_city.png")
     make_scatter(dataset, "q_density", "recoverable_fraction", figure_dir / "recoverability_vs_od_density.png")
     make_scatter(dataset, "p90_deficit", "recoverable_fraction", figure_dir / "recoverability_vs_speed_deficit.png")
-    make_scatter(dataset, "max_peak_extra_deficit", "recoverable_fraction", figure_dir / "recoverability_vs_rain_impact.png")
+    make_scatter(
+        dataset,
+        "max_peak_positive_abnormal_deficit",
+        "recoverable_fraction",
+        figure_dir / "recoverability_vs_rain_impact.png",
+    )
     make_correlation_figure(correlations, figure_dir / "structure_correlation_summary.png")
 
 

@@ -1,119 +1,133 @@
-# Calibration Explanation
+# Event-Level Calibration Explanation
 
 ## 当前优化场景是什么
 
-当前 full-zone LP 不是“一天一个模型”，也不是“把每一次真实降雨事件分别优化一次”。它是一个 **代表性恢复场景**：
+新版 canonical analysis 不再使用“一个城市一个集计代表场景”。现在的优化问题是：
 
-- 时间尺度：12 个 hourly steps。
-- 初始状态 `b0`：来自该城市 speed-deficit 数据的经验损失水平。
-- 外部扰动 `h`：来自 rainfall-speed event analysis 的平均事件冲击。
-- 自然恢复 `A`：来自事件窗口中观测到的恢复小时数。
-- 管理动作：在同一恢复制度下分配 R/C/S 三类资源。
+> 一个真实 rainfall event 对应一个 12 小时 full-zone LP。
+
+更具体地说：
+
+- 时间尺度：事件开始小时作为状态 0，之后 12 个 hourly steps 作为恢复窗口。
+- 空间尺度：使用该城市全部 OD zones，不再抽取 top OD。
+- `Q_ij`：由 `demand.csv` 中 origin `i` 到 destination `j` 的 OD volume 行归一化得到。
+- `p_i`：origin `i` 的出行需求占比。
+- `b0_i`：事件开始小时的城市级异常速度损失，按 destination vulnerability 分配到 zone。
+- `A_i`：由动态标定得到的自然滞留率，再加入轻微 destination vulnerability drag。
+- `h_i,t`：每个真实事件的观测异常序列在扣除自然滞留后仍然增加的正创新量。
 
 因此，当前 LP 的含义是：
 
-> 给定一个由城市历史速度损失和降雨事件响应校准出来的代表性扰动-恢复过程，在固定资源制度下，不同城市结构能支持多少可恢复功能损失？
+> 给定某次真实降雨事件在速度系统中形成的异常损失轨迹，在固定 R/C/S 资源制度下，城市 OD 功能结构能支持多大比例的可恢复功能损失。
 
-## 哪些量是直接来自数据
+## 速度损失如何得到
 
-### OD demand
-
-`OD` 是直接从 `demand.csv` 获得的。当前 canonical configuration 使用所有 OD zones，而不是抽样。
-
-- `Q_ij`：从 origin `i` 到 destination `j` 的 OD volume 归一化得到。
-- `p_i`：origin `i` 的出行需求占比。
-- `destination_importance_j`：由 `Q^T p` 得到，表示 destination 被多少 origin exposure 依赖。
-
-### 速度损失
-
-速度损失来自 speed CSV：
+原始 speed 数据中先计算：
 
 ```text
 speed_ratio = actual_speed / baseline_speed
 speed_deficit = max(0, 1 - speed_ratio)
 ```
 
-其中 `baseline_speed` 优先使用 `historical_average_speed`，否则使用 `reference_speed`。所以它不是和全城市平均速度比，而是和该路段/时间对应的历史或参考速度比。
+其中 `baseline_speed` 优先使用 `historical_average_speed`，否则使用 `reference_speed`。这一步是路段/时间对应的速度损失，不是和全城市平均速度比较。
 
-## `b0` 如何标定
-
-城市级损失信号：
+事件影响不再用事件前 6 小时比较，而是：
 
 ```text
-city_signal =
-  0.45 * mean_deficit
-+ 0.45 * p90_deficit
-+ 0.10 * severe_deficit_share_20pct
+expected_deficit(hour)
+  = 非降雨、非事件影响窗口中的 same-hour-of-week median speed deficit
+
+abnormal_deficit = observed_mean_deficit - expected_deficit
+positive_abnormal_deficit = max(abnormal_deficit, 0)
 ```
 
-然后按 destination vulnerability 分配到 unit：
+这样可以减少早晚高峰、夜间、周末等周期规律造成的伪冲击。
+
+## `A` 如何标定
+
+先在城市级 hourly series 上拟合一个动态模型：
 
 ```text
-destination_vulnerability_i = 0.35 + 0.65 * normalized_destination_volume_i
-b0_i = city_signal * ((1 - blend) + blend * destination_vulnerability_i)
+positive_abnormal_deficit[t+1]
+  = a * positive_abnormal_deficit[t]
+  + sum_l beta_l * precipitation[t-l]
 ```
 
-其中 `blend = 0.55`。
+这里：
 
-解释：`b0_i` 不是逐 zone 直接观测速度损失，而是用城市级 speed-deficit 信号和 OD destination exposure 做空间分配的 proxy。
+- `a` 是自然滞留率：没有新的正冲击时，异常速度损失保留到下一小时的比例。
+- `beta_l` 是降雨滞后核：用于诊断降雨冲击的时间滞后，也可在缺失速度观测时作为 fallback。
 
-## 自然恢复 `A` 如何标定
+这个拟合不是严格因果识别，但比旧版本更合理，因为它把“当前损失的自然延续”和“降雨滞后输入”放在同一个递推方程中估计，而不是分别用峰值和恢复小时数启发式指定。
 
-先从 rainfall-speed event windows 中得到 `median_event_recovery_hours`。如果没有可靠恢复时间，就用 default 12 小时。
+## `h` 如何标定
+
+对每个真实事件，设城市级正异常速度损失为 `y[t]`。在给定自然滞留率 `a` 后，外部扰动创新定义为：
 
 ```text
-tau = clip(median_event_recovery_hours + min_recovery_tau_hours, 6, 24)
-base_retention = exp(-1 / tau)
-A_i = base_retention + structural_drag_i
+h_city[t] = max(y[t] - a * y[t-1], 0)
 ```
 
-`structural_drag_i` 随 destination vulnerability 增加，最大约 0.04，最后把 `A_i` 限制在 `[0.70, 0.985]`。
+含义是：
 
-解释：`A_i` 越接近 1，损失自然消退越慢；越小，恢复越快。
+- 如果下一小时异常损失只是由上一小时损失自然保留下来，`h_city[t]` 接近 0。
+- 如果下一小时异常损失高于自然滞留能解释的水平，多出来的正值被解释为外部扰动创新。
+- 如果速度损失下降，`h_city[t] = 0`；下降部分由自然恢复解释，不把负扰动放进 LP。
 
-## 外部扰动 `h` 如何标定
+这回答了 “`h` 和自然恢复在 ground truth 中混杂” 的问题：我们仍不能做严格识别，但现在至少使用同一个动态方程进行分解。`A` 先由跨小时递推拟合，`h` 再作为每个事件的正创新 residual 得到。
 
-先从 rainfall-speed event windows 中得到平均事件冲击：
+## 空间分配
+
+当前没有 zone-level speed loss，所以城市级事件信号需要分配到 OD zones。分配权重使用 destination vulnerability：
 
 ```text
-event_impact = mean_event_deficit_impact
+destination_vulnerability_i
+  = 0.35 + 0.65 * normalized_destination_volume_i
+
+relative_i
+  = (1 - blend) + blend * destination_vulnerability_i
 ```
 
-然后把它分配到 4 个小时的短扰动 profile：
+然后用 `p_i` 加权归一化，使城市级加权平均信号保持不变：
 
 ```text
-profile = [0.45, 0.30, 0.17, 0.08]
-h_i,t = rainfall_shock_scale * event_impact * profile_t * destination_vulnerability_i
+sum_i p_i * relative_i = 1
+
+b0_i = b0_city * relative_i
+h_i,t = h_city[t] * relative_i
 ```
 
-其中 `rainfall_shock_scale = 0.45`，并把 `h` 截断在 `[0, 0.12]`。
+因此，`b0` 和 `h` 的城市平均水平直接来自 speed/rain event 数据；空间异质性来自 OD destination exposure。
 
-解释：`h` 表示降雨事件带来的额外短期扰动，而不是完整降雨序列。
+## 预算如何给定
 
-## 关键限制：`A` 和 `h` 在 ground truth 中是混杂的
-
-你的判断是正确的。真实观测中，我们看到的是速度损失曲线：
+预算仍然是相对事件负担的比例，而不是固定美元量：
 
 ```text
-observed loss trajectory = external shock + endogenous recovery + traffic dynamics + noise
+event_burden = sum_i b0_i + sum_i,t h_i,t
+total_budget = budget_intensity * total_budget_multiplier * event_burden
 ```
 
-仅靠当前数据，不能严格识别：
+当前 base scenario 中：
 
 ```text
-哪些变化来自 h，哪些变化来自 A
+budget_intensity = 0.18
+total_budget_multiplier = 1.25
+R/C/S delays = 2/0/1 hours
 ```
 
-当前做法是启发式分解：
+这意味着不同事件的预算会随事件负担变化。后续如果要研究“同一绝对资源约束下的跨城市公平性”，可以再设置固定预算或按人口/OD volume 标准化预算。
 
-- 用事件冲击峰值标定 `h` 的幅度；
-- 用事件后恢复小时数标定 `A` 的恢复速度；
-- 用 vulnerability 把城市级参数分配到各 zone。
+## 当前结果能说明什么，不能说明什么
 
-因此它是 data-informed calibration，不是因果识别或统计拟合。后续更强版本应该对 event-level trajectories 做 joint fitting，例如：
+能说明：
 
-```text
-minimize || observed_deficit_t - simulated_deficit_t(A, h) ||
-```
+- 在真实 rainfall event 的 12 小时窗口中，城市 OD 结构会影响 recoverable fraction。
+- 如果某些结构变量在控制降雨强度后仍与 recoverability 相关，它们比“预算越大越好”更接近 paper 需要的 city-structure law。
+- R/C/S 的投放位置可以检验“是否总是恢复最活跃区域”这一类非直觉问题。
 
-并使用 held-out rainfall events 验证。
+不能说明：
+
+- 不能严格证明降雨是所有异常速度损失的唯一原因。
+- 不能直接把 7 个有 speed-overlap 的城市相关性宣称为 universal law。
+- 不能替代后续模型部分；当前 data mining 的作用是判断数据是否有足够结构信号支撑研究方向。
