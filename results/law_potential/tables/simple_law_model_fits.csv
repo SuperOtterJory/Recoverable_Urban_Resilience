@@ -1,7 +1,0 @@
-model,target,n,r2,intercept,formula_skeleton
-tuning_log_budget,recoverable_fraction,72,0.94851694437101,-0.0009357532344225091,y = -0.0009358 +0.2542*log_budget
-tuning_budget_delay,recoverable_fraction,72,0.959960722946693,0.006242211566755862,y = 0.006242 +0.2542*log_budget -0.007178*delay_score
-tuning_city_budget_delay,recoverable_fraction,72,0.9826094438187015,0.0040255986686010955,y = 0.004026 +0.2542*log_budget -0.007178*delay_score +0.01324*city_Houston -0.006589*city_New York
-tuning_city_quadratic_delay,recoverable_fraction,72,0.9834423970298499,0.009164296845519006,y = 0.009164 +0.2097*budget_intensity -0.03629*budget_squared -0.007178*delay_score +0.01324*city_Houston -0.006589*city_New York
-scenario_budget_delay_city,recoverable_fraction,30,0.9928155054852481,0.009053417468231557,y = 0.009053 +0.251*log_budget -0.003926*delay_score -0.006995*city_Chicago +0.003182*city_Houston -0.01254*city_New York -0.00619*city_San Antonio
-scenario_decision_leverage,decision_leverage_fraction,30,0.9873865082677555,0.007184043915462877,y = 0.007184 -0.08367*log_budget -0.0007982*delay_score +0.5712*recoverable_fraction -0.0002837*city_Chicago -0.002809*city_Houston -0.004317*city_New York -0.001848*city_San Antonio
