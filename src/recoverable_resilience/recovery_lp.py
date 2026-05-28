@@ -7,6 +7,7 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
+from scipy import sparse
 
 
 INTERVENTIONS = ("R", "C", "S")
@@ -19,7 +20,7 @@ class RecoveryLPParameters:
     city: str
     units: list[str]
     p: np.ndarray
-    q: np.ndarray
+    q: np.ndarray | sparse.csr_matrix
     b0: np.ndarray
     a: np.ndarray
     h: np.ndarray
@@ -38,7 +39,7 @@ class RecoveryLPParameters:
 
     def __post_init__(self) -> None:
         self.p = np.asarray(self.p, dtype=float)
-        self.q = np.asarray(self.q, dtype=float)
+        self.q = self.q.tocsr() if sparse.issparse(self.q) else np.asarray(self.q, dtype=float)
         self.b0 = np.asarray(self.b0, dtype=float)
         self.a = np.asarray(self.a, dtype=float)
         self.h = np.asarray(self.h, dtype=float)
@@ -105,7 +106,7 @@ class RecoveryLPParameters:
                     raise ValueError(f"segment_effectiveness[{key}] must match segment count.")
                 if not np.all(np.diff(self.segment_effectiveness[key]) <= 1e-9):
                     raise ValueError(f"segment_effectiveness[{key}] must be nonincreasing.")
-        row_sums = self.q.sum(axis=1)
+        row_sums = np.asarray(self.q.sum(axis=1)).ravel()
         if not np.allclose(row_sums, 1.0, atol=1e-5):
             raise ValueError("Each row of q must sum to 1.")
         if np.any(self.p < 0) or not np.isclose(self.p.sum(), 1.0, atol=1e-5):
@@ -210,6 +211,8 @@ def solve_recovery_lp(
         model.addConstr(r_c[i, 0] == 0.0, name=f"initial_rC[{i}]")
         model.addConstr(r_s[i, 0] == 0.0, name=f"initial_rS[{i}]")
 
+    q_rows = q_row_terms(params.q)
+
     for t in action_times:
         for i in units:
             model.addConstr(
@@ -265,7 +268,7 @@ def solve_recovery_lp(
             model.addConstr(d[i, t] >= b[i, t] - r_c[i, t], name=f"local_deficit[{i},{t}]")
             model.addConstr(
                 ell[i, t]
-                >= gp.quicksum(float(params.q[i, j]) * d[j, t] for j in units) - r_s[i, t],
+                >= gp.quicksum(weight * d[j, t] for j, weight in q_rows[i]) - r_s[i, t],
                 name=f"access_loss[{i},{t}]",
             )
 
@@ -440,3 +443,26 @@ def status_name(status_code: int) -> str:
         return mapping.get(status_code, str(status_code))
     except Exception:  # pragma: no cover
         return str(status_code)
+
+
+def q_row_terms(q: np.ndarray | sparse.csr_matrix) -> list[list[tuple[int, float]]]:
+    """Return nonzero row terms for the functional-dependence matrix."""
+
+    if sparse.issparse(q):
+        q_csr = q.tocsr()
+        rows: list[list[tuple[int, float]]] = []
+        for i in range(q_csr.shape[0]):
+            start, end = q_csr.indptr[i], q_csr.indptr[i + 1]
+            rows.append(
+                [
+                    (int(j), float(v))
+                    for j, v in zip(q_csr.indices[start:end], q_csr.data[start:end], strict=True)
+                    if abs(float(v)) > 1e-12
+                ]
+            )
+        return rows
+    dense = np.asarray(q, dtype=float)
+    return [
+        [(int(j), float(v)) for j, v in enumerate(dense[i]) if abs(float(v)) > 1e-12]
+        for i in range(dense.shape[0])
+    ]

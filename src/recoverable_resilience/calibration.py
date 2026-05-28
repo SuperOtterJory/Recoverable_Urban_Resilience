@@ -9,6 +9,7 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
+from scipy import sparse
 
 from .paths import find_repo_root
 from .recovery_lp import INTERVENTIONS, RecoveryLPParameters
@@ -63,12 +64,13 @@ def calibrate_city(
     if not demand_path.exists():
         raise FileNotFoundError(f"Missing demand.csv for {city}: {demand_path}")
 
-    unit_count = int(calibration["unit_count"])
     demand = pd.read_csv(demand_path)
     demand["volume"] = pd.to_numeric(demand["volume"], errors="coerce").fillna(0.0)
     demand = demand[demand["volume"] > 0].copy()
+    demand["o_zone_id"] = normalize_zone_ids(demand["o_zone_id"])
+    demand["d_zone_id"] = normalize_zone_ids(demand["d_zone_id"])
 
-    selected_units = select_top_units(demand, unit_count)
+    selected_units = select_units(demand, calibration)
     q = calibrate_dependence_matrix(demand, selected_units, float(calibration["dependence_self_loop_floor"]))
     p = calibrate_exposure_weights(demand, selected_units)
 
@@ -87,9 +89,10 @@ def calibrate_city(
 
     metadata = {
         "city": city,
-        "unit_count": unit_count,
+        "unit_count": len(selected_units),
+        "unit_selection": calibration.get("unit_selection", "top"),
         "source_demand_path": str(demand_path),
-        "calibration_notes": "Units are top OD zones by origin+destination exposure. Deficit proxies combine city-level speed/rainfall mining outputs with destination exposure concentration.",
+        "calibration_notes": "Units follow the configured OD-zone selection rule. Deficit proxies combine city-level speed/rainfall mining outputs with destination exposure concentration.",
         "speed_deficit_source": data_mining.get("speed", {}),
         "rainfall_alignment_source": data_mining.get("rain_speed", {}),
         "scenario": scenario_override or {"name": "base"},
@@ -121,48 +124,60 @@ def select_top_units(demand: pd.DataFrame, unit_count: int) -> list[str]:
     origin = demand.groupby("o_zone_id")["volume"].sum()
     dest = demand.groupby("d_zone_id")["volume"].sum()
     exposure = origin.add(dest, fill_value=0.0).sort_values(ascending=False)
-    return [str(int(x)) if float(x).is_integer() else str(x) for x in exposure.head(unit_count).index.astype(float)]
+    return exposure.head(unit_count).index.astype(str).tolist()
+
+
+def select_units(demand: pd.DataFrame, calibration: dict[str, Any]) -> list[str]:
+    """Select OD units for the LP while supporting large-scale all-zone runs."""
+
+    selection = calibration.get("unit_selection", "top")
+    if isinstance(selection, str):
+        method = selection
+        min_volume_share = 1.0
+    else:
+        method = str(selection.get("method", "top"))
+        min_volume_share = float(selection.get("min_touch_volume_share", 1.0))
+    origin = demand.groupby("o_zone_id")["volume"].sum()
+    dest = demand.groupby("d_zone_id")["volume"].sum()
+    exposure = origin.add(dest, fill_value=0.0).sort_values(ascending=False)
+    if method == "all":
+        return exposure.index.astype(str).tolist()
+    if method == "coverage":
+        cumulative = exposure.cumsum() / max(float(exposure.sum()), 1e-9)
+        selected = exposure.loc[cumulative <= min_volume_share].index.astype(str).tolist()
+        if not selected or cumulative.iloc[len(selected) - 1] < min_volume_share:
+            selected = exposure.head(len(selected) + 1).index.astype(str).tolist()
+        max_units = calibration.get("unit_count")
+        if max_units:
+            selected = selected[: int(max_units)]
+        return selected
+    unit_count = int(calibration["unit_count"])
+    return select_top_units(demand, unit_count)
 
 
 def calibrate_dependence_matrix(demand: pd.DataFrame, selected_units: list[str], self_loop_floor: float) -> np.ndarray:
     units = pd.Index(selected_units, dtype=str)
     selected = demand.copy()
-    selected["o_zone_id"] = selected["o_zone_id"].astype(str)
-    selected["d_zone_id"] = selected["d_zone_id"].astype(str)
     selected = selected[selected["o_zone_id"].isin(units) & selected["d_zone_id"].isin(units)]
-    matrix = pd.pivot_table(
-        selected,
-        index="o_zone_id",
-        columns="d_zone_id",
-        values="volume",
-        aggfunc="sum",
-        fill_value=0.0,
-    ).reindex(index=units, columns=units, fill_value=0.0)
-
-    dest_fallback = demand.copy()
-    dest_fallback["d_zone_id"] = dest_fallback["d_zone_id"].astype(str)
-    dest_weights = dest_fallback[dest_fallback["d_zone_id"].isin(units)].groupby("d_zone_id")["volume"].sum()
-    dest_weights = dest_weights.reindex(units, fill_value=0.0).to_numpy(dtype=float)
-    if dest_weights.sum() <= 0:
-        dest_weights = np.ones(len(units), dtype=float)
-    dest_weights = dest_weights / dest_weights.sum()
-
-    q = matrix.to_numpy(dtype=float)
-    for i in range(q.shape[0]):
-        row_sum = q[i].sum()
-        if row_sum <= 0:
-            q[i] = dest_weights
-        else:
-            q[i] = q[i] / row_sum
-        q[i, i] = max(q[i, i], self_loop_floor)
-        q[i] = q[i] / q[i].sum()
-    return q
+    unit_to_idx = {unit: idx for idx, unit in enumerate(units)}
+    grouped = selected.groupby(["o_zone_id", "d_zone_id"], as_index=False)["volume"].sum()
+    rows: list[int] = []
+    cols: list[int] = []
+    data: list[float] = []
+    for origin, dest, volume in grouped.itertuples(index=False):
+        rows.append(unit_to_idx[str(origin)])
+        cols.append(unit_to_idx[str(dest)])
+        data.append(float(volume))
+    n = len(units)
+    q = sparse.coo_matrix((data, (rows, cols)), shape=(n, n), dtype=float).tocsr()
+    q = normalize_rows_with_self_loop(q, self_loop_floor)
+    density = q.nnz / max(n * n, 1)
+    return q if n > 200 or density < 0.25 else q.toarray()
 
 
 def calibrate_exposure_weights(demand: pd.DataFrame, selected_units: list[str]) -> np.ndarray:
     units = pd.Index(selected_units, dtype=str)
     demand = demand.copy()
-    demand["o_zone_id"] = demand["o_zone_id"].astype(str)
     origin = demand[demand["o_zone_id"].isin(units)].groupby("o_zone_id")["volume"].sum()
     values = origin.reindex(units, fill_value=0.0).to_numpy(dtype=float)
     if values.sum() <= 0:
@@ -193,7 +208,6 @@ def load_data_mining_rows(city: str, mining_dir: Path) -> dict[str, dict[str, An
 def destination_vulnerability(demand: pd.DataFrame, selected_units: list[str]) -> np.ndarray:
     units = pd.Index(selected_units, dtype=str)
     demand = demand.copy()
-    demand["d_zone_id"] = demand["d_zone_id"].astype(str)
     dest = demand[demand["d_zone_id"].isin(units)].groupby("d_zone_id")["volume"].sum()
     values = dest.reindex(units, fill_value=0.0).to_numpy(dtype=float)
     if values.sum() <= 0:
@@ -321,7 +335,7 @@ def params_to_jsonable(params: RecoveryLPParameters) -> dict[str, Any]:
         "city": params.city,
         "units": params.units,
         "p": params.p.tolist(),
-        "q": params.q.tolist(),
+        "q": matrix_to_jsonable(params.q),
         "b0": params.b0.tolist(),
         "a": params.a.tolist(),
         "h": params.h.tolist(),
@@ -345,7 +359,7 @@ def params_from_jsonable(data: dict[str, Any]) -> RecoveryLPParameters:
         city=data["city"],
         units=list(data["units"]),
         p=np.asarray(data["p"], dtype=float),
-        q=np.asarray(data["q"], dtype=float),
+        q=matrix_from_jsonable(data["q"]),
         b0=np.asarray(data["b0"], dtype=float),
         a=np.asarray(data["a"], dtype=float),
         h=np.asarray(data["h"], dtype=float),
@@ -374,10 +388,14 @@ def load_params(path: Path) -> RecoveryLPParameters:
 
 
 def calibration_summary(params: RecoveryLPParameters) -> dict[str, Any]:
+    q_nnz = int(params.q.nnz) if sparse.issparse(params.q) else int(np.count_nonzero(params.q))
+    q_cells = max(params.n_units * params.n_units, 1)
     return {
         "city": params.city,
         "n_units": params.n_units,
         "horizon": params.horizon,
+        "q_nnz": q_nnz,
+        "q_density": float(q_nnz / q_cells),
         "mean_b0": float(np.mean(params.b0)),
         "weighted_b0": float(np.sum(params.p * params.b0)),
         "max_b0": float(np.max(params.b0)),
@@ -410,3 +428,54 @@ def numeric(value: Any, default: float = 0.0) -> float:
         return number if np.isfinite(number) else default
     except Exception:
         return default
+
+
+def normalize_zone_ids(values: pd.Series) -> pd.Series:
+    numeric_values = pd.to_numeric(values, errors="coerce")
+    normalized = values.astype(str)
+    integer_like = numeric_values.notna() & np.isclose(numeric_values, np.round(numeric_values))
+    normalized.loc[integer_like] = numeric_values.loc[integer_like].round().astype("int64").astype(str)
+    return normalized
+
+
+def normalize_rows_with_self_loop(q: sparse.csr_matrix, self_loop_floor: float) -> sparse.csr_matrix:
+    q = q.tolil(copy=True)
+    n = q.shape[0]
+    for i in range(n):
+        row_sum = float(sum(q.data[i]))
+        if row_sum <= 0:
+            q[i, i] = 1.0
+            continue
+        row_cols = q.rows[i]
+        row_data = q.data[i]
+        for k, value in enumerate(row_data):
+            row_data[k] = float(value) / row_sum
+        if q[i, i] < self_loop_floor:
+            q[i, i] = self_loop_floor
+        new_sum = float(sum(q.data[i]))
+        if new_sum > 0:
+            for k, value in enumerate(q.data[i]):
+                q.data[i][k] = float(value) / new_sum
+    return q.tocsr()
+
+
+def matrix_to_jsonable(matrix: np.ndarray | sparse.csr_matrix) -> Any:
+    if sparse.issparse(matrix):
+        csr = matrix.tocsr()
+        return {
+            "format": "csr",
+            "shape": list(csr.shape),
+            "data": csr.data.tolist(),
+            "indices": csr.indices.tolist(),
+            "indptr": csr.indptr.tolist(),
+        }
+    return np.asarray(matrix, dtype=float).tolist()
+
+
+def matrix_from_jsonable(value: Any) -> np.ndarray | sparse.csr_matrix:
+    if isinstance(value, dict) and value.get("format") == "csr":
+        return sparse.csr_matrix(
+            (np.asarray(value["data"], dtype=float), np.asarray(value["indices"], dtype=int), np.asarray(value["indptr"], dtype=int)),
+            shape=tuple(value["shape"]),
+        )
+    return np.asarray(value, dtype=float)

@@ -58,20 +58,24 @@ The current conclusion is that the data provide a strong empirical basis for obs
 - LP implementation: `src/recoverable_resilience/recovery_lp.py`
 - Calibration utilities: `src/recoverable_resilience/calibration.py`
 - Optimization config: `configs/optimization.yml`
+- Large-scale optimization config: `configs/large_scale_optimization.yml`
 - Optimization report: `results/optimization/reports/optimization_report_zh.md`
 - Optimization tables and figures: `results/optimization/`
+- Large-scale full-zone outputs: `results/large_scale_optimization/`
 
 The current LP keeps the draft model's continuous structure while adding two credibility refinements that remain linear:
 
 - primitive-specific continuous deployment caps;
 - concave piecewise-linear diminishing returns through continuous segment variables.
 
-The optimization outputs also include model credibility checks and heuristic policy comparisons. The latter compares optimized allocation against damage-based, exposure-based, and access-based non-optimized policies to quantify decision leverage.
+The original compact optimization uses a small top-zone representation for rapid scenario development. The large-scale version now uses all available OD zones for the seven cities with usable speed data, with a sparse functional-dependence matrix so the LP remains tractable at hundreds to thousands of units. The optimization outputs also include heuristic policy comparisons against damage-based, exposure-based, and access-based non-optimized policies to quantify decision leverage.
 
-## Current Law-Potential Analysis
+## Current City-Structure Analysis
 
 - Law-potential report: `results/law_potential/reports/law_potential_report_zh.md`
 - Correlation, response-curve, primitive-mix, and surrogate-fit tables: `results/law_potential/tables/`
 - Figures: `results/law_potential/figures/`
+- Large-scale city-structure report: `results/large_scale_city_structure/reports/large_scale_city_structure_report_zh.md`
+- Large-scale city-structure tables and figures: `results/large_scale_city_structure/`
 
-This analysis asks whether current optimization outputs already contain learnable structure for later learning-to-optimize, XAI, and symbolic-regression modules. The current conclusion is that budget-response, delay-penalty, decision-leverage, and primitive-mix structures are strong enough to justify the next stage, while cross-city structural laws remain preliminary because only five optimized cities are available.
+The scenario-response analysis remains useful as a model sanity check, but it is no longer the main law claim. The large-scale analysis fixes the recovery regime and asks whether cross-city structural variables explain recoverability and decision leverage. The strongest current hypotheses involve functional-dependence scale and sparsity, rainfall-event speed impact, speed-deficit severity, congestion exposure, and deficit-burden concentration. These are preliminary because the optimized full-zone sample currently contains seven cities.
