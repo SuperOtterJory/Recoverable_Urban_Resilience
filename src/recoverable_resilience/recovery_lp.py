@@ -159,6 +159,7 @@ def solve_recovery_lp(
     output_flag: bool = False,
     method: int = -1,
     time_limit_seconds: float | None = None,
+    linear_u_reward: dict[str, np.ndarray] | None = None,
 ) -> RecoveryLPSolution:
     """Solve the continuous recovery LP with Gurobi."""
 
@@ -201,10 +202,17 @@ def solve_recovery_lp(
             segment_count = params.u_segment_cap[key].shape[2]
             u_segment[key] = model.addVars(n, horizon, segment_count, lb=0.0, name=f"uSeg_{key}")
 
-    model.setObjective(
-        params.delta_t * gp.quicksum(float(params.p[i]) * ell[i, t] for i in units for t in state_times),
-        GRB.MINIMIZE,
-    )
+    reward_coeff = validate_linear_u_reward(linear_u_reward, n, horizon) if linear_u_reward is not None else None
+    loss_objective = params.delta_t * gp.quicksum(float(params.p[i]) * ell[i, t] for i in units for t in state_times)
+    reward_objective = 0.0
+    if reward_coeff is not None and not no_intervention:
+        reward_objective = gp.quicksum(
+            float(reward_coeff[key][i, t]) * u[key][i, t]
+            for key in INTERVENTIONS
+            for i in units
+            for t in action_times
+        )
+    model.setObjective(loss_objective - reward_objective, GRB.MINIMIZE)
 
     for i in units:
         model.addConstr(b[i, 0] == float(params.b0[i]), name=f"initial_b[{i}]")
@@ -395,6 +403,27 @@ def solve_with_baseline(
     optimized.summary["baseline_objective"] = baseline.objective
     optimized.summary["recoverable_fraction"] = optimized.recoverable_fraction
     return baseline, optimized
+
+
+def validate_linear_u_reward(
+    reward: dict[str, np.ndarray],
+    n_units: int,
+    horizon: int,
+) -> dict[str, np.ndarray]:
+    """Validate linear deployment reward coefficients for optional multi-objective LPs."""
+
+    validated: dict[str, np.ndarray] = {}
+    for key in INTERVENTIONS:
+        if key in reward:
+            values = np.asarray(reward[key], dtype=float)
+            if values.shape != (n_units, horizon):
+                raise ValueError(f"linear_u_reward[{key}] must have shape (n_units, horizon).")
+            if not np.all(np.isfinite(values)):
+                raise ValueError(f"linear_u_reward[{key}] must contain finite coefficients.")
+            validated[key] = values
+        else:
+            validated[key] = np.zeros((n_units, horizon), dtype=float)
+    return validated
 
 
 def summarize_solution(
