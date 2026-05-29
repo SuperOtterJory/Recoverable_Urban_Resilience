@@ -86,6 +86,9 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "fine_budget_summary": read_csv(results / "budget_fine_sweep" / "tables" / "fine_budget_summary.csv"),
         "fine_budget_phase": read_csv(results / "budget_fine_sweep" / "tables" / "fine_budget_phase_tests.csv"),
         "fine_budget_metrics": read_json_table(results / "budget_fine_sweep" / "tables" / "fine_budget_metrics.json"),
+        "fine_budget_lp_summary": read_csv(results / "fine_budget_lp_validation" / "tables" / "fine_budget_lp_summary.csv"),
+        "fine_budget_lp_phase": read_csv(results / "fine_budget_lp_validation" / "tables" / "fine_budget_lp_phase_tests.csv"),
+        "fine_budget_lp_metrics": read_json_table(results / "fine_budget_lp_validation" / "tables" / "fine_budget_lp_metrics.json"),
         "early_metrics": read_csv(results / "early_predictability" / "tables" / "early_predictability_metrics.csv"),
         "early_best": read_csv(results / "early_predictability" / "tables" / "early_best_metrics_by_target.csv"),
         "nonobvious_summary": read_csv(results / "nonobvious_action_laws" / "tables" / "heuristic_failure_summary.csv"),
@@ -187,6 +190,7 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     budget_phase = data["budget_phase_summary"]
     budget_tests = data["budget_phase_tests"]
     fine_budget_metrics = one_row(data["fine_budget_metrics"])
+    fine_budget_lp_metrics = one_row(data["fine_budget_lp_metrics"])
     early_metrics = data["early_metrics"]
     early_best = data["early_best"]
     activated_symbolic = one_row(symbolic, formula_id="F7_activated_recovery_law")
@@ -399,6 +403,22 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "fine_budget_city_replay_abs_interior_peak_share": safe_float(fine_budget_metrics.get("city_replay_abs_interior_peak_share")),
         "fine_budget_base_law_fraction_of_oracle_replay_gain": safe_float(fine_budget_metrics.get("base_budget_law_fraction_of_oracle_replay_gain")),
         "fine_budget_base_replay_gain_leverage_vs_random": safe_float(fine_budget_metrics.get("base_budget_replay_gain_leverage_vs_random")),
+        "fine_budget_lp_n_selected_events": safe_int(fine_budget_lp_metrics.get("n_selected_events")),
+        "fine_budget_lp_n_jobs": safe_int(fine_budget_lp_metrics.get("n_lp_jobs")),
+        "fine_budget_lp_n_optimal_jobs": safe_int(fine_budget_lp_metrics.get("n_optimal_lp_jobs")),
+        "fine_budget_lp_gain_peak_budget": safe_float(fine_budget_lp_metrics.get("lp_gain_peak_budget")),
+        "fine_budget_lp_gain_interior_peak_supported": parse_bool(fine_budget_lp_metrics.get("lp_gain_interior_peak_supported")),
+        "fine_budget_lp_gain_monotone_increasing": parse_bool(fine_budget_lp_metrics.get("lp_gain_monotone_increasing")),
+        "fine_budget_lp_gain_per_budget_peak_budget": safe_float(fine_budget_lp_metrics.get("lp_gain_per_budget_peak_budget")),
+        "fine_budget_lp_gain_per_budget_monotone_decreasing": parse_bool(fine_budget_lp_metrics.get("lp_gain_per_budget_monotone_decreasing")),
+        "fine_budget_lp_law_random_abs_peak_budget": safe_float(fine_budget_lp_metrics.get("law_random_abs_peak_budget")),
+        "fine_budget_lp_law_random_abs_interior_peak_supported": parse_bool(fine_budget_lp_metrics.get("law_random_abs_interior_peak_supported")),
+        "fine_budget_lp_law_random_fraction_peak_budget": safe_float(fine_budget_lp_metrics.get("law_random_fraction_peak_budget")),
+        "fine_budget_lp_law_random_fraction_monotone_decreasing": parse_bool(fine_budget_lp_metrics.get("law_random_fraction_monotone_decreasing")),
+        "fine_budget_lp_base_law_fraction_of_lp_gain": safe_float(fine_budget_lp_metrics.get("base_budget_law_fraction_of_lp_gain")),
+        "fine_budget_lp_base_random_fraction_of_lp_gain": safe_float(fine_budget_lp_metrics.get("base_budget_random_fraction_of_lp_gain")),
+        "fine_budget_lp_base_law_minus_random_fraction_of_lp_gain": safe_float(fine_budget_lp_metrics.get("base_budget_law_minus_random_fraction_of_lp_gain")),
+        "fine_budget_lp_mean_law_fraction_of_lp_gain_all_budgets": safe_float(fine_budget_lp_metrics.get("mean_law_fraction_of_lp_gain_all_budgets")),
         "early_decision_best_window": safe_int(early_decision_best.get("window_hours")),
         "early_decision_best_feature_group": str(early_decision_best.get("feature_group", "")),
         "early_decision_best_spearman": safe_float(early_decision_best.get("spearman")),
@@ -773,6 +793,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "value": float(metrics["fine_budget_replay_abs_interior_peak_supported"]),
             "interpretation": "Across a 10-point budget grid, absolute law-versus-random replay leverage peaks at the largest tested budget, while relative and per-budget leverage peak at the smallest tested budget and decline monotonically.",
         },
+        {
+            "version": "V28",
+            "evidence_step": "Representative fine-budget LP closure",
+            "main_question": "Does the fine-budget law remain valid when each budget scale is compared with a re-solved full LP optimum?",
+            "key_metric": "fine_budget_lp_mean_law_fraction_of_lp_gain_all_budgets",
+            "value": metrics["fine_budget_lp_mean_law_fraction_of_lp_gain_all_budgets"],
+            "interpretation": "Across 70 representative city-event-budget LP closures, all solve to optimality. LP gain and law-random replay gain peak at the largest budget, while LP gain per budget and law-random fraction of LP gain peak at the smallest budget and decline.",
+        },
     ]
     return pd.DataFrame(rows)
 
@@ -955,9 +983,9 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
             },
             {
                 "item": "budget_phase_coverage",
-                "current_status": "V13 used low/base/high budget scales; V27 adds a 10-point budget sweep from 0.10 to 3.00 using action-value proxy allocation and LP replay dynamics.",
-                "implication": "The refined sweep still rejects an interior absolute-leverage peak in the current proxy/replay setting: absolute law-versus-random leverage grows to the largest tested budget, while relative and per-budget leverage peak at the smallest budget and decline.",
-                "next_step": "Use scenario-specific full LP optima over the same fine budget grid, plus multiple random-policy seeds, if budget phase shape becomes a central contribution.",
+                "current_status": "V13 used low/base/high budget scales; V27 adds a 10-point budget sweep from 0.10 to 3.00 using action-value proxy allocation and LP replay dynamics; V28 re-solves 70 representative city-event-budget full LP optima on the same grid.",
+                "implication": "The refined sweep and representative LP closure both reject an interior absolute-leverage peak: absolute LP gain and law-versus-random replay gain grow to the largest tested budget, while LP gain per budget and relative law advantage peak at the smallest budget and decline.",
+                "next_step": "Expand the fine-budget LP closure beyond one representative event per city and add multiple random-policy seeds if budget phase shape becomes a central contribution.",
             },
             {
                 "item": "online_predictability_scope",
@@ -1075,13 +1103,13 @@ def write_report(
     limitations: pd.DataFrame,
 ) -> None:
     lines = [
-        "# Recoverability Law Synthesis V27",
+        "# Recoverability Law Synthesis V28",
         "",
-        "V27 adds a fine-grained budget-leverage sweep on top of the V26 neural-surrogate and identity-leakage audit. It tests whether the expected intermediate-budget leverage peak survives when the budget grid is refined from three points to ten points.",
+        "V28 adds representative fine-budget full-LP closures on top of the V27 budget-leverage sweep. It checks whether the budget law remains valid when each budget scale is compared with a re-solved LP optimum rather than only an action-value proxy and replay denominator.",
         "",
         "## 本版做了什么",
         "",
-        "V27 在 V26 neural surrogate / leakage audit 之后，补上更细的 budget-leverage phase 检验：预算从 0.10 到 3.00 共 10 个点，并在同一 action-value proxy 与 LP replay 动力学下比较 law、oracle、deficit-only、exposure-only、structure-only 和 random-positive 策略。",
+        "V28 在 V27 的 10 点 budget-leverage sweep 之后，选择每城一个代表性 city-event，在同一预算网格上重新求解 70 个 budget-specific full LP optimum，并把 activated law / random replay gain 放到对应 LP gain 分母下检验。",
         "",
         "## 当前可写入论文的 law",
         "",
@@ -1117,8 +1145,11 @@ def write_report(
         "",
         "16. **Fine budget-leverage law**: a 10-point budget sweep does not support an interior peak in absolute decision leverage. Instead, absolute law-versus-random replay leverage grows to the largest tested budget, while law/random ratio and leverage per unit budget peak at the smallest tested budget and then decline.",
         "",
+        "17. **Fine-budget LP closure law**: representative budget-specific LP closures confirm that the budget pattern is not only a proxy artifact. Absolute LP gain and law-random replay gain grow with budget, but LP gain per budget and law-random fraction of LP gain are highest at the smallest budget.",
+        "",
         "## 关键指标",
         "",
+        f"- fine-budget LP closure: {metrics['fine_budget_lp_n_selected_events']} selected events x {metrics['fine_budget_n_scales']} budget scales = {metrics['fine_budget_lp_n_jobs']} LP jobs, {metrics['fine_budget_lp_n_optimal_jobs']} optimal; LP gain peak budget = {metrics['fine_budget_lp_gain_peak_budget']:.2f}; LP gain per budget peak = {metrics['fine_budget_lp_gain_per_budget_peak_budget']:.2f}; law-random / LP-gain peak = {metrics['fine_budget_lp_law_random_fraction_peak_budget']:.2f}; base-budget law / LP gain = {metrics['fine_budget_lp_base_law_fraction_of_lp_gain']:.4f}, random / LP gain = {metrics['fine_budget_lp_base_random_fraction_of_lp_gain']:.4f}; mean law / LP gain across all budget rows = {metrics['fine_budget_lp_mean_law_fraction_of_lp_gain_all_budgets']:.4f}",
         f"- fine budget sweep: {metrics['fine_budget_n_scales']} budget scales from {metrics['fine_budget_min_scale']:.2f} to {metrics['fine_budget_max_scale']:.2f}; replay absolute law-random leverage peaks at {metrics['fine_budget_replay_abs_peak_budget']:.2f}; interior peak supported = {metrics['fine_budget_replay_abs_interior_peak_supported']}; replay per-budget leverage peaks at {metrics['fine_budget_replay_per_budget_peak_budget']:.2f} and monotone decreasing = {metrics['fine_budget_replay_per_budget_monotone_decreasing']}; law/random replay ratio peaks at {metrics['fine_budget_replay_ratio_peak_budget']:.2f} and monotone decreasing = {metrics['fine_budget_replay_ratio_monotone_decreasing']}; base-budget replay law-random gain = {metrics['fine_budget_base_replay_gain_leverage_vs_random']:.4f}",
         f"- neural surrogate/leakage audit: leave-city full MLP top-5% capture = {metrics['neural_leave_city_full_mlp_top5_capture']:.4f} vs full ridge = {metrics['neural_leave_city_full_ridge_top5_capture']:.4f}; factorized MLP = {metrics['neural_leave_city_factorized_mlp_top5_capture']:.4f} vs factorized ridge = {metrics['neural_leave_city_factorized_ridge_top5_capture']:.4f}; random-event full MLP = {metrics['neural_random_event_full_mlp_top5_capture']:.4f}; city-ID random-event gain = {metrics['neural_random_event_city_id_minus_no_id_top5']:+.4f}; event-ID token-random Spearman gain = {metrics['neural_token_random_event_id_minus_no_id_spearman']:+.4f}",
         f"- action tokens: {metrics['n_action_tokens']:,}",
@@ -1174,7 +1205,7 @@ def write_report(
         "",
         "## 论文写作含义",
         "",
-        "现在 learning/law 部分可以写成一条更完整的证据链：优化模型产生 action-value field；single-action LP 验证 marginal label；cross-city surrogate、factorized surrogate 和 symbolic extraction 说明低维 activated law 可解释；residual greedy 说明有限预算需要动态重评分；event top-tail 说明 decision-criticality 不是 disruption magnitude；V15 给出反直觉证据；V17 说明 OD graph 的空间对齐本身有实证价值；V18 说明低维 law 在不同事件 regime 留出时仍能保持较高 top-tail capture；V19 说明低维 law 不是由特殊 ranking objective trick 造出来的；V25 说明同一城市内按事件时间顺序留出时 compact law 仍保持稳定；V26 说明轻量 neural surrogate 没有在严格 leave-city top-tail 上超过 ridge，并且 token-level identity split 会夸大 apparent fit；V27 将预算规律从三点扫描推进到 10 点扫描，支持 scale-dependent diminishing leverage 而不是中等预算绝对峰值。论文中仍需谨慎表述：当前 graph 证据是 OD-dependency graph 的 observed-vs-shuffled ablation，还不是完整 road-adjacency graph 或 GNN closure；calendar-year holdout 与 city composition 混杂，因此 clean leave-time-period-out 仍需要同城跨多年数据。",
+        "现在 learning/law 部分可以写成一条更完整的证据链：优化模型产生 action-value field；single-action LP 验证 marginal label；cross-city surrogate、factorized surrogate 和 symbolic extraction 说明低维 activated law 可解释；residual greedy 说明有限预算需要动态重评分；event top-tail 说明 decision-criticality 不是 disruption magnitude；V15 给出反直觉证据；V17 说明 OD graph 的空间对齐本身有实证价值；V18 说明低维 law 在不同事件 regime 留出时仍能保持较高 top-tail capture；V19 说明低维 law 不是由特殊 ranking objective trick 造出来的；V25 说明同一城市内按事件时间顺序留出时 compact law 仍保持稳定；V26 说明轻量 neural surrogate 没有在严格 leave-city top-tail 上超过 ridge，并且 token-level identity split 会夸大 apparent fit；V27 将预算规律从三点扫描推进到 10 点扫描，支持 scale-dependent diminishing leverage 而不是中等预算绝对峰值；V28 进一步用 70 个代表性 budget-specific LP optima 说明该预算规律不是 proxy/replay 分母造成的。论文中仍需谨慎表述：当前 graph 证据是 OD-dependency graph 的 observed-vs-shuffled ablation，还不是完整 road-adjacency graph 或 GNN closure；calendar-year holdout 与 city composition 混杂，因此 clean leave-time-period-out 仍需要同城跨多年数据。",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")

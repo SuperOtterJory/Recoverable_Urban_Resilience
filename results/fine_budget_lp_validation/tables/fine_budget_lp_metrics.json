@@ -1,0 +1,27 @@
+{
+  "n_selected_events": 7,
+  "n_budget_scales": 10,
+  "n_lp_jobs": 70,
+  "n_optimal_lp_jobs": 70,
+  "lp_status_counts": {
+    "OPTIMAL": 70
+  },
+  "mean_lp_runtime_seconds": 27.137300005957144,
+  "max_lp_runtime_seconds": 194.5090001,
+  "lp_gain_peak_budget": 3.0,
+  "lp_gain_interior_peak_supported": false,
+  "lp_gain_monotone_increasing": true,
+  "lp_gain_per_budget_peak_budget": 0.1,
+  "lp_gain_per_budget_monotone_decreasing": true,
+  "law_random_abs_peak_budget": 3.0,
+  "law_random_abs_interior_peak_supported": false,
+  "law_random_abs_monotone_increasing": true,
+  "law_random_fraction_peak_budget": 0.1,
+  "law_random_fraction_monotone_decreasing": true,
+  "base_budget_lp_recoverable_fraction": 0.13416443214142856,
+  "base_budget_law_fraction_of_lp_gain": 0.7829258477957491,
+  "base_budget_random_fraction_of_lp_gain": 0.14883467909468093,
+  "base_budget_law_minus_random_fraction_of_lp_gain": 0.6340911687010681,
+  "base_budget_law_minus_random_replay_gain": 0.013703484621157143,
+  "mean_law_fraction_of_lp_gain_all_budgets": 0.8003806411236762
+}

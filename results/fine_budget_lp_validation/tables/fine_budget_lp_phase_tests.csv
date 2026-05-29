@@ -1,0 +1,11 @@
+metric,peak_budget_scale,peak_value,first_budget_value,last_budget_value,interior_peak_supported,monotone_increasing,monotone_decreasing,first_to_peak_gain,peak_to_last_change
+mean_lp_gain,3,0.04446671908,0.00311952292,0.04446671908,False,True,False,0.04134719616,0
+mean_lp_gain_per_budget_scale,0.1,0.0311952292,0.0311952292,0.01482223969,False,False,True,0,-0.0163729895
+mean_lp_recoverable_fraction,3,0.2904271045,0.02193161267,0.2904271045,False,True,False,0.2684954918,0
+mean_law_minus_random_replay_gain,3,0.02680110235,0.002497590773,0.02680110235,False,True,False,0.02430351158,0
+mean_law_minus_random_gain_per_budget_scale,0.1,0.02497590773,0.02497590773,0.008933700784,False,False,True,0,-0.01604220695
+mean_law_minus_random_fraction_of_lp_gain,0.1,0.7784419977,0.7784419977,0.5733113863,False,False,True,0,-0.2051306114
+mean_activated_bottleneck_law_fraction_of_lp_gain,0.1,0.8680208587,0.8680208587,0.7738572109,False,False,False,0,-0.0941636478
+mean_random_positive_fraction_of_lp_gain,3,0.2005458246,0.08957886105,0.2005458246,False,True,False,0.1109669636,0
+incremental_mean_lp_gain,0.2,0.02501625211,0.02501625211,0.01098325119,False,False,True,0,-0.01403300092
+incremental_mean_law_minus_random_replay_gain,0.2,0.01858531942,0.01858531942,0.00542687728,False,False,True,0,-0.01315844214
