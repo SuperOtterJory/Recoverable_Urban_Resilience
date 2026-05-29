@@ -1,0 +1,12 @@
+parameter_scenario,parameter_description,scope,target_top5_count,hidden_from_all_simple_top5_count,hidden_from_all_simple_top5_share,hidden_from_all_simple_top20_count,hidden_from_all_simple_top20_share,target_top5_low_deficit_top20_share,target_top5_low_exposure_top20_share,target_top5_low_structure_top20_share
+base,original calibrated eta/cost/delay,all_events,8536,2922,0.3423149016,82,0.009606373008,0.1392924086,0.0217900656,0.8391518276
+low_efficiency_all,all intervention effectiveness reduced by 25%,all_events,8536,2922,0.3423149016,82,0.009606373008,0.1392924086,0.0217900656,0.8391518276
+high_efficiency_all,all intervention effectiveness increased by 25%,all_events,8536,2922,0.3423149016,82,0.009606373008,0.1392924086,0.0217900656,0.8391518276
+expensive_all,all intervention costs increased by 25%,all_events,8536,2922,0.3423149016,82,0.009606373008,0.1392924086,0.0217900656,0.8391518276
+cheap_all,all intervention costs reduced by 25%,all_events,8536,2922,0.3423149016,82,0.009606373008,0.1392924086,0.0217900656,0.8391518276
+fast_response,each intervention can start one hour earlier when possible,all_events,8536,2927,0.342900656,82,0.009606373008,0.1403467666,0.02272727273,0.8380974695
+slow_response_2h,each intervention is delayed by two additional hours,all_events,8536,3412,0.3997188379,13,0.001522961575,0.1384723524,0.005623242737,0.8402061856
+slow_response_4h,each intervention is delayed by four additional hours,all_events,8536,4093,0.4794985942,7,0.0008200562324,0.1759606373,0.03631677601,0.8455951265
+R_favored,durable restoration is relatively more efficient and cheaper,all_events,8536,3424,0.4011246485,294,0.03444236176,0.1115276476,0.121836926,0.8286082474
+C_favored,temporary capacity is relatively more efficient and cheaper,all_events,8536,4242,0.4969540769,15,0.001757263355,0.004100281162,0.01382380506,0.828022493
+S_favored,substitution/control is relatively more efficient and cheaper,all_events,8536,4777,0.5596298032,64,0.007497656982,0.7666354264,0.009254920337,0.9600515464

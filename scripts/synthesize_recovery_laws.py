@@ -124,6 +124,9 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "parameter_lp_summary": read_csv(results / "parameter_ensemble_optimum_validation" / "tables" / "parameter_policy_summary.csv"),
         "parameter_lp_optima": read_csv(results / "parameter_ensemble_optimum_validation" / "tables" / "parameter_lp_optima.csv"),
         "parameter_lp_metrics": read_json_table(results / "parameter_ensemble_optimum_validation" / "tables" / "parameter_ensemble_optimum_metrics.json"),
+        "parameter_nonobvious_summary": read_csv(results / "parameter_nonobvious_laws" / "tables" / "parameter_nonobvious_summary.csv"),
+        "parameter_nonobvious_hidden": read_csv(results / "parameter_nonobvious_laws" / "tables" / "parameter_nonobvious_hidden_summary.csv"),
+        "parameter_nonobvious_metrics": read_json_table(results / "parameter_nonobvious_laws" / "tables" / "parameter_nonobvious_metrics.json"),
     }
 
 
@@ -321,6 +324,7 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     od_message_over_factorized = one_row(data["od_message_increments"], comparison="message_over_factorized")
     parameter_ensemble_metrics = one_row(data["parameter_ensemble_metrics"])
     parameter_lp_metrics = one_row(data["parameter_lp_metrics"])
+    parameter_nonobvious_metrics = one_row(data["parameter_nonobvious_metrics"])
 
     metrics: dict[str, Any] = {
         "n_action_tokens": safe_int(policy_capture["n_tokens"].max()) if "n_tokens" in policy_capture else None,
@@ -446,6 +450,31 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "nonobvious_structure_failure_low_efficiency_share": safe_float(nonobvious_structure_reasons.get("below_median_efficiency_share")),
         "nonobvious_peak_top5_relative_to_oracle": safe_float(nonobvious_peak.get("mean_top5_relative_to_oracle")),
         "nonobvious_remaining_area_top5_relative_to_oracle": safe_float(nonobvious_remaining.get("mean_top5_relative_to_oracle")),
+        "parameter_nonobvious_n_scenarios": safe_int(parameter_nonobvious_metrics.get("n_parameter_scenarios")),
+        "parameter_nonobvious_n_events_per_scenario": safe_int(parameter_nonobvious_metrics.get("n_events_per_scenario")),
+        "parameter_nonobvious_deficit_mean_false_positive_share": safe_float(parameter_nonobvious_metrics.get("deficit_mean_false_positive_share")),
+        "parameter_nonobvious_deficit_min_false_positive_share": safe_float(parameter_nonobvious_metrics.get("deficit_min_false_positive_share")),
+        "parameter_nonobvious_deficit_max_false_positive_share": safe_float(parameter_nonobvious_metrics.get("deficit_max_false_positive_share")),
+        "parameter_nonobvious_exposure_mean_false_positive_share": safe_float(parameter_nonobvious_metrics.get("exposure_mean_false_positive_share")),
+        "parameter_nonobvious_exposure_min_false_positive_share": safe_float(parameter_nonobvious_metrics.get("exposure_min_false_positive_share")),
+        "parameter_nonobvious_exposure_max_false_positive_share": safe_float(parameter_nonobvious_metrics.get("exposure_max_false_positive_share")),
+        "parameter_nonobvious_structure_mean_false_positive_share": safe_float(parameter_nonobvious_metrics.get("structure_mean_false_positive_share")),
+        "parameter_nonobvious_structure_min_false_positive_share": safe_float(parameter_nonobvious_metrics.get("structure_min_false_positive_share")),
+        "parameter_nonobvious_structure_max_false_positive_share": safe_float(parameter_nonobvious_metrics.get("structure_max_false_positive_share")),
+        "parameter_nonobvious_deficit_mean_top5_relative_to_oracle": safe_float(parameter_nonobvious_metrics.get("deficit_mean_top5_relative_to_oracle")),
+        "parameter_nonobvious_exposure_mean_top5_relative_to_oracle": safe_float(parameter_nonobvious_metrics.get("exposure_mean_top5_relative_to_oracle")),
+        "parameter_nonobvious_structure_mean_top5_relative_to_oracle": safe_float(parameter_nonobvious_metrics.get("structure_mean_top5_relative_to_oracle")),
+        "parameter_nonobvious_activated_law_mean_top5_relative_to_oracle": safe_float(parameter_nonobvious_metrics.get("activated_law_mean_top5_relative_to_oracle")),
+        "parameter_nonobvious_activated_law_min_top5_relative_to_oracle": safe_float(parameter_nonobvious_metrics.get("activated_law_min_top5_relative_to_oracle")),
+        "parameter_nonobvious_hidden_from_simple_top5_mean_share": safe_float(parameter_nonobvious_metrics.get("hidden_from_simple_top5_mean_share")),
+        "parameter_nonobvious_hidden_from_simple_top5_min_share": safe_float(parameter_nonobvious_metrics.get("hidden_from_simple_top5_min_share")),
+        "parameter_nonobvious_hidden_from_simple_top5_max_share": safe_float(parameter_nonobvious_metrics.get("hidden_from_simple_top5_max_share")),
+        "parameter_nonobvious_target_top5_low_structure_top20_mean_share": safe_float(parameter_nonobvious_metrics.get("target_top5_low_structure_top20_mean_share")),
+        "parameter_nonobvious_worst_deficit_false_positive_scenario": str(parameter_nonobvious_metrics.get("worst_deficit_false_positive_share_scenario", "")),
+        "parameter_nonobvious_worst_exposure_false_positive_scenario": str(parameter_nonobvious_metrics.get("worst_exposure_false_positive_share_scenario", "")),
+        "parameter_nonobvious_worst_structure_false_positive_scenario": str(parameter_nonobvious_metrics.get("worst_structure_false_positive_share_scenario", "")),
+        "parameter_nonobvious_reason_low_future_horizon_mean": safe_float(parameter_nonobvious_metrics.get("reason_below_median_future_horizon_share_mean")),
+        "parameter_nonobvious_reason_low_efficiency_mean": safe_float(parameter_nonobvious_metrics.get("reason_below_median_efficiency_share_mean")),
         "factorized_deficit_top5_capture": safe_float(factorized_m1.get("mean_event_top_5pct_value_capture")),
         "factorized_deficit_event_spearman": safe_float(factorized_m1.get("mean_event_spearman")),
         "factorized_full_additive_top5_capture": safe_float(factorized_m5.get("mean_event_top_5pct_value_capture")),
@@ -801,6 +830,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "value": metrics["fine_budget_lp_mean_law_fraction_of_lp_gain_all_budgets"],
             "interpretation": "Across 70 representative city-event-budget LP closures, all solve to optimality. LP gain and law-random replay gain peak at the largest budget, while LP gain per budget and law-random fraction of LP gain peak at the smallest budget and decline.",
         },
+        {
+            "version": "V29",
+            "evidence_step": "Parameter-ensemble non-obvious action law",
+            "main_question": "Are one-factor action-priority failures stable under eta/cost/delay perturbations?",
+            "key_metric": "parameter_nonobvious_structure_mean_false_positive_share",
+            "value": metrics["parameter_nonobvious_structure_mean_false_positive_share"],
+            "interpretation": "Across 11 parameter scenarios, one-factor deficit/exposure/structure rankings continue to generate false priorities, while the activated law remains the stable top-tail reference.",
+        },
     ]
     return pd.DataFrame(rows)
 
@@ -995,9 +1032,9 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
             },
             {
                 "item": "nonobvious_action_scope",
-                "current_status": "V15 compares simple action heuristics against optimizer-derived marginal-value tokens inside each observed city-event.",
-                "implication": "The failure examples support the activated-law mechanism, but they are ranking diagnostics rather than independent causal evidence about real interventions.",
-                "next_step": "Validate the same non-obvious patterns under parameter ensembles and, if available, observed intervention records.",
+                "current_status": "V15 compares simple action heuristics against optimizer-derived marginal-value tokens inside each observed city-event; V29 repeats the diagnostic under 11 eta/cost/delay parameter scenarios.",
+                "implication": "The non-obvious action failures are not only a base-parameter artifact, but they remain ranking diagnostics rather than independent causal evidence about observed interventions.",
+                "next_step": "If observed intervention records become available, test whether real deployment outcomes follow the same activation mechanism; otherwise expand exact LP selection-frequency closures across more parameter scenarios.",
             },
         ]
     )
@@ -1103,13 +1140,13 @@ def write_report(
     limitations: pd.DataFrame,
 ) -> None:
     lines = [
-        "# Recoverability Law Synthesis V28",
+        "# Recoverability Law Synthesis V29",
         "",
-        "V28 adds representative fine-budget full-LP closures on top of the V27 budget-leverage sweep. It checks whether the budget law remains valid when each budget scale is compared with a re-solved LP optimum rather than only an action-value proxy and replay denominator.",
+        "V29 adds a parameter-ensemble non-obvious action-law audit on top of the V28 fine-budget LP closure. It checks whether one-factor action-priority failures remain when eta, cost, delay, and favored intervention channels are perturbed.",
         "",
         "## 本版做了什么",
         "",
-        "V28 在 V27 的 10 点 budget-leverage sweep 之后，选择每城一个代表性 city-event，在同一预算网格上重新求解 70 个 budget-specific full LP optimum，并把 activated law / random replay gain 放到对应 LP gain 分母下检验。",
+        "V29 把 V15 的 non-obvious action-law 诊断放到 V23 的 11 个 eta/cost/delay 参数扰动场景中重做。它不重新求所有完整 LP，而是在 parameter-ensemble first-order target 上检查：高 deficit、高 OD exposure、高 static structure 这些单因子排序是否仍会产生 false priority，以及 activated law 是否仍能解释 top-tail recovery value。",
         "",
         "## 当前可写入论文的 law",
         "",
@@ -1147,6 +1184,8 @@ def write_report(
         "",
         "17. **Fine-budget LP closure law**: representative budget-specific LP closures confirm that the budget pattern is not only a proxy artifact. Absolute LP gain and law-random replay gain grow with budget, but LP gain per budget and law-random fraction of LP gain are highest at the smallest budget.",
         "",
+        "18. **Parameter-robust non-obvious action law**: under eta/cost/delay/channel-favored parameter ensembles, one-factor action rules continue to produce false priorities. High-value actions require activation by future loss, OD exposure, feasibility, and channel efficiency rather than a maximum of any single structural or deficit feature.",
+        "",
         "## 关键指标",
         "",
         f"- fine-budget LP closure: {metrics['fine_budget_lp_n_selected_events']} selected events x {metrics['fine_budget_n_scales']} budget scales = {metrics['fine_budget_lp_n_jobs']} LP jobs, {metrics['fine_budget_lp_n_optimal_jobs']} optimal; LP gain peak budget = {metrics['fine_budget_lp_gain_peak_budget']:.2f}; LP gain per budget peak = {metrics['fine_budget_lp_gain_per_budget_peak_budget']:.2f}; law-random / LP-gain peak = {metrics['fine_budget_lp_law_random_fraction_peak_budget']:.2f}; base-budget law / LP gain = {metrics['fine_budget_lp_base_law_fraction_of_lp_gain']:.4f}, random / LP gain = {metrics['fine_budget_lp_base_random_fraction_of_lp_gain']:.4f}; mean law / LP gain across all budget rows = {metrics['fine_budget_lp_mean_law_fraction_of_lp_gain_all_budgets']:.4f}",
@@ -1160,6 +1199,8 @@ def write_report(
         f"- representative non-base closure: static / scenario LP gain = {metrics['scenario_static_fraction_of_lp_gain']:.4f}; residual / scenario LP gain = {metrics['scenario_residual_fraction_of_lp_gain']:.4f}",
         f"- symbolic activated law top-5% capture = {metrics['symbolic_activated_top5_capture']:.4f}; largest feature ablation drop = {metrics['symbolic_largest_ablation_drop_group']} ({metrics['symbolic_largest_ablation_top5_drop']:.4f})",
         f"- non-obvious action law: false-positive shares are deficit-only {metrics['nonobvious_deficit_false_positive_share']:.1%}, exposure-only {metrics['nonobvious_exposure_false_positive_share']:.1%}, structure-only {metrics['nonobvious_structure_false_positive_share']:.1%}",
+        f"- parameter non-obvious law: {metrics['parameter_nonobvious_n_scenarios']} parameter scenarios x {metrics['parameter_nonobvious_n_events_per_scenario']} events; mean false-positive shares are deficit-only {metrics['parameter_nonobvious_deficit_mean_false_positive_share']:.1%}, exposure-only {metrics['parameter_nonobvious_exposure_mean_false_positive_share']:.1%}, structure-only {metrics['parameter_nonobvious_structure_mean_false_positive_share']:.1%}; hidden true top-5% actions from all simple top-5% rankings = {metrics['parameter_nonobvious_hidden_from_simple_top5_mean_share']:.1%}; activated law mean/min relative top-5% capture = {metrics['parameter_nonobvious_activated_law_mean_top5_relative_to_oracle']:.4f}/{metrics['parameter_nonobvious_activated_law_min_top5_relative_to_oracle']:.4f}",
+        f"- parameter non-obvious failure ranges: deficit false-positive {metrics['parameter_nonobvious_deficit_min_false_positive_share']:.1%}-{metrics['parameter_nonobvious_deficit_max_false_positive_share']:.1%} (worst {metrics['parameter_nonobvious_worst_deficit_false_positive_scenario']}); exposure {metrics['parameter_nonobvious_exposure_min_false_positive_share']:.1%}-{metrics['parameter_nonobvious_exposure_max_false_positive_share']:.1%} (worst {metrics['parameter_nonobvious_worst_exposure_false_positive_scenario']}); structure {metrics['parameter_nonobvious_structure_min_false_positive_share']:.1%}-{metrics['parameter_nonobvious_structure_max_false_positive_share']:.1%} (worst {metrics['parameter_nonobvious_worst_structure_false_positive_scenario']})",
         f"- factorized surrogate: deficit-only top-5% capture = {metrics['factorized_deficit_top5_capture']:.4f}; full additive = {metrics['factorized_full_additive_top5_capture']:.4f}; low-dimensional factorized = {metrics['factorized_low_dim_top5_capture']:.4f}",
         f"- interaction ablation: adding OD exposure gives {metrics['factorized_add_od_delta_top5_capture']:+.4f}; adding time/feasibility gives {metrics['factorized_add_time_delta_top5_capture']:+.4f}; unrestricted high-dimensional interactions give {metrics['factorized_add_highdim_interaction_delta_top5_capture']:+.4f}",
         f"- graph structure ablation: no-graph top-5% capture = {metrics['graph_no_graph_top5_capture']:.4f}; observed OD graph = {metrics['graph_observed_full_top5_capture']:.4f}; shuffled OD graph = {metrics['graph_shuffled_full_top5_capture']:.4f}; observed-shuffled gap = {metrics['graph_full_alignment_delta_top5_capture']:+.4f}",
@@ -1205,7 +1246,7 @@ def write_report(
         "",
         "## 论文写作含义",
         "",
-        "现在 learning/law 部分可以写成一条更完整的证据链：优化模型产生 action-value field；single-action LP 验证 marginal label；cross-city surrogate、factorized surrogate 和 symbolic extraction 说明低维 activated law 可解释；residual greedy 说明有限预算需要动态重评分；event top-tail 说明 decision-criticality 不是 disruption magnitude；V15 给出反直觉证据；V17 说明 OD graph 的空间对齐本身有实证价值；V18 说明低维 law 在不同事件 regime 留出时仍能保持较高 top-tail capture；V19 说明低维 law 不是由特殊 ranking objective trick 造出来的；V25 说明同一城市内按事件时间顺序留出时 compact law 仍保持稳定；V26 说明轻量 neural surrogate 没有在严格 leave-city top-tail 上超过 ridge，并且 token-level identity split 会夸大 apparent fit；V27 将预算规律从三点扫描推进到 10 点扫描，支持 scale-dependent diminishing leverage 而不是中等预算绝对峰值；V28 进一步用 70 个代表性 budget-specific LP optima 说明该预算规律不是 proxy/replay 分母造成的。论文中仍需谨慎表述：当前 graph 证据是 OD-dependency graph 的 observed-vs-shuffled ablation，还不是完整 road-adjacency graph 或 GNN closure；calendar-year holdout 与 city composition 混杂，因此 clean leave-time-period-out 仍需要同城跨多年数据。",
+        "现在 learning/law 部分可以写成一条更完整的证据链：优化模型产生 action-value field；single-action LP 验证 marginal label；cross-city surrogate、factorized surrogate 和 symbolic extraction 说明低维 activated law 可解释；residual greedy 说明有限预算需要动态重评分；event top-tail 说明 decision-criticality 不是 disruption magnitude；V15 给出反直觉证据；V17 说明 OD graph 的空间对齐本身有实证价值；V18 说明低维 law 在不同事件 regime 留出时仍能保持较高 top-tail capture；V19 说明低维 law 不是由特殊 ranking objective trick 造出来的；V25 说明同一城市内按事件时间顺序留出时 compact law 仍保持稳定；V26 说明轻量 neural surrogate 没有在严格 leave-city top-tail 上超过 ridge，并且 token-level identity split 会夸大 apparent fit；V27 将预算规律从三点扫描推进到 10 点扫描，支持 scale-dependent diminishing leverage 而不是中等预算绝对峰值；V28 进一步用 70 个代表性 budget-specific LP optima 说明该预算规律不是 proxy/replay 分母造成的；V29 说明“高损失/高流量/高结构中心性不等于高恢复价值”的非显然 action law 在参数扰动下仍成立。论文中仍需谨慎表述：当前 graph 证据是 OD-dependency graph 的 observed-vs-shuffled ablation，还不是完整 road-adjacency graph 或 GNN closure；calendar-year holdout 与 city composition 混杂，因此 clean leave-time-period-out 仍需要同城跨多年数据；V29 仍是 first-order ranking diagnostic，而不是现实干预记录的因果验证。",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")

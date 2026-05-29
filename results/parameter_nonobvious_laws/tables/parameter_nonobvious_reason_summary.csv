@@ -1,0 +1,34 @@
+parameter_scenario,parameter_description,heuristic,heuristic_label,failure_action_count,delay_blocked_share,below_median_future_horizon_share,below_median_exposure_share,below_median_efficiency_share,short_remaining_window_share
+base,original calibrated eta/cost/delay,deficit_only,Highest remaining deficit,1973,0.01520527116,0.4652812975,0.1926001014,0.7359351242,0.5793208312
+base,original calibrated eta/cost/delay,exposure_only,Highest OD exposure,1195,0.02594142259,0.4418410042,0,0.7648535565,0.7581589958
+base,original calibrated eta/cost/delay,structure_only,Highest structural bottleneck,6991,0.02117007581,0.3091117151,0.4560148763,0.7422400229,0.379487913
+low_efficiency_all,all intervention effectiveness reduced by 25%,deficit_only,Highest remaining deficit,1973,0.01520527116,0.4652812975,0.1926001014,0.7359351242,0.5793208312
+low_efficiency_all,all intervention effectiveness reduced by 25%,exposure_only,Highest OD exposure,1195,0.02594142259,0.4418410042,0,0.7648535565,0.7581589958
+low_efficiency_all,all intervention effectiveness reduced by 25%,structure_only,Highest structural bottleneck,6991,0.02117007581,0.3091117151,0.4560148763,0.7422400229,0.379487913
+high_efficiency_all,all intervention effectiveness increased by 25%,deficit_only,Highest remaining deficit,1973,0.01520527116,0.4652812975,0.1926001014,0.7359351242,0.5793208312
+high_efficiency_all,all intervention effectiveness increased by 25%,exposure_only,Highest OD exposure,1195,0.02594142259,0.4418410042,0,0.7648535565,0.7581589958
+high_efficiency_all,all intervention effectiveness increased by 25%,structure_only,Highest structural bottleneck,6991,0.02117007581,0.3091117151,0.4560148763,0.7422400229,0.379487913
+expensive_all,all intervention costs increased by 25%,deficit_only,Highest remaining deficit,1973,0.01520527116,0.4652812975,0.1926001014,0.7359351242,0.5793208312
+expensive_all,all intervention costs increased by 25%,exposure_only,Highest OD exposure,1195,0.02594142259,0.4418410042,0,0.7648535565,0.7581589958
+expensive_all,all intervention costs increased by 25%,structure_only,Highest structural bottleneck,6991,0.02117007581,0.3091117151,0.4560148763,0.7422400229,0.379487913
+cheap_all,all intervention costs reduced by 25%,deficit_only,Highest remaining deficit,1973,0.01520527116,0.4652812975,0.1926001014,0.7359351242,0.5793208312
+cheap_all,all intervention costs reduced by 25%,exposure_only,Highest OD exposure,1195,0.02594142259,0.4418410042,0,0.7648535565,0.7581589958
+cheap_all,all intervention costs reduced by 25%,structure_only,Highest structural bottleneck,6991,0.02117007581,0.3091117151,0.4560148763,0.7422400229,0.379487913
+fast_response,each intervention can start one hour earlier when possible,deficit_only,Highest remaining deficit,1971,0.004566210046,0.4662607813,0.1927955353,0.735667174,0.5829528158
+fast_response,each intervention can start one hour earlier when possible,exposure_only,Highest OD exposure,1179,0.006785411366,0.4393553859,0,0.7718405428,0.7718405428
+fast_response,each intervention can start one hour earlier when possible,structure_only,Highest structural bottleneck,6989,0.008155673201,0.3097724996,0.4561453713,0.7415939333,0.3795965088
+slow_response_2h,each intervention is delayed by two additional hours,deficit_only,Highest remaining deficit,3109,0.6307494371,0.2483113541,0.1222257961,0.8417497588,0.2589256996
+slow_response_2h,each intervention is delayed by two additional hours,exposure_only,Highest OD exposure,2510,0.7282868526,0.36812749,0,0.7027888446,0.2378486056
+slow_response_2h,each intervention is delayed by two additional hours,structure_only,Highest structural bottleneck,6894,0.3294168842,0.288656803,0.4624310995,0.7451407021,0.3507397737
+slow_response_4h,each intervention is delayed by four additional hours,deficit_only,Highest remaining deficit,4512,0.859929078,0.1806294326,0.08421985816,0.8816489362,0.1294326241
+slow_response_4h,each intervention is delayed by four additional hours,exposure_only,Highest OD exposure,3992,0.9023046092,0.3657314629,0,0.6871242485,0.09744488978
+slow_response_4h,each intervention is delayed by four additional hours,structure_only,Highest structural bottleneck,6743,0.6258341984,0.2532997182,0.4721933857,0.7489248109,0.2844431262
+R_favored,durable restoration is relatively more efficient and cheaper,deficit_only,Highest remaining deficit,1560,0.01923076923,0.8666666667,0.2442307692,0.6064102564,0.6192307692
+R_favored,durable restoration is relatively more efficient and cheaper,exposure_only,Highest OD exposure,1757,0.01764371087,0.9288560046,0,0.3363688105,0.6425725669
+R_favored,durable restoration is relatively more efficient and cheaper,structure_only,Highest structural bottleneck,6951,0.02129190045,0.3438354194,0.4364839591,0.7210473313,0.3833980722
+C_favored,temporary capacity is relatively more efficient and cheaper,deficit_only,Highest remaining deficit,3425,0.008759124088,0.296350365,0.1115328467,0.961459854,0.4709489051
+C_favored,temporary capacity is relatively more efficient and cheaper,exposure_only,Highest OD exposure,4614,0.006718682271,0.6267880364,0,0.9601213697,0.5214564369
+C_favored,temporary capacity is relatively more efficient and cheaper,structure_only,Highest structural bottleneck,5954,0.02485723883,0.3411152167,0.5340947262,0.4311387303,0.3731944911
+S_favored,substitution/control is relatively more efficient and cheaper,deficit_only,Highest remaining deficit,4298,0.006979990693,0.348534202,0.08818054909,0.9162401117,0.5749185668
+S_favored,substitution/control is relatively more efficient and cheaper,exposure_only,Highest OD exposure,2682,0.0115585384,0.3090976883,0,0.9750186428,0.6174496644
+S_favored,substitution/control is relatively more efficient and cheaper,structure_only,Highest structural bottleneck,7942,0.01863510451,0.2375975825,0.3815159909,0.8248552002,0.3442457819
