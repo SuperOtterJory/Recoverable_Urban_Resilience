@@ -62,5 +62,17 @@
   "budget_high_proxy_leverage_vs_random": 0.2093583986,
   "budget_low_residual_static_per_cost": 0.03109226066,
   "budget_base_residual_static_per_cost": 0.02679072486,
-  "budget_high_residual_static_per_cost": 0.0243100078
+  "budget_high_residual_static_per_cost": 0.0243100078,
+  "early_decision_best_window": 1,
+  "early_decision_best_feature_group": "speed_plus_static",
+  "early_decision_best_spearman": 0.8352996061,
+  "early_decision_best_top20_recall": 0.5714285714,
+  "early_decision_2h_all_spearman": 0.7964130209,
+  "early_decision_2h_all_top20_recall": 0.619047619,
+  "early_recoverable_best_window": 12,
+  "early_recoverable_best_spearman": 0.7821791416,
+  "early_recoverable_2h_all_spearman": 0.5989840348,
+  "early_decision_static_1h_spearman": 0.7675027566,
+  "early_decision_speed_1h_spearman": 0.5271615177,
+  "early_decision_rain_1h_spearman": -0.7865650806
 }

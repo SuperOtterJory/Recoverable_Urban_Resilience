@@ -90,3 +90,16 @@ The action-value field also defines an event-level law. A rainfall event is deci
 \end{figure}
 
 Together, the action-level and event-level findings support the paper's central claim: managed recoverability is not determined by disruption magnitude alone. It emerges when persistent functional loss, OD exposure, intervention feasibility, and finite-budget residual interactions align, and intelligent management matters most when this recoverable value forms a heavy top tail.
+
+\subsection{Hindsight Boundary and Early Signals}
+
+The main analysis should be interpreted as hindsight counterfactual recoverability: it uses the observed 12-hour disruption trajectory to ask how much loss was theoretically recoverable under a standardized management regime. A supplementary early-window test examines whether decision-critical events can be detected before the full trajectory is known. Using leave-one-city-out ridge models on aggregate information from the first 1, 2, 3, 6, or 12 hours, the best early model for decision-criticality uses first-hour speed-abnormality plus static city-structure features and obtains Spearman correlation 0.8353. With the first two hours and all early features, decision-criticality Spearman is 0.7964 and top-20 percent recall is 0.6190. Recoverable fraction is harder to identify early: the two-hour all-feature Spearman is 0.5990, while the best value appears only when the full 12-hour window is available.
+
+The decomposition is important. At the one-hour window, static city features alone have Spearman 0.7675 with final decision-criticality, early speed features have 0.5272, and rainfall-only features have negative correlation in this sample. Thus early predictability is not simply a rainfall-nowcasting result. It arises because some cities and early abnormal-speed states already reveal whether recoverable value is likely to concentrate in a top tail. This supports limited early warning of decision-criticality, but it does not convert the study into a fully online control model.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.84\linewidth]{../../results/early_predictability/figures/early_predictability_spearman.png}
+  \caption{Early-window predictability of final recoverability quantities under leave-one-city-out validation. Decision-criticality is partly identifiable from early speed and static structure, while recoverable fraction depends more strongly on the full trajectory.}
+  \label{fig:early-predictability}
+\end{figure}

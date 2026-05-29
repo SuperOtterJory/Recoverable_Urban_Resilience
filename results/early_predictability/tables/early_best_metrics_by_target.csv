@@ -1,0 +1,5 @@
+window_hours,target,feature_group,n_features,n_events,pearson,spearman,mae,top20_recall,top20_precision
+1,decision_criticality_score,speed_plus_static,19,105,0.6572624559,0.8352996061,0.00229919327,0.5714285714,0.5714285714
+1,marginal_value_gini,static_city,7,105,0.6198282187,0.917462356,0.02127134009,0.8095238095,0.8095238095
+12,recoverable_fraction,all_early,24,105,0.6859785053,0.7821791416,0.01667095755,0.619047619,0.619047619
+1,top_5pct_value_share,speed_plus_static,19,105,0.6388142488,0.7193630549,0.01355911464,0.5714285714,0.5714285714

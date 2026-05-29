@@ -83,6 +83,8 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "symbolic_leave_city": read_csv(results / "symbolic_law_extraction" / "tables" / "formula_leave_city_metrics.csv"),
         "budget_phase_summary": read_csv(results / "budget_leverage_phase" / "tables" / "budget_leverage_summary.csv"),
         "budget_phase_tests": read_csv(results / "budget_leverage_phase" / "tables" / "budget_phase_tests.csv"),
+        "early_metrics": read_csv(results / "early_predictability" / "tables" / "early_predictability_metrics.csv"),
+        "early_best": read_csv(results / "early_predictability" / "tables" / "early_best_metrics_by_target.csv"),
     }
 
 
@@ -141,6 +143,8 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     symbolic_leave_city = data["symbolic_leave_city"]
     budget_phase = data["budget_phase_summary"]
     budget_tests = data["budget_phase_tests"]
+    early_metrics = data["early_metrics"]
+    early_best = data["early_best"]
     activated_symbolic = one_row(symbolic, formula_id="F7_activated_recovery_law")
     minimal_log_symbolic = one_row(symbolic, formula_id="R7_minimal_log_law")
     exposure_symbolic = one_row(symbolic, formula_id="F2_exposure")
@@ -161,6 +165,13 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     budget_low = one_row(budget_phase, budget_scale=0.5)
     budget_base = one_row(budget_phase, budget_scale=1.0)
     budget_high = one_row(budget_phase, budget_scale=2.0)
+    early_decision_best = one_row(early_best, target="decision_criticality_score")
+    early_recoverable_best = one_row(early_best, target="recoverable_fraction")
+    early_decision_2h = one_row(early_metrics, target="decision_criticality_score", feature_group="all_early", window_hours=2)
+    early_recoverable_2h = one_row(early_metrics, target="recoverable_fraction", feature_group="all_early", window_hours=2)
+    early_decision_static_1h = one_row(early_metrics, target="decision_criticality_score", feature_group="static_city", window_hours=1)
+    early_decision_speed_1h = one_row(early_metrics, target="decision_criticality_score", feature_group="early_speed", window_hours=1)
+    early_decision_rain_1h = one_row(early_metrics, target="decision_criticality_score", feature_group="early_rain", window_hours=1)
 
     metrics: dict[str, Any] = {
         "n_action_tokens": safe_int(policy_capture["n_tokens"].max()) if "n_tokens" in policy_capture else None,
@@ -227,6 +238,18 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "budget_low_residual_static_per_cost": safe_float(budget_low.get("mean_residual_minus_static_per_cost")),
         "budget_base_residual_static_per_cost": safe_float(budget_base.get("mean_residual_minus_static_per_cost")),
         "budget_high_residual_static_per_cost": safe_float(budget_high.get("mean_residual_minus_static_per_cost")),
+        "early_decision_best_window": safe_int(early_decision_best.get("window_hours")),
+        "early_decision_best_feature_group": str(early_decision_best.get("feature_group", "")),
+        "early_decision_best_spearman": safe_float(early_decision_best.get("spearman")),
+        "early_decision_best_top20_recall": safe_float(early_decision_best.get("top20_recall")),
+        "early_decision_2h_all_spearman": safe_float(early_decision_2h.get("spearman")),
+        "early_decision_2h_all_top20_recall": safe_float(early_decision_2h.get("top20_recall")),
+        "early_recoverable_best_window": safe_int(early_recoverable_best.get("window_hours")),
+        "early_recoverable_best_spearman": safe_float(early_recoverable_best.get("spearman")),
+        "early_recoverable_2h_all_spearman": safe_float(early_recoverable_2h.get("spearman")),
+        "early_decision_static_1h_spearman": safe_float(early_decision_static_1h.get("spearman")),
+        "early_decision_speed_1h_spearman": safe_float(early_decision_speed_1h.get("spearman")),
+        "early_decision_rain_1h_spearman": safe_float(early_decision_rain_1h.get("spearman")),
     }
     return metrics
 
@@ -317,6 +340,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "key_metric": "interior_budget_peak_supported",
             "value": float(metrics["budget_abs_random_interior_peak_supported"]),
             "interpretation": "The current low/base/high scan does not support an interior absolute-leverage peak; absolute leverage rises with budget while per-budget leverage diminishes.",
+        },
+        {
+            "version": "V14",
+            "evidence_step": "Early predictability and hindsight boundary",
+            "main_question": "Can decision-critical events be identified before the full 12-hour trajectory is known?",
+            "key_metric": "2h_all_early_decision_spearman",
+            "value": metrics["early_decision_2h_all_spearman"],
+            "interpretation": "Decision-criticality is partly identifiable from early speed and static structure, but rainfall-only signals are insufficient; the main claim remains hindsight counterfactual recoverability.",
         },
     ]
     return pd.DataFrame(rows)
@@ -474,6 +505,12 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
                 "implication": "The current evidence rejects an interior peak over these three scales, but a finer budget sweep would be needed to rule out a narrower nonmonotonic peak.",
                 "next_step": "Run additional budget scales or scenario-specific LP closures if budget phase shape becomes a central contribution.",
             },
+            {
+                "item": "online_predictability_scope",
+                "current_status": "Early-window predictability is tested with leave-one-city-out ridge models using 1/2/3/6/12 hour aggregate features.",
+                "implication": "Early decision-criticality signals are supplementary and should not be framed as a full online control policy.",
+                "next_step": "Use rolling operational forecasts or causal nowcasting data before making real-time deployment claims.",
+            },
         ]
     )
 
@@ -578,11 +615,11 @@ def write_report(
     limitations: pd.DataFrame,
 ) -> None:
     lines = [
-        "# Recoverability Law Synthesis V13",
+        "# Recoverability Law Synthesis V14",
         "",
         "## 这版做了什么",
         "",
-        "V13 把 V5-V12 的 learning/law 证据链和新的 budget-leverage phase analysis 合并成论文可用的 synthesis：从 action-level marginal value，到 finite-budget residual law，再到 event-level top-tail decision-criticality，并进一步给出公式复杂度、跨城市泛化、feature-group ablation 和预算相图证据。所有数字都从已有结果表重新读取生成。",
+        "V14 把 V5-V13 的 learning/law 证据链和新的 early predictability analysis 合并成论文可用的 synthesis：从 action-level marginal value，到 finite-budget residual law，再到 event-level top-tail decision-criticality，并进一步给出公式复杂度、跨城市泛化、feature-group ablation、预算相图和早期可识别性证据。所有数字都从已有结果表重新读取生成。",
         "",
         "## 三条当前可写入论文的 law",
         "",
@@ -608,6 +645,8 @@ def write_report(
         f"- largest symbolic ablation drop = {metrics['symbolic_largest_ablation_drop_group']} ({metrics['symbolic_largest_ablation_top5_drop']:.4f} top-5 capture)",
         f"- budget phase: absolute law-vs-random leverage peaks at {metrics['budget_abs_random_peak_budget']}; interior peak supported = {metrics['budget_abs_random_interior_peak_supported']}",
         f"- budget phase: residual-vs-static per-cost leverage = {metrics['budget_low_residual_static_per_cost']:.4f} / {metrics['budget_base_residual_static_per_cost']:.4f} / {metrics['budget_high_residual_static_per_cost']:.4f} for low/base/high",
+        f"- early decision-criticality: best leave-city Spearman = {metrics['early_decision_best_spearman']:.4f} at {metrics['early_decision_best_window']}h using {metrics['early_decision_best_feature_group']}; 2h all-early Spearman = {metrics['early_decision_2h_all_spearman']:.4f}",
+        f"- early signal decomposition at 1h: static city = {metrics['early_decision_static_1h_spearman']:.4f}, speed = {metrics['early_decision_speed_1h_spearman']:.4f}, rain-only = {metrics['early_decision_rain_1h_spearman']:.4f}",
         f"- event mean top-5% value share = {metrics['event_mean_top5_value_share']:.4f}; marginal-value Gini = {metrics['event_mean_marginal_value_gini']:.4f}",
         "",
         "## Evidence Ladder",
@@ -636,7 +675,7 @@ def write_report(
         "",
         "## 论文写作含义",
         "",
-        "现在可以把 learning/law 部分从“未来要做 law extraction”改成“已经得到一个可复现实证链条”：action-level 的 activated marginal law、finite-budget 的 residual allocation law、event-level 的 top-tail decision-criticality law，以及 V12 的 formula extractor/structure decoupler。V13 进一步修正了一个预期命题：当前 low/base/high 三点预算扫描不支持“中等预算绝对 decision leverage 最高”，而支持“绝对杠杆随预算增加、单位预算杠杆递减”。论文中需要谨慎表述的是：资源效率和 diminishing returns 仍是 recovery-regime 参数；V9/V11 是代表性验证，不是全量非 base 与全量 perturbation closure；完整 graph neural surrogate 仍可作为后续增强，而不是当前主结论的必要条件。",
+        "现在可以把 learning/law 部分从“未来要做 law extraction”改成“已经得到一个可复现实证链条”：action-level 的 activated marginal law、finite-budget 的 residual allocation law、event-level 的 top-tail decision-criticality law，以及 V12 的 formula extractor/structure decoupler。V13 修正了一个预期命题：当前 low/base/high 三点预算扫描不支持“中等预算绝对 decision leverage 最高”，而支持“绝对杠杆随预算增加、单位预算杠杆递减”。V14 进一步说明，decision-criticality 有一定早期可识别性，但主要来自静态城市结构和早期速度异常，不能把 hindsight counterfactual 直接写成在线控制。论文中需要谨慎表述的是：资源效率和 diminishing returns 仍是 recovery-regime 参数；V9/V11 是代表性验证，不是全量非 base 与全量 perturbation closure；完整 graph neural surrogate 仍可作为后续增强，而不是当前主结论的必要条件。",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
