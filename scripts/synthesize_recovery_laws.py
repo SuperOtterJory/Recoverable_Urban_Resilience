@@ -95,6 +95,8 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "graph_gaps": read_csv(results / "graph_structure_ablation" / "tables" / "graph_structure_shuffle_gaps.csv"),
         "regime_model_summary": read_csv(results / "event_regime_generalization" / "tables" / "regime_model_summary.csv"),
         "regime_gap_summary": read_csv(results / "event_regime_generalization" / "tables" / "regime_gap_summary.csv"),
+        "objective_summary": read_csv(results / "training_objective_ablation" / "tables" / "objective_model_summary.csv"),
+        "objective_improvements": read_csv(results / "training_objective_ablation" / "tables" / "objective_improvement_summary.csv"),
     }
 
 
@@ -222,6 +224,17 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     regime_interaction = one_row(regime_summary, model_id="R3_full_interaction")
     regime_factorized_vs_full = regime_gaps[regime_gaps["comparison"].eq("factorized_vs_full_additive")]
     regime_interaction_vs_full = regime_gaps[regime_gaps["comparison"].eq("full_interaction_vs_full_additive")]
+    objective_summary = data["objective_summary"]
+    objective_improvements = data["objective_improvements"]
+    objective_factorized = one_row(objective_improvements, feature_set="factorized_low_dim")
+    objective_full = one_row(objective_improvements, feature_set="full_additive")
+    objective_interaction = one_row(objective_improvements, feature_set="full_interaction")
+    objective_factorized_raw = one_row(objective_summary, feature_set="factorized_low_dim", objective_id="O1_log_value")
+    objective_full_best = one_row(
+        objective_summary,
+        feature_set="full_additive",
+        objective_id=str(objective_full.get("best_objective_id", "")),
+    )
 
     metrics: dict[str, Any] = {
         "n_action_tokens": safe_int(policy_capture["n_tokens"].max()) if "n_tokens" in policy_capture else None,
@@ -352,6 +365,19 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "regime_factorized_minus_full_mean_top5_delta": safe_float(regime_factorized_vs_full["delta_top5_capture"].mean()) if not regime_factorized_vs_full.empty else np.nan,
         "regime_factorized_minus_full_min_top5_delta": safe_float(regime_factorized_vs_full["delta_top5_capture"].min()) if not regime_factorized_vs_full.empty else np.nan,
         "regime_interaction_minus_full_mean_top5_delta": safe_float(regime_interaction_vs_full["delta_top5_capture"].mean()) if not regime_interaction_vs_full.empty else np.nan,
+        "objective_factorized_raw_top5_capture": safe_float(objective_factorized.get("raw_log_top5_capture")),
+        "objective_factorized_top_tail_weighted_top5_capture": safe_float(objective_factorized.get("top_tail_weighted_top5_capture")),
+        "objective_factorized_rank_top5_capture": safe_float(objective_factorized.get("rank_percentile_top5_capture")),
+        "objective_factorized_best_objective": str(objective_factorized.get("best_objective_id", "")),
+        "objective_factorized_best_top5_capture": safe_float(objective_factorized.get("best_top5_capture")),
+        "objective_factorized_best_minus_raw_top5_capture": safe_float(objective_factorized.get("best_minus_raw_top5_capture")),
+        "objective_factorized_raw_top5_regret": safe_float(objective_factorized_raw.get("mean_event_top_5pct_regret")),
+        "objective_full_best_objective": str(objective_full.get("best_objective_id", "")),
+        "objective_full_best_top5_capture": safe_float(objective_full.get("best_top5_capture")),
+        "objective_full_best_minus_raw_top5_capture": safe_float(objective_full.get("best_minus_raw_top5_capture")),
+        "objective_full_best_top5_regret": safe_float(objective_full_best.get("mean_event_top_5pct_regret")),
+        "objective_interaction_best_top5_capture": safe_float(objective_interaction.get("best_top5_capture")),
+        "objective_interaction_best_minus_raw_top5_capture": safe_float(objective_interaction.get("best_minus_raw_top5_capture")),
     }
     return metrics
 
@@ -482,6 +508,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "key_metric": "factorized_min_heldout_regime_top5_capture",
             "value": metrics["regime_factorized_min_top5_capture"],
             "interpretation": "The factorized law keeps high top-tail capture across held-out event regimes, supporting a structural rather than regime-memorized law.",
+        },
+        {
+            "version": "V19",
+            "evidence_step": "Training-objective ablation",
+            "main_question": "Does the recovered law require a special ranking or top-tail-weighted training objective?",
+            "key_metric": "factorized_best_minus_raw_log_top5_capture",
+            "value": metrics["objective_factorized_best_minus_raw_top5_capture"],
+            "interpretation": "For the compact factorized law, ordinary log-value regression is already the best top-tail objective; ranking-aware variants are useful robustness checks rather than the source of the law.",
         },
     ]
     return pd.DataFrame(rows)
@@ -640,6 +674,12 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
                 "next_step": "Add unconfounded multi-year observations within the same cities before claiming clean leave-time-period-out generalization.",
             },
             {
+                "item": "training_objective_scope",
+                "current_status": "V19 compares ordinary log-value, event-centered, top-tail-weighted, rank-percentile, and event-zscore ridge objectives.",
+                "implication": "Top-tail metrics are essential for evaluation, but the compact law does not require a special ranking-loss trick in the current data.",
+                "next_step": "Use true pairwise/listwise neural ranking losses only if a later high-capacity surrogate is introduced.",
+            },
+            {
                 "item": "perturbed_optimum_stability",
                 "current_status": "Representative perturbation solves are available for 4 events with 3 cost/effectiveness perturbations each.",
                 "implication": "The perturbation evidence supports stable value principles, but not yet full-sample action-list stability.",
@@ -767,11 +807,11 @@ def write_report(
     limitations: pd.DataFrame,
 ) -> None:
     lines = [
-        "# Recoverability Law Synthesis V17",
+        "# Recoverability Law Synthesis V19",
         "",
         "## 本版做了什么",
         "",
-        "V17 将 OD graph structure ablation 接入 learning/law synthesis。在 V16 的 factorized action-value surrogate 基础上，本版进一步检验：恢复价值是否只依赖城市结构特征的边际分布，还是依赖 action location 与 observed OD-dependency graph 的真实空间对齐。",
+        "V19 将 training-objective ablation 接入 learning/law synthesis。在 V17/V18 已经验证 OD graph alignment 和 event-regime generalization 的基础上，本版进一步检验：低维 recoverability law 是否依赖特殊的 ranking/top-tail training objective，还是主要由稳定的 feature structure 支撑。",
         "",
         "## 当前可写入论文的 law",
         "",
@@ -789,6 +829,8 @@ def write_report(
         "",
         "7. **Event-regime stability result**：低维 factorized law 在整类雨强、速度冲击、持续时间、损失规模和时段被留出时仍保持较高 top-tail capture，说明它不是只记住某一类事件 regime。",
         "",
+        "8. **Training-objective robustness result**：top-tail capture 和 regret 是核心评价指标，但低维 factorized law 不依赖特殊 ranking-loss trick；普通 log-value regression 已经给出最高 top-tail capture。",
+        "",
         "## 关键指标",
         "",
         f"- action tokens: {metrics['n_action_tokens']:,}",
@@ -804,6 +846,8 @@ def write_report(
         f"- graph structure ablation: no-graph top-5% capture = {metrics['graph_no_graph_top5_capture']:.4f}; observed OD graph = {metrics['graph_observed_full_top5_capture']:.4f}; shuffled OD graph = {metrics['graph_shuffled_full_top5_capture']:.4f}; observed-shuffled gap = {metrics['graph_full_alignment_delta_top5_capture']:+.4f}",
         f"- factorized graph alignment: observed OD = {metrics['graph_factorized_observed_top5_capture']:.4f}; shuffled OD = {metrics['graph_factorized_shuffled_top5_capture']:.4f}; gap = {metrics['graph_factorized_alignment_delta_top5_capture']:+.4f}",
         f"- event-regime generalization: {metrics['regime_factorized_n_splits']} held-out regimes; factorized mean top-5% capture = {metrics['regime_factorized_mean_top5_capture']:.4f}; worst = {metrics['regime_factorized_hardest_split_family']} / {metrics['regime_factorized_hardest_heldout']} at {metrics['regime_factorized_min_top5_capture']:.4f}; full additive mean = {metrics['regime_full_mean_top5_capture']:.4f}",
+        f"- training-objective ablation: factorized raw log-value capture = {metrics['objective_factorized_raw_top5_capture']:.4f}; best objective = {metrics['objective_factorized_best_objective']} at {metrics['objective_factorized_best_top5_capture']:.4f}; top-tail weighted = {metrics['objective_factorized_top_tail_weighted_top5_capture']:.4f}; rank-percentile = {metrics['objective_factorized_rank_top5_capture']:.4f}",
+        f"- training-objective ablation: full additive best objective = {metrics['objective_full_best_objective']} at {metrics['objective_full_best_top5_capture']:.4f}, improvement over raw = {metrics['objective_full_best_minus_raw_top5_capture']:+.4f}",
         f"- early decision-criticality: best Spearman = {metrics['early_decision_best_spearman']:.4f} at {metrics['early_decision_best_window']}h using {metrics['early_decision_best_feature_group']}; 2h all-early Spearman = {metrics['early_decision_2h_all_spearman']:.4f}",
         "",
         "## Evidence Ladder",
@@ -832,7 +876,7 @@ def write_report(
         "",
         "## 论文写作含义",
         "",
-        "现在 learning/law 部分可以写成一条更完整的证据链：优化模型产生 action-value field；single-action LP 验证 marginal label；cross-city surrogate、factorized surrogate 和 symbolic extraction 说明低维 activated law 可解释；residual greedy 说明有限预算需要动态重评分；event top-tail 说明 decision-criticality 不是 disruption magnitude；V15 给出反直觉证据；V17 说明 OD graph 的空间对齐本身有实证价值；V18 说明低维 law 在不同事件 regime 留出时仍能保持较高 top-tail capture。论文中仍需谨慎表述：当前 graph 证据是 OD-dependency graph 的 observed-vs-shuffled ablation，还不是完整 road-adjacency graph 或 GNN closure；当前 temporal split 与 city/year 混杂，不能声称已经完成干净的 leave-time-period-out。",
+        "现在 learning/law 部分可以写成一条更完整的证据链：优化模型产生 action-value field；single-action LP 验证 marginal label；cross-city surrogate、factorized surrogate 和 symbolic extraction 说明低维 activated law 可解释；residual greedy 说明有限预算需要动态重评分；event top-tail 说明 decision-criticality 不是 disruption magnitude；V15 给出反直觉证据；V17 说明 OD graph 的空间对齐本身有实证价值；V18 说明低维 law 在不同事件 regime 留出时仍能保持较高 top-tail capture；V19 说明低维 law 不是由特殊 ranking objective trick 造出来的。论文中仍需谨慎表述：当前 graph 证据是 OD-dependency graph 的 observed-vs-shuffled ablation，还不是完整 road-adjacency graph 或 GNN closure；当前 temporal split 与 city/year 混杂，不能声称已经完成干净的 leave-time-period-out。",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")

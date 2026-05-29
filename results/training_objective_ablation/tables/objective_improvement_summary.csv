@@ -1,0 +1,4 @@
+feature_set,raw_log_top5_capture,top_tail_weighted_top5_capture,rank_percentile_top5_capture,best_objective_id,best_top5_capture,best_minus_raw_top5_capture,top_tail_weighted_minus_raw_top5_capture,rank_percentile_minus_raw_top5_capture
+factorized_low_dim,0.9374546558,0.9323361721,0.8977985438,O1_log_value,0.9374546558,0,-0.005118483691,-0.03965611197
+full_additive,0.9624269436,0.9535247854,0.954167389,O2_event_centered_log,0.978665883,0.01623893938,-0.008902158204,-0.008259554612
+full_interaction,0.9510849329,0.9482430971,0.9710863225,O2_event_centered_log,0.9736891136,0.02260418065,-0.00284183577,0.02000138957

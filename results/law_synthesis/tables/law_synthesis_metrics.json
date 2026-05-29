@@ -126,5 +126,18 @@
   "regime_interaction_mean_top5_capture": 0.9506615351,
   "regime_factorized_minus_full_mean_top5_delta": -0.03722060765041666,
   "regime_factorized_minus_full_min_top5_delta": -0.07963466105,
-  "regime_interaction_minus_full_mean_top5_delta": -0.014575275906983334
+  "regime_interaction_minus_full_mean_top5_delta": -0.014575275906983334,
+  "objective_factorized_raw_top5_capture": 0.9374546558,
+  "objective_factorized_top_tail_weighted_top5_capture": 0.9323361721,
+  "objective_factorized_rank_top5_capture": 0.8977985438,
+  "objective_factorized_best_objective": "O1_log_value",
+  "objective_factorized_best_top5_capture": 0.9374546558,
+  "objective_factorized_best_minus_raw_top5_capture": 0.0,
+  "objective_factorized_raw_top5_regret": 0.06254534418,
+  "objective_full_best_objective": "O2_event_centered_log",
+  "objective_full_best_top5_capture": 0.978665883,
+  "objective_full_best_minus_raw_top5_capture": 0.01623893938,
+  "objective_full_best_top5_regret": 0.02133411704,
+  "objective_interaction_best_top5_capture": 0.9736891136,
+  "objective_interaction_best_minus_raw_top5_capture": 0.02260418065
 }

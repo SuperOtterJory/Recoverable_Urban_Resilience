@@ -1,8 +1,8 @@
-# Recoverability Law Synthesis V17
+# Recoverability Law Synthesis V19
 
 ## 本版做了什么
 
-V17 将 OD graph structure ablation 接入 learning/law synthesis。在 V16 的 factorized action-value surrogate 基础上，本版进一步检验：恢复价值是否只依赖城市结构特征的边际分布，还是依赖 action location 与 observed OD-dependency graph 的真实空间对齐。
+V19 将 training-objective ablation 接入 learning/law synthesis。在 V17/V18 已经验证 OD graph alignment 和 event-regime generalization 的基础上，本版进一步检验：低维 recoverability law 是否依赖特殊的 ranking/top-tail training objective，还是主要由稳定的 feature structure 支撑。
 
 ## 当前可写入论文的 law
 
@@ -20,6 +20,8 @@ V17 将 OD graph structure ablation 接入 learning/law synthesis。在 V16 的 
 
 7. **Event-regime stability result**：低维 factorized law 在整类雨强、速度冲击、持续时间、损失规模和时段被留出时仍保持较高 top-tail capture，说明它不是只记住某一类事件 regime。
 
+8. **Training-objective robustness result**：top-tail capture 和 regret 是核心评价指标，但低维 factorized law 不依赖特殊 ranking-loss trick；普通 log-value regression 已经给出最高 top-tail capture。
+
 ## 关键指标
 
 - action tokens: 170,137
@@ -35,6 +37,8 @@ V17 将 OD graph structure ablation 接入 learning/law synthesis。在 V16 的 
 - graph structure ablation: no-graph top-5% capture = 0.6540; observed OD graph = 0.9624; shuffled OD graph = 0.6372; observed-shuffled gap = +0.3253
 - factorized graph alignment: observed OD = 0.9375; shuffled OD = 0.7017; gap = +0.2358
 - event-regime generalization: 24 held-out regimes; factorized mean top-5% capture = 0.9280; worst = time_of_day_regime / offpeak_night at 0.8880; full additive mean = 0.9652
+- training-objective ablation: factorized raw log-value capture = 0.9375; best objective = O1_log_value at 0.9375; top-tail weighted = 0.9323; rank-percentile = 0.8978
+- training-objective ablation: full additive best objective = O2_event_centered_log at 0.9787, improvement over raw = +0.0162
 - early decision-criticality: best Spearman = 0.8353 at 1h using speed_plus_static; 2h all-early Spearman = 0.7964
 
 ## Evidence Ladder
@@ -55,6 +59,7 @@ V17 将 OD graph structure ablation 接入 learning/law synthesis。在 V16 的 
 | V16       | Factorized surrogate and interaction ablation        | Does recovery value require arbitrary high-dimensional interactions or a low-dimensional activated structure?                 | low_dim_factorized_top5_capture                |  0.9375 | A low-dimensional factorized surrogate captures most top-tail value; OD exposure and time/feasibility add large gains, while unconstrained high-dimensional interactions do not improve leave-city performance. |
 | V17       | OD graph structure alignment ablation                | Does observed OD graph alignment add value beyond local dynamics or shuffled city-level graph distributions?                  | observed_vs_shuffled_od_graph_top5_capture_gap |  0.3253 | Observed OD graph alignment strongly outperforms a within-city shuffled graph, showing that spatial alignment between action location and OD exposure is part of the recoverability law.                        |
 | V18       | Event-regime generalization                          | Does the low-dimensional law remain useful when entire rainfall, impact, duration, loss, or time-of-day regimes are held out? | factorized_min_heldout_regime_top5_capture     |  0.888  | The factorized law keeps high top-tail capture across held-out event regimes, supporting a structural rather than regime-memorized law.                                                                         |
+| V19       | Training-objective ablation                          | Does the recovered law require a special ranking or top-tail-weighted training objective?                                     | factorized_best_minus_raw_log_top5_capture     |  0      | For the compact factorized law, ordinary log-value regression is already the best top-tail objective; ranking-aware variants are useful robustness checks rather than the source of the law.                    |
 
 ## Policy Closure
 
@@ -133,6 +138,7 @@ V17 将 OD graph structure ablation 接入 learning/law synthesis。在 V16 的 
 | surrogate_architecture                | V16 adds a factorized leave-one-city action-value surrogate; V17 adds observed-vs-shuffled OD graph alignment ablation.                                        | The low-dimensional activated structure is strongly supported, and observed OD alignment is informative beyond shuffled graph-feature distributions.         | Use an explicit graph or OD-message-passing surrogate only if the paper needs to test higher-order spatial representations.       |
 | graph_structure_scope                 | V17 tests OD-dependency graph features and within-city shuffled graph alignment, not a unified road-adjacency graph.                                           | The paper can claim evidence for OD exposure alignment as city structure, but not yet for full road-topology message passing.                                | Add road adjacency, TMC-zone linkage, or graph neural baselines if higher-order physical topology becomes a central contribution. |
 | event_regime_generalization_scope     | V18 tests held-out event regimes for rain intensity, peak rain, speed impact, duration, baseline loss, recoverable fraction, time of day, and weekday/weekend. | The factorized law is not only leave-city robust, but the year-based temporal split remains city-confounded in the current sample.                           | Add unconfounded multi-year observations within the same cities before claiming clean leave-time-period-out generalization.       |
+| training_objective_scope              | V19 compares ordinary log-value, event-centered, top-tail-weighted, rank-percentile, and event-zscore ridge objectives.                                        | Top-tail metrics are essential for evaluation, but the compact law does not require a special ranking-loss trick in the current data.                        | Use true pairwise/listwise neural ranking losses only if a later high-capacity surrogate is introduced.                           |
 | perturbed_optimum_stability           | Representative perturbation solves are available for 4 events with 3 cost/effectiveness perturbations each.                                                    | The perturbation evidence supports stable value principles, but not yet full-sample action-list stability.                                                   | Increase perturbation count and city-event coverage if action stability becomes a central claim.                                  |
 | budget_phase_coverage                 | Budget-leverage phase analysis currently uses low/base/high budget scales from existing policy replay and proxy tables.                                        | The current evidence rejects an interior peak over these three scales, but a finer budget sweep would be needed to rule out a narrower nonmonotonic peak.    | Run additional budget scales or scenario-specific LP closures if budget phase shape becomes a central contribution.               |
 | online_predictability_scope           | Early-window predictability is tested with leave-one-city-out ridge models using 1/2/3/6/12 hour aggregate features.                                           | Early decision-criticality signals are supplementary and should not be framed as a full online control policy.                                               | Use rolling operational forecasts or causal nowcasting data before making real-time deployment claims.                            |
@@ -140,4 +146,4 @@ V17 将 OD graph structure ablation 接入 learning/law synthesis。在 V16 的 
 
 ## 论文写作含义
 
-现在 learning/law 部分可以写成一条更完整的证据链：优化模型产生 action-value field；single-action LP 验证 marginal label；cross-city surrogate、factorized surrogate 和 symbolic extraction 说明低维 activated law 可解释；residual greedy 说明有限预算需要动态重评分；event top-tail 说明 decision-criticality 不是 disruption magnitude；V15 给出反直觉证据；V17 说明 OD graph 的空间对齐本身有实证价值；V18 说明低维 law 在不同事件 regime 留出时仍能保持较高 top-tail capture。论文中仍需谨慎表述：当前 graph 证据是 OD-dependency graph 的 observed-vs-shuffled ablation，还不是完整 road-adjacency graph 或 GNN closure；当前 temporal split 与 city/year 混杂，不能声称已经完成干净的 leave-time-period-out。
+现在 learning/law 部分可以写成一条更完整的证据链：优化模型产生 action-value field；single-action LP 验证 marginal label；cross-city surrogate、factorized surrogate 和 symbolic extraction 说明低维 activated law 可解释；residual greedy 说明有限预算需要动态重评分；event top-tail 说明 decision-criticality 不是 disruption magnitude；V15 给出反直觉证据；V17 说明 OD graph 的空间对齐本身有实证价值；V18 说明低维 law 在不同事件 regime 留出时仍能保持较高 top-tail capture；V19 说明低维 law 不是由特殊 ranking objective trick 造出来的。论文中仍需谨慎表述：当前 graph 证据是 OD-dependency graph 的 observed-vs-shuffled ablation，还不是完整 road-adjacency graph 或 GNN closure；当前 temporal split 与 city/year 混杂，不能声称已经完成干净的 leave-time-period-out。

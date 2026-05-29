@@ -1,0 +1,15 @@
+{
+  "factorized_raw_log_top5_capture": 0.9374546558174094,
+  "factorized_top_tail_weighted_top5_capture": 0.9323361721263684,
+  "factorized_rank_percentile_top5_capture": 0.8977985438477571,
+  "factorized_best_objective_id": "O1_log_value",
+  "factorized_best_top5_capture": 0.9374546558174094,
+  "factorized_best_minus_raw_top5_capture": 0.0,
+  "factorized_best_top5_regret": 0.06254534418259061,
+  "full_additive_best_objective_id": "O2_event_centered_log",
+  "full_additive_best_top5_capture": 0.9786658829649237,
+  "full_additive_best_minus_raw_top5_capture": 0.01623893938151144,
+  "full_interaction_best_objective_id": "O2_event_centered_log",
+  "full_interaction_best_top5_capture": 0.9736891135576641,
+  "full_interaction_best_minus_raw_top5_capture": 0.02260418064801495
+}
