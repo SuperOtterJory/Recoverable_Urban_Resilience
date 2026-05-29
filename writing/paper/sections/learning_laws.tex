@@ -124,12 +124,12 @@ This residual law nearly closes the base-scenario LP gap. Across 105 city-events
 
 The residual law remains stronger than static ranking under budget and response perturbations. In the 105-event stress test, residual replanning captures 0.5711 of base LP gain under low budget, 0.9660 in the base scenario with coarser ten-pass replanning, 1.5916 under high budget measured against the base LP denominator, 0.8780 with two additional hours of delay, 0.7734 with four additional hours of delay, and 0.5222 under scarce-and-late conditions. These stress-test numbers are normalized by the base LP gain, so they show policy stability rather than scenario-specific optimality.
 
-A separate budget-leverage phase analysis tests whether decision leverage is highest at an intermediate resource level. In the current low/base/high budget scan, this specific interior-peak hypothesis is not supported. The absolute law-versus-random proxy advantage rises from 0.0750 to 0.1272 to 0.2094 as budget scale increases from 0.5 to 1.0 to 2.0. However, the relative law/random advantage falls from 7.87 to 6.81 to 5.79, and residual-versus-static replay leverage per unit cost falls from 0.0311 to 0.0268 to 0.0243. Thus the better budget law in this sample is scale-dependent diminishing leverage: larger budgets increase the total amount of recoverable value captured, but each additional unit of budget carries less incremental decision advantage.
+A separate fine-grained budget-leverage sweep tests whether decision leverage is highest at an intermediate resource level. Using ten budget scales from 0.10 to 3.00, this specific interior-peak hypothesis is not supported in the current action-value proxy and LP replay setting. The absolute law-versus-random replay advantage rises from 0.0026 at budget scale 0.10 to 0.0144 at 1.00 and 0.0278 at 3.00, and every city has its largest absolute replay advantage at the largest tested budget. However, leverage per unit budget falls from 0.0259 at 0.10 to 0.0144 at 1.00 and 0.0093 at 3.00, while the law/random replay-gain ratio falls from 10.02 to 5.56 and then 3.90. Thus the better budget law in this sample is scale-dependent diminishing leverage: larger budgets increase the total amount of recoverable value captured, but each additional unit of budget carries less incremental decision advantage.
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.84\linewidth]{../../results/budget_leverage_phase/figures/budget_leverage_curve.png}
-  \caption{Budget-leverage phase analysis. Absolute law-guided advantage grows with budget, while relative and per-cost leverage decline.}
+  \includegraphics[width=0.84\linewidth]{../../results/budget_fine_sweep/figures/fine_budget_leverage_curve.png}
+  \caption{Fine budget-leverage sweep. Absolute law-guided advantage grows across the tested budget range, while separate relative and per-budget diagnostics show diminishing decision leverage.}
   \label{fig:budget-leverage-phase}
 \end{figure}
 

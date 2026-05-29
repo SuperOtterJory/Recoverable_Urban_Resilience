@@ -1,0 +1,22 @@
+{
+  "n_budget_scales":10,
+  "min_budget_scale":0.1,
+  "max_budget_scale":3.0,
+  "proxy_abs_peak_budget":3.0,
+  "proxy_abs_interior_peak_supported":false,
+  "proxy_abs_monotone_increasing":true,
+  "proxy_per_budget_peak_budget":0.1,
+  "proxy_per_budget_monotone_decreasing":true,
+  "replay_abs_peak_budget":3.0,
+  "replay_abs_interior_peak_supported":false,
+  "replay_abs_monotone_increasing":true,
+  "replay_per_budget_peak_budget":0.1,
+  "replay_per_budget_monotone_decreasing":true,
+  "replay_ratio_peak_budget":0.1,
+  "replay_ratio_monotone_decreasing":true,
+  "city_replay_abs_interior_peak_share":0.0,
+  "base_budget_law_fraction_of_oracle_proxy":1.0,
+  "base_budget_law_fraction_of_oracle_replay_gain":1.0,
+  "base_budget_replay_gain_leverage_vs_random":0.0143826567,
+  "base_budget_replay_gain_leverage_per_budget_vs_random":0.0143826567
+}

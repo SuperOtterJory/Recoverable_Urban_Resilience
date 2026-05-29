@@ -1,0 +1,29 @@
+metric,peak_budget_scale,peak_value,min_budget_value,max_budget_value,interior_peak_supported,monotone_increasing,monotone_decreasing,first_to_peak_gain,peak_to_last_change,city
+mean_proxy_leverage_vs_random,3,0.2488417328,0.01833151919,0.2488417328,False,True,False,0.2305102136,0,Austin
+mean_proxy_leverage_per_budget_vs_random,0.1,0.1833151919,0.1833151919,0.08294724426,False,False,True,0,-0.1003679476,Austin
+mean_replay_gain_leverage_vs_random,3,0.01843238659,0.001657191363,0.01843238659,False,True,False,0.01677519523,0,Austin
+mean_replay_gain_leverage_per_budget_vs_random,0.1,0.01657191363,0.01657191363,0.006144128865,False,False,True,0,-0.01042778476,Austin
+mean_proxy_leverage_vs_random,3,0.3217323588,0.02412654395,0.3217323588,False,True,False,0.2976058149,0,Chicago
+mean_proxy_leverage_per_budget_vs_random,0.1,0.2412654395,0.2412654395,0.1072441196,False,False,True,0,-0.1340213199,Chicago
+mean_replay_gain_leverage_vs_random,3,0.02024235259,0.002376855597,0.02024235259,False,True,False,0.017865497,0,Chicago
+mean_replay_gain_leverage_per_budget_vs_random,0.1,0.02376855597,0.02376855597,0.006747450865,False,False,True,0,-0.01702110511,Chicago
+mean_proxy_leverage_vs_random,3,0.1292113281,0.00799734715,0.1292113281,False,True,False,0.121213981,0,Dallas
+mean_proxy_leverage_per_budget_vs_random,0.1,0.0799734715,0.0799734715,0.04307044271,False,False,True,0,-0.03690302879,Dallas
+mean_replay_gain_leverage_vs_random,3,0.0629355239,0.003948008346,0.0629355239,False,True,False,0.05898751555,0,Dallas
+mean_replay_gain_leverage_per_budget_vs_random,0.1,0.03948008346,0.03948008346,0.02097850797,False,False,True,0,-0.0185015755,Dallas
+mean_proxy_leverage_vs_random,3,0.2023249365,0.01500355105,0.2023249365,False,True,False,0.1873213854,0,Houston
+mean_proxy_leverage_per_budget_vs_random,0.1,0.1500355105,0.1500355105,0.06744164549,False,False,True,0,-0.08259386498,Houston
+mean_replay_gain_leverage_vs_random,3,0.05501546197,0.004815655897,0.05501546197,False,True,False,0.05019980607,0,Houston
+mean_replay_gain_leverage_per_budget_vs_random,0.1,0.04815655897,0.04815655897,0.01833848732,False,False,True,0,-0.02981807165,Houston
+mean_proxy_leverage_vs_random,3,0.2831840947,0.0216036709,0.2831840947,False,True,False,0.2615804238,0,New York
+mean_proxy_leverage_per_budget_vs_random,0.1,0.216036709,0.216036709,0.09439469824,False,False,True,0,-0.1216420108,New York
+mean_replay_gain_leverage_vs_random,3,0.04446453242,0.00442582771,0.04446453242,False,True,False,0.04003870471,0,New York
+mean_replay_gain_leverage_per_budget_vs_random,0.1,0.0442582771,0.0442582771,0.01482151081,False,False,True,0,-0.0294367663,New York
+mean_proxy_leverage_vs_random,3,0.3430702448,0.02506103019,0.3430702448,False,True,False,0.3180092146,0,Philadelphia
+mean_proxy_leverage_per_budget_vs_random,0.1,0.2506103019,0.2506103019,0.1143567483,False,False,True,0,-0.1362535537,Philadelphia
+mean_replay_gain_leverage_vs_random,3,0.01003168678,0.001192907207,0.01003168678,False,True,False,0.008838779569,0,Philadelphia
+mean_replay_gain_leverage_per_budget_vs_random,0.1,0.01192907207,0.01192907207,0.003343895592,False,False,True,0,-0.008585176474,Philadelphia
+mean_proxy_leverage_vs_random,3,0.2767903289,0.02008101479,0.2767903289,False,True,False,0.2567093141,0,San Antonio
+mean_proxy_leverage_per_budget_vs_random,0.1,0.2008101479,0.2008101479,0.09226344296,False,False,True,0,-0.108546705,San Antonio
+mean_replay_gain_leverage_vs_random,3,0.01401614723,0.001436786183,0.01401614723,False,True,False,0.01257936105,0,San Antonio
+mean_replay_gain_leverage_per_budget_vs_random,0.1,0.01436786183,0.01436786183,0.004672049076,False,False,True,0,-0.009695812752,San Antonio

@@ -1,0 +1,11 @@
+metric,peak_budget_scale,peak_value,min_budget_value,max_budget_value,interior_peak_supported,monotone_increasing,monotone_decreasing,first_to_peak_gain,peak_to_last_change
+mean_proxy_leverage_vs_random_positive,3,0.2755561819,0.02028431925,0.2755561819,False,True,False,0.2552718627,0
+mean_proxy_leverage_per_budget_vs_random_positive,0.1,0.2028431925,0.2028431925,0.09185206064,False,False,True,0,-0.1109911319
+mean_proxy_ratio_vs_random_positive,0.1,10.48517741,10.48517741,5.17814931,False,False,True,0,-5.307028099
+mean_replay_gain_leverage_vs_random_positive,3,0.02783945505,0.002589301399,0.02783945505,False,True,False,0.02525015365,0
+mean_replay_gain_leverage_per_budget_vs_random_positive,0.1,0.02589301399,0.02589301399,0.009279818351,False,False,True,0,-0.01661319564
+mean_replay_gain_ratio_vs_random_positive,0.1,10.02417341,10.02417341,3.899146544,False,False,True,0,-6.125026864
+mean_law_fraction_of_oracle_proxy,0.1,1,1,1,False,True,True,0,0
+mean_law_fraction_of_oracle_replay_gain,0.1,1,1,1,False,True,True,0,0
+incremental_mean_proxy_leverage_vs_random_positive,0.2,0.1584513719,0.1584513719,0.06629696444,False,False,True,0,-0.09215440745
+incremental_mean_replay_gain_leverage_vs_random_positive,0.2,0.0190050094,0.0190050094,0.005593642367,False,False,True,0,-0.01341136704
