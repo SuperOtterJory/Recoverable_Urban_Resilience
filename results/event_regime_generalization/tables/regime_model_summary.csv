@@ -1,0 +1,9 @@
+model_id,family,description,n_splits,mean_top5_capture,median_top5_capture,min_top5_capture,mean_top5_ndcg,mean_spearman,hardest_split_family,hardest_heldout_regime
+H4_activated_law,direct_law,hand-built activated bottleneck score,24,1,1,1,1,0.7052911193,baseline_loss_regime,loss_high
+R2_full_additive,trained_surrogate,full additive action-value surrogate,24,0.965236811,0.9647656259,0.935600948,0.9615156422,0.9300101634,recoverable_fraction_regime,recoverable_medium
+R3_full_interaction,trained_surrogate,full additive surrogate plus explicit interaction terms,24,0.9506615351,0.9503896693,0.9119080677,0.9433525994,0.9313515436,speed_impact_regime,speed_high
+R4_factorized_interaction,trained_surrogate,factorized law plus compact interaction terms,24,0.9387676176,0.9387376034,0.9057340488,0.9314034849,0.7203840083,time_of_day_regime,offpeak_night
+R1_factorized_low_dim,trained_surrogate,seven-feature factorized activated law,24,0.9280162033,0.9300818171,0.887988545,0.9221680289,0.7189238719,time_of_day_regime,offpeak_night
+H2_exposure_only,heuristic,OD exposure-only one-factor score,24,0.8737636428,0.8748273716,0.8500760503,0.8637714874,0.3043769992,speed_impact_regime,speed_low
+H1_deficit_only,heuristic,deficit-only one-factor score,24,0.8518076053,0.8508307027,0.8404875464,0.84409849,0.2308535063,baseline_loss_regime,loss_medium
+H3_structure_only,heuristic,static structure-only one-factor score,24,0.5044025366,0.5058818302,0.4634032366,0.4880353569,-0.03762839768,recoverable_fraction_regime,recoverable_high

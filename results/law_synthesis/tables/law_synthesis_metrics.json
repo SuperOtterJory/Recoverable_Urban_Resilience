@@ -114,5 +114,17 @@
   "graph_factorized_alignment_delta_top5_capture": 0.235798352,
   "graph_factorized_alignment_delta_top5_ndcg": 0.263119322,
   "graph_observed_over_no_graph_delta_top5_capture": 0.308408584,
-  "graph_observed_over_no_graph_delta_top5_ndcg": 0.3313454025
+  "graph_observed_over_no_graph_delta_top5_ndcg": 0.3313454025,
+  "regime_factorized_n_splits": 24,
+  "regime_factorized_mean_top5_capture": 0.9280162033,
+  "regime_factorized_min_top5_capture": 0.887988545,
+  "regime_factorized_mean_spearman": 0.7189238719,
+  "regime_factorized_hardest_split_family": "time_of_day_regime",
+  "regime_factorized_hardest_heldout": "offpeak_night",
+  "regime_full_mean_top5_capture": 0.965236811,
+  "regime_full_min_top5_capture": 0.935600948,
+  "regime_interaction_mean_top5_capture": 0.9506615351,
+  "regime_factorized_minus_full_mean_top5_delta": -0.03722060765041666,
+  "regime_factorized_minus_full_min_top5_delta": -0.07963466105,
+  "regime_interaction_minus_full_mean_top5_delta": -0.014575275906983334
 }

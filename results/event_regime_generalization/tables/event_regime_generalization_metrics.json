@@ -1,0 +1,14 @@
+{
+  "n_regime_splits": 24,
+  "factorized_mean_top5_capture": 0.928016203342591,
+  "factorized_min_top5_capture": 0.8879885450028587,
+  "factorized_hardest_split_family": "time_of_day_regime",
+  "factorized_hardest_heldout_regime": "offpeak_night",
+  "full_additive_mean_top5_capture": 0.9652368109931396,
+  "full_additive_min_top5_capture": 0.9356009479529647,
+  "activated_law_mean_top5_capture": 1.0,
+  "activated_law_min_top5_capture": 1.0,
+  "factorized_minus_full_mean_top5_delta": -0.03722060765054861,
+  "factorized_minus_full_min_top5_delta": -0.0796346610520493,
+  "activated_minus_deficit_mean_top5_delta": 0.14819239469008258
+}

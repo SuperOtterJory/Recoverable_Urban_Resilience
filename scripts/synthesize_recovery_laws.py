@@ -93,6 +93,8 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "factorized_increments": read_csv(results / "factorized_action_surrogate" / "tables" / "factorized_incremental_gains.csv"),
         "graph_summary": read_csv(results / "graph_structure_ablation" / "tables" / "graph_structure_model_summary.csv"),
         "graph_gaps": read_csv(results / "graph_structure_ablation" / "tables" / "graph_structure_shuffle_gaps.csv"),
+        "regime_model_summary": read_csv(results / "event_regime_generalization" / "tables" / "regime_model_summary.csv"),
+        "regime_gap_summary": read_csv(results / "event_regime_generalization" / "tables" / "regime_gap_summary.csv"),
     }
 
 
@@ -213,6 +215,13 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     graph_full_alignment = one_row(graph_gaps, comparison="full_od_graph_alignment")
     graph_factorized_alignment = one_row(graph_gaps, comparison="factorized_od_alignment")
     graph_observed_over_no_graph = one_row(graph_gaps, comparison="observed_graph_over_no_graph")
+    regime_summary = data["regime_model_summary"]
+    regime_gaps = data["regime_gap_summary"]
+    regime_factorized = one_row(regime_summary, model_id="R1_factorized_low_dim")
+    regime_full = one_row(regime_summary, model_id="R2_full_additive")
+    regime_interaction = one_row(regime_summary, model_id="R3_full_interaction")
+    regime_factorized_vs_full = regime_gaps[regime_gaps["comparison"].eq("factorized_vs_full_additive")]
+    regime_interaction_vs_full = regime_gaps[regime_gaps["comparison"].eq("full_interaction_vs_full_additive")]
 
     metrics: dict[str, Any] = {
         "n_action_tokens": safe_int(policy_capture["n_tokens"].max()) if "n_tokens" in policy_capture else None,
@@ -331,6 +340,18 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "graph_factorized_alignment_delta_top5_ndcg": safe_float(graph_factorized_alignment.get("delta_top5_ndcg")),
         "graph_observed_over_no_graph_delta_top5_capture": safe_float(graph_observed_over_no_graph.get("delta_top5_capture")),
         "graph_observed_over_no_graph_delta_top5_ndcg": safe_float(graph_observed_over_no_graph.get("delta_top5_ndcg")),
+        "regime_factorized_n_splits": safe_int(regime_factorized.get("n_splits")),
+        "regime_factorized_mean_top5_capture": safe_float(regime_factorized.get("mean_top5_capture")),
+        "regime_factorized_min_top5_capture": safe_float(regime_factorized.get("min_top5_capture")),
+        "regime_factorized_mean_spearman": safe_float(regime_factorized.get("mean_spearman")),
+        "regime_factorized_hardest_split_family": str(regime_factorized.get("hardest_split_family", "")),
+        "regime_factorized_hardest_heldout": str(regime_factorized.get("hardest_heldout_regime", "")),
+        "regime_full_mean_top5_capture": safe_float(regime_full.get("mean_top5_capture")),
+        "regime_full_min_top5_capture": safe_float(regime_full.get("min_top5_capture")),
+        "regime_interaction_mean_top5_capture": safe_float(regime_interaction.get("mean_top5_capture")),
+        "regime_factorized_minus_full_mean_top5_delta": safe_float(regime_factorized_vs_full["delta_top5_capture"].mean()) if not regime_factorized_vs_full.empty else np.nan,
+        "regime_factorized_minus_full_min_top5_delta": safe_float(regime_factorized_vs_full["delta_top5_capture"].min()) if not regime_factorized_vs_full.empty else np.nan,
+        "regime_interaction_minus_full_mean_top5_delta": safe_float(regime_interaction_vs_full["delta_top5_capture"].mean()) if not regime_interaction_vs_full.empty else np.nan,
     }
     return metrics
 
@@ -453,6 +474,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "key_metric": "observed_vs_shuffled_od_graph_top5_capture_gap",
             "value": metrics["graph_full_alignment_delta_top5_capture"],
             "interpretation": "Observed OD graph alignment strongly outperforms a within-city shuffled graph, showing that spatial alignment between action location and OD exposure is part of the recoverability law.",
+        },
+        {
+            "version": "V18",
+            "evidence_step": "Event-regime generalization",
+            "main_question": "Does the low-dimensional law remain useful when entire rainfall, impact, duration, loss, or time-of-day regimes are held out?",
+            "key_metric": "factorized_min_heldout_regime_top5_capture",
+            "value": metrics["regime_factorized_min_top5_capture"],
+            "interpretation": "The factorized law keeps high top-tail capture across held-out event regimes, supporting a structural rather than regime-memorized law.",
         },
     ]
     return pd.DataFrame(rows)
@@ -605,6 +634,12 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
                 "next_step": "Add road adjacency, TMC-zone linkage, or graph neural baselines if higher-order physical topology becomes a central contribution.",
             },
             {
+                "item": "event_regime_generalization_scope",
+                "current_status": "V18 tests held-out event regimes for rain intensity, peak rain, speed impact, duration, baseline loss, recoverable fraction, time of day, and weekday/weekend.",
+                "implication": "The factorized law is not only leave-city robust, but the year-based temporal split remains city-confounded in the current sample.",
+                "next_step": "Add unconfounded multi-year observations within the same cities before claiming clean leave-time-period-out generalization.",
+            },
+            {
                 "item": "perturbed_optimum_stability",
                 "current_status": "Representative perturbation solves are available for 4 events with 3 cost/effectiveness perturbations each.",
                 "implication": "The perturbation evidence supports stable value principles, but not yet full-sample action-list stability.",
@@ -752,6 +787,8 @@ def write_report(
         "",
         "6. **OD graph alignment law**：在城市内打乱 OD graph feature 与 unit 的对应关系会显著降低 top-tail value capture，说明城市结构不是只作为分布统计量起作用，真实空间对齐本身是 recoverability law 的一部分。",
         "",
+        "7. **Event-regime stability result**：低维 factorized law 在整类雨强、速度冲击、持续时间、损失规模和时段被留出时仍保持较高 top-tail capture，说明它不是只记住某一类事件 regime。",
+        "",
         "## 关键指标",
         "",
         f"- action tokens: {metrics['n_action_tokens']:,}",
@@ -766,6 +803,7 @@ def write_report(
         f"- interaction ablation: adding OD exposure gives {metrics['factorized_add_od_delta_top5_capture']:+.4f}; adding time/feasibility gives {metrics['factorized_add_time_delta_top5_capture']:+.4f}; unrestricted high-dimensional interactions give {metrics['factorized_add_highdim_interaction_delta_top5_capture']:+.4f}",
         f"- graph structure ablation: no-graph top-5% capture = {metrics['graph_no_graph_top5_capture']:.4f}; observed OD graph = {metrics['graph_observed_full_top5_capture']:.4f}; shuffled OD graph = {metrics['graph_shuffled_full_top5_capture']:.4f}; observed-shuffled gap = {metrics['graph_full_alignment_delta_top5_capture']:+.4f}",
         f"- factorized graph alignment: observed OD = {metrics['graph_factorized_observed_top5_capture']:.4f}; shuffled OD = {metrics['graph_factorized_shuffled_top5_capture']:.4f}; gap = {metrics['graph_factorized_alignment_delta_top5_capture']:+.4f}",
+        f"- event-regime generalization: {metrics['regime_factorized_n_splits']} held-out regimes; factorized mean top-5% capture = {metrics['regime_factorized_mean_top5_capture']:.4f}; worst = {metrics['regime_factorized_hardest_split_family']} / {metrics['regime_factorized_hardest_heldout']} at {metrics['regime_factorized_min_top5_capture']:.4f}; full additive mean = {metrics['regime_full_mean_top5_capture']:.4f}",
         f"- early decision-criticality: best Spearman = {metrics['early_decision_best_spearman']:.4f} at {metrics['early_decision_best_window']}h using {metrics['early_decision_best_feature_group']}; 2h all-early Spearman = {metrics['early_decision_2h_all_spearman']:.4f}",
         "",
         "## Evidence Ladder",
@@ -794,7 +832,7 @@ def write_report(
         "",
         "## 论文写作含义",
         "",
-        "现在 learning/law 部分可以写成一条更完整的证据链：优化模型产生 action-value field；single-action LP 验证 marginal label；cross-city surrogate、factorized surrogate 和 symbolic extraction 说明低维 activated law 可解释；residual greedy 说明有限预算需要动态重评分；event top-tail 说明 decision-criticality 不是 disruption magnitude；V15 给出反直觉证据；V17 进一步说明 OD graph 的空间对齐本身有实证价值。论文中仍需谨慎表述：当前 graph 证据是 OD-dependency graph 的 observed-vs-shuffled ablation，还不是完整 road-adjacency graph 或 GNN closure。",
+        "现在 learning/law 部分可以写成一条更完整的证据链：优化模型产生 action-value field；single-action LP 验证 marginal label；cross-city surrogate、factorized surrogate 和 symbolic extraction 说明低维 activated law 可解释；residual greedy 说明有限预算需要动态重评分；event top-tail 说明 decision-criticality 不是 disruption magnitude；V15 给出反直觉证据；V17 说明 OD graph 的空间对齐本身有实证价值；V18 说明低维 law 在不同事件 regime 留出时仍能保持较高 top-tail capture。论文中仍需谨慎表述：当前 graph 证据是 OD-dependency graph 的 observed-vs-shuffled ablation，还不是完整 road-adjacency graph 或 GNN closure；当前 temporal split 与 city/year 混杂，不能声称已经完成干净的 leave-time-period-out。",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
