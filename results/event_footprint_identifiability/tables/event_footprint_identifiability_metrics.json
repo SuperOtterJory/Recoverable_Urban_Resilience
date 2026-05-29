@@ -1,0 +1,17 @@
+{
+  "n_events": 105,
+  "n_cities": 7,
+  "top5_zero_variance_city_count": 5,
+  "top5_zero_variance_event_share": 0.580952380952381,
+  "top5_variable_cities": "New York; Philadelphia",
+  "gini_zero_variance_city_count": 5,
+  "gini_zero_variance_event_share": 0.580952380952381,
+  "top5_max_within_city_range": 0.12320528809999998,
+  "gini_max_within_city_range": 0.22497442080000002,
+  "optimizer_selected_value_share_mean_range": 0.16361090301571427,
+  "optimizer_selected_value_share_zero_variance_city_count": 0,
+  "top10_unit_pairwise_mean_jaccard": 0.9684756346410482,
+  "top10_unit_pairwise_min_city_jaccard": 0.9300699300699301,
+  "top10_unit_pairwise_max_city_jaccard": 1.0,
+  "interpretation": "Current top-tail concentration is largely a city-template signal; zone-level event footprints are needed before claiming fully resolved within-city footprint laws."
+}

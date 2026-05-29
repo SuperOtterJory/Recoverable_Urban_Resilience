@@ -1,0 +1,22 @@
+city,top_k_units,n_event_pairs,mean_jaccard,median_jaccard,min_jaccard,max_jaccard
+Austin,5,105,1,1,1,1
+Chicago,5,78,1,1,1,1
+Dallas,5,45,1,1,1,1
+Houston,5,6,1,1,1,1
+New York,5,276,1,1,1,1
+Philadelphia,5,190,1,1,1,1
+San Antonio,5,171,0.9649122807,1,0.6666666667,1
+Austin,10,105,0.933044733,1,0.6666666667,1
+Chicago,10,78,0.9300699301,1,0.8181818182,1
+Dallas,10,45,1,1,1,1
+Houston,10,6,1,1,1,1
+New York,10,276,1,1,1,1
+Philadelphia,10,190,0.9818181818,1,0.8181818182,1
+San Antonio,10,171,0.9343965976,1,0.7,1
+Austin,20,105,0.8361629675,1,0.4347826087,1
+Chicago,20,78,0.9523809524,0.9523809524,0.9047619048,1
+Dallas,20,45,1,1,1,1
+Houston,20,6,1,1,1,1
+New York,20,276,1,1,1,1
+Philadelphia,20,190,0.8711927989,0.9047619048,0.55,1
+San Antonio,20,171,0.8957819633,1,0.35,1

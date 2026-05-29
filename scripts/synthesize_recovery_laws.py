@@ -114,6 +114,9 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "event_decision_metrics": read_json_table(results / "event_decision_criticality" / "tables" / "event_decision_criticality_metrics.json"),
         "event_decision_variance": read_csv(results / "event_decision_criticality" / "tables" / "event_variance_decomposition.csv"),
         "event_decision_phase": read_csv(results / "event_decision_criticality" / "tables" / "event_phase_summary.csv"),
+        "footprint_metrics": read_json_table(results / "event_footprint_identifiability" / "tables" / "event_footprint_identifiability_metrics.json"),
+        "footprint_city": read_csv(results / "event_footprint_identifiability" / "tables" / "event_footprint_city_summary.csv"),
+        "footprint_jaccard": read_csv(results / "event_footprint_identifiability" / "tables" / "event_footprint_unit_jaccard_summary.csv"),
         "od_message_summary": read_csv(results / "od_message_passing_surrogate" / "tables" / "od_message_model_summary.csv"),
         "od_message_increments": read_csv(results / "od_message_passing_surrogate" / "tables" / "od_message_incremental_gains.csv"),
         "od_message_metrics": read_json_table(results / "od_message_passing_surrogate" / "tables" / "od_message_passing_metrics.json"),
@@ -317,6 +320,7 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     channel_light_activation = one_row(parameter_channel, score_id="S4_parameter_light_activation")
     channel_full_activation = one_row(parameter_channel, score_id="S5_full_activation")
     event_decision_metrics = one_row(data["event_decision_metrics"])
+    footprint_metrics = one_row(data["footprint_metrics"])
     od_message_metrics = one_row(data["od_message_metrics"])
     od_message_scalar = one_row(data["od_message_summary"], model_id="O1_scalar_od_graph")
     od_message_scalar_plus = one_row(data["od_message_summary"], model_id="O3_scalar_plus_message")
@@ -621,6 +625,14 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "event_decision_v21_high_loss_low_decision_count": safe_int(event_decision_metrics.get("high_loss_low_decision_count")),
         "event_decision_v21_moderate_loss_high_decision_count": safe_int(event_decision_metrics.get("moderate_loss_high_decision_count")),
         "event_decision_v21_high_rain_low_decision_count": safe_int(event_decision_metrics.get("high_rain_low_decision_count")),
+        "footprint_n_events": safe_int(footprint_metrics.get("n_events")),
+        "footprint_top5_zero_variance_city_count": safe_int(footprint_metrics.get("top5_zero_variance_city_count")),
+        "footprint_top5_zero_variance_event_share": safe_float(footprint_metrics.get("top5_zero_variance_event_share")),
+        "footprint_top5_variable_cities": str(footprint_metrics.get("top5_variable_cities", "")),
+        "footprint_gini_zero_variance_city_count": safe_int(footprint_metrics.get("gini_zero_variance_city_count")),
+        "footprint_gini_zero_variance_event_share": safe_float(footprint_metrics.get("gini_zero_variance_event_share")),
+        "footprint_optimizer_selected_value_share_mean_range": safe_float(footprint_metrics.get("optimizer_selected_value_share_mean_range")),
+        "footprint_top10_unit_pairwise_mean_jaccard": safe_float(footprint_metrics.get("top10_unit_pairwise_mean_jaccard")),
         "od_message_scalar_od_top5_capture": safe_float(od_message_scalar.get("mean_event_top_5pct_value_capture")),
         "od_message_message_only_top5_capture": safe_float(od_message_message_only.get("mean_event_top_5pct_value_capture")),
         "od_message_scalar_plus_top5_capture": safe_float(od_message_scalar_plus.get("mean_event_top_5pct_value_capture")),
@@ -887,6 +899,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "value": metrics["scenario_optimum_success_share"],
             "interpretation": "Longer resume solves increase representative non-base closure coverage to 26/28; residual replanning remains close to scenario-specific optima, with only two 1940-zone New York budget-only cases unresolved.",
         },
+        {
+            "version": "V32",
+            "evidence_step": "Event-footprint identifiability audit",
+            "main_question": "Does the event-level top-tail law resolve within-city spatial rainfall footprints?",
+            "key_metric": "top5_zero_within_city_variance_city_count",
+            "value": metrics["footprint_top5_zero_variance_city_count"],
+            "interpretation": "Five of seven cities have zero within-city variation in top-5% marginal-value share, so the present event-level law should be framed as a city-structure/top-tail law until zone-level event footprints are added.",
+        },
     ]
     return pd.DataFrame(rows)
 
@@ -1059,9 +1079,9 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
             },
             {
                 "item": "event_spatial_footprint_scope",
-                "current_status": "V21 finds event-level top-tail concentration is strongly linked to decision-criticality, but top-5% value share has a sizable between-city variance component.",
-                "implication": "The event-level law is currently a city-structure/top-tail law more than a fully event-specific spatial-footprint law.",
-                "next_step": "Add zone-level speed/rainfall footprint mapping to test whether top-tail concentration varies strongly across events within the same city.",
+                "current_status": "V21 finds event-level top-tail concentration is strongly linked to decision-criticality; V32 shows top-5% value share has zero within-city variation in 5 of 7 cities, covering 58.1% of events.",
+                "implication": "The event-level law is currently a city-structure/top-tail law under the OD-vulnerability spatial template, not a fully event-specific spatial-footprint law.",
+                "next_step": "Add zone-level speed/rainfall footprint mapping or calibrated spatial footprint augmentation before claiming within-city rainfall-footprint-specific recovery laws.",
             },
             {
                 "item": "training_objective_scope",
@@ -1197,13 +1217,13 @@ def write_report(
     limitations: pd.DataFrame,
 ) -> None:
     lines = [
-        "# Recoverability Law Synthesis V31",
+        "# Recoverability Law Synthesis V32",
         "",
-        "V31 repairs the representative scenario-specific LP closure coverage on top of the V30 selected-action audit. Longer resumed solves increase the non-base closure set from 23/28 to 26/28 optimal rows while preserving the residual-law conclusion.",
+        "V32 adds an event spatial-footprint identifiability audit on top of the V31 scenario-closure repair. It checks whether the event-level top-tail law is resolving within-city rainfall footprints or mostly reflecting the current city-level OD vulnerability template.",
         "",
         "## 本版做了什么",
         "",
-        "V31 reruns the hard representative non-base scenario LPs with longer time limits and a barrier-method retry for the remaining New York cases. The coverage rises to 26 optimal rows out of 28; the two unresolved rows are New York event 106 under low_budget and high_budget.",
+        "V32 quantifies the current event-footprint boundary: top-tail concentration is exactly invariant within five of seven cities under the present spatial calibration, while optimizer-selected value share still varies across events. This strengthens the wording discipline around Law B: it is a city-structure/top-tail law until zone-level event footprints are added.",
         "",
         "## 当前可写入论文的 law",
         "",
@@ -1247,6 +1267,8 @@ def write_report(
         "",
         "20. **Scenario-closure coverage repair**: longer resumed LP solves strengthen the V9 scenario-specific optimum check from 23/28 to 26/28 optimal closures. The residual finite-budget law still captures most scenario-specific LP gain; the remaining boundary is computational, concentrated in two large New York budget-only cases.",
         "",
+        "21. **Event-footprint identifiability boundary**: current event-level top-tail concentration is largely fixed by the city spatial template. Five of seven cities have zero within-city variation in top-5% value share and marginal-value Gini, so within-city rainfall-footprint claims require additional zone-level footprint data or augmentation.",
+        "",
         "## 关键指标",
         "",
         f"- fine-budget LP closure: {metrics['fine_budget_lp_n_selected_events']} selected events x {metrics['fine_budget_n_scales']} budget scales = {metrics['fine_budget_lp_n_jobs']} LP jobs, {metrics['fine_budget_lp_n_optimal_jobs']} optimal; LP gain peak budget = {metrics['fine_budget_lp_gain_peak_budget']:.2f}; LP gain per budget peak = {metrics['fine_budget_lp_gain_per_budget_peak_budget']:.2f}; law-random / LP-gain peak = {metrics['fine_budget_lp_law_random_fraction_peak_budget']:.2f}; base-budget law / LP gain = {metrics['fine_budget_lp_base_law_fraction_of_lp_gain']:.4f}, random / LP gain = {metrics['fine_budget_lp_base_random_fraction_of_lp_gain']:.4f}; mean law / LP gain across all budget rows = {metrics['fine_budget_lp_mean_law_fraction_of_lp_gain_all_budgets']:.4f}",
@@ -1281,6 +1303,7 @@ def write_report(
         f"- event-level severity decoupling: decision-criticality vs loss Spearman = {metrics['event_decision_v21_decision_vs_loss_spearman']:.4f}; vs top-5% value share = {metrics['event_decision_v21_decision_vs_top5_spearman']:.4f}; vs marginal-value gini = {metrics['event_decision_v21_decision_vs_gini_spearman']:.4f}",
         f"- event-level counterexamples: high-loss/low-decision events = {metrics['event_decision_v21_high_loss_low_decision_count']}; moderate-loss/high-decision events = {metrics['event_decision_v21_moderate_loss_high_decision_count']}; high-rain/low-decision events = {metrics['event_decision_v21_high_rain_low_decision_count']}",
         f"- event-footprint boundary: top-5% value-share between-city variance share = {metrics['event_decision_v21_top5_between_city_share']:.4f}; gini between-city share = {metrics['event_decision_v21_gini_between_city_share']:.4f}; severity-only leave-city decision Spearman = {metrics['event_decision_v21_severity_only_loco_spearman']:.4f}; top-tail model = {metrics['event_decision_v21_top_tail_loco_spearman']:.4f}",
+        f"- event-footprint identifiability: top-5% value share has zero within-city variation in {metrics['footprint_top5_zero_variance_city_count']}/7 cities ({metrics['footprint_top5_zero_variance_event_share']:.1%} of events); varying cities = {metrics['footprint_top5_variable_cities']}; optimizer-selected value-share mean within-city range = {metrics['footprint_optimizer_selected_value_share_mean_range']:.4f}; top-10 greedy-unit mean Jaccard = {metrics['footprint_top10_unit_pairwise_mean_jaccard']:.4f}",
         f"- early decision-criticality: best Spearman = {metrics['early_decision_best_spearman']:.4f} at {metrics['early_decision_best_window']}h using {metrics['early_decision_best_feature_group']}; 2h all-early Spearman = {metrics['early_decision_2h_all_spearman']:.4f}",
         "",
         "## Evidence Ladder",
@@ -1309,7 +1332,7 @@ def write_report(
         "",
         "## 论文写作含义",
         "",
-        "The current learning/law section can be written as a full evidence chain: optimization produces an action-value field; single-action LPs validate the marginal label; cross-city, factorized, and symbolic surrogates support a compact activated law; residual greedy shows that finite budgets require residual re-scoring; event top-tail tests separate decision-criticality from disruption magnitude; V29/V30 show that non-obvious activation survives parameter perturbations and appears in selected LP support; V31 strengthens representative scenario-specific optimum closure to 26/28 optimal non-base rows. The remaining caveats are still important: graph evidence is OD-dependency alignment rather than a full road-adjacency/GNN closure; calendar holdout remains city-confounded; intervention parameters remain management-regime assumptions rather than observed causal intervention effects; and the two unresolved New York scenario-optimum rows should be reported as a computational boundary.",
+        "The current learning/law section can be written as a full evidence chain: optimization produces an action-value field; single-action LPs validate the marginal label; cross-city, factorized, and symbolic surrogates support a compact activated law; residual greedy shows that finite budgets require residual re-scoring; event top-tail tests separate decision-criticality from disruption magnitude; V29/V30 show that non-obvious activation survives parameter perturbations and appears in selected LP support; V31 strengthens representative scenario-specific optimum closure to 26/28 optimal non-base rows; V32 prevents over-claiming by showing that present event top-tail concentration is mostly a city-template signal. The remaining caveats are still important: graph evidence is OD-dependency alignment rather than a full road-adjacency/GNN closure; calendar holdout remains city-confounded; intervention parameters remain management-regime assumptions rather than observed causal intervention effects; the two unresolved New York scenario-optimum rows are a computational boundary; and event-specific spatial-footprint laws require zone-level footprint data or calibrated spatial augmentation.",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
