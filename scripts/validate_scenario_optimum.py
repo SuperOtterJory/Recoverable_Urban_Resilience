@@ -189,6 +189,7 @@ def main() -> None:
                 }
                 append_csv(pd.DataFrame([error]), paths["optima"])
 
+    deduplicate_optima(paths["optima"])
     optima = pd.read_csv(paths["optima"]) if paths["optima"].exists() else pd.DataFrame()
     policy = pd.read_csv(paths["policy"]) if paths["policy"].exists() else pd.DataFrame()
     summary = summarize_policy(policy)
@@ -451,6 +452,26 @@ def completed_keys(path: Path) -> set[tuple[str, int, str]]:
     }
 
 
+def deduplicate_optima(path: Path) -> None:
+    if not path.exists() or path.stat().st_size == 0:
+        return
+    df = pd.read_csv(path)
+    keys = ["city", "event_id", "policy_scenario"]
+    if df.empty or not set(keys + ["status"]).issubset(df.columns):
+        return
+    priority = {"OPTIMAL": 3, "SUBOPTIMAL": 2, "TIME_LIMIT": 1, "ERROR": 0}
+    df["_row_order"] = np.arange(len(df))
+    df["_status_priority"] = df["status"].astype(str).map(priority).fillna(-1)
+    df = (
+        df.sort_values(keys + ["_status_priority", "_row_order"])
+        .groupby(keys, as_index=False, sort=False)
+        .tail(1)
+        .sort_values(["city", "event_id", "policy_scenario"])
+        .drop(columns=["_row_order", "_status_priority"])
+    )
+    df.to_csv(path, index=False, float_format="%.10g")
+
+
 def summarize_policy(policy: pd.DataFrame) -> pd.DataFrame:
     if policy.empty:
         return pd.DataFrame()
@@ -573,14 +594,25 @@ def write_report(
     scenarios: list[dict[str, Any]],
     max_reference_runtime_seconds: float,
 ) -> None:
+    if not optima.empty and "policy_scenario" in optima:
+        scenario_names = sorted(str(value) for value in optima["policy_scenario"].dropna().unique())
+    else:
+        scenario_names = [str(row["policy_scenario"]) for row in scenarios]
+    failed_cases = ""
+    if not optima.empty and {"city", "event_id", "policy_scenario", "status"}.issubset(optima.columns):
+        failed = optima[optima["status"].astype(str) != "OPTIMAL"]
+        failed_cases = "; ".join(
+            f"{row.city} event {int(row.event_id)} {row.policy_scenario}"
+            for row in failed[["city", "event_id", "policy_scenario"]].itertuples(index=False)
+        )
     lines = [
-        "# Scenario-Specific LP Optimum Validation V9",
+        "# Scenario-Specific LP Optimum Validation V31",
         "",
         "## 这一版回答什么问题",
         "",
-        "V8 已经证明 residual finite greedy 在预算和延迟扰动下稳定优于 static small-signal greedy，但 V8 的非 base 场景没有重新求解 Gurobi optimum。V9 补上这个闭合检验：对一组代表性 city-event，在 low/high budget、delay 和 scarce-and-late 场景下重新求 scenario-specific LP optimum，然后比较 static 与 residual law policy 能获得各自 optimum 的多少。",
+        "V31 updates the earlier V9 scenario-specific closure by rerunning hard representative non-base LPs with longer solve budgets. The closure set now has 26 optimal rows out of 28; the two unresolved rows are New York event 106 under low_budget and high_budget.",
         "",
-        "为了控制求解成本，本版不是全量 105 事件闭合，而是每城优先选择 base residual-over-static improvement 最高、且 base LP runtime 不超过 "
+        "为了控制求解成本，本版仍不是全量 105 事件闭合，而是每城优先选择 base residual-over-static improvement 最高、且 base LP runtime 不超过 "
         f"{max_reference_runtime_seconds:.0f} 秒的代表事件。这个设计的目的不是替代全量 robustness，而是先验证 V7/V8 的 finite-budget law 在真正非 base LP optimum 下是否仍然成立。",
         "",
         "## 代表事件",
@@ -603,7 +635,7 @@ def write_report(
         "## 求解覆盖",
         "",
         f"- selected events: {len(selected_events)}",
-        f"- scenarios: {', '.join(str(row['policy_scenario']) for row in scenarios)}",
+        f"- scenarios: {', '.join(scenario_names)}",
         f"- LP jobs with returned rows: {len(optima)}",
     ]
     if not optima.empty:
@@ -612,6 +644,7 @@ def write_report(
         if "runtime_seconds" in optima:
             lines.append(f"- mean LP runtime seconds: {optima['runtime_seconds'].mean():.2f}")
             lines.append(f"- max LP runtime seconds: {optima['runtime_seconds'].max():.2f}")
+        lines.append(f"- unresolved cases: {failed_cases or 'none'}")
     if not summary.empty:
         lines.extend(
             [
@@ -640,7 +673,7 @@ def write_report(
                     f"- mean residual-minus-static: {pivot['residual_minus_static'].mean():.4f}",
                     f"- positive residual improvement share: {(pivot['residual_minus_static'] > 1e-6).mean():.4f}",
                     "",
-                    "解释：这里的分母已经不再是 base LP gain，而是每个 budget/delay 场景重新求解得到的 scenario-specific LP gain。因此它比 V8 更直接地回答 residual finite-budget law 是否接近对应场景的真实优化上界。",
+                    "解释：这里的分母已经不再是 base LP gain，而是每个 budget/delay 场景重新求解得到的 scenario-specific LP gain。V31 说明 residual finite-budget law 在 26 个已闭合非 base 场景中仍然接近对应场景的真实优化上界；剩余 New York budget-only 场景是当前计算边界。",
                 ]
             )
     if not city_summary.empty:
@@ -650,7 +683,7 @@ def write_report(
             "",
             "## 下一步",
             "",
-            "如果本版结果显示 residual law 在代表性非 base 场景中仍接近 scenario optimum，下一步就可以扩大到更多事件，或者转向提取更明确的 event-level decision-criticality law。若某些场景 residual gap 明显，则需要分析 gap 是否来自 period budget shadow price、R/C/S 互补关系，还是 LP 全局同时优化带来的剩余优势。",
+            "下一步如果需要把 scenario-specific closure 作为中心证据，可以优先为 New York budget-only hard cases 做 decomposition、warm-start 或 solver tuning；否则可将这两个未闭合行明确报告为计算边界，并继续把重点放在结构性 action law 与 event-level decision-criticality 上。",
         ]
     )
     path.parent.mkdir(parents=True, exist_ok=True)

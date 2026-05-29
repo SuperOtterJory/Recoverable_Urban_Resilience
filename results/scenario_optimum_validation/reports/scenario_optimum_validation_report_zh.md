@@ -1,10 +1,10 @@
-# Scenario-Specific LP Optimum Validation V9
+# Scenario-Specific LP Optimum Validation V31
 
 ## 这一版回答什么问题
 
-V8 已经证明 residual finite greedy 在预算和延迟扰动下稳定优于 static small-signal greedy，但 V8 的非 base 场景没有重新求解 Gurobi optimum。V9 补上这个闭合检验：对一组代表性 city-event，在 low/high budget、delay 和 scarce-and-late 场景下重新求 scenario-specific LP optimum，然后比较 static 与 residual law policy 能获得各自 optimum 的多少。
+V31 updates the earlier V9 scenario-specific closure by rerunning hard representative non-base LPs with longer solve budgets. The closure set now has 26 optimal rows out of 28; the two unresolved rows are New York event 106 under low_budget and high_budget.
 
-为了控制求解成本，本版不是全量 105 事件闭合，而是每城优先选择 base residual-over-static improvement 最高、且 base LP runtime 不超过 180 秒的代表事件。这个设计的目的不是替代全量 robustness，而是先验证 V7/V8 的 finite-budget law 在真正非 base LP optimum 下是否仍然成立。
+为了控制求解成本，本版仍不是全量 105 事件闭合，而是每城优先选择 base residual-over-static improvement 最高、且 base LP runtime 不超过 180 秒的代表事件。这个设计的目的不是替代全量 robustness，而是先验证 V7/V8 的 finite-budget law 在真正非 base LP optimum 下是否仍然成立。
 
 ## 代表事件
 
@@ -21,11 +21,12 @@ V8 已经证明 residual finite greedy 在预算和延迟扰动下稳定优于 s
 ## 求解覆盖
 
 - selected events: 7
-- scenarios: low_budget, high_budget, delay_4h, scarce_and_late
+- scenarios: delay_4h, high_budget, low_budget, scarce_and_late
 - LP jobs with returned rows: 28
-- LP status counts: {'OPTIMAL': 23, 'ERROR': 5}
-- mean LP runtime seconds: 61.98
-- max LP runtime seconds: 274.35
+- LP status counts: {'OPTIMAL': 26, 'ERROR': 2}
+- mean LP runtime seconds: 106.45
+- max LP runtime seconds: 717.35
+- unresolved cases: New York event 106 high_budget; New York event 106 low_budget
 
 ## Policy vs Scenario LP Optimum
 
@@ -33,21 +34,21 @@ V8 已经证明 residual finite greedy 在预算和延迟扰动下稳定优于 s
 |:------------------|---------------:|------------------:|:---------------------------|--------------------:|------------------------------------:|--------------------------------------:|-------------------------------:|---------------------------------:|----------------------------:|----------------------:|-----------------------------:|
 | delay_4h          |            1   |                 4 | residual_finite_greedy     |                   7 |                              0.9156 |                                0.9737 |                        0.08445 |                          0.02629 |                     0.1042  |                 3.209 |                        694.1 |
 | delay_4h          |            1   |                 4 | static_small_signal_greedy |                   7 |                              0.7489 |                                0.7989 |                        0.2511  |                          0.2011  |                     0.08141 |                 3.209 |                        552.4 |
-| high_budget       |            2   |                 0 | residual_finite_greedy     |                   4 |                              0.9549 |                                0.9815 |                        0.04514 |                          0.01852 |                     0.2067  |                 6.062 |                        519.2 |
-| high_budget       |            2   |                 0 | static_small_signal_greedy |                   4 |                              0.7353 |                                0.8144 |                        0.2647  |                          0.1856  |                     0.1523  |                 6.062 |                        399.8 |
+| high_budget       |            2   |                 0 | residual_finite_greedy     |                   6 |                              0.9414 |                                0.9682 |                        0.05857 |                          0.03176 |                     0.2198  |                 4.619 |                        679.2 |
+| high_budget       |            2   |                 0 | static_small_signal_greedy |                   6 |                              0.6637 |                                0.7121 |                        0.3363  |                          0.2879  |                     0.1458  |                 4.619 |                        441.5 |
 | low_budget        |            0.5 |                 0 | residual_finite_greedy     |                   6 |                              0.9602 |                                0.9845 |                        0.03984 |                          0.01545 |                     0.07709 |                 1.155 |                        130.3 |
 | low_budget        |            0.5 |                 0 | static_small_signal_greedy |                   6 |                              0.6948 |                                0.7393 |                        0.3052  |                          0.2607  |                     0.05214 |                 1.155 |                        102.7 |
-| scarce_and_late   |            0.5 |                 2 | residual_finite_greedy     |                   6 |                              0.9427 |                                0.9756 |                        0.05729 |                          0.0244  |                     0.07065 |                 1.745 |                        303.2 |
-| scarce_and_late   |            0.5 |                 2 | static_small_signal_greedy |                   6 |                              0.7122 |                                0.7868 |                        0.2878  |                          0.2132  |                     0.05006 |                 1.745 |                        213.7 |
+| scarce_and_late   |            0.5 |                 2 | residual_finite_greedy     |                   7 |                              0.9479 |                                0.9769 |                        0.05212 |                          0.02311 |                     0.07062 |                 1.605 |                        309.3 |
+| scarce_and_late   |            0.5 |                 2 | static_small_signal_greedy |                   7 |                              0.7182 |                                0.7538 |                        0.2818  |                          0.2462  |                     0.05066 |                 1.605 |                        216.3 |
 
 ## 关键闭合结论
 
-- mean static / scenario LP gain: 0.7228
-- mean residual / scenario LP gain: 0.9411
-- mean residual-minus-static: 0.2183
-- positive residual improvement share: 0.9130
+- mean static / scenario LP gain: 0.7085
+- mean residual / scenario LP gain: 0.9405
+- mean residual-minus-static: 0.2321
+- positive residual improvement share: 0.9231
 
-解释：这里的分母已经不再是 base LP gain，而是每个 budget/delay 场景重新求解得到的 scenario-specific LP gain。因此它比 V8 更直接地回答 residual finite-budget law 是否接近对应场景的真实优化上界。
+解释：这里的分母已经不再是 base LP gain，而是每个 budget/delay 场景重新求解得到的 scenario-specific LP gain。V31 说明 residual finite-budget law 在 26 个已闭合非 base 场景中仍然接近对应场景的真实优化上界；剩余 New York budget-only 场景是当前计算边界。
 
 ## City Summary
 
@@ -57,17 +58,17 @@ V8 已经证明 residual finite greedy 在预算和延迟扰动下稳定优于 s
 | Houston      | residual_finite_greedy     |                   4 |                              0.998  |                                0.9984 |                       0.002042 |
 | New York     | residual_finite_greedy     |                   2 |                              0.9871 |                                0.9871 |                       0.0129   |
 | Austin       | residual_finite_greedy     |                   4 |                              0.9766 |                                0.974  |                       0.0234   |
-| Chicago      | residual_finite_greedy     |                   2 |                              0.9713 |                                0.9713 |                       0.02867  |
-| Philadelphia | residual_finite_greedy     |                   3 |                              0.904  |                                0.9115 |                       0.09599  |
+| Chicago      | residual_finite_greedy     |                   4 |                              0.9724 |                                0.9734 |                       0.02762  |
+| Philadelphia | residual_finite_greedy     |                   4 |                              0.8933 |                                0.8992 |                       0.1067   |
 | San Antonio  | residual_finite_greedy     |                   4 |                              0.7811 |                                0.8279 |                       0.2189   |
 | Dallas       | static_small_signal_greedy |                   4 |                              0.9901 |                                0.9987 |                       0.009897 |
 | Houston      | static_small_signal_greedy |                   4 |                              0.9446 |                                0.9495 |                       0.0554   |
 | New York     | static_small_signal_greedy |                   2 |                              0.9007 |                                0.9007 |                       0.09931  |
 | Austin       | static_small_signal_greedy |                   4 |                              0.747  |                                0.7451 |                       0.253    |
-| Chicago      | static_small_signal_greedy |                   2 |                              0.7439 |                                0.7439 |                       0.2561   |
-| Philadelphia | static_small_signal_greedy |                   3 |                              0.4436 |                                0.4418 |                       0.5564   |
+| Chicago      | static_small_signal_greedy |                   4 |                              0.7299 |                                0.7309 |                       0.2701   |
+| Philadelphia | static_small_signal_greedy |                   4 |                              0.4235 |                                0.4087 |                       0.5765   |
 | San Antonio  | static_small_signal_greedy |                   4 |                              0.3197 |                                0.3218 |                       0.6803   |
 
 ## 下一步
 
-如果本版结果显示 residual law 在代表性非 base 场景中仍接近 scenario optimum，下一步就可以扩大到更多事件，或者转向提取更明确的 event-level decision-criticality law。若某些场景 residual gap 明显，则需要分析 gap 是否来自 period budget shadow price、R/C/S 互补关系，还是 LP 全局同时优化带来的剩余优势。
+下一步如果需要把 scenario-specific closure 作为中心证据，可以优先为 New York budget-only hard cases 做 decomposition、warm-start 或 solver tuning；否则可将这两个未闭合行明确报告为计算边界，并继续把重点放在结构性 action law 与 event-level decision-criticality 上。

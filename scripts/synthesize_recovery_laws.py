@@ -329,6 +329,15 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     parameter_lp_metrics = one_row(data["parameter_lp_metrics"])
     parameter_nonobvious_metrics = one_row(data["parameter_nonobvious_metrics"])
     parameter_lp_selection_metrics = one_row(data["parameter_lp_selection_metrics"])
+    scenario_success_jobs = int((optima["status"].astype(str) == "OPTIMAL").sum()) if "status" in optima else 0
+    scenario_error_jobs = int((optima["status"].astype(str) == "ERROR").sum()) if "status" in optima else 0
+    scenario_failed_cases = ""
+    if not optima.empty and {"city", "event_id", "policy_scenario", "status"}.issubset(optima.columns):
+        failed = optima[optima["status"].astype(str) != "OPTIMAL"].copy()
+        scenario_failed_cases = "; ".join(
+            f"{row.city} {int(row.event_id)} {row.policy_scenario}"
+            for row in failed[["city", "event_id", "policy_scenario"]].itertuples(index=False)
+        )
 
     metrics: dict[str, Any] = {
         "n_action_tokens": safe_int(policy_capture["n_tokens"].max()) if "n_tokens" in policy_capture else None,
@@ -357,8 +366,11 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "stress_delay4_residual_fraction": safe_float(stress_delay4.get("mean_residual_fraction_of_base_lp_gain")),
         "stress_scarce_residual_fraction": safe_float(stress_scarce.get("mean_residual_fraction_of_base_lp_gain")),
         "scenario_optimum_jobs": safe_int(len(optima)),
-        "scenario_optimum_success_jobs": safe_int((optima["status"].astype(str) == "OPTIMAL").sum()) if "status" in optima else None,
-        "scenario_optimum_timeout_jobs": safe_int((optima["status"].astype(str) == "ERROR").sum()) if "status" in optima else None,
+        "scenario_optimum_success_jobs": safe_int(scenario_success_jobs),
+        "scenario_optimum_timeout_jobs": safe_int(scenario_error_jobs),
+        "scenario_optimum_error_jobs": safe_int(scenario_error_jobs),
+        "scenario_optimum_success_share": safe_float(scenario_success_jobs / len(optima)) if len(optima) else np.nan,
+        "scenario_optimum_failed_cases": scenario_failed_cases,
         "scenario_static_fraction_of_lp_gain": safe_float(scenario_pivot["static_small_signal_greedy"].mean()) if not scenario_pivot.empty else np.nan,
         "scenario_residual_fraction_of_lp_gain": safe_float(scenario_pivot["residual_finite_greedy"].mean()) if not scenario_pivot.empty else np.nan,
         "scenario_residual_improvement": safe_float(scenario_pivot["residual_minus_static"].mean()) if not scenario_pivot.empty else np.nan,
@@ -867,6 +879,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "value": metrics["parameter_lp_selection_activated_top20_cost_share"],
             "interpretation": "Across 20 representative parameter LPs, activated top-20% ranks cover most LP-selected cost; deficit/exposure simple ranks cover much of the support, but structure-only remains a poor explanation.",
         },
+        {
+            "version": "V31",
+            "evidence_step": "Scenario-specific LP closure coverage repair",
+            "main_question": "Can representative non-base LP closure be expanded with longer solves?",
+            "key_metric": "scenario_optimum_success_share",
+            "value": metrics["scenario_optimum_success_share"],
+            "interpretation": "Longer resume solves increase representative non-base closure coverage to 26/28; residual replanning remains close to scenario-specific optima, with only two 1940-zone New York budget-only cases unresolved.",
+        },
     ]
     return pd.DataFrame(rows)
 
@@ -991,13 +1011,21 @@ def build_top_tail_correlations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
 def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
     optima = data["scenario_optima"]
     timeout_count = int((optima["status"].astype(str) == "ERROR").sum()) if "status" in optima else 0
+    success_count = int((optima["status"].astype(str) == "OPTIMAL").sum()) if "status" in optima else 0
+    failed_cases = ""
+    if not optima.empty and {"city", "event_id", "policy_scenario", "status"}.issubset(optima.columns):
+        failed = optima[optima["status"].astype(str) != "OPTIMAL"]
+        failed_cases = "; ".join(
+            f"{row.city} event {int(row.event_id)} {row.policy_scenario}"
+            for row in failed[["city", "event_id", "policy_scenario"]].itertuples(index=False)
+        )
     return pd.DataFrame(
         [
             {
                 "item": "scenario_optimum_coverage",
-                "current_status": f"{len(optima) - timeout_count} successful LP closures; {timeout_count} time-limit/error rows",
-                "implication": "V9 supports representative non-base closure, not full 105-event scenario-optimum closure.",
-                "next_step": "Expand scenario-specific LP validation with resume mode or longer time limits for hard New York/Chicago/Philadelphia cases.",
+                "current_status": f"V31 improves representative non-base closure to {success_count}/{len(optima)} optimal rows; remaining unresolved rows: {failed_cases or 'none'}",
+                "implication": "Representative scenario-optimum closure is stronger than V9, but it is still not a full 28/28 closure and not an exhaustive 105-event non-base validation.",
+                "next_step": "Use decomposition, warm starts, or solver tuning for the New York budget-only hard cases, or report them explicitly as the current computational boundary.",
             },
             {
                 "item": "intervention_parameter_identification",
@@ -1169,13 +1197,13 @@ def write_report(
     limitations: pd.DataFrame,
 ) -> None:
     lines = [
-        "# Recoverability Law Synthesis V30",
+        "# Recoverability Law Synthesis V31",
         "",
-        "V30 adds an exact full-LP selected-action support audit on top of the V29 parameter-ensemble non-obvious action-law test. It checks whether the action-law patterns appear in the actual actions selected by representative parameter-scenario LP optima.",
+        "V31 repairs the representative scenario-specific LP closure coverage on top of the V30 selected-action audit. Longer resumed solves increase the non-base closure set from 23/28 to 26/28 optimal rows while preserving the residual-law conclusion.",
         "",
         "## 本版做了什么",
         "",
-        "V30 重解 V24 的 20 个代表性 parameter-scenario full LP，保存 LP 实际正投放的 unit-time-intervention actions，并检查这些 selected actions 是否落在 activated、deficit-only、exposure-only、structure-only 的 top ranks 中。它把 V29 的 first-order ranking 诊断推进到有限预算完整优化器的 selected support。",
+        "V31 reruns the hard representative non-base scenario LPs with longer time limits and a barrier-method retry for the remaining New York cases. The coverage rises to 26 optimal rows out of 28; the two unresolved rows are New York event 106 under low_budget and high_budget.",
         "",
         "## 当前可写入论文的 law",
         "",
@@ -1217,6 +1245,8 @@ def write_report(
         "",
         "19. **Exact selected-support nuance**: in representative full-LP parameter optima, selected actions are not invisible to simple deficit/exposure signals; their union captures most selected cost. The robust failure is single-factor sufficiency, especially structure-only ranking, while activated ranks remain closest to the LP-selected support.",
         "",
+        "20. **Scenario-closure coverage repair**: longer resumed LP solves strengthen the V9 scenario-specific optimum check from 23/28 to 26/28 optimal closures. The residual finite-budget law still captures most scenario-specific LP gain; the remaining boundary is computational, concentrated in two large New York budget-only cases.",
+        "",
         "## 关键指标",
         "",
         f"- fine-budget LP closure: {metrics['fine_budget_lp_n_selected_events']} selected events x {metrics['fine_budget_n_scales']} budget scales = {metrics['fine_budget_lp_n_jobs']} LP jobs, {metrics['fine_budget_lp_n_optimal_jobs']} optimal; LP gain peak budget = {metrics['fine_budget_lp_gain_peak_budget']:.2f}; LP gain per budget peak = {metrics['fine_budget_lp_gain_per_budget_peak_budget']:.2f}; law-random / LP-gain peak = {metrics['fine_budget_lp_law_random_fraction_peak_budget']:.2f}; base-budget law / LP gain = {metrics['fine_budget_lp_base_law_fraction_of_lp_gain']:.4f}, random / LP gain = {metrics['fine_budget_lp_base_random_fraction_of_lp_gain']:.4f}; mean law / LP gain across all budget rows = {metrics['fine_budget_lp_mean_law_fraction_of_lp_gain_all_budgets']:.4f}",
@@ -1227,7 +1257,7 @@ def write_report(
         f"- single-action LP validation: small-signal Spearman = {metrics['single_action_small_signal_spearman']:.4f}, finite-area label Spearman = {metrics['single_action_finite_area_spearman']:.4f}",
         f"- leave-one-city-out surrogate: mean Spearman = {metrics['leave_city_mean_spearman']:.4f}, top-5% capture = {metrics['leave_city_mean_top5_capture']:.4f}",
         f"- base finite-budget closure: static greedy / LP gain = {metrics['base_static_fraction_of_lp_gain']:.4f}; residual greedy / LP gain = {metrics['base_residual_fraction_of_lp_gain']:.4f}",
-        f"- representative non-base closure: static / scenario LP gain = {metrics['scenario_static_fraction_of_lp_gain']:.4f}; residual / scenario LP gain = {metrics['scenario_residual_fraction_of_lp_gain']:.4f}",
+        f"- representative non-base closure: {metrics['scenario_optimum_success_jobs']}/{metrics['scenario_optimum_jobs']} LP rows optimal ({metrics['scenario_optimum_success_share']:.1%}); static / scenario LP gain = {metrics['scenario_static_fraction_of_lp_gain']:.4f}; residual / scenario LP gain = {metrics['scenario_residual_fraction_of_lp_gain']:.4f}; failed cases = {metrics['scenario_optimum_failed_cases'] or 'none'}",
         f"- symbolic activated law top-5% capture = {metrics['symbolic_activated_top5_capture']:.4f}; largest feature ablation drop = {metrics['symbolic_largest_ablation_drop_group']} ({metrics['symbolic_largest_ablation_top5_drop']:.4f})",
         f"- non-obvious action law: false-positive shares are deficit-only {metrics['nonobvious_deficit_false_positive_share']:.1%}, exposure-only {metrics['nonobvious_exposure_false_positive_share']:.1%}, structure-only {metrics['nonobvious_structure_false_positive_share']:.1%}",
         f"- parameter non-obvious law: {metrics['parameter_nonobvious_n_scenarios']} parameter scenarios x {metrics['parameter_nonobvious_n_events_per_scenario']} events; mean false-positive shares are deficit-only {metrics['parameter_nonobvious_deficit_mean_false_positive_share']:.1%}, exposure-only {metrics['parameter_nonobvious_exposure_mean_false_positive_share']:.1%}, structure-only {metrics['parameter_nonobvious_structure_mean_false_positive_share']:.1%}; hidden true top-5% actions from all simple top-5% rankings = {metrics['parameter_nonobvious_hidden_from_simple_top5_mean_share']:.1%}; activated law mean/min relative top-5% capture = {metrics['parameter_nonobvious_activated_law_mean_top5_relative_to_oracle']:.4f}/{metrics['parameter_nonobvious_activated_law_min_top5_relative_to_oracle']:.4f}",
@@ -1279,7 +1309,7 @@ def write_report(
         "",
         "## 论文写作含义",
         "",
-        "现在 learning/law 部分可以写成一条更完整的证据链：优化模型产生 action-value field；single-action LP 验证 marginal label；cross-city surrogate、factorized surrogate 和 symbolic extraction 说明低维 activated law 可解释；residual greedy 说明有限预算需要动态重评分；event top-tail 说明 decision-criticality 不是 disruption magnitude；V15 给出反直觉证据；V17 说明 OD graph 的空间对齐本身有实证价值；V18 说明低维 law 在不同事件 regime 留出时仍能保持较高 top-tail capture；V19 说明低维 law 不是由特殊 ranking objective trick 造出来的；V25 说明同一城市内按事件时间顺序留出时 compact law 仍保持稳定；V26 说明轻量 neural surrogate 没有在严格 leave-city top-tail 上超过 ridge，并且 token-level identity split 会夸大 apparent fit；V27 将预算规律从三点扫描推进到 10 点扫描，支持 scale-dependent diminishing leverage 而不是中等预算绝对峰值；V28 进一步用 70 个代表性 budget-specific LP optima 说明该预算规律不是 proxy/replay 分母造成的；V29 说明“高损失/高流量/高结构中心性不等于高恢复价值”的非显然 action law 在参数扰动下仍成立；V30 进一步说明这个非显然性进入了代表性 full-LP selected support，但需要更细表述：deficit/exposure 的简单并集能覆盖多数实际投放成本，真正不充分的是单因子规则，尤其 structure-only。论文中仍需谨慎表述：当前 graph 证据是 OD-dependency graph 的 observed-vs-shuffled ablation，还不是完整 road-adjacency graph 或 GNN closure；calendar-year holdout 与 city composition 混杂，因此 clean leave-time-period-out 仍需要同城跨多年数据；V29/V30 仍是模型内 counterfactual diagnostics，而不是现实干预记录的因果验证。",
+        "The current learning/law section can be written as a full evidence chain: optimization produces an action-value field; single-action LPs validate the marginal label; cross-city, factorized, and symbolic surrogates support a compact activated law; residual greedy shows that finite budgets require residual re-scoring; event top-tail tests separate decision-criticality from disruption magnitude; V29/V30 show that non-obvious activation survives parameter perturbations and appears in selected LP support; V31 strengthens representative scenario-specific optimum closure to 26/28 optimal non-base rows. The remaining caveats are still important: graph evidence is OD-dependency alignment rather than a full road-adjacency/GNN closure; calendar holdout remains city-confounded; intervention parameters remain management-regime assumptions rather than observed causal intervention effects; and the two unresolved New York scenario-optimum rows should be reported as a computational boundary.",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
