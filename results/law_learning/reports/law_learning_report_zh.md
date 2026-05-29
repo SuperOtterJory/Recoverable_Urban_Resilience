@@ -1,10 +1,10 @@
-# Learning and Law Discovery V2
+# Learning and Law Discovery V3
 
 ## 本版本做了什么
 
 这一版把 event-level optimization outputs 转换成 action-token 学习问题。每个 token 表示 `city-event-unit-time-intervention`。目标不是直接学习 optimizer 是否选择该 token，而是构造一个可解释的 marginal recovery-value proxy：单位资源投到该 token 后，沿着无干预的被动恢复轨迹，估计它能减少多少未来加权功能损失。
 
-V2 在 V1 的静态 action-value field 之上，新增了 budget-aware greedy oracle。它把每个 action 的可部署上限拆成 diminishing-return segments，并在总预算、单期预算和响应延迟约束下做贪心分配。因此现在不仅能问“哪个 action 静态边际价值高”，也能问“一个 law-guided policy 在预算约束下能拿到 greedy oracle 的多少价值”。
+V2 在 V1 的静态 action-value field 之上，新增了 budget-aware greedy oracle。V3 进一步把 greedy/law/simple baseline 生成的固定 allocation 放回复原始恢复动力学中 replay，直接计算 fixed policy 的 12 小时 objective 和 recoverable fraction。因此现在不仅能问“一个 law-guided policy 在 proxy 上接近 greedy oracle 吗”，也能问“它在实际 `b, rC, rS, ell` 演化里能拿到 LP optimum 的多少恢复收益”。
 
 ## 数据规模
 
@@ -12,6 +12,7 @@ V2 在 V1 的静态 action-value field 之上，新增了 budget-aware greedy or
 - city-event scenarios: 105
 - full candidate-action concentration rows: 105
 - policy stress-test rows: 3,780
+- fixed-policy replay rows: 3,885
 - sampled-token greedy oracle selected share: 0.3971
 - mean event top-5% value share: 0.2444
 - mean event marginal-value gini: 0.5909
@@ -53,6 +54,19 @@ V2 增加的 greedy oracle 不是重新求解 LP，而是一个可解释的 budg
 
 因此 `greedy_oracle` 是这个解析标签体系下的上界 policy；`activated_bottleneck_law`、`exposure_only`、`deficit_only`、`structure_only`、`random_positive` 都在同一预算约束下与它比较。
 
+## Fixed-Policy Replay
+
+V3 的 replay validation 不再只看 action-value proxy。对每个 policy 生成的固定 allocation，脚本把分段资源量转换成 `R/C/S` 的实际 effect，然后按原始恢复动力学逐小时前推：
+
+```text
+b[t+1]  = clip(a * b[t] + h[t+1] - e_R[t], 0, 1)
+rC[t+1] = clip((1 - delta_C) * rC[t] + e_C[t], 0, 1)
+rS[t+1] = clip((1 - delta_S) * rS[t] + e_S[t], 0, 1)
+ell[t]  = clip(Q * max(b[t] - rC[t], 0) - rS[t], 0, 1)
+```
+
+这里 `lp_optimizer_replay` 是一个 sanity check：把 Gurobi 输出的 optimized effects 放回同一个 replay engine，应该接近原 LP objective。这个检查用于确认 replay engine 和 LP 目标是一致的。
+
 ## 关键结果概览
 
 - Leave-one-city-out mean Spearman: 0.8501
@@ -61,6 +75,10 @@ V2 增加的 greedy oracle 不是重新求解 LP，而是一个可解释的 budg
 - Activated-bottleneck law mean event Spearman: 0.9643
 - Base scenario law policy / greedy oracle: 0.9814
 - Base scenario best simple baseline / greedy oracle: 0.5767
+- Base scenario law replay gain / LP optimized gain: 0.7904
+- Base scenario best simple replay gain / LP optimized gain: 0.5591
+- LP optimizer replay mean recoverable-fraction gap: 6.742e-09
+- Base scenario law replay mean recoverable-fraction gap to LP: 0.0287
 
 ## Leave-One-City-Out Surrogate
 
@@ -137,6 +155,50 @@ V2 增加的 greedy oracle 不是重新求解 LP，而是一个可解释的 budg
 
 解释：这个表不是新的 Gurobi LP 解，而是用同一 action-value field 做的预算约束 stress test。它用于检验 law 在不同预算和延迟条件下是否仍能作为资源分配 policy 接近 greedy oracle。真正的最终版还需要对关键 budget/delay scenario 重新求解 LP 来闭合验证。
 
+## Fixed-Policy Replay Validation
+
+| policy_scenario   |   budget_scale |   delay_add_hours | policy_score             |   n_events |   mean_replay_recoverable_fraction |   median_replay_recoverable_fraction |   mean_fraction_of_base_lp_gain |   median_fraction_of_base_lp_gain |   mean_relative_to_greedy_replay_gain |   median_relative_to_greedy_replay_gain |   mean_gap_to_base_lp_recoverable |   mean_allocated_cost |   mean_selected_action_count |
+|:------------------|---------------:|------------------:|:-------------------------|-----------:|-----------------------------------:|-------------------------------------:|--------------------------------:|----------------------------------:|--------------------------------------:|----------------------------------------:|----------------------------------:|----------------------:|-----------------------------:|
+| base              |            1   |                 0 | lp_optimizer_replay      |        105 |                           0.1347   |                             0.1331   |                         1       |                           1       |                                1.268  |                                  1.168  |                         6.742e-09 |                 6.146 |                        971.7 |
+| base              |            1   |                 0 | greedy_oracle            |        105 |                           0.1079   |                             0.1113   |                         0.8092  |                           0.8564  |                                1      |                                  1      |                         0.02681   |                 6.146 |                        959.7 |
+| base              |            1   |                 0 | activated_bottleneck_law |        105 |                           0.1061   |                             0.1112   |                         0.7904  |                           0.8463  |                                0.9757 |                                  0.9914 |                         0.02868   |                 6.146 |                       1138   |
+| base              |            1   |                 0 | exposure_only            |        105 |                           0.07179  |                             0.07012  |                         0.5591  |                           0.5476  |                                0.6904 |                                  0.6903 |                         0.06295   |                 6.146 |                        594.3 |
+| base              |            1   |                 0 | deficit_only             |        105 |                           0.06754  |                             0.06547  |                         0.5284  |                           0.5164  |                                0.6517 |                                  0.651  |                         0.0672    |                 6.146 |                        593.2 |
+| base              |            1   |                 0 | structure_only           |        105 |                           0.03027  |                             0.02978  |                         0.2436  |                           0.2311  |                                0.2999 |                                  0.2857 |                         0.1045    |                 6.146 |                        536   |
+| base              |            1   |                 0 | random_positive          |        105 |                           0.02036  |                             0.02102  |                         0.1549  |                           0.1588  |                                0.191  |                                  0.1891 |                         0.1144    |                 6.146 |                        756.2 |
+| delay_2h          |            1   |                 2 | greedy_oracle            |        105 |                           0.1013   |                             0.1037   |                         0.7552  |                           0.7779  |                                1      |                                  1      |                         0.03345   |                 6.146 |                       1025   |
+| delay_2h          |            1   |                 2 | activated_bottleneck_law |        105 |                           0.1004   |                             0.1037   |                         0.7462  |                           0.7732  |                                0.9876 |                                  0.9975 |                         0.03437   |                 6.146 |                       1125   |
+| delay_2h          |            1   |                 2 | exposure_only            |        105 |                           0.06569  |                             0.0624   |                         0.5061  |                           0.5007  |                                0.667  |                                  0.6843 |                         0.06904   |                 6.146 |                        608.9 |
+| delay_2h          |            1   |                 2 | deficit_only             |        105 |                           0.06159  |                             0.05822  |                         0.4767  |                           0.471   |                                0.6279 |                                  0.6251 |                         0.07315   |                 6.146 |                        607   |
+| delay_2h          |            1   |                 2 | structure_only           |        105 |                           0.02859  |                             0.02894  |                         0.2283  |                           0.2115  |                                0.3014 |                                  0.2831 |                         0.1061    |                 6.146 |                        545.7 |
+| delay_2h          |            1   |                 2 | random_positive          |        105 |                           0.0191   |                             0.01891  |                         0.1444  |                           0.1475  |                                0.1906 |                                  0.1909 |                         0.1156    |                 6.146 |                        762.7 |
+| delay_4h          |            1   |                 4 | greedy_oracle            |        105 |                           0.09192  |                             0.09101  |                         0.6812  |                           0.6809  |                                1      |                                  1      |                         0.04281   |                 6.146 |                       1075   |
+| delay_4h          |            1   |                 4 | activated_bottleneck_law |        105 |                           0.09167  |                             0.09101  |                         0.6789  |                           0.6779  |                                0.9965 |                                  1      |                         0.04306   |                 6.146 |                       1109   |
+| delay_4h          |            1   |                 4 | exposure_only            |        105 |                           0.0589   |                             0.05518  |                         0.4474  |                           0.4844  |                                0.649  |                                  0.6706 |                         0.07584   |                 6.146 |                        630.9 |
+| delay_4h          |            1   |                 4 | deficit_only             |        105 |                           0.05504  |                             0.0512   |                         0.4199  |                           0.4511  |                                0.6088 |                                  0.6356 |                         0.0797    |                 6.146 |                        628.3 |
+| delay_4h          |            1   |                 4 | structure_only           |        105 |                           0.02601  |                             0.02558  |                         0.2049  |                           0.1953  |                                0.2979 |                                  0.2678 |                         0.1087    |                 6.146 |                        556.2 |
+| delay_4h          |            1   |                 4 | random_positive          |        105 |                           0.01779  |                             0.01705  |                         0.1331  |                           0.1376  |                                0.1954 |                                  0.196  |                         0.1169    |                 6.146 |                        771.6 |
+| high_budget       |            2   |                 0 | greedy_oracle            |        105 |                           0.1769   |                             0.1817   |                         1.336   |                           1.401   |                                1      |                                  1      |                        -0.04212   |                12.29  |                       1887   |
+| high_budget       |            2   |                 0 | activated_bottleneck_law |        105 |                           0.174    |                             0.1805   |                         1.307   |                           1.367   |                                0.9783 |                                  0.9929 |                        -0.03929   |                12.29  |                       2184   |
+| high_budget       |            2   |                 0 | exposure_only            |        105 |                           0.1213   |                             0.117    |                         0.9482  |                           0.9465  |                                0.7051 |                                  0.7044 |                         0.01346   |                12.29  |                       1241   |
+| high_budget       |            2   |                 0 | deficit_only             |        105 |                           0.1142   |                             0.1092   |                         0.8972  |                           0.8909  |                                0.6659 |                                  0.6623 |                         0.02056   |                12.29  |                       1238   |
+| high_budget       |            2   |                 0 | structure_only           |        105 |                           0.05496  |                             0.05382  |                         0.4463  |                           0.4086  |                                0.3285 |                                  0.2968 |                         0.07978   |                12.29  |                       1074   |
+| high_budget       |            2   |                 0 | random_positive          |        105 |                           0.04042  |                             0.04174  |                         0.308   |                           0.3171  |                                0.2295 |                                  0.2313 |                         0.09432   |                12.29  |                       1498   |
+| low_budget        |            0.5 |                 0 | greedy_oracle            |        105 |                           0.06429  |                             0.06587  |                         0.4784  |                           0.5102  |                                1      |                                  1      |                         0.07045   |                 3.073 |                        466.4 |
+| low_budget        |            0.5 |                 0 | activated_bottleneck_law |        105 |                           0.06333  |                             0.06551  |                         0.4694  |                           0.5044  |                                0.9802 |                                  0.9908 |                         0.07141   |                 3.073 |                        569.7 |
+| low_budget        |            0.5 |                 0 | exposure_only            |        105 |                           0.04148  |                             0.03985  |                         0.3216  |                           0.3117  |                                0.6773 |                                  0.6687 |                         0.09325   |                 3.073 |                        285.5 |
+| low_budget        |            0.5 |                 0 | deficit_only             |        105 |                           0.039    |                             0.03766  |                         0.3038  |                           0.2907  |                                0.6401 |                                  0.6439 |                         0.09573   |                 3.073 |                        284.8 |
+| low_budget        |            0.5 |                 0 | structure_only           |        105 |                           0.01701  |                             0.01703  |                         0.1361  |                           0.1346  |                                0.2878 |                                  0.2713 |                         0.1177    |                 3.073 |                        262.3 |
+| low_budget        |            0.5 |                 0 | random_positive          |        105 |                           0.01022  |                             0.01023  |                         0.07754 |                           0.07864 |                                0.1633 |                                  0.1557 |                         0.1245    |                 3.073 |                        381.6 |
+| scarce_and_late   |            0.5 |                 2 | greedy_oracle            |        105 |                           0.06087  |                             0.06255  |                         0.4511  |                           0.4722  |                                1      |                                  1      |                         0.07387   |                 3.073 |                        504.2 |
+| scarce_and_late   |            0.5 |                 2 | activated_bottleneck_law |        105 |                           0.06045  |                             0.0623   |                         0.4473  |                           0.4686  |                                0.991  |                                  0.9977 |                         0.07428   |                 3.073 |                        564.2 |
+| scarce_and_late   |            0.5 |                 2 | exposure_only            |        105 |                           0.03814  |                             0.03599  |                         0.2929  |                           0.2945  |                                0.6508 |                                  0.6632 |                         0.0966    |                 3.073 |                        293.4 |
+| scarce_and_late   |            0.5 |                 2 | deficit_only             |        105 |                           0.03574  |                             0.03346  |                         0.2755  |                           0.273   |                                0.6129 |                                  0.6149 |                         0.099     |                 3.073 |                        291.4 |
+| scarce_and_late   |            0.5 |                 2 | structure_only           |        105 |                           0.01571  |                             0.01512  |                         0.1245  |                           0.1238  |                                0.2789 |                                  0.2713 |                         0.119     |                 3.073 |                        268   |
+| scarce_and_late   |            0.5 |                 2 | random_positive          |        105 |                           0.009628 |                             0.009576 |                         0.07256 |                           0.07489 |                                0.1612 |                                  0.1556 |                         0.1251    |                 3.073 |                        384.4 |
+
+解释：这个表的核心列是 `mean_fraction_of_base_lp_gain`，即 fixed policy replay 得到的恢复收益占 base LP optimized gain 的比例。对于 base scenario，这就是 law/simple baseline 与 LP optimum 的直接差距；对于 low/high budget 或 delay scenario，它仍以 base LP gain 作参照，因此用于观察趋势，而不是声明这些新场景下的最优性。
+
 ## Event-Level Top-Tail Law
 
 | city         |   event_id | event_start         |   baseline_objective |   recoverable_fraction |   top_1pct_value_share |   top_5pct_value_share |   top_10pct_value_share |   marginal_value_gini |   optimizer_selected_value_share |   loss_magnitude_rank |   recoverable_rank |   top_tail_rank |   decision_criticality_score |   decision_criticality_rank |   event_peak_positive_abnormal_deficit |   event_total_precip |
@@ -180,7 +242,7 @@ decision_criticality(event)
 
 ## 需要继续改进的地方
 
-1. 下一版应把 greedy residual oracle 升级为更接近 LP 的 oracle label：对关键 city-event 做 single-action marginal LP 或 perturbed optimum stability。
-2. 当前 budget/delay augmentation 还是解析 stress test，不是重新求解 Gurobi 的多情景 LP；后续应挑选代表性 scenario 重新优化验证。
+1. 下一版应挑选代表性 city-event 做 single-action marginal LP 或 perturbed optimum stability，用真实 LP 边际值验证当前解析 action label。
+2. 当前 budget/delay augmentation 已有 fixed-policy replay，但还不是重新求解 Gurobi 的多情景 optimum；后续应挑选代表性 scenario 重新优化验证。
 3. 当前 surrogate 是 ridge baseline，不是最终神经模型；后续可升级为 factorized action-value scorer 或 graph surrogate。
 4. 当前 substitutability 没有被可靠刻画。简单 out-degree scarcity 在本数据中会损害排序，后续应加入替代路径、网络冗余或 OD rerouting proxy。

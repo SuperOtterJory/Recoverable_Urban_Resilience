@@ -50,7 +50,7 @@ def main() -> None:
         directory.mkdir(parents=True, exist_ok=True)
 
     data = load_inputs(root)
-    action_tokens, concentration, greedy_actions, policy_simulation = build_action_token_dataset(
+    action_tokens, concentration, greedy_actions, policy_simulation, policy_replay = build_action_token_dataset(
         root,
         config,
         data,
@@ -63,6 +63,7 @@ def main() -> None:
     policy_capture = evaluate_policy_scores(action_tokens)
     event_law = build_event_level_law_table(data["summary"], concentration)
     policy_summary = summarize_policy_simulation(policy_simulation)
+    replay_summary = summarize_policy_replay(policy_replay)
 
     legacy_action_tokens = table_dir / "action_value_tokens.csv"
     if legacy_action_tokens.exists():
@@ -75,9 +76,11 @@ def main() -> None:
     write_table(greedy_actions, table_dir / "greedy_oracle_actions.csv.gz")
     write_table(policy_simulation, table_dir / "budget_policy_simulation.csv")
     write_table(policy_summary, table_dir / "budget_policy_summary.csv")
+    write_table(policy_replay, table_dir / "fixed_policy_replay.csv")
+    write_table(replay_summary, table_dir / "fixed_policy_replay_summary.csv")
     write_table(policy_capture, table_dir / "policy_score_value_capture.csv")
     write_table(event_law, table_dir / "event_level_top_tail_law.csv")
-    make_figures(action_tokens, loco_metrics, policy_capture, event_law, policy_summary, figure_dir)
+    make_figures(action_tokens, loco_metrics, policy_capture, event_law, policy_summary, replay_summary, figure_dir)
     write_report(
         report_dir / "law_learning_report_zh.md",
         action_tokens,
@@ -88,6 +91,8 @@ def main() -> None:
         event_law,
         policy_simulation,
         policy_summary,
+        policy_replay,
+        replay_summary,
     )
     print(f"Wrote law-learning outputs to {output_dir}")
 
@@ -110,7 +115,7 @@ def build_action_token_dataset(
     *,
     top_actions_per_event: int,
     random_actions_per_event: int,
-) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     rng = np.random.default_rng(RNG_SEED)
     summary = data["summary"].copy()
     summary = summary[(summary["status"] == "OPTIMAL") & (summary["scenario"] == "base")].copy()
@@ -129,6 +134,7 @@ def build_action_token_dataset(
     concentration_rows: list[dict[str, Any]] = []
     greedy_action_frames: list[pd.DataFrame] = []
     policy_rows: list[dict[str, Any]] = []
+    replay_rows: list[dict[str, Any]] = []
     total_events = len(summary)
     for idx, row in enumerate(summary.sort_values(["city", "event_start", "event_id"]).itertuples(index=False), start=1):
         city = row.city
@@ -151,9 +157,10 @@ def build_action_token_dataset(
             & (interventions["scenario"] == "base")
         ]
         full = build_event_action_frame(params, row, event_row, event_interventions)
-        event_greedy_actions, event_policy_rows = simulate_policy_suite(full, params, config, rng)
+        event_greedy_actions, event_policy_rows, event_replay_rows = simulate_policy_suite(full, params, config, rng)
         greedy_action_frames.append(event_greedy_actions)
         policy_rows.extend(event_policy_rows)
+        replay_rows.extend(event_replay_rows)
         full = merge_greedy_oracle_labels(full, event_greedy_actions)
         concentration_rows.append(event_concentration(row, full))
         keep = choose_token_sample(full, top_actions_per_event, random_actions_per_event, rng)
@@ -165,7 +172,10 @@ def build_action_token_dataset(
     policy_simulation = pd.DataFrame(policy_rows)
     if not policy_simulation.empty:
         policy_simulation = add_relative_policy_metrics(policy_simulation)
-    return tokens, concentration, greedy_actions, policy_simulation
+    policy_replay = pd.DataFrame(replay_rows)
+    if not policy_replay.empty:
+        policy_replay = add_relative_replay_metrics(policy_replay)
+    return tokens, concentration, greedy_actions, policy_simulation, policy_replay
 
 
 def prepare_interventions(interventions: pd.DataFrame) -> pd.DataFrame:
@@ -299,6 +309,7 @@ def build_event_action_frame(
     full["weighted_b0"] = float(summary_row.weighted_b0)
     full["weighted_h_total"] = float(summary_row.weighted_h_total)
     full["baseline_objective"] = float(summary_row.baseline_objective)
+    full["optimized_objective"] = float(summary_row.optimized_objective)
     full["recoverable_fraction"] = float(summary_row.recoverable_fraction)
     full["total_budget"] = float(summary_row.total_budget)
     full["budget_fraction_of_baseline"] = float(summary_row.total_budget) / max(float(summary_row.baseline_objective), 1e-12)
@@ -316,7 +327,7 @@ def simulate_policy_suite(
     params: Any,
     config: dict[str, Any],
     rng: np.random.Generator,
-) -> tuple[pd.DataFrame, list[dict[str, Any]]]:
+) -> tuple[pd.DataFrame, list[dict[str, Any]], list[dict[str, Any]]]:
     segments = build_budget_segments(full, config, rng)
     policy_scores = {
         "greedy_oracle": "oracle_value_per_cost",
@@ -327,7 +338,28 @@ def simulate_policy_suite(
         "random_positive": "random_policy_score",
     }
     rows: list[dict[str, Any]] = []
+    replay_rows: list[dict[str, Any]] = []
     base_greedy_actions: pd.DataFrame | None = None
+    baseline_objective = float(full["baseline_objective"].iloc[0])
+    optimized_objective = float(full["optimized_objective"].iloc[0])
+    lp_recoverable_fraction = float(full["recoverable_fraction"].iloc[0])
+    optimizer_replay = replay_optimizer_solution(full, params)
+    replay_rows.append(
+        replay_row(
+            full,
+            policy_scenario="base",
+            budget_scale=1.0,
+            delay_add_hours=0,
+            policy_score="lp_optimizer_replay",
+            allocated_cost=float(full["optimized_cost"].sum()),
+            value_proxy=np.nan,
+            selected_action_count=int((full["optimized_cost"] > 1e-12).sum()),
+            replay_objective=optimizer_replay["objective"],
+            baseline_objective=baseline_objective,
+            optimized_objective=optimized_objective,
+            lp_recoverable_fraction=lp_recoverable_fraction,
+        )
+    )
     for scenario in POLICY_SCENARIOS:
         period_budget = params.period_budget * float(scenario["budget_scale"])
         total_budget = float(params.total_budget) * float(scenario["budget_scale"])
@@ -364,11 +396,28 @@ def simulate_policy_suite(
                     "event_total_precip": float(full["event_total_precip"].iloc[0]),
                 }
             )
+            replay = replay_policy_allocations(result["allocations"], params)
+            replay_rows.append(
+                replay_row(
+                    full,
+                    policy_scenario=str(scenario["policy_scenario"]),
+                    budget_scale=float(scenario["budget_scale"]),
+                    delay_add_hours=delay_add,
+                    policy_score=policy_name,
+                    allocated_cost=float(result["allocated_cost"]),
+                    value_proxy=float(result["value_proxy"]),
+                    selected_action_count=int(result["selected_action_count"]),
+                    replay_objective=replay["objective"],
+                    baseline_objective=baseline_objective,
+                    optimized_objective=optimized_objective,
+                    lp_recoverable_fraction=lp_recoverable_fraction,
+                )
+            )
             if scenario["policy_scenario"] == "base" and policy_name == "greedy_oracle":
                 base_greedy_actions = result["allocations"].copy()
     if base_greedy_actions is None:
         base_greedy_actions = pd.DataFrame()
-    return base_greedy_actions, rows
+    return base_greedy_actions, rows, replay_rows
 
 
 def build_budget_segments(full: pd.DataFrame, config: dict[str, Any], rng: np.random.Generator) -> pd.DataFrame:
@@ -500,6 +549,113 @@ def empty_policy_result() -> dict[str, Any]:
     }
 
 
+def replay_row(
+    full: pd.DataFrame,
+    *,
+    policy_scenario: str,
+    budget_scale: float,
+    delay_add_hours: int,
+    policy_score: str,
+    allocated_cost: float,
+    value_proxy: float,
+    selected_action_count: int,
+    replay_objective: float,
+    baseline_objective: float,
+    optimized_objective: float,
+    lp_recoverable_fraction: float,
+) -> dict[str, Any]:
+    base_lp_gain = max(baseline_objective - optimized_objective, 1e-12)
+    replay_gain = baseline_objective - replay_objective
+    return {
+        "city": str(full["city"].iloc[0]),
+        "event_id": int(full["event_id"].iloc[0]),
+        "event_start": str(full["event_start"].iloc[0]),
+        "policy_scenario": policy_scenario,
+        "budget_scale": float(budget_scale),
+        "delay_add_hours": int(delay_add_hours),
+        "policy_score": policy_score,
+        "allocated_cost": float(allocated_cost),
+        "value_proxy": float(value_proxy) if np.isfinite(value_proxy) else np.nan,
+        "selected_action_count": int(selected_action_count),
+        "baseline_objective": baseline_objective,
+        "optimized_objective": optimized_objective,
+        "lp_recoverable_fraction": lp_recoverable_fraction,
+        "replay_objective": float(replay_objective),
+        "replay_gain": float(replay_gain),
+        "replay_recoverable_fraction": float(1.0 - replay_objective / baseline_objective) if baseline_objective > 1e-12 else np.nan,
+        "replay_fraction_of_base_lp_gain": float(replay_gain / base_lp_gain),
+        "objective_gap_to_base_lp": float(replay_objective - optimized_objective),
+        "event_peak_positive_abnormal_deficit": float(full["event_peak_positive_abnormal_deficit"].iloc[0]),
+        "event_total_precip": float(full["event_total_precip"].iloc[0]),
+    }
+
+
+def replay_optimizer_solution(full: pd.DataFrame, params: Any) -> dict[str, float]:
+    effects = empty_effects(params)
+    unit_to_idx = {unit: idx for idx, unit in enumerate(params.units)}
+    used = full[full["optimized_e"] > 1e-12]
+    for row in used.itertuples(index=False):
+        unit = str(row.unit)
+        if unit not in unit_to_idx:
+            continue
+        effects[str(row.intervention)][unit_to_idx[unit], int(row.t)] += float(row.optimized_e)
+    return replay_effects(params, effects)
+
+
+def replay_policy_allocations(allocations: pd.DataFrame, params: Any) -> dict[str, float]:
+    effects = empty_effects(params)
+    if allocations.empty:
+        return replay_effects(params, effects)
+    unit_to_idx = {unit: idx for idx, unit in enumerate(params.units)}
+    for row in allocations.itertuples(index=False):
+        unit = str(row.unit)
+        intervention = str(row.intervention)
+        if unit not in unit_to_idx or intervention not in effects:
+            continue
+        i = unit_to_idx[unit]
+        t = int(row.t)
+        if t < 0 or t >= params.horizon:
+            continue
+        effects[intervention][i, t] += (
+            float(params.eta[intervention][i, t])
+            * float(row.segment_effectiveness_multiplier)
+            * float(row.allocated_u)
+        )
+    return replay_effects(params, effects)
+
+
+def empty_effects(params: Any) -> dict[str, np.ndarray]:
+    return {
+        key: np.zeros((params.n_units, params.horizon), dtype=float)
+        for key in INTERVENTIONS
+    }
+
+
+def replay_effects(params: Any, effects: dict[str, np.ndarray]) -> dict[str, float]:
+    b = params.b0.copy()
+    r_c = np.zeros(params.n_units, dtype=float)
+    r_s = np.zeros(params.n_units, dtype=float)
+    objective = 0.0
+    final_weighted_b = np.nan
+    final_weighted_ell = np.nan
+    for t in range(params.horizon + 1):
+        d = np.clip(b - r_c, 0.0, 1.0)
+        ell = np.clip(params.q @ d - r_s, 0.0, 1.0)
+        objective += float(params.delta_t * np.sum(params.p * ell))
+        if t == params.horizon:
+            final_weighted_b = float(np.sum(params.p * b))
+            final_weighted_ell = float(np.sum(params.p * ell))
+            break
+        b = np.clip(params.a * b + params.h[:, t + 1] - effects["R"][:, t], 0.0, 1.0)
+        r_c = np.clip((1.0 - params.delta_c) * r_c + effects["C"][:, t], 0.0, 1.0)
+        r_s = np.clip((1.0 - params.delta_s) * r_s + effects["S"][:, t], 0.0, 1.0)
+    return {
+        "objective": float(objective),
+        "final_weighted_b": final_weighted_b,
+        "final_weighted_ell": final_weighted_ell,
+    }
+
+
 def merge_greedy_oracle_labels(full: pd.DataFrame, greedy_actions: pd.DataFrame) -> pd.DataFrame:
     out = full.copy()
     if greedy_actions.empty:
@@ -529,6 +685,21 @@ def add_relative_policy_metrics(policy_simulation: pd.DataFrame) -> pd.DataFrame
     out = out.merge(oracle, on=keys, how="left")
     out["relative_to_greedy_oracle"] = out["value_proxy"] / out["oracle_value_proxy"].replace(0.0, np.nan)
     out["value_proxy_vs_lp_recoverable_fraction"] = out["value_proxy"] / out["recoverable_fraction"].replace(0.0, np.nan)
+    return out
+
+
+def add_relative_replay_metrics(policy_replay: pd.DataFrame) -> pd.DataFrame:
+    out = policy_replay.copy()
+    keys = ["city", "event_id", "policy_scenario"]
+    greedy = out[out["policy_score"] == "greedy_oracle"][keys + ["replay_gain", "replay_recoverable_fraction"]].rename(
+        columns={
+            "replay_gain": "greedy_replay_gain",
+            "replay_recoverable_fraction": "greedy_replay_recoverable_fraction",
+        }
+    )
+    out = out.merge(greedy, on=keys, how="left")
+    out["relative_to_greedy_replay_gain"] = out["replay_gain"] / out["greedy_replay_gain"].replace(0.0, np.nan)
+    out["replay_recoverable_gap_to_lp"] = out["lp_recoverable_fraction"] - out["replay_recoverable_fraction"]
     return out
 
 
@@ -802,6 +973,28 @@ def summarize_policy_simulation(policy_simulation: pd.DataFrame) -> pd.DataFrame
     return summary
 
 
+def summarize_policy_replay(policy_replay: pd.DataFrame) -> pd.DataFrame:
+    if policy_replay.empty:
+        return pd.DataFrame()
+    summary = (
+        policy_replay.groupby(["policy_scenario", "budget_scale", "delay_add_hours", "policy_score"], as_index=False)
+        .agg(
+            n_events=("event_id", "count"),
+            mean_replay_recoverable_fraction=("replay_recoverable_fraction", "mean"),
+            median_replay_recoverable_fraction=("replay_recoverable_fraction", "median"),
+            mean_fraction_of_base_lp_gain=("replay_fraction_of_base_lp_gain", "mean"),
+            median_fraction_of_base_lp_gain=("replay_fraction_of_base_lp_gain", "median"),
+            mean_relative_to_greedy_replay_gain=("relative_to_greedy_replay_gain", "mean"),
+            median_relative_to_greedy_replay_gain=("relative_to_greedy_replay_gain", "median"),
+            mean_gap_to_base_lp_recoverable=("replay_recoverable_gap_to_lp", "mean"),
+            mean_allocated_cost=("allocated_cost", "mean"),
+            mean_selected_action_count=("selected_action_count", "mean"),
+        )
+        .sort_values(["policy_scenario", "mean_fraction_of_base_lp_gain"], ascending=[True, False])
+    )
+    return summary
+
+
 def build_event_level_law_table(summary: pd.DataFrame, concentration: pd.DataFrame) -> pd.DataFrame:
     opt = summary[(summary["status"] == "OPTIMAL") & (summary["scenario"] == "base")].copy()
     opt["event_id"] = pd.to_numeric(opt["event_id"], errors="coerce").astype(int)
@@ -864,6 +1057,7 @@ def make_figures(
     policy_capture: pd.DataFrame,
     event_law: pd.DataFrame,
     policy_summary: pd.DataFrame,
+    replay_summary: pd.DataFrame,
     figure_dir: Path,
 ) -> None:
     fig, ax = plt.subplots(figsize=(7.6, 4.8))
@@ -939,6 +1133,37 @@ def make_figures(
         fig.savefig(figure_dir / "budget_delay_policy_stress_test.png", dpi=180)
         plt.close(fig)
 
+    if not replay_summary.empty:
+        replay_plot = replay_summary[
+            replay_summary["policy_score"].isin(
+                ["lp_optimizer_replay", "activated_bottleneck_law", "exposure_only", "deficit_only", "random_positive"]
+            )
+        ].copy()
+        scenario_order = ["base", "low_budget", "high_budget", "delay_2h", "delay_4h", "scarce_and_late"]
+        replay_plot["policy_scenario"] = pd.Categorical(
+            replay_plot["policy_scenario"],
+            categories=scenario_order,
+            ordered=True,
+        )
+        fig, ax = plt.subplots(figsize=(9.4, 5.0))
+        for policy_name, group in replay_plot.sort_values("policy_scenario").groupby("policy_score"):
+            ax.plot(
+                group["policy_scenario"].astype(str),
+                group["mean_fraction_of_base_lp_gain"],
+                marker="o",
+                linewidth=2,
+                label=policy_name,
+            )
+        ax.axhline(1.0, color="#111827", linewidth=1.0, linestyle="--", alpha=0.45)
+        ax.set_ylabel("Mean replay gain / base LP optimized gain")
+        ax.set_title("Fixed-policy replay through recovery dynamics")
+        ax.tick_params(axis="x", rotation=20)
+        ax.grid(axis="y", alpha=0.25)
+        ax.legend(frameon=False, ncols=2, fontsize=8)
+        fig.tight_layout()
+        fig.savefig(figure_dir / "fixed_policy_replay_vs_lp.png", dpi=180)
+        plt.close(fig)
+
 
 def write_report(
     path: Path,
@@ -950,6 +1175,8 @@ def write_report(
     event_law: pd.DataFrame,
     policy_simulation: pd.DataFrame,
     policy_summary: pd.DataFrame,
+    policy_replay: pd.DataFrame,
+    replay_summary: pd.DataFrame,
 ) -> None:
     loco_top5_mean = float(loco_metrics["top_5pct_value_capture"].mean()) if not loco_metrics.empty else np.nan
     loco_spearman_mean = float(loco_metrics["spearman"].mean()) if not loco_metrics.empty else np.nan
@@ -976,14 +1203,44 @@ def write_report(
         else np.nan
     )
     greedy_selected_share = float(tokens["greedy_selected_by_oracle"].mean()) if "greedy_selected_by_oracle" in tokens else np.nan
+    base_replay = (
+        replay_summary[replay_summary["policy_scenario"].eq("base")]
+        if not replay_summary.empty and "policy_scenario" in replay_summary
+        else pd.DataFrame()
+    )
+    law_replay_base = base_replay[base_replay["policy_score"].eq("activated_bottleneck_law")]
+    law_replay_fraction = (
+        float(law_replay_base["mean_fraction_of_base_lp_gain"].iloc[0])
+        if not law_replay_base.empty
+        else np.nan
+    )
+    law_replay_gap = (
+        float(law_replay_base["mean_gap_to_base_lp_recoverable"].iloc[0])
+        if not law_replay_base.empty
+        else np.nan
+    )
+    best_simple_replay = base_replay[
+        base_replay["policy_score"].isin(["exposure_only", "deficit_only", "structure_only", "random_positive"])
+    ]
+    best_simple_replay_fraction = (
+        float(best_simple_replay["mean_fraction_of_base_lp_gain"].max())
+        if not best_simple_replay.empty
+        else np.nan
+    )
+    optimizer_replay_base = base_replay[base_replay["policy_score"].eq("lp_optimizer_replay")]
+    optimizer_replay_gap = (
+        float(optimizer_replay_base["mean_gap_to_base_lp_recoverable"].iloc[0])
+        if not optimizer_replay_base.empty
+        else np.nan
+    )
     lines = [
-        "# Learning and Law Discovery V2",
+        "# Learning and Law Discovery V3",
         "",
         "## 本版本做了什么",
         "",
         "这一版把 event-level optimization outputs 转换成 action-token 学习问题。每个 token 表示 `city-event-unit-time-intervention`。目标不是直接学习 optimizer 是否选择该 token，而是构造一个可解释的 marginal recovery-value proxy：单位资源投到该 token 后，沿着无干预的被动恢复轨迹，估计它能减少多少未来加权功能损失。",
         "",
-        "V2 在 V1 的静态 action-value field 之上，新增了 budget-aware greedy oracle。它把每个 action 的可部署上限拆成 diminishing-return segments，并在总预算、单期预算和响应延迟约束下做贪心分配。因此现在不仅能问“哪个 action 静态边际价值高”，也能问“一个 law-guided policy 在预算约束下能拿到 greedy oracle 的多少价值”。",
+        "V2 在 V1 的静态 action-value field 之上，新增了 budget-aware greedy oracle。V3 进一步把 greedy/law/simple baseline 生成的固定 allocation 放回复原始恢复动力学中 replay，直接计算 fixed policy 的 12 小时 objective 和 recoverable fraction。因此现在不仅能问“一个 law-guided policy 在 proxy 上接近 greedy oracle 吗”，也能问“它在实际 `b, rC, rS, ell` 演化里能拿到 LP optimum 的多少恢复收益”。",
         "",
         "## 数据规模",
         "",
@@ -991,6 +1248,7 @@ def write_report(
         f"- city-event scenarios: {tokens[['city', 'event_id']].drop_duplicates().shape[0]}",
         f"- full candidate-action concentration rows: {len(concentration)}",
         f"- policy stress-test rows: {len(policy_simulation):,}",
+        f"- fixed-policy replay rows: {len(policy_replay):,}",
         f"- sampled-token greedy oracle selected share: {greedy_selected_share:.4f}",
         f"- mean event top-5% value share: {event_top5_mean:.4f}",
         f"- mean event marginal-value gini: {event_gini_mean:.4f}",
@@ -1032,6 +1290,19 @@ def write_report(
         "",
         "因此 `greedy_oracle` 是这个解析标签体系下的上界 policy；`activated_bottleneck_law`、`exposure_only`、`deficit_only`、`structure_only`、`random_positive` 都在同一预算约束下与它比较。",
         "",
+        "## Fixed-Policy Replay",
+        "",
+        "V3 的 replay validation 不再只看 action-value proxy。对每个 policy 生成的固定 allocation，脚本把分段资源量转换成 `R/C/S` 的实际 effect，然后按原始恢复动力学逐小时前推：",
+        "",
+        "```text",
+        "b[t+1]  = clip(a * b[t] + h[t+1] - e_R[t], 0, 1)",
+        "rC[t+1] = clip((1 - delta_C) * rC[t] + e_C[t], 0, 1)",
+        "rS[t+1] = clip((1 - delta_S) * rS[t] + e_S[t], 0, 1)",
+        "ell[t]  = clip(Q * max(b[t] - rC[t], 0) - rS[t], 0, 1)",
+        "```",
+        "",
+        "这里 `lp_optimizer_replay` 是一个 sanity check：把 Gurobi 输出的 optimized effects 放回同一个 replay engine，应该接近原 LP objective。这个检查用于确认 replay engine 和 LP 目标是一致的。",
+        "",
         "## 关键结果概览",
         "",
         f"- Leave-one-city-out mean Spearman: {loco_spearman_mean:.4f}",
@@ -1040,6 +1311,10 @@ def write_report(
         f"- Activated-bottleneck law mean event Spearman: {law_spearman:.4f}",
         f"- Base scenario law policy / greedy oracle: {law_base_relative:.4f}",
         f"- Base scenario best simple baseline / greedy oracle: {best_simple_base:.4f}",
+        f"- Base scenario law replay gain / LP optimized gain: {law_replay_fraction:.4f}",
+        f"- Base scenario best simple replay gain / LP optimized gain: {best_simple_replay_fraction:.4f}",
+        f"- LP optimizer replay mean recoverable-fraction gap: {optimizer_replay_gap:.4g}",
+        f"- Base scenario law replay mean recoverable-fraction gap to LP: {law_replay_gap:.4f}",
         "",
         "## Leave-One-City-Out Surrogate",
         "",
@@ -1060,6 +1335,12 @@ def write_report(
         dataframe_to_markdown(policy_summary, max_rows=40),
         "",
         "解释：这个表不是新的 Gurobi LP 解，而是用同一 action-value field 做的预算约束 stress test。它用于检验 law 在不同预算和延迟条件下是否仍能作为资源分配 policy 接近 greedy oracle。真正的最终版还需要对关键 budget/delay scenario 重新求解 LP 来闭合验证。",
+        "",
+        "## Fixed-Policy Replay Validation",
+        "",
+        dataframe_to_markdown(replay_summary, max_rows=40),
+        "",
+        "解释：这个表的核心列是 `mean_fraction_of_base_lp_gain`，即 fixed policy replay 得到的恢复收益占 base LP optimized gain 的比例。对于 base scenario，这就是 law/simple baseline 与 LP optimum 的直接差距；对于 low/high budget 或 delay scenario，它仍以 base LP gain 作参照，因此用于观察趋势，而不是声明这些新场景下的最优性。",
         "",
         "## Event-Level Top-Tail Law",
         "",
@@ -1088,8 +1369,8 @@ def write_report(
         "",
         "## 需要继续改进的地方",
         "",
-        "1. 下一版应把 greedy residual oracle 升级为更接近 LP 的 oracle label：对关键 city-event 做 single-action marginal LP 或 perturbed optimum stability。",
-        "2. 当前 budget/delay augmentation 还是解析 stress test，不是重新求解 Gurobi 的多情景 LP；后续应挑选代表性 scenario 重新优化验证。",
+        "1. 下一版应挑选代表性 city-event 做 single-action marginal LP 或 perturbed optimum stability，用真实 LP 边际值验证当前解析 action label。",
+        "2. 当前 budget/delay augmentation 已有 fixed-policy replay，但还不是重新求解 Gurobi 的多情景 optimum；后续应挑选代表性 scenario 重新优化验证。",
         "3. 当前 surrogate 是 ridge baseline，不是最终神经模型；后续可升级为 factorized action-value scorer 或 graph surrogate。",
         "4. 当前 substitutability 没有被可靠刻画。简单 out-degree scarcity 在本数据中会损害排序，后续应加入替代路径、网络冗余或 OD rerouting proxy。",
     ]
