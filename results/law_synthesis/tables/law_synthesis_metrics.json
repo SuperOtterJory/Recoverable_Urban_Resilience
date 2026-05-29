@@ -89,5 +89,19 @@
   "nonobvious_structure_failure_low_exposure_share": 0.4560148763,
   "nonobvious_structure_failure_low_efficiency_share": 0.7422400229,
   "nonobvious_peak_top5_relative_to_oracle": 0.838574468,
-  "nonobvious_remaining_area_top5_relative_to_oracle": 0.7253697312
+  "nonobvious_remaining_area_top5_relative_to_oracle": 0.7253697312,
+  "factorized_deficit_top5_capture": 0.7296970228,
+  "factorized_deficit_event_spearman": 0.6815912033,
+  "factorized_full_additive_top5_capture": 0.9624269436,
+  "factorized_full_additive_event_spearman": 0.939229673,
+  "factorized_full_interaction_top5_capture": 0.9510849329,
+  "factorized_full_interaction_event_spearman": 0.9288455218,
+  "factorized_low_dim_top5_capture": 0.9374546558,
+  "factorized_low_dim_event_spearman": 0.8832193923,
+  "factorized_low_dim_interaction_top5_capture": 0.9426195719,
+  "factorized_low_dim_interaction_event_spearman": 0.8613135299,
+  "factorized_add_od_delta_top5_capture": 0.1052815805,
+  "factorized_add_time_delta_top5_capture": 0.1356033493,
+  "factorized_add_highdim_interaction_delta_top5_capture": -0.01134201067,
+  "factorized_add_lowdim_interaction_delta_top5_capture": 0.005164916072
 }

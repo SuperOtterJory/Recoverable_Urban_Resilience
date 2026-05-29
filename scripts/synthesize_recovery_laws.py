@@ -89,6 +89,8 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "nonobvious_hidden": read_csv(results / "nonobvious_action_laws" / "tables" / "hidden_gem_summary.csv"),
         "nonobvious_reasons": read_csv(results / "nonobvious_action_laws" / "tables" / "heuristic_failure_reason_summary.csv"),
         "nonobvious_persistence": read_csv(results / "nonobvious_action_laws" / "tables" / "persistence_vs_peak_summary.csv"),
+        "factorized_summary": read_csv(results / "factorized_action_surrogate" / "tables" / "factorized_model_summary.csv"),
+        "factorized_increments": read_csv(results / "factorized_action_surrogate" / "tables" / "factorized_incremental_gains.csv"),
     }
 
 
@@ -188,6 +190,17 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     nonobvious_structure_reasons = one_row(nonobvious_reasons, heuristic="structure_only")
     nonobvious_peak = one_row(nonobvious_persistence, feature="peak_event_disturbance")
     nonobvious_remaining = one_row(nonobvious_persistence, feature="remaining_local_area")
+    factorized_summary = data["factorized_summary"]
+    factorized_increments = data["factorized_increments"]
+    factorized_m1 = one_row(factorized_summary, model_id="M1_deficit_only")
+    factorized_m5 = one_row(factorized_summary, model_id="M5_full_additive")
+    factorized_m6 = one_row(factorized_summary, model_id="M6_full_interaction")
+    factorized_m7 = one_row(factorized_summary, model_id="M7_factorized_low_dim")
+    factorized_m8 = one_row(factorized_summary, model_id="M8_factorized_interaction")
+    factorized_add_od = one_row(factorized_increments, comparison="add_od_exposure")
+    factorized_add_time = one_row(factorized_increments, comparison="add_time_feasibility")
+    factorized_add_highdim_interaction = one_row(factorized_increments, comparison="add_explicit_interactions")
+    factorized_add_lowdim_interaction = one_row(factorized_increments, comparison="factorized_add_interactions")
 
     metrics: dict[str, Any] = {
         "n_action_tokens": safe_int(policy_capture["n_tokens"].max()) if "n_tokens" in policy_capture else None,
@@ -281,6 +294,20 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "nonobvious_structure_failure_low_efficiency_share": safe_float(nonobvious_structure_reasons.get("below_median_efficiency_share")),
         "nonobvious_peak_top5_relative_to_oracle": safe_float(nonobvious_peak.get("mean_top5_relative_to_oracle")),
         "nonobvious_remaining_area_top5_relative_to_oracle": safe_float(nonobvious_remaining.get("mean_top5_relative_to_oracle")),
+        "factorized_deficit_top5_capture": safe_float(factorized_m1.get("mean_event_top_5pct_value_capture")),
+        "factorized_deficit_event_spearman": safe_float(factorized_m1.get("mean_event_spearman")),
+        "factorized_full_additive_top5_capture": safe_float(factorized_m5.get("mean_event_top_5pct_value_capture")),
+        "factorized_full_additive_event_spearman": safe_float(factorized_m5.get("mean_event_spearman")),
+        "factorized_full_interaction_top5_capture": safe_float(factorized_m6.get("mean_event_top_5pct_value_capture")),
+        "factorized_full_interaction_event_spearman": safe_float(factorized_m6.get("mean_event_spearman")),
+        "factorized_low_dim_top5_capture": safe_float(factorized_m7.get("mean_event_top_5pct_value_capture")),
+        "factorized_low_dim_event_spearman": safe_float(factorized_m7.get("mean_event_spearman")),
+        "factorized_low_dim_interaction_top5_capture": safe_float(factorized_m8.get("mean_event_top_5pct_value_capture")),
+        "factorized_low_dim_interaction_event_spearman": safe_float(factorized_m8.get("mean_event_spearman")),
+        "factorized_add_od_delta_top5_capture": safe_float(factorized_add_od.get("delta_top5_value_capture")),
+        "factorized_add_time_delta_top5_capture": safe_float(factorized_add_time.get("delta_top5_value_capture")),
+        "factorized_add_highdim_interaction_delta_top5_capture": safe_float(factorized_add_highdim_interaction.get("delta_top5_value_capture")),
+        "factorized_add_lowdim_interaction_delta_top5_capture": safe_float(factorized_add_lowdim_interaction.get("delta_top5_value_capture")),
     }
     return metrics
 
@@ -387,6 +414,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "key_metric": "structure_only_false_positive_share",
             "value": metrics["nonobvious_structure_false_positive_share"],
             "interpretation": "One-factor heuristics miss the activation mechanism: static bottlenecks become valuable only when future loss, OD exposure, feasibility, and efficiency align.",
+        },
+        {
+            "version": "V16",
+            "evidence_step": "Factorized surrogate and interaction ablation",
+            "main_question": "Does recovery value require arbitrary high-dimensional interactions or a low-dimensional activated structure?",
+            "key_metric": "low_dim_factorized_top5_capture",
+            "value": metrics["factorized_low_dim_top5_capture"],
+            "interpretation": "A low-dimensional factorized surrogate captures most top-tail value; OD exposure and time/feasibility add large gains, while unconstrained high-dimensional interactions do not improve leave-city performance.",
         },
     ]
     return pd.DataFrame(rows)
@@ -528,9 +563,9 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
             },
             {
                 "item": "surrogate_architecture",
-                "current_status": "Current surrogate is normalized ridge/ranking evidence plus V12 symbolic formula extraction, not a full graph neural model.",
-                "implication": "The symbolic law is now explicit and reproducible, but the neural structure-extractor stage remains lightweight.",
-                "next_step": "Train a factorized graph/action-value surrogate if the paper needs a stronger AI-law-discovery component.",
+                "current_status": "V16 adds a factorized leave-one-city action-value surrogate with interaction ablation; it is still not a full graph neural model.",
+                "implication": "The low-dimensional activated structure is strongly supported, while unrestricted interaction terms are not necessary in the current evidence.",
+                "next_step": "Use an explicit graph or OD-message-passing surrogate only if the paper needs to test higher-order spatial representations.",
             },
             {
                 "item": "perturbed_optimum_stability",
@@ -660,11 +695,11 @@ def write_report(
     limitations: pd.DataFrame,
 ) -> None:
     lines = [
-        "# Recoverability Law Synthesis V15",
+        "# Recoverability Law Synthesis V16",
         "",
         "## 这一版做了什么",
         "",
-        "V15 把前面 action-level marginal law、finite-budget residual law、event-level top-tail law、symbolic formula extraction、budget phase 和 early predictability 合并后，又补上一个非显然 action-law 诊断：检查 highest deficit、highest OD exposure、highest structural bottleneck 这些单因素规则何时失败。",
+        "V16 把 factorized action-value surrogate 和 interaction ablation 接入 learning/law synthesis：在 V15 的非显然 action-law 诊断基础上，进一步检验恢复价值是否需要任意高维交互，还是可以由低维 activated components 稳定解释。",
         "",
         "## 当前可写入论文的 law",
         "",
@@ -675,6 +710,8 @@ def write_report(
         "3. **Top-tail decision-criticality law**：事件是否 decision-critical 不只取决于 observed loss，而取决于 recoverable value 是否集中在少数高价值 action 上。",
         "",
         "4. **Non-obvious activation law**：高损失、高流量或高结构中心性都不是充分条件；静态城市结构只有被事件中的未来损失、OD 暴露、响应窗口和资源效率同时激活，才转化为 recovery value。",
+        "",
+        "5. **Factorized parsimony result**：跨城市 action-value surrogate 的最大增益来自 OD exposure 和 time/feasibility activation；不受约束的高维 interaction terms 没有提高 full model，支持低维可解释 law。",
         "",
         "## 关键指标",
         "",
@@ -689,6 +726,8 @@ def write_report(
         f"- early decision-criticality: best Spearman = {metrics['early_decision_best_spearman']:.4f} at {metrics['early_decision_best_window']}h using {metrics['early_decision_best_feature_group']}; 2h all-early Spearman = {metrics['early_decision_2h_all_spearman']:.4f}",
         f"- non-obvious action law: false-positive shares are deficit-only {metrics['nonobvious_deficit_false_positive_share']:.1%}, exposure-only {metrics['nonobvious_exposure_false_positive_share']:.1%}, structure-only {metrics['nonobvious_structure_false_positive_share']:.1%}",
         f"- non-obvious action law: target top-5% actions hidden from every simple top-5% rank = {metrics['nonobvious_hidden_from_simple_top5_share']:.1%}; target top-5% below structure-only top-20% = {metrics['nonobvious_target_top5_low_structure_top20_share']:.1%}",
+        f"- factorized surrogate: deficit-only top-5% capture = {metrics['factorized_deficit_top5_capture']:.4f}; full additive = {metrics['factorized_full_additive_top5_capture']:.4f}; low-dimensional factorized = {metrics['factorized_low_dim_top5_capture']:.4f}",
+        f"- interaction ablation: adding OD exposure gives {metrics['factorized_add_od_delta_top5_capture']:+.4f}; adding time/feasibility gives {metrics['factorized_add_time_delta_top5_capture']:+.4f}; unrestricted high-dimensional interactions give {metrics['factorized_add_highdim_interaction_delta_top5_capture']:+.4f}",
         "",
         "## Evidence Ladder",
         "",
@@ -716,7 +755,7 @@ def write_report(
         "",
         "## 论文写作含义",
         "",
-        "现在 learning/law 部分可以写成一条完整的证据链：优化模型产生 action-value field；single-action LP 验证 marginal label；cross-city surrogate 和 symbolic extraction 说明低维结构可解释；residual greedy 说明有限预算需要动态重评分；event top-tail 说明 decision-criticality 不是 disruption magnitude；V15 进一步给出反直觉证据，说明城市结构不是静态优先级，而是需要被事件和干预条件激活的 latent leverage。",
+        "现在 learning/law 部分可以写成一条完整的证据链：优化模型产生 action-value field；single-action LP 验证 marginal label；cross-city surrogate、V16 factorized surrogate 和 symbolic extraction 说明低维结构可解释；residual greedy 说明有限预算需要动态重评分；event top-tail 说明 decision-criticality 不是 disruption magnitude；V15 进一步给出反直觉证据，说明城市结构不是静态优先级，而是需要被事件和干预条件激活的 latent leverage。V16 的负结果同样重要：高维显式交互项没有稳定提升留城表现，因此当前最稳妥的 law 是低维 activated structure，而不是任意复杂 surrogate。",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")

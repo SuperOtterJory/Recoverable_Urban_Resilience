@@ -1,0 +1,9 @@
+comparison,base_model,next_model,delta_top5_value_capture,delta_top5_ndcg,delta_top5_precision,delta_event_spearman
+add_od_exposure,M1_deficit_only,M2_deficit_plus_exposure,0.1052815805,0.1029957594,0.1686288034,0.1327946367
+add_structure,M2_deficit_plus_exposure,M3_add_structure,-0.002112099749,-0.004273387497,-0.007168967387,-0.005926632435
+add_substitution,M3_add_structure,M4_add_substitution,-0.00604290926,-0.005776405395,-0.01500613235,-0.0007843312105
+add_time_feasibility,M4_add_substitution,M5_full_additive,0.1356033493,0.1474283499,0.3249522762,0.1315547966
+add_explicit_interactions,M5_full_additive,M6_full_interaction,-0.01134201067,-0.004262133892,-0.03584305022,-0.01038415117
+factorized_add_interactions,M7_factorized_low_dim,M8_factorized_interaction,0.005164916072,-0.001133630281,0.02736400213,-0.02190586249
+full_interaction_vs_deficit,M1_deficit_only,M6_full_interaction,0.2213879101,0.2361121826,0.4355629296,0.2472543185
+factorized_interaction_vs_full_additive,M5_full_additive,M8_factorized_interaction,-0.01980737169,-0.01544619334,-0.06242843923,-0.0779161431

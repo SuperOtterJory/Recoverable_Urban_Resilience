@@ -1,0 +1,918 @@
+model_id,heldout_city,feature,standardized_coef
+M1_deficit_only,Austin,local_remaining_rank,1.112895006
+M1_deficit_only,Austin,access_remaining_rank,0.1108330687
+M1_deficit_only,Austin,passive_b_rank,0.2248230965
+M1_deficit_only,Austin,passive_ell_rank,-0.110728729
+M1_deficit_only,Austin,b0_rank,0.04220067161
+M1_deficit_only,Austin,h_total_rank,-0.3045282411
+M1_deficit_only,Austin,local_need_rank,-0.8433116375
+M1_deficit_only,Chicago,local_remaining_rank,1.04463606
+M1_deficit_only,Chicago,access_remaining_rank,0.07337718711
+M1_deficit_only,Chicago,passive_b_rank,0.2094558077
+M1_deficit_only,Chicago,passive_ell_rank,-0.1002391543
+M1_deficit_only,Chicago,b0_rank,0.1051913281
+M1_deficit_only,Chicago,h_total_rank,-0.2588855094
+M1_deficit_only,Chicago,local_need_rank,-0.8442149714
+M1_deficit_only,Dallas,local_remaining_rank,0.9697686182
+M1_deficit_only,Dallas,access_remaining_rank,0.0876661274
+M1_deficit_only,Dallas,passive_b_rank,0.2034737768
+M1_deficit_only,Dallas,passive_ell_rank,-0.1134961906
+M1_deficit_only,Dallas,b0_rank,0.108263839
+M1_deficit_only,Dallas,h_total_rank,-0.2583638532
+M1_deficit_only,Dallas,local_need_rank,-0.7918610052
+M1_deficit_only,Houston,local_remaining_rank,1.016160266
+M1_deficit_only,Houston,access_remaining_rank,0.08834604925
+M1_deficit_only,Houston,passive_b_rank,0.214813517
+M1_deficit_only,Houston,passive_ell_rank,-0.1166178814
+M1_deficit_only,Houston,b0_rank,0.09908225323
+M1_deficit_only,Houston,h_total_rank,-0.2637415087
+M1_deficit_only,Houston,local_need_rank,-0.8173924599
+M1_deficit_only,New York,local_remaining_rank,1.227212909
+M1_deficit_only,New York,access_remaining_rank,0.1292278688
+M1_deficit_only,New York,passive_b_rank,0.4169729856
+M1_deficit_only,New York,passive_ell_rank,-0.1094008666
+M1_deficit_only,New York,b0_rank,-0.1735012919
+M1_deficit_only,New York,h_total_rank,-0.4993941578
+M1_deficit_only,New York,local_need_rank,-0.6020628007
+M1_deficit_only,Philadelphia,local_remaining_rank,1.106827291
+M1_deficit_only,Philadelphia,access_remaining_rank,0.1071216633
+M1_deficit_only,Philadelphia,passive_b_rank,0.2490199444
+M1_deficit_only,Philadelphia,passive_ell_rank,-0.1571868723
+M1_deficit_only,Philadelphia,b0_rank,-0.003887031578
+M1_deficit_only,Philadelphia,h_total_rank,-0.2967606035
+M1_deficit_only,Philadelphia,local_need_rank,-0.7929370535
+M1_deficit_only,San Antonio,local_remaining_rank,0.7839465476
+M1_deficit_only,San Antonio,access_remaining_rank,0.09946996664
+M1_deficit_only,San Antonio,passive_b_rank,0.2216315612
+M1_deficit_only,San Antonio,passive_ell_rank,-0.1418557177
+M1_deficit_only,San Antonio,b0_rank,0.08651291228
+M1_deficit_only,San Antonio,h_total_rank,0.0414921734
+M1_deficit_only,San Antonio,local_need_rank,-0.873633079
+M2_deficit_plus_exposure,Austin,local_remaining_rank,1.575126214
+M2_deficit_plus_exposure,Austin,access_remaining_rank,0.07484436044
+M2_deficit_plus_exposure,Austin,passive_b_rank,0.2377725179
+M2_deficit_plus_exposure,Austin,passive_ell_rank,-0.1277936667
+M2_deficit_plus_exposure,Austin,b0_rank,-0.3002291514
+M2_deficit_plus_exposure,Austin,h_total_rank,-0.1655669956
+M2_deficit_plus_exposure,Austin,local_need_rank,-0.8149439973
+M2_deficit_plus_exposure,Austin,origin_exposure_rank,0.1130221143
+M2_deficit_plus_exposure,Austin,destination_importance_rank,-0.7787419143
+M2_deficit_plus_exposure,Austin,log_law_exposure,0.7665616535
+M2_deficit_plus_exposure,Chicago,local_remaining_rank,1.343306454
+M2_deficit_plus_exposure,Chicago,access_remaining_rank,0.05794974684
+M2_deficit_plus_exposure,Chicago,passive_b_rank,0.1994829289
+M2_deficit_plus_exposure,Chicago,passive_ell_rank,-0.08368923315
+M2_deficit_plus_exposure,Chicago,b0_rank,-0.3490347931
+M2_deficit_plus_exposure,Chicago,h_total_rank,-0.2087912888
+M2_deficit_plus_exposure,Chicago,local_need_rank,-0.7687667416
+M2_deficit_plus_exposure,Chicago,origin_exposure_rank,0.09773638667
+M2_deficit_plus_exposure,Chicago,destination_importance_rank,-0.4302249164
+M2_deficit_plus_exposure,Chicago,log_law_exposure,0.8657796539
+M2_deficit_plus_exposure,Dallas,local_remaining_rank,1.662468412
+M2_deficit_plus_exposure,Dallas,access_remaining_rank,0.07921386493
+M2_deficit_plus_exposure,Dallas,passive_b_rank,0.2121536536
+M2_deficit_plus_exposure,Dallas,passive_ell_rank,-0.1162488458
+M2_deficit_plus_exposure,Dallas,b0_rank,-0.2921175917
+M2_deficit_plus_exposure,Dallas,h_total_rank,-0.143092945
+M2_deficit_plus_exposure,Dallas,local_need_rank,-0.7491425981
+M2_deficit_plus_exposure,Dallas,origin_exposure_rank,0.08799254127
+M2_deficit_plus_exposure,Dallas,destination_importance_rank,-0.9271738297
+M2_deficit_plus_exposure,Dallas,log_law_exposure,0.875273972
+M2_deficit_plus_exposure,Houston,local_remaining_rank,1.5549258
+M2_deficit_plus_exposure,Houston,access_remaining_rank,0.07228993366
+M2_deficit_plus_exposure,Houston,passive_b_rank,0.2247880354
+M2_deficit_plus_exposure,Houston,passive_ell_rank,-0.1158238104
+M2_deficit_plus_exposure,Houston,b0_rank,-0.2887814336
+M2_deficit_plus_exposure,Houston,h_total_rank,-0.1629801894
+M2_deficit_plus_exposure,Houston,local_need_rank,-0.7938533884
+M2_deficit_plus_exposure,Houston,origin_exposure_rank,0.1054752719
+M2_deficit_plus_exposure,Houston,destination_importance_rank,-0.7459517074
+M2_deficit_plus_exposure,Houston,log_law_exposure,0.8215322743
+M2_deficit_plus_exposure,New York,local_remaining_rank,0.7593912569
+M2_deficit_plus_exposure,New York,access_remaining_rank,0.09750823867
+M2_deficit_plus_exposure,New York,passive_b_rank,0.2727028282
+M2_deficit_plus_exposure,New York,passive_ell_rank,-0.1004963411
+M2_deficit_plus_exposure,New York,b0_rank,-0.06703502414
+M2_deficit_plus_exposure,New York,h_total_rank,-0.3331702955
+M2_deficit_plus_exposure,New York,local_need_rank,-0.7024019984
+M2_deficit_plus_exposure,New York,origin_exposure_rank,0.178441172
+M2_deficit_plus_exposure,New York,destination_importance_rank,0.03586563224
+M2_deficit_plus_exposure,New York,log_law_exposure,0.49117157
+M2_deficit_plus_exposure,Philadelphia,local_remaining_rank,0.846067103
+M2_deficit_plus_exposure,Philadelphia,access_remaining_rank,0.08737673598
+M2_deficit_plus_exposure,Philadelphia,passive_b_rank,0.230294493
+M2_deficit_plus_exposure,Philadelphia,passive_ell_rank,-0.1471865278
+M2_deficit_plus_exposure,Philadelphia,b0_rank,-0.4201351632
+M2_deficit_plus_exposure,Philadelphia,h_total_rank,-0.1928883442
+M2_deficit_plus_exposure,Philadelphia,local_need_rank,-0.7840209967
+M2_deficit_plus_exposure,Philadelphia,origin_exposure_rank,0.09631084412
+M2_deficit_plus_exposure,Philadelphia,destination_importance_rank,0.1193883171
+M2_deficit_plus_exposure,Philadelphia,log_law_exposure,0.8796985286
+M2_deficit_plus_exposure,San Antonio,local_remaining_rank,1.355162507
+M2_deficit_plus_exposure,San Antonio,access_remaining_rank,0.07128735511
+M2_deficit_plus_exposure,San Antonio,passive_b_rank,0.2574898088
+M2_deficit_plus_exposure,San Antonio,passive_ell_rank,-0.1220568416
+M2_deficit_plus_exposure,San Antonio,b0_rank,-0.2890288073
+M2_deficit_plus_exposure,San Antonio,h_total_rank,-0.1251413071
+M2_deficit_plus_exposure,San Antonio,local_need_rank,-0.8518467386
+M2_deficit_plus_exposure,San Antonio,origin_exposure_rank,0.1189374421
+M2_deficit_plus_exposure,San Antonio,destination_importance_rank,-0.544493438
+M2_deficit_plus_exposure,San Antonio,log_law_exposure,0.7449693927
+M3_add_structure,Austin,local_remaining_rank,1.502550221
+M3_add_structure,Austin,access_remaining_rank,0.1089539485
+M3_add_structure,Austin,passive_b_rank,0.2410932821
+M3_add_structure,Austin,passive_ell_rank,-0.1329278195
+M3_add_structure,Austin,b0_rank,-0.3107494111
+M3_add_structure,Austin,h_total_rank,-0.1724670976
+M3_add_structure,Austin,local_need_rank,-0.8074051161
+M3_add_structure,Austin,origin_exposure_rank,0.02952732205
+M3_add_structure,Austin,destination_importance_rank,-0.6207912785
+M3_add_structure,Austin,log_law_exposure,0.7552953786
+M3_add_structure,Austin,out_degree_rank,0.09713627804
+M3_add_structure,Austin,in_degree_rank,-0.1004952191
+M3_add_structure,Chicago,local_remaining_rank,1.389129311
+M3_add_structure,Chicago,access_remaining_rank,0.08582178747
+M3_add_structure,Chicago,passive_b_rank,0.1991294075
+M3_add_structure,Chicago,passive_ell_rank,-0.08434462177
+M3_add_structure,Chicago,b0_rank,-0.3587405658
+M3_add_structure,Chicago,h_total_rank,-0.2131265598
+M3_add_structure,Chicago,local_need_rank,-0.7615821192
+M3_add_structure,Chicago,origin_exposure_rank,0.01732178917
+M3_add_structure,Chicago,destination_importance_rank,-0.41867538
+M3_add_structure,Chicago,log_law_exposure,0.8579289341
+M3_add_structure,Chicago,out_degree_rank,0.101136822
+M3_add_structure,Chicago,in_degree_rank,-0.07297310354
+M3_add_structure,Dallas,local_remaining_rank,1.411280364
+M3_add_structure,Dallas,access_remaining_rank,0.1293560113
+M3_add_structure,Dallas,passive_b_rank,0.2225898694
+M3_add_structure,Dallas,passive_ell_rank,-0.1311598711
+M3_add_structure,Dallas,b0_rank,-0.308389583
+M3_add_structure,Dallas,h_total_rank,-0.1510360856
+M3_add_structure,Dallas,local_need_rank,-0.7396295769
+M3_add_structure,Dallas,origin_exposure_rank,-0.0108760632
+M3_add_structure,Dallas,destination_importance_rank,-0.5386655397
+M3_add_structure,Dallas,log_law_exposure,0.8665775157
+M3_add_structure,Dallas,out_degree_rank,0.1055124641
+M3_add_structure,Dallas,in_degree_rank,-0.1659388301
+M3_add_structure,Houston,local_remaining_rank,1.487513932
+M3_add_structure,Houston,access_remaining_rank,0.1045280082
+M3_add_structure,Houston,passive_b_rank,0.22895529
+M3_add_structure,Houston,passive_ell_rank,-0.1220293209
+M3_add_structure,Houston,b0_rank,-0.300774929
+M3_add_structure,Houston,h_total_rank,-0.1695920473
+M3_add_structure,Houston,local_need_rank,-0.7871885776
+M3_add_structure,Houston,origin_exposure_rank,0.02636087108
+M3_add_structure,Houston,destination_importance_rank,-0.5970817767
+M3_add_structure,Houston,log_law_exposure,0.8134376481
+M3_add_structure,Houston,out_degree_rank,0.09185797047
+M3_add_structure,Houston,in_degree_rank,-0.09691911307
+M3_add_structure,New York,local_remaining_rank,0.948458198
+M3_add_structure,New York,access_remaining_rank,0.07911978201
+M3_add_structure,New York,passive_b_rank,0.2581725611
+M3_add_structure,New York,passive_ell_rank,-0.07100380908
+M3_add_structure,New York,b0_rank,-0.06949240565
+M3_add_structure,New York,h_total_rank,-0.3365979203
+M3_add_structure,New York,local_need_rank,-0.6988371934
+M3_add_structure,New York,origin_exposure_rank,0.1197958648
+M3_add_structure,New York,destination_importance_rank,-0.1360042853
+M3_add_structure,New York,log_law_exposure,0.490069878
+M3_add_structure,New York,out_degree_rank,0.07942557942
+M3_add_structure,New York,in_degree_rank,-0.01605485479
+M3_add_structure,Philadelphia,local_remaining_rank,0.6921757965
+M3_add_structure,Philadelphia,access_remaining_rank,0.1130159068
+M3_add_structure,Philadelphia,passive_b_rank,0.2345094573
+M3_add_structure,Philadelphia,passive_ell_rank,-0.1541429363
+M3_add_structure,Philadelphia,b0_rank,-0.4263151008
+M3_add_structure,Philadelphia,h_total_rank,-0.1966710271
+M3_add_structure,Philadelphia,local_need_rank,-0.7808188974
+M3_add_structure,Philadelphia,origin_exposure_rank,0.04933911717
+M3_add_structure,Philadelphia,destination_importance_rank,0.3454428682
+M3_add_structure,Philadelphia,log_law_exposure,0.8748335574
+M3_add_structure,Philadelphia,out_degree_rank,0.04660882014
+M3_add_structure,Philadelphia,in_degree_rank,-0.08401986078
+M3_add_structure,San Antonio,local_remaining_rank,1.295195162
+M3_add_structure,San Antonio,access_remaining_rank,0.1101815782
+M3_add_structure,San Antonio,passive_b_rank,0.2620240616
+M3_add_structure,San Antonio,passive_ell_rank,-0.128583845
+M3_add_structure,San Antonio,b0_rank,-0.3042617161
+M3_add_structure,San Antonio,h_total_rank,-0.1311363779
+M3_add_structure,San Antonio,local_need_rank,-0.8427896537
+M3_add_structure,San Antonio,origin_exposure_rank,0.02258954661
+M3_add_structure,San Antonio,destination_importance_rank,-0.3916057257
+M3_add_structure,San Antonio,log_law_exposure,0.7350186112
+M3_add_structure,San Antonio,out_degree_rank,0.1143164556
+M3_add_structure,San Antonio,in_degree_rank,-0.113218858
+M4_add_substitution,Austin,local_remaining_rank,1.668802591
+M4_add_substitution,Austin,access_remaining_rank,0.1066687041
+M4_add_substitution,Austin,passive_b_rank,0.24027338
+M4_add_substitution,Austin,passive_ell_rank,-0.1287421926
+M4_add_substitution,Austin,b0_rank,-0.308313392
+M4_add_substitution,Austin,h_total_rank,-0.1727448814
+M4_add_substitution,Austin,local_need_rank,-0.8067424479
+M4_add_substitution,Austin,origin_exposure_rank,0.002040175215
+M4_add_substitution,Austin,destination_importance_rank,-0.838008719
+M4_add_substitution,Austin,log_law_exposure,0.7475390932
+M4_add_substitution,Austin,out_degree_rank,0.1049050011
+M4_add_substitution,Austin,in_degree_rank,-0.09353602366
+M4_add_substitution,Austin,od_scarcity,-0.1049051008
+M4_add_substitution,Austin,structure_only_score,0.09922579379
+M4_add_substitution,Chicago,local_remaining_rank,1.450055361
+M4_add_substitution,Chicago,access_remaining_rank,0.08538115911
+M4_add_substitution,Chicago,passive_b_rank,0.2000373687
+M4_add_substitution,Chicago,passive_ell_rank,-0.08395929479
+M4_add_substitution,Chicago,b0_rank,-0.3573929132
+M4_add_substitution,Chicago,h_total_rank,-0.2135953627
+M4_add_substitution,Chicago,local_need_rank,-0.7613016011
+M4_add_substitution,Chicago,origin_exposure_rank,0.002156270259
+M4_add_substitution,Chicago,destination_importance_rank,-0.502640322
+M4_add_substitution,Chicago,log_law_exposure,0.8526625349
+M4_add_substitution,Chicago,out_degree_rank,0.07834546855
+M4_add_substitution,Chicago,in_degree_rank,-0.07189786559
+M4_add_substitution,Chicago,od_scarcity,-0.07834559829
+M4_add_substitution,Chicago,structure_only_score,0.04881682396
+M4_add_substitution,Dallas,local_remaining_rank,1.538698443
+M4_add_substitution,Dallas,access_remaining_rank,0.1274375047
+M4_add_substitution,Dallas,passive_b_rank,0.2216428915
+M4_add_substitution,Dallas,passive_ell_rank,-0.1272870559
+M4_add_substitution,Dallas,b0_rank,-0.3059820943
+M4_add_substitution,Dallas,h_total_rank,-0.1513620191
+M4_add_substitution,Dallas,local_need_rank,-0.7390997942
+M4_add_substitution,Dallas,origin_exposure_rank,-0.03486457078
+M4_add_substitution,Dallas,destination_importance_rank,-0.7052327484
+M4_add_substitution,Dallas,log_law_exposure,0.8585930299
+M4_add_substitution,Dallas,out_degree_rank,0.0983931886
+M4_add_substitution,Dallas,in_degree_rank,-0.1619340247
+M4_add_substitution,Dallas,od_scarcity,-0.09839327411
+M4_add_substitution,Dallas,structure_only_score,0.07899982357
+M4_add_substitution,Houston,local_remaining_rank,1.625503781
+M4_add_substitution,Houston,access_remaining_rank,0.1029475886
+M4_add_substitution,Houston,passive_b_rank,0.2282691473
+M4_add_substitution,Houston,passive_ell_rank,-0.1182844877
+M4_add_substitution,Houston,b0_rank,-0.2980139493
+M4_add_substitution,Houston,h_total_rank,-0.1700992081
+M4_add_substitution,Houston,local_need_rank,-0.7868666165
+M4_add_substitution,Houston,origin_exposure_rank,0.0008172728555
+M4_add_substitution,Houston,destination_importance_rank,-0.777734333
+M4_add_substitution,Houston,log_law_exposure,0.8044059365
+M4_add_substitution,Houston,out_degree_rank,0.0953493662
+M4_add_substitution,Houston,in_degree_rank,-0.09278543756
+M4_add_substitution,Houston,od_scarcity,-0.09534945842
+M4_add_substitution,Houston,structure_only_score,0.08622881324
+M4_add_substitution,New York,local_remaining_rank,1.035619347
+M4_add_substitution,New York,access_remaining_rank,0.08249683172
+M4_add_substitution,New York,passive_b_rank,0.2678965862
+M4_add_substitution,New York,passive_ell_rank,-0.06739264864
+M4_add_substitution,New York,b0_rank,-0.07401379167
+M4_add_substitution,New York,h_total_rank,-0.3419154368
+M4_add_substitution,New York,local_need_rank,-0.693901332
+M4_add_substitution,New York,origin_exposure_rank,0.08302588346
+M4_add_substitution,New York,destination_importance_rank,-0.2983095064
+M4_add_substitution,New York,log_law_exposure,0.4665683276
+M4_add_substitution,New York,out_degree_rank,0.1181908364
+M4_add_substitution,New York,in_degree_rank,-0.00169753183
+M4_add_substitution,New York,od_scarcity,-0.1181909661
+M4_add_substitution,New York,structure_only_score,0.1368552247
+M4_add_substitution,Philadelphia,local_remaining_rank,0.8658668139
+M4_add_substitution,Philadelphia,access_remaining_rank,0.1111232139
+M4_add_substitution,Philadelphia,passive_b_rank,0.2322810913
+M4_add_substitution,Philadelphia,passive_ell_rank,-0.1483067387
+M4_add_substitution,Philadelphia,b0_rank,-0.4227732801
+M4_add_substitution,Philadelphia,h_total_rank,-0.1967111481
+M4_add_substitution,Philadelphia,local_need_rank,-0.7802034134
+M4_add_substitution,Philadelphia,origin_exposure_rank,0.01914497981
+M4_add_substitution,Philadelphia,destination_importance_rank,0.1196833103
+M4_add_substitution,Philadelphia,log_law_exposure,0.8643876819
+M4_add_substitution,Philadelphia,out_degree_rank,0.0822764861
+M4_add_substitution,Philadelphia,in_degree_rank,-0.07831238259
+M4_add_substitution,Philadelphia,od_scarcity,-0.08227647897
+M4_add_substitution,Philadelphia,structure_only_score,0.1045572434
+M4_add_substitution,San Antonio,local_remaining_rank,1.506895313
+M4_add_substitution,San Antonio,access_remaining_rank,0.1083481733
+M4_add_substitution,San Antonio,passive_b_rank,0.2606628757
+M4_add_substitution,San Antonio,passive_ell_rank,-0.1231171413
+M4_add_substitution,San Antonio,b0_rank,-0.3000977909
+M4_add_substitution,San Antonio,h_total_rank,-0.1293059826
+M4_add_substitution,San Antonio,local_need_rank,-0.8425526793
+M4_add_substitution,San Antonio,origin_exposure_rank,-0.01572890574
+M4_add_substitution,San Antonio,destination_importance_rank,-0.6685455241
+M4_add_substitution,San Antonio,log_law_exposure,0.7220009771
+M4_add_substitution,San Antonio,out_degree_rank,0.1327626379
+M4_add_substitution,San Antonio,in_degree_rank,-0.1088580402
+M4_add_substitution,San Antonio,od_scarcity,-0.1327627189
+M4_add_substitution,San Antonio,structure_only_score,0.1311027492
+M5_full_additive,Austin,local_remaining_rank,4.038453772
+M5_full_additive,Austin,access_remaining_rank,0.00576899484
+M5_full_additive,Austin,passive_b_rank,-0.03275142794
+M5_full_additive,Austin,passive_ell_rank,-0.02465409366
+M5_full_additive,Austin,b0_rank,0.0577578901
+M5_full_additive,Austin,h_total_rank,-0.1397083457
+M5_full_additive,Austin,local_need_rank,-0.3443180937
+M5_full_additive,Austin,origin_exposure_rank,-0.04354294485
+M5_full_additive,Austin,destination_importance_rank,-1.028815761
+M5_full_additive,Austin,log_law_exposure,0.904785153
+M5_full_additive,Austin,out_degree_rank,0.002676753641
+M5_full_additive,Austin,in_degree_rank,-0.00261676226
+M5_full_additive,Austin,od_scarcity,-0.00267678361
+M5_full_additive,Austin,structure_only_score,-0.008811182757
+M5_full_additive,Austin,time_remaining_frac,0.03505901878
+M5_full_additive,Austin,log_active_weighted_horizon,0.2693203595
+M5_full_additive,Austin,active_future_loss_share,0.1011749495
+M5_full_additive,Austin,delay_feasible,0.3671269272
+M5_full_additive,Austin,delay_fraction,0.2062976636
+M5_full_additive,Austin,log_eta_per_cost,1.803873972
+M5_full_additive,Austin,eta_per_cost_rank,2.694570274
+M5_full_additive,Austin,intervention_R,0.7250069003
+M5_full_additive,Austin,intervention_C,0.267400962
+M5_full_additive,Austin,intervention_S,-0.8655723787
+M5_full_additive,Austin,budget_fraction_of_baseline,0.2501873622
+M5_full_additive,Austin,log_event_total_precip,0.01308698277
+M5_full_additive,Austin,log_event_peak_precip,0.03559124206
+M5_full_additive,Austin,event_peak_positive_abnormal_deficit,-0.3385400781
+M5_full_additive,Austin,weighted_b0,-0.3278319268
+M5_full_additive,Austin,weighted_h_total,-0.2238017814
+M5_full_additive,Chicago,local_remaining_rank,1.2654897
+M5_full_additive,Chicago,access_remaining_rank,0.01051532089
+M5_full_additive,Chicago,passive_b_rank,-0.0417166055
+M5_full_additive,Chicago,passive_ell_rank,-0.01390151851
+M5_full_additive,Chicago,b0_rank,0.02975466165
+M5_full_additive,Chicago,h_total_rank,-0.1490236736
+M5_full_additive,Chicago,local_need_rank,-0.3556886574
+M5_full_additive,Chicago,origin_exposure_rank,-0.03729927943
+M5_full_additive,Chicago,destination_importance_rank,-0.9672028785
+M5_full_additive,Chicago,log_law_exposure,0.9220103647
+M5_full_additive,Chicago,out_degree_rank,0.0006800475957
+M5_full_additive,Chicago,in_degree_rank,-0.01060876502
+M5_full_additive,Chicago,od_scarcity,-0.0006800938386
+M5_full_additive,Chicago,structure_only_score,-0.02300656008
+M5_full_additive,Chicago,time_remaining_frac,0.03049025463
+M5_full_additive,Chicago,log_active_weighted_horizon,0.2797051944
+M5_full_additive,Chicago,active_future_loss_share,0.08702805873
+M5_full_additive,Chicago,delay_feasible,0.4169596533
+M5_full_additive,Chicago,delay_fraction,0.1304895923
+M5_full_additive,Chicago,log_eta_per_cost,1.330097082
+M5_full_additive,Chicago,eta_per_cost_rank,-0.1086240505
+M5_full_additive,Chicago,intervention_R,0.4760344501
+M5_full_additive,Chicago,intervention_C,0.1869789125
+M5_full_additive,Chicago,intervention_S,-0.5872747186
+M5_full_additive,Chicago,budget_fraction_of_baseline,0.1824084056
+M5_full_additive,Chicago,log_event_total_precip,0.02452294581
+M5_full_additive,Chicago,log_event_peak_precip,-0.00576585766
+M5_full_additive,Chicago,event_peak_positive_abnormal_deficit,-0.2947086071
+M5_full_additive,Chicago,weighted_b0,-0.338732329
+M5_full_additive,Chicago,weighted_h_total,-0.2632605484
+M5_full_additive,Dallas,local_remaining_rank,1.199801527
+M5_full_additive,Dallas,access_remaining_rank,0.01190934436
+M5_full_additive,Dallas,passive_b_rank,-0.03833695257
+M5_full_additive,Dallas,passive_ell_rank,-0.02399925141
+M5_full_additive,Dallas,b0_rank,0.05728393468
+M5_full_additive,Dallas,h_total_rank,-0.1341380608
+M5_full_additive,Dallas,local_need_rank,-0.3322696549
+M5_full_additive,Dallas,origin_exposure_rank,-0.06363721871
+M5_full_additive,Dallas,destination_importance_rank,-0.919440794
+M5_full_additive,Dallas,log_law_exposure,0.9082015412
+M5_full_additive,Dallas,out_degree_rank,0.02470080218
+M5_full_additive,Dallas,in_degree_rank,-0.05656955288
+M5_full_additive,Dallas,od_scarcity,-0.02470084753
+M5_full_additive,Dallas,structure_only_score,0.01403976156
+M5_full_additive,Dallas,time_remaining_frac,0.02627793553
+M5_full_additive,Dallas,log_active_weighted_horizon,0.2811057422
+M5_full_additive,Dallas,active_future_loss_share,0.0814787723
+M5_full_additive,Dallas,delay_feasible,0.4108340591
+M5_full_additive,Dallas,delay_fraction,-0.1346710415
+M5_full_additive,Dallas,log_eta_per_cost,-0.3345849847
+M5_full_additive,Dallas,eta_per_cost_rank,-0.04467749662
+M5_full_additive,Dallas,intervention_R,-0.3848017511
+M5_full_additive,Dallas,intervention_C,-0.09860802314
+M5_full_additive,Dallas,intervention_S,0.4054806763
+M5_full_additive,Dallas,budget_fraction_of_baseline,0.2074574862
+M5_full_additive,Dallas,log_event_total_precip,-0.01193779199
+M5_full_additive,Dallas,log_event_peak_precip,0.02566644074
+M5_full_additive,Dallas,event_peak_positive_abnormal_deficit,-0.2196752038
+M5_full_additive,Dallas,weighted_b0,-0.3218978577
+M5_full_additive,Dallas,weighted_h_total,-0.2809045538
+M5_full_additive,Houston,local_remaining_rank,1.561360618
+M5_full_additive,Houston,access_remaining_rank,0.008326881115
+M5_full_additive,Houston,passive_b_rank,-0.04134815296
+M5_full_additive,Houston,passive_ell_rank,-0.01975617357
+M5_full_additive,Houston,b0_rank,0.07228025106
+M5_full_additive,Houston,h_total_rank,-0.1499760446
+M5_full_additive,Houston,local_need_rank,-0.343366117
+M5_full_additive,Houston,origin_exposure_rank,-0.04218754393
+M5_full_additive,Houston,destination_importance_rank,-1.03362959
+M5_full_additive,Houston,log_law_exposure,0.9132801689
+M5_full_additive,Houston,out_degree_rank,0.005638166416
+M5_full_additive,Houston,in_degree_rank,-0.02101124888
+M5_full_additive,Houston,od_scarcity,-0.00563820566
+M5_full_additive,Houston,structure_only_score,-0.009694692172
+M5_full_additive,Houston,time_remaining_frac,0.03410065227
+M5_full_additive,Houston,log_active_weighted_horizon,0.2748617501
+M5_full_additive,Houston,active_future_loss_share,0.09064562828
+M5_full_additive,Houston,delay_feasible,0.407663216
+M5_full_additive,Houston,delay_fraction,0.07756328802
+M5_full_additive,Houston,log_eta_per_cost,1.029412345
+M5_full_additive,Houston,eta_per_cost_rank,0.1804458926
+M5_full_additive,Houston,intervention_R,0.3238691445
+M5_full_additive,Houston,intervention_C,0.1406720864
+M5_full_additive,Houston,intervention_S,-0.4052736735
+M5_full_additive,Houston,budget_fraction_of_baseline,0.2272401953
+M5_full_additive,Houston,log_event_total_precip,0.04687641609
+M5_full_additive,Houston,log_event_peak_precip,0.002725681175
+M5_full_additive,Houston,event_peak_positive_abnormal_deficit,-0.2974662474
+M5_full_additive,Houston,weighted_b0,-0.3472899101
+M5_full_additive,Houston,weighted_h_total,-0.2366179239
+M5_full_additive,New York,local_remaining_rank,1.565268937
+M5_full_additive,New York,access_remaining_rank,-0.004647121905
+M5_full_additive,New York,passive_b_rank,-0.08792303319
+M5_full_additive,New York,passive_ell_rank,0.003958636041
+M5_full_additive,New York,b0_rank,0.06812246809
+M5_full_additive,New York,h_total_rank,-0.271534191
+M5_full_additive,New York,local_need_rank,-0.187664553
+M5_full_additive,New York,origin_exposure_rank,-0.01101025614
+M5_full_additive,New York,destination_importance_rank,0.8392498915
+M5_full_additive,New York,log_law_exposure,0.7456618811
+M5_full_additive,New York,out_degree_rank,0.006681710949
+M5_full_additive,New York,in_degree_rank,0.01045221504
+M5_full_additive,New York,od_scarcity,-0.006681754751
+M5_full_additive,New York,structure_only_score,-0.001325306958
+M5_full_additive,New York,time_remaining_frac,0.0288649799
+M5_full_additive,New York,log_active_weighted_horizon,0.2582057881
+M5_full_additive,New York,active_future_loss_share,0.0511611763
+M5_full_additive,New York,delay_feasible,0.4862124122
+M5_full_additive,New York,delay_fraction,0.06953659784
+M5_full_additive,New York,log_eta_per_cost,1.091322892
+M5_full_additive,New York,eta_per_cost_rank,2.008372497
+M5_full_additive,New York,intervention_R,0.3580028704
+M5_full_additive,New York,intervention_C,0.1687556029
+M5_full_additive,New York,intervention_S,-0.4402575541
+M5_full_additive,New York,budget_fraction_of_baseline,0.2168512637
+M5_full_additive,New York,log_event_total_precip,0.1325992423
+M5_full_additive,New York,log_event_peak_precip,-0.141985306
+M5_full_additive,New York,event_peak_positive_abnormal_deficit,-0.1221556704
+M5_full_additive,New York,weighted_b0,-0.4865376416
+M5_full_additive,New York,weighted_h_total,-0.4206239112
+M5_full_additive,Philadelphia,local_remaining_rank,4.075677272
+M5_full_additive,Philadelphia,access_remaining_rank,0.01790071685
+M5_full_additive,Philadelphia,passive_b_rank,-0.006746277936
+M5_full_additive,Philadelphia,passive_ell_rank,-0.0421124302
+M5_full_additive,Philadelphia,b0_rank,0.008238875193
+M5_full_additive,Philadelphia,h_total_rank,-0.167885196
+M5_full_additive,Philadelphia,local_need_rank,-0.3418738518
+M5_full_additive,Philadelphia,origin_exposure_rank,-0.03856862195
+M5_full_additive,Philadelphia,destination_importance_rank,-0.4926774377
+M5_full_additive,Philadelphia,log_law_exposure,1.006756032
+M5_full_additive,Philadelphia,out_degree_rank,-0.007197111642
+M5_full_additive,Philadelphia,in_degree_rank,-0.02071843327
+M5_full_additive,Philadelphia,od_scarcity,0.00719711104
+M5_full_additive,Philadelphia,structure_only_score,-0.01702604262
+M5_full_additive,Philadelphia,time_remaining_frac,0.0344536083
+M5_full_additive,Philadelphia,log_active_weighted_horizon,0.3055664977
+M5_full_additive,Philadelphia,active_future_loss_share,0.09228707661
+M5_full_additive,Philadelphia,delay_feasible,0.3925963641
+M5_full_additive,Philadelphia,delay_fraction,0.05497296486
+M5_full_additive,Philadelphia,log_eta_per_cost,0.8542753066
+M5_full_additive,Philadelphia,eta_per_cost_rank,3.208448768
+M5_full_additive,Philadelphia,intervention_R,0.2289878416
+M5_full_additive,Philadelphia,intervention_C,0.1037124295
+M5_full_additive,Philadelphia,intervention_S,-0.3002413937
+M5_full_additive,Philadelphia,budget_fraction_of_baseline,0.3149897927
+M5_full_additive,Philadelphia,log_event_total_precip,-0.007336653096
+M5_full_additive,Philadelphia,log_event_peak_precip,0.0717240305
+M5_full_additive,Philadelphia,event_peak_positive_abnormal_deficit,-0.2684545497
+M5_full_additive,Philadelphia,weighted_b0,-0.327566262
+M5_full_additive,Philadelphia,weighted_h_total,-0.2182230274
+M5_full_additive,San Antonio,local_remaining_rank,0.5517028561
+M5_full_additive,San Antonio,access_remaining_rank,0.01162621394
+M5_full_additive,San Antonio,passive_b_rank,-0.02625785466
+M5_full_additive,San Antonio,passive_ell_rank,-0.02148162117
+M5_full_additive,San Antonio,b0_rank,0.07423027546
+M5_full_additive,San Antonio,h_total_rank,-0.1139431546
+M5_full_additive,San Antonio,local_need_rank,-0.3760850364
+M5_full_additive,San Antonio,origin_exposure_rank,-0.04674077686
+M5_full_additive,San Antonio,destination_importance_rank,-0.9956703688
+M5_full_additive,San Antonio,log_law_exposure,0.8741574991
+M5_full_additive,San Antonio,out_degree_rank,0.01732768033
+M5_full_additive,San Antonio,in_degree_rank,-0.0257112294
+M5_full_additive,San Antonio,od_scarcity,-0.01732771156
+M5_full_additive,San Antonio,structure_only_score,0.001920787029
+M5_full_additive,San Antonio,time_remaining_frac,0.03380787344
+M5_full_additive,San Antonio,log_active_weighted_horizon,0.2866958467
+M5_full_additive,San Antonio,active_future_loss_share,0.09837101207
+M5_full_additive,San Antonio,delay_feasible,0.3747245071
+M5_full_additive,San Antonio,delay_fraction,0.09398263252
+M5_full_additive,San Antonio,log_eta_per_cost,1.09631264
+M5_full_additive,San Antonio,eta_per_cost_rank,-0.7823471153
+M5_full_additive,San Antonio,intervention_R,0.3577812255
+M5_full_additive,San Antonio,intervention_C,0.1465199852
+M5_full_additive,San Antonio,intervention_S,-0.4450173964
+M5_full_additive,San Antonio,budget_fraction_of_baseline,0.2553952782
+M5_full_additive,San Antonio,log_event_total_precip,0.04866898136
+M5_full_additive,San Antonio,log_event_peak_precip,0.01719045823
+M5_full_additive,San Antonio,event_peak_positive_abnormal_deficit,-0.3480896054
+M5_full_additive,San Antonio,weighted_b0,-0.3110178649
+M5_full_additive,San Antonio,weighted_h_total,-0.2224197247
+M6_full_interaction,Austin,local_remaining_rank,2.745074384
+M6_full_interaction,Austin,access_remaining_rank,0.03543287542
+M6_full_interaction,Austin,passive_b_rank,-0.01037628172
+M6_full_interaction,Austin,passive_ell_rank,-0.02874057289
+M6_full_interaction,Austin,b0_rank,0.05745397513
+M6_full_interaction,Austin,h_total_rank,-0.1329963714
+M6_full_interaction,Austin,local_need_rank,-0.3371299775
+M6_full_interaction,Austin,origin_exposure_rank,-0.03559737532
+M6_full_interaction,Austin,destination_importance_rank,-1.077982738
+M6_full_interaction,Austin,log_law_exposure,0.894949325
+M6_full_interaction,Austin,out_degree_rank,-0.01048580758
+M6_full_interaction,Austin,in_degree_rank,0.008723324445
+M6_full_interaction,Austin,od_scarcity,0.01048579736
+M6_full_interaction,Austin,structure_only_score,-0.07288579042
+M6_full_interaction,Austin,time_remaining_frac,0.00599019345
+M6_full_interaction,Austin,log_active_weighted_horizon,0.2799342546
+M6_full_interaction,Austin,active_future_loss_share,0.06158096151
+M6_full_interaction,Austin,delay_feasible,0.4059773622
+M6_full_interaction,Austin,delay_fraction,0.3372890859
+M6_full_interaction,Austin,log_eta_per_cost,2.186364542
+M6_full_interaction,Austin,eta_per_cost_rank,1.235027141
+M6_full_interaction,Austin,intervention_R,1.093702658
+M6_full_interaction,Austin,intervention_C,0.3636102054
+M6_full_interaction,Austin,intervention_S,-1.265220137
+M6_full_interaction,Austin,budget_fraction_of_baseline,0.2756209224
+M6_full_interaction,Austin,log_event_total_precip,0.01787151612
+M6_full_interaction,Austin,log_event_peak_precip,0.02696196424
+M6_full_interaction,Austin,event_peak_positive_abnormal_deficit,-0.331763952
+M6_full_interaction,Austin,weighted_b0,-0.3232137545
+M6_full_interaction,Austin,weighted_h_total,-0.2303585857
+M6_full_interaction,Austin,deficit_x_exposure,-0.09549146603
+M6_full_interaction,Austin,access_x_origin,-0.01958574072
+M6_full_interaction,Austin,deficit_x_exposure_x_scarcity,-0.04859197007
+M6_full_interaction,Austin,log_horizon_x_log_exposure,-0.1973213867
+M6_full_interaction,Austin,log_horizon_x_log_efficiency,0.1683123378
+M6_full_interaction,Austin,log_exposure_x_log_efficiency,-0.01043632685
+M6_full_interaction,Austin,log_horizon_x_log_exposure_x_log_efficiency,0.2021797558
+M6_full_interaction,Austin,delay_x_log_horizon,-0.06504692711
+M6_full_interaction,Austin,scarcity_x_log_exposure,0.08956644853
+M6_full_interaction,Chicago,local_remaining_rank,0.1047112735
+M6_full_interaction,Chicago,access_remaining_rank,0.02374312746
+M6_full_interaction,Chicago,passive_b_rank,-0.02531011757
+M6_full_interaction,Chicago,passive_ell_rank,-0.01984771317
+M6_full_interaction,Chicago,b0_rank,0.02904204117
+M6_full_interaction,Chicago,h_total_rank,-0.1438340182
+M6_full_interaction,Chicago,local_need_rank,-0.351726691
+M6_full_interaction,Chicago,origin_exposure_rank,-0.0431007537
+M6_full_interaction,Chicago,destination_importance_rank,-1.012706867
+M6_full_interaction,Chicago,log_law_exposure,0.9785497016
+M6_full_interaction,Chicago,out_degree_rank,-0.005231679556
+M6_full_interaction,Chicago,in_degree_rank,-0.004509044628
+M6_full_interaction,Chicago,od_scarcity,0.005231646702
+M6_full_interaction,Chicago,structure_only_score,-0.06349211172
+M6_full_interaction,Chicago,time_remaining_frac,-0.0007108342491
+M6_full_interaction,Chicago,log_active_weighted_horizon,0.3247748479
+M6_full_interaction,Chicago,active_future_loss_share,0.05030632915
+M6_full_interaction,Chicago,delay_feasible,0.4704013253
+M6_full_interaction,Chicago,delay_fraction,0.2283810327
+M6_full_interaction,Chicago,log_eta_per_cost,1.559103961
+M6_full_interaction,Chicago,eta_per_cost_rank,-1.44444411
+M6_full_interaction,Chicago,intervention_R,0.7257691594
+M6_full_interaction,Chicago,intervention_C,0.2397608656
+M6_full_interaction,Chicago,intervention_S,-0.8490764812
+M6_full_interaction,Chicago,budget_fraction_of_baseline,0.1993305056
+M6_full_interaction,Chicago,log_event_total_precip,0.02901098213
+M6_full_interaction,Chicago,log_event_peak_precip,-0.01460875648
+M6_full_interaction,Chicago,event_peak_positive_abnormal_deficit,-0.283877517
+M6_full_interaction,Chicago,weighted_b0,-0.3379496402
+M6_full_interaction,Chicago,weighted_h_total,-0.2701289814
+M6_full_interaction,Chicago,deficit_x_exposure,-0.1061865956
+M6_full_interaction,Chicago,access_x_origin,0.005708540979
+M6_full_interaction,Chicago,deficit_x_exposure_x_scarcity,-0.03944485539
+M6_full_interaction,Chicago,log_horizon_x_log_exposure,-0.2727611681
+M6_full_interaction,Chicago,log_horizon_x_log_efficiency,0.1191182062
+M6_full_interaction,Chicago,log_exposure_x_log_efficiency,-0.2164385101
+M6_full_interaction,Chicago,log_horizon_x_log_exposure_x_log_efficiency,0.3897839246
+M6_full_interaction,Chicago,delay_x_log_horizon,-0.09089704863
+M6_full_interaction,Chicago,scarcity_x_log_exposure,0.07116174833
+M6_full_interaction,Dallas,local_remaining_rank,-0.16050311
+M6_full_interaction,Dallas,access_remaining_rank,0.03466444891
+M6_full_interaction,Dallas,passive_b_rank,-0.02743738488
+M6_full_interaction,Dallas,passive_ell_rank,-0.02748063569
+M6_full_interaction,Dallas,b0_rank,0.05409540938
+M6_full_interaction,Dallas,h_total_rank,-0.1339516324
+M6_full_interaction,Dallas,local_need_rank,-0.3265660972
+M6_full_interaction,Dallas,origin_exposure_rank,-0.05602492288
+M6_full_interaction,Dallas,destination_importance_rank,-1.008148314
+M6_full_interaction,Dallas,log_law_exposure,0.9972675635
+M6_full_interaction,Dallas,out_degree_rank,0.01119389125
+M6_full_interaction,Dallas,in_degree_rank,-0.04555843407
+M6_full_interaction,Dallas,od_scarcity,-0.01119392648
+M6_full_interaction,Dallas,structure_only_score,-0.03556280801
+M6_full_interaction,Dallas,time_remaining_frac,0.0009202811322
+M6_full_interaction,Dallas,log_active_weighted_horizon,0.3052253002
+M6_full_interaction,Dallas,active_future_loss_share,0.04981529283
+M6_full_interaction,Dallas,delay_feasible,0.4619312477
+M6_full_interaction,Dallas,delay_fraction,-0.1765605668
+M6_full_interaction,Dallas,log_eta_per_cost,-0.9570626206
+M6_full_interaction,Dallas,eta_per_cost_rank,-1.730702854
+M6_full_interaction,Dallas,intervention_R,-0.5805639565
+M6_full_interaction,Dallas,intervention_C,-0.1887198204
+M6_full_interaction,Dallas,intervention_S,0.6523289791
+M6_full_interaction,Dallas,budget_fraction_of_baseline,0.2271774182
+M6_full_interaction,Dallas,log_event_total_precip,-0.006423066882
+M6_full_interaction,Dallas,log_event_peak_precip,0.01890124223
+M6_full_interaction,Dallas,event_peak_positive_abnormal_deficit,-0.2222704766
+M6_full_interaction,Dallas,weighted_b0,-0.3171826063
+M6_full_interaction,Dallas,weighted_h_total,-0.2791649912
+M6_full_interaction,Dallas,deficit_x_exposure,-0.238982348
+M6_full_interaction,Dallas,access_x_origin,-0.006187488343
+M6_full_interaction,Dallas,deficit_x_exposure_x_scarcity,-0.0355245483
+M6_full_interaction,Dallas,log_horizon_x_log_exposure,-0.2353747806
+M6_full_interaction,Dallas,log_horizon_x_log_efficiency,0.1329873541
+M6_full_interaction,Dallas,log_exposure_x_log_efficiency,-0.2326956943
+M6_full_interaction,Dallas,log_horizon_x_log_exposure_x_log_efficiency,0.3402497484
+M6_full_interaction,Dallas,delay_x_log_horizon,-0.08264645382
+M6_full_interaction,Dallas,scarcity_x_log_exposure,0.06321417289
+M6_full_interaction,Houston,local_remaining_rank,0.2212231609
+M6_full_interaction,Houston,access_remaining_rank,0.02477809534
+M6_full_interaction,Houston,passive_b_rank,-0.02364247695
+M6_full_interaction,Houston,passive_ell_rank,-0.02582885062
+M6_full_interaction,Houston,b0_rank,0.07084282117
+M6_full_interaction,Houston,h_total_rank,-0.1455260891
+M6_full_interaction,Houston,local_need_rank,-0.3383292945
+M6_full_interaction,Houston,origin_exposure_rank,-0.04697578752
+M6_full_interaction,Houston,destination_importance_rank,-1.095891764
+M6_full_interaction,Houston,log_law_exposure,0.989498837
+M6_full_interaction,Houston,out_degree_rank,-0.001837010794
+M6_full_interaction,Houston,in_degree_rank,-0.01443913084
+M6_full_interaction,Houston,od_scarcity,0.001836986962
+M6_full_interaction,Houston,structure_only_score,-0.04819766094
+M6_full_interaction,Houston,time_remaining_frac,0.003296223295
+M6_full_interaction,Houston,log_active_weighted_horizon,0.3081047218
+M6_full_interaction,Houston,active_future_loss_share,0.05358024269
+M6_full_interaction,Houston,delay_feasible,0.4573460853
+M6_full_interaction,Houston,delay_fraction,0.1248369818
+M6_full_interaction,Houston,log_eta_per_cost,0.9515391208
+M6_full_interaction,Houston,eta_per_cost_rank,-1.381800098
+M6_full_interaction,Houston,intervention_R,0.421160613
+M6_full_interaction,Houston,intervention_C,0.1465456503
+M6_full_interaction,Houston,intervention_S,-0.4900682826
+M6_full_interaction,Houston,budget_fraction_of_baseline,0.2451474183
+M6_full_interaction,Houston,log_event_total_precip,0.05056765657
+M6_full_interaction,Houston,log_event_peak_precip,-0.005399236708
+M6_full_interaction,Houston,event_peak_positive_abnormal_deficit,-0.2892416186
+M6_full_interaction,Houston,weighted_b0,-0.344966629
+M6_full_interaction,Houston,weighted_h_total,-0.2427995389
+M6_full_interaction,Houston,deficit_x_exposure,-0.1452375054
+M6_full_interaction,Houston,access_x_origin,0.003837398074
+M6_full_interaction,Houston,deficit_x_exposure_x_scarcity,-0.047212961
+M6_full_interaction,Houston,log_horizon_x_log_exposure,-0.2540202617
+M6_full_interaction,Houston,log_horizon_x_log_efficiency,0.1428634064
+M6_full_interaction,Houston,log_exposure_x_log_efficiency,-0.1999514915
+M6_full_interaction,Houston,log_horizon_x_log_exposure_x_log_efficiency,0.3302157615
+M6_full_interaction,Houston,delay_x_log_horizon,-0.082705645
+M6_full_interaction,Houston,scarcity_x_log_exposure,0.07178845444
+M6_full_interaction,New York,local_remaining_rank,0.7884765716
+M6_full_interaction,New York,access_remaining_rank,-0.01644038416
+M6_full_interaction,New York,passive_b_rank,-0.06612823569
+M6_full_interaction,New York,passive_ell_rank,-0.0007480685825
+M6_full_interaction,New York,b0_rank,0.05629920787
+M6_full_interaction,New York,h_total_rank,-0.2725552644
+M6_full_interaction,New York,local_need_rank,-0.177500918
+M6_full_interaction,New York,origin_exposure_rank,-0.04550746072
+M6_full_interaction,New York,destination_importance_rank,0.1242687531
+M6_full_interaction,New York,log_law_exposure,0.8474305878
+M6_full_interaction,New York,out_degree_rank,0.02765584867
+M6_full_interaction,New York,in_degree_rank,0.008103181271
+M6_full_interaction,New York,od_scarcity,-0.02765588553
+M6_full_interaction,New York,structure_only_score,-0.06931811771
+M6_full_interaction,New York,time_remaining_frac,-0.002303975819
+M6_full_interaction,New York,log_active_weighted_horizon,0.41438077
+M6_full_interaction,New York,active_future_loss_share,0.02380355046
+M6_full_interaction,New York,delay_feasible,0.5808751197
+M6_full_interaction,New York,delay_fraction,0.1953096394
+M6_full_interaction,New York,log_eta_per_cost,1.723920844
+M6_full_interaction,New York,eta_per_cost_rank,0.4137540484
+M6_full_interaction,New York,intervention_R,0.7662864495
+M6_full_interaction,New York,intervention_C,0.2931228822
+M6_full_interaction,New York,intervention_S,-0.8741255212
+M6_full_interaction,New York,budget_fraction_of_baseline,0.2351884342
+M6_full_interaction,New York,log_event_total_precip,0.13940823
+M6_full_interaction,New York,log_event_peak_precip,-0.1526158686
+M6_full_interaction,New York,event_peak_positive_abnormal_deficit,-0.1165665792
+M6_full_interaction,New York,weighted_b0,-0.4834146834
+M6_full_interaction,New York,weighted_h_total,-0.4257349201
+M6_full_interaction,New York,deficit_x_exposure,-0.05536187004
+M6_full_interaction,New York,access_x_origin,0.04030277098
+M6_full_interaction,New York,deficit_x_exposure_x_scarcity,-0.03909496481
+M6_full_interaction,New York,log_horizon_x_log_exposure,-0.3177359649
+M6_full_interaction,New York,log_horizon_x_log_efficiency,0.04996499715
+M6_full_interaction,New York,log_exposure_x_log_efficiency,-0.2258639422
+M6_full_interaction,New York,log_horizon_x_log_exposure_x_log_efficiency,0.358622962
+M6_full_interaction,New York,delay_x_log_horizon,-0.1300359886
+M6_full_interaction,New York,scarcity_x_log_exposure,0.1389377568
+M6_full_interaction,Philadelphia,local_remaining_rank,2.737916809
+M6_full_interaction,Philadelphia,access_remaining_rank,0.03778976274
+M6_full_interaction,Philadelphia,passive_b_rank,0.01021707678
+M6_full_interaction,Philadelphia,passive_ell_rank,-0.05019108936
+M6_full_interaction,Philadelphia,b0_rank,0.01145709665
+M6_full_interaction,Philadelphia,h_total_rank,-0.1601817091
+M6_full_interaction,Philadelphia,local_need_rank,-0.3354579904
+M6_full_interaction,Philadelphia,origin_exposure_rank,-0.03726693852
+M6_full_interaction,Philadelphia,destination_importance_rank,-0.6590611658
+M6_full_interaction,Philadelphia,log_law_exposure,1.105205612
+M6_full_interaction,Philadelphia,out_degree_rank,-0.006858123889
+M6_full_interaction,Philadelphia,in_degree_rank,-0.01455686976
+M6_full_interaction,Philadelphia,od_scarcity,0.006858142789
+M6_full_interaction,Philadelphia,structure_only_score,-0.09431645533
+M6_full_interaction,Philadelphia,time_remaining_frac,0.007077997605
+M6_full_interaction,Philadelphia,log_active_weighted_horizon,0.3797001598
+M6_full_interaction,Philadelphia,active_future_loss_share,0.06459534621
+M6_full_interaction,Philadelphia,delay_feasible,0.4526952479
+M6_full_interaction,Philadelphia,delay_fraction,0.1402758029
+M6_full_interaction,Philadelphia,log_eta_per_cost,1.045252244
+M6_full_interaction,Philadelphia,eta_per_cost_rank,1.576941126
+M6_full_interaction,Philadelphia,intervention_R,0.434677426
+M6_full_interaction,Philadelphia,intervention_C,0.1410724852
+M6_full_interaction,Philadelphia,intervention_S,-0.5127196049
+M6_full_interaction,Philadelphia,budget_fraction_of_baseline,0.3357163555
+M6_full_interaction,Philadelphia,log_event_total_precip,0.0008676111125
+M6_full_interaction,Philadelphia,log_event_peak_precip,0.05959453473
+M6_full_interaction,Philadelphia,event_peak_positive_abnormal_deficit,-0.2607237196
+M6_full_interaction,Philadelphia,weighted_b0,-0.3246244538
+M6_full_interaction,Philadelphia,weighted_h_total,-0.2256070636
+M6_full_interaction,Philadelphia,deficit_x_exposure,-0.1319831574
+M6_full_interaction,Philadelphia,access_x_origin,0.0004276534174
+M6_full_interaction,Philadelphia,deficit_x_exposure_x_scarcity,-0.006081335404
+M6_full_interaction,Philadelphia,log_horizon_x_log_exposure,-0.3159599481
+M6_full_interaction,Philadelphia,log_horizon_x_log_efficiency,0.08703877924
+M6_full_interaction,Philadelphia,log_exposure_x_log_efficiency,-0.2772216155
+M6_full_interaction,Philadelphia,log_horizon_x_log_exposure_x_log_efficiency,0.4262897918
+M6_full_interaction,Philadelphia,delay_x_log_horizon,-0.09756763583
+M6_full_interaction,Philadelphia,scarcity_x_log_exposure,0.09279900578
+M6_full_interaction,San Antonio,local_remaining_rank,-0.4091106531
+M6_full_interaction,San Antonio,access_remaining_rank,0.03976342806
+M6_full_interaction,San Antonio,passive_b_rank,-0.009080520134
+M6_full_interaction,San Antonio,passive_ell_rank,-0.02687921524
+M6_full_interaction,San Antonio,b0_rank,0.07044989536
+M6_full_interaction,San Antonio,h_total_rank,-0.1124857553
+M6_full_interaction,San Antonio,local_need_rank,-0.3721656256
+M6_full_interaction,San Antonio,origin_exposure_rank,-0.03839783837
+M6_full_interaction,San Antonio,destination_importance_rank,-0.9359828365
+M6_full_interaction,San Antonio,log_law_exposure,0.9252003911
+M6_full_interaction,San Antonio,out_degree_rank,-0.0029258952
+M6_full_interaction,San Antonio,in_degree_rank,-0.01817100441
+M6_full_interaction,San Antonio,od_scarcity,0.002925873677
+M6_full_interaction,San Antonio,structure_only_score,-0.004038219678
+M6_full_interaction,San Antonio,time_remaining_frac,0.00169312959
+M6_full_interaction,San Antonio,log_active_weighted_horizon,0.2612816973
+M6_full_interaction,San Antonio,active_future_loss_share,0.05728705613
+M6_full_interaction,San Antonio,delay_feasible,0.3972492878
+M6_full_interaction,San Antonio,delay_fraction,0.1360819717
+M6_full_interaction,San Antonio,log_eta_per_cost,0.9538696654
+M6_full_interaction,San Antonio,eta_per_cost_rank,-1.842683765
+M6_full_interaction,San Antonio,intervention_R,0.4349772134
+M6_full_interaction,San Antonio,intervention_C,0.1446441351
+M6_full_interaction,San Antonio,intervention_S,-0.5069533939
+M6_full_interaction,San Antonio,budget_fraction_of_baseline,0.2697742987
+M6_full_interaction,San Antonio,log_event_total_precip,0.05063368934
+M6_full_interaction,San Antonio,log_event_peak_precip,0.009329253286
+M6_full_interaction,San Antonio,event_peak_positive_abnormal_deficit,-0.3360780798
+M6_full_interaction,San Antonio,weighted_b0,-0.3117541003
+M6_full_interaction,San Antonio,weighted_h_total,-0.2289129781
+M6_full_interaction,San Antonio,deficit_x_exposure,-0.125912615
+M6_full_interaction,San Antonio,access_x_origin,-0.01817066673
+M6_full_interaction,San Antonio,deficit_x_exposure_x_scarcity,-0.07933154648
+M6_full_interaction,San Antonio,log_horizon_x_log_exposure,-0.1988868777
+M6_full_interaction,San Antonio,log_horizon_x_log_efficiency,0.1714534594
+M6_full_interaction,San Antonio,log_exposure_x_log_efficiency,-0.1433838761
+M6_full_interaction,San Antonio,log_horizon_x_log_exposure_x_log_efficiency,0.2552594611
+M6_full_interaction,San Antonio,delay_x_log_horizon,-0.04144633915
+M6_full_interaction,San Antonio,scarcity_x_log_exposure,0.04257791309
+M7_factorized_low_dim,Austin,delay_feasible,0.3607126758
+M7_factorized_low_dim,Austin,log_active_weighted_horizon,0.05802395381
+M7_factorized_low_dim,Austin,log_law_exposure,0.791324653
+M7_factorized_low_dim,Austin,log_eta_per_cost,4.170632522
+M7_factorized_low_dim,Austin,intervention_R,2.302429142
+M7_factorized_low_dim,Austin,intervention_C,0.3547257117
+M7_factorized_low_dim,Austin,intervention_S,-2.244958359
+M7_factorized_low_dim,Chicago,delay_feasible,0.4050552794
+M7_factorized_low_dim,Chicago,log_active_weighted_horizon,0.06288254938
+M7_factorized_low_dim,Chicago,log_law_exposure,0.8423079109
+M7_factorized_low_dim,Chicago,log_eta_per_cost,3.34685282
+M7_factorized_low_dim,Chicago,intervention_R,1.811850156
+M7_factorized_low_dim,Chicago,intervention_C,0.274878014
+M7_factorized_low_dim,Chicago,intervention_S,-1.788997234
+M7_factorized_low_dim,Dallas,delay_feasible,0.3989949601
+M7_factorized_low_dim,Dallas,log_active_weighted_horizon,0.1134405299
+M7_factorized_low_dim,Dallas,log_law_exposure,0.8267865644
+M7_factorized_low_dim,Dallas,log_eta_per_cost,1.376180969
+M7_factorized_low_dim,Dallas,intervention_R,0.5978851644
+M7_factorized_low_dim,Dallas,intervention_C,0.138678386
+M7_factorized_low_dim,Dallas,intervention_S,-0.6152559066
+M7_factorized_low_dim,Houston,delay_feasible,0.3980668508
+M7_factorized_low_dim,Houston,log_active_weighted_horizon,0.07965324033
+M7_factorized_low_dim,Houston,log_law_exposure,0.8087742557
+M7_factorized_low_dim,Houston,log_eta_per_cost,3.073109068
+M7_factorized_low_dim,Houston,intervention_R,1.626222001
+M7_factorized_low_dim,Houston,intervention_C,0.2835856971
+M7_factorized_low_dim,Houston,intervention_S,-1.605632402
+M7_factorized_low_dim,New York,delay_feasible,0.4790127237
+M7_factorized_low_dim,New York,log_active_weighted_horizon,0.1153415157
+M7_factorized_low_dim,New York,log_law_exposure,0.5448431894
+M7_factorized_low_dim,New York,log_eta_per_cost,0.9133137418
+M7_factorized_low_dim,New York,intervention_R,0.2540583098
+M7_factorized_low_dim,New York,intervention_C,0.158629361
+M7_factorized_low_dim,New York,intervention_S,-0.3513779034
+M7_factorized_low_dim,Philadelphia,delay_feasible,0.3895860365
+M7_factorized_low_dim,Philadelphia,log_active_weighted_horizon,0.1047573766
+M7_factorized_low_dim,Philadelphia,log_law_exposure,0.8376997586
+M7_factorized_low_dim,Philadelphia,log_eta_per_cost,3.239789755
+M7_factorized_low_dim,Philadelphia,intervention_R,1.735903399
+M7_factorized_low_dim,Philadelphia,intervention_C,0.2315812787
+M7_factorized_low_dim,Philadelphia,intervention_S,-1.707356156
+M7_factorized_low_dim,San Antonio,delay_feasible,0.372656664
+M7_factorized_low_dim,San Antonio,log_active_weighted_horizon,0.07802028365
+M7_factorized_low_dim,San Antonio,log_law_exposure,0.740195963
+M7_factorized_low_dim,San Antonio,log_eta_per_cost,2.528411995
+M7_factorized_low_dim,San Antonio,intervention_R,1.294787574
+M7_factorized_low_dim,San Antonio,intervention_C,0.2142930268
+M7_factorized_low_dim,San Antonio,intervention_S,-1.288942753
+M8_factorized_interaction,Austin,delay_feasible,0.4543857512
+M8_factorized_interaction,Austin,log_active_weighted_horizon,0.5017663044
+M8_factorized_interaction,Austin,log_law_exposure,1.743634235
+M8_factorized_interaction,Austin,log_eta_per_cost,4.771871853
+M8_factorized_interaction,Austin,intervention_R,2.49627293
+M8_factorized_interaction,Austin,intervention_C,0.3293167573
+M8_factorized_interaction,Austin,intervention_S,-2.377639112
+M8_factorized_interaction,Austin,log_horizon_x_log_exposure,-1.099049533
+M8_factorized_interaction,Austin,log_horizon_x_log_efficiency,-0.1991518493
+M8_factorized_interaction,Austin,log_exposure_x_log_efficiency,-1.125145231
+M8_factorized_interaction,Austin,log_horizon_x_log_exposure_x_log_efficiency,0.9514017985
+M8_factorized_interaction,Austin,delay_x_log_horizon,-0.1295693395
+M8_factorized_interaction,Chicago,delay_feasible,0.5026321468
+M8_factorized_interaction,Chicago,log_active_weighted_horizon,0.4959520631
+M8_factorized_interaction,Chicago,log_law_exposure,1.691797611
+M8_factorized_interaction,Chicago,log_eta_per_cost,3.782115981
+M8_factorized_interaction,Chicago,intervention_R,1.885034297
+M8_factorized_interaction,Chicago,intervention_C,0.2371721211
+M8_factorized_interaction,Chicago,intervention_S,-1.811392491
+M8_factorized_interaction,Chicago,log_horizon_x_log_exposure,-1.047532909
+M8_factorized_interaction,Chicago,log_horizon_x_log_efficiency,-0.2684598748
+M8_factorized_interaction,Chicago,log_exposure_x_log_efficiency,-1.24620472
+M8_factorized_interaction,Chicago,log_horizon_x_log_exposure_x_log_efficiency,1.169773766
+M8_factorized_interaction,Chicago,delay_x_log_horizon,-0.138619228
+M8_factorized_interaction,Dallas,delay_feasible,0.5304752074
+M8_factorized_interaction,Dallas,log_active_weighted_horizon,0.3676242165
+M8_factorized_interaction,Dallas,log_law_exposure,1.285411374
+M8_factorized_interaction,Dallas,log_eta_per_cost,1.50533424
+M8_factorized_interaction,Dallas,intervention_R,0.5941419858
+M8_factorized_interaction,Dallas,intervention_C,0.1004042604
+M8_factorized_interaction,Dallas,intervention_S,-0.5734179
+M8_factorized_interaction,Dallas,log_horizon_x_log_exposure,-0.5534498265
+M8_factorized_interaction,Dallas,log_horizon_x_log_efficiency,-0.1330817334
+M8_factorized_interaction,Dallas,log_exposure_x_log_efficiency,-0.841972144
+M8_factorized_interaction,Dallas,log_horizon_x_log_exposure_x_log_efficiency,0.8040949176
+M8_factorized_interaction,Dallas,delay_x_log_horizon,-0.1962306789
+M8_factorized_interaction,Houston,delay_feasible,0.5058876072
+M8_factorized_interaction,Houston,log_active_weighted_horizon,0.4763526799
+M8_factorized_interaction,Houston,log_law_exposure,1.729676352
+M8_factorized_interaction,Houston,log_eta_per_cost,3.473035589
+M8_factorized_interaction,Houston,intervention_R,1.705215252
+M8_factorized_interaction,Houston,intervention_C,0.2386697739
+M8_factorized_interaction,Houston,intervention_S,-1.624021134
+M8_factorized_interaction,Houston,log_horizon_x_log_exposure,-1.040616615
+M8_factorized_interaction,Houston,log_horizon_x_log_efficiency,-0.1991008474
+M8_factorized_interaction,Houston,log_exposure_x_log_efficiency,-1.283704545
+M8_factorized_interaction,Houston,log_horizon_x_log_exposure_x_log_efficiency,1.1115137
+M8_factorized_interaction,Houston,delay_x_log_horizon,-0.1540302331
+M8_factorized_interaction,New York,delay_feasible,0.6113121131
+M8_factorized_interaction,New York,log_active_weighted_horizon,0.3483664
+M8_factorized_interaction,New York,log_law_exposure,1.554386244
+M8_factorized_interaction,New York,log_eta_per_cost,1.071733731
+M8_factorized_interaction,New York,intervention_R,0.4291229823
+M8_factorized_interaction,New York,intervention_C,0.09118708771
+M8_factorized_interaction,New York,intervention_S,-0.4164078785
+M8_factorized_interaction,New York,log_horizon_x_log_exposure,-0.9770914248
+M8_factorized_interaction,New York,log_horizon_x_log_efficiency,0.2040536871
+M8_factorized_interaction,New York,log_exposure_x_log_efficiency,-1.149742919
+M8_factorized_interaction,New York,log_horizon_x_log_exposure_x_log_efficiency,0.7438582005
+M8_factorized_interaction,New York,delay_x_log_horizon,-0.1718905992
+M8_factorized_interaction,Philadelphia,delay_feasible,0.5071930254
+M8_factorized_interaction,Philadelphia,log_active_weighted_horizon,0.6304296953
+M8_factorized_interaction,Philadelphia,log_law_exposure,1.740395985
+M8_factorized_interaction,Philadelphia,log_eta_per_cost,3.829614464
+M8_factorized_interaction,Philadelphia,intervention_R,1.797023981
+M8_factorized_interaction,Philadelphia,intervention_C,0.2095116237
+M8_factorized_interaction,Philadelphia,intervention_S,-1.736481591
+M8_factorized_interaction,Philadelphia,log_horizon_x_log_exposure,-1.023193573
+M8_factorized_interaction,Philadelphia,log_horizon_x_log_efficiency,-0.3380399215
+M8_factorized_interaction,Philadelphia,log_exposure_x_log_efficiency,-1.243212755
+M8_factorized_interaction,Philadelphia,log_horizon_x_log_exposure_x_log_efficiency,1.081479763
+M8_factorized_interaction,Philadelphia,delay_x_log_horizon,-0.165980701
+M8_factorized_interaction,San Antonio,delay_feasible,0.4539774825
+M8_factorized_interaction,San Antonio,log_active_weighted_horizon,0.4370800676
+M8_factorized_interaction,San Antonio,log_law_exposure,1.649505578
+M8_factorized_interaction,San Antonio,log_eta_per_cost,2.96336046
+M8_factorized_interaction,San Antonio,intervention_R,1.423405415
+M8_factorized_interaction,San Antonio,intervention_C,0.1820261237
+M8_factorized_interaction,San Antonio,intervention_S,-1.36247819
+M8_factorized_interaction,San Antonio,log_horizon_x_log_exposure,-0.96130472
+M8_factorized_interaction,San Antonio,log_horizon_x_log_efficiency,-0.12879399
+M8_factorized_interaction,San Antonio,log_exposure_x_log_efficiency,-1.052326739
+M8_factorized_interaction,San Antonio,log_horizon_x_log_exposure_x_log_efficiency,0.8126302992
+M8_factorized_interaction,San Antonio,delay_x_log_horizon,-0.1157483387
