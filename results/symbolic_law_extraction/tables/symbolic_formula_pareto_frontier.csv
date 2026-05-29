@@ -1,0 +1,5 @@
+formula_id,model_type,family,formula,complexity,n_tokens,mean_spearman,global_spearman,mean_top_1pct_value_capture,mean_top_5pct_value_capture,mean_top_10pct_value_capture,positive_score_share
+F0_delay_feasible,direct_symbolic,single_factor,delay_feasible,1,170137,0.2895705881,0.2797141265,0.01099119729,0.05275109292,0.1092565223,0.9731980698
+F2_exposure,direct_symbolic,single_factor,delay_feasible * law_exposure_term,2,170137,0.9229204025,0.6123211865,0.02207517851,0.0995441831,0.1857340155,0.9731216608
+R6_log_exposure_efficiency,leave_city_log_linear,formula_extractor,linear(log exposure + log eta/cost),3,170137,0.8462138656,0.5728504678,0.02366108673,0.1007562802,0.1818750282,0.9856057177
+F7_activated_recovery_law,direct_symbolic,symbolic_law,delay_feasible * active_weighted_horizon * law_exposure_term * eta_per_cost,4,170137,1,0.6245882053,0.02745175822,0.1120621975,0.1992409972,0.9731216608

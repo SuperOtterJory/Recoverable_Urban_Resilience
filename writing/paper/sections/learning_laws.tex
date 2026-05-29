@@ -25,6 +25,15 @@ Marginal recovery value is activated when future persistent deficit overlaps wit
 
 Simple normalized action features can recover much of this value field across cities. A leave-one-city-out surrogate obtains mean Spearman correlation 0.8866 and mean top-5 percent value capture 0.7640. The symbolic activated law itself captures the top marginal-value field by construction, while exposure-only, deficit-only, and structure-only rankings are weaker and incomplete.
 
+The formula-extraction stage makes this law explicit rather than leaving it as an informal interpretation. Candidate symbolic scores and leave-one-city log-linear formulas were evaluated on 170,137 action tokens from 105 city-events. The compact activated law lies on the accuracy--simplicity Pareto frontier; within the formula-extraction metric it has top-5 percent marginal-value capture 0.1121, compared with 0.0995 for the exposure-only symbolic term and 0.1026 for the minimal leave-city log-law. A feature-group ablation further shows that removing OD exposure and structural variables produces the largest top-tail capture drop, 0.0276. Thus the dominant empirical structure is not rainfall severity or budget alone, but the activation of future recoverable loss by OD exposure and feasible intervention efficiency.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.82\linewidth]{../../results/symbolic_law_extraction/figures/formula_complexity_capture.png}
+  \caption{Symbolic formula extraction compares compact hand-readable laws with leave-city log-linear extractors. The activated law remains on the accuracy--simplicity Pareto frontier.}
+  \label{fig:symbolic-formula-extraction}
+\end{figure}
+
 \subsection{Finite-Budget Residual Law}
 
 The first-order action law is not sufficient for the complete resource-allocation problem. Static small-signal greedy allocation captures 0.8228 of base LP recovery gain on average, leaving a finite-budget gap. The gap is explained by local saturation, diminishing returns, overlapping effects on the same loss channel, period-budget constraints, and substitution among the three intervention primitives. In the finite-budget analysis, the LP uses about 1.67 times as many distinct actions as static greedy and has a mean action-cost Jaccard overlap of 0.6127 with it, showing that the optimizer spreads resources more broadly to avoid exhausting high first-order locations.

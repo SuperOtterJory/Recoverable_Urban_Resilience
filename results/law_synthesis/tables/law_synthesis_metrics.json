@@ -41,5 +41,15 @@
   "event_mean_top5_value_share": 0.16454800846571432,
   "event_mean_marginal_value_gini": 0.4493644743361904,
   "event_loss_recoverable_spearman": -0.6152498444951275,
-  "event_top_tail_decision_spearman": 0.7650261684786043
+  "event_top_tail_decision_spearman": 0.7650261684786043,
+  "symbolic_activated_mean_spearman": 1.0,
+  "symbolic_activated_top5_capture": 0.1120621975,
+  "symbolic_minimal_log_mean_spearman": 0.8728210781,
+  "symbolic_minimal_log_top5_capture": 0.1026197954,
+  "symbolic_exposure_top5_capture": 0.0995441831,
+  "symbolic_full_ablation_top5_capture": 0.1100313181,
+  "symbolic_without_od_top5_capture": 0.08245003577,
+  "symbolic_largest_ablation_drop_group": "od_exposure_structure",
+  "symbolic_largest_ablation_top5_drop": 0.02758128237,
+  "symbolic_leave_city_rows": 63
 }

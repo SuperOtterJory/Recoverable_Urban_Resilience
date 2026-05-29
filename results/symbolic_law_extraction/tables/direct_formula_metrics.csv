@@ -1,0 +1,10 @@
+formula_id,model_type,family,formula,complexity,n_tokens,mean_spearman,global_spearman,mean_top_1pct_value_capture,mean_top_5pct_value_capture,mean_top_10pct_value_capture,positive_score_share
+F0_delay_feasible,direct_symbolic,single_factor,delay_feasible,1,170137,0.2895705881,0.2797141265,0.01099119729,0.05275109292,0.1092565223,0.9731980698
+F1_future_horizon,direct_symbolic,single_factor,delay_feasible * active_weighted_horizon,2,170137,0.2609138143,0.01021408305,0.0167339387,0.05272648005,0.09891346116,0.9731980698
+F2_exposure,direct_symbolic,single_factor,delay_feasible * law_exposure_term,2,170137,0.9229204025,0.6123211865,0.02207517851,0.0995441831,0.1857340155,0.9731216608
+F3_efficiency,direct_symbolic,single_factor,delay_feasible * eta_per_cost,2,170137,-0.1016671199,0.1847597727,0.002850563743,0.02682435216,0.07110011253,0.9731980698
+F4_horizon_x_exposure,direct_symbolic,interaction,delay_feasible * active_weighted_horizon * law_exposure_term,3,170137,0.8399517642,0.498105978,0.02082336012,0.09348658022,0.1756955363,0.9731216608
+F5_horizon_x_efficiency,direct_symbolic,interaction,delay_feasible * active_weighted_horizon * eta_per_cost,3,170137,0.2666192365,0.1976320315,0.009923904891,0.05026708931,0.1029573804,0.9731980698
+F6_exposure_x_efficiency,direct_symbolic,interaction,delay_feasible * law_exposure_term * eta_per_cost,3,170137,0.7806101344,0.648382098,0.02158893294,0.09704444425,0.1738440146,0.9731216608
+F7_activated_recovery_law,direct_symbolic,symbolic_law,delay_feasible * active_weighted_horizon * law_exposure_term * eta_per_cost,4,170137,1,0.6245882053,0.02745175822,0.1120621975,0.1992409972,0.9731216608
+F8_rank_interaction,direct_symbolic,rank_proxy,delay_feasible * active_future_loss_share * exposure_rank * eta_per_cost_rank,4,170137,-0.3861024823,0.07169141727,0.01125779291,0.05263621138,0.09543313978,0.9731980698

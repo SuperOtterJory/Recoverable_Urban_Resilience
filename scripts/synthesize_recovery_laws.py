@@ -78,6 +78,9 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "event_law": read_csv(results / "law_learning" / "tables" / "event_level_top_tail_law.csv"),
         "leave_city": read_csv(results / "law_learning" / "tables" / "leave_city_out_metrics.csv"),
         "leave_regime": read_csv(results / "law_learning" / "tables" / "leave_regime_out_metrics.csv"),
+        "symbolic_formula": read_csv(results / "symbolic_law_extraction" / "tables" / "symbolic_formula_metrics.csv"),
+        "symbolic_ablation": read_csv(results / "symbolic_law_extraction" / "tables" / "feature_group_ablation.csv"),
+        "symbolic_leave_city": read_csv(results / "symbolic_law_extraction" / "tables" / "formula_leave_city_metrics.csv"),
     }
 
 
@@ -131,6 +134,23 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     event_law = data["event_law"]
     leave_city = data["leave_city"]
     leave_regime = data["leave_regime"]
+    symbolic = data["symbolic_formula"]
+    symbolic_ablation = data["symbolic_ablation"]
+    symbolic_leave_city = data["symbolic_leave_city"]
+    activated_symbolic = one_row(symbolic, formula_id="F7_activated_recovery_law")
+    minimal_log_symbolic = one_row(symbolic, formula_id="R7_minimal_log_law")
+    exposure_symbolic = one_row(symbolic, formula_id="F2_exposure")
+    full_ablation = one_row(symbolic_ablation, ablation_id="full_interpretable")
+    without_od = one_row(symbolic_ablation, ablation_id="without_od_exposure_structure")
+    leave_group_rows = (
+        symbolic_ablation[symbolic_ablation["mode"].astype(str).eq("leave_one_group_out")].copy()
+        if "mode" in symbolic_ablation
+        else pd.DataFrame()
+    )
+    if not leave_group_rows.empty and "top5_capture_drop_vs_full" in leave_group_rows:
+        largest_drop = leave_group_rows.sort_values("top5_capture_drop_vs_full", ascending=False).iloc[0]
+    else:
+        largest_drop = pd.Series(dtype=float)
 
     metrics: dict[str, Any] = {
         "n_action_tokens": safe_int(policy_capture["n_tokens"].max()) if "n_tokens" in policy_capture else None,
@@ -176,6 +196,16 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "event_mean_marginal_value_gini": safe_float(event_law["marginal_value_gini"].mean()) if "marginal_value_gini" in event_law else np.nan,
         "event_loss_recoverable_spearman": safe_float(event_law[["baseline_objective", "recoverable_fraction"]].corr(method="spearman").iloc[0, 1]) if {"baseline_objective", "recoverable_fraction"}.issubset(event_law.columns) else np.nan,
         "event_top_tail_decision_spearman": safe_float(event_law[["top_5pct_value_share", "decision_criticality_score"]].corr(method="spearman").iloc[0, 1]) if {"top_5pct_value_share", "decision_criticality_score"}.issubset(event_law.columns) else np.nan,
+        "symbolic_activated_mean_spearman": safe_float(activated_symbolic.get("mean_spearman")),
+        "symbolic_activated_top5_capture": safe_float(activated_symbolic.get("mean_top_5pct_value_capture")),
+        "symbolic_minimal_log_mean_spearman": safe_float(minimal_log_symbolic.get("mean_spearman")),
+        "symbolic_minimal_log_top5_capture": safe_float(minimal_log_symbolic.get("mean_top_5pct_value_capture")),
+        "symbolic_exposure_top5_capture": safe_float(exposure_symbolic.get("mean_top_5pct_value_capture")),
+        "symbolic_full_ablation_top5_capture": safe_float(full_ablation.get("mean_top_5pct_value_capture")),
+        "symbolic_without_od_top5_capture": safe_float(without_od.get("mean_top_5pct_value_capture")),
+        "symbolic_largest_ablation_drop_group": str(largest_drop.get("removed_group", "")),
+        "symbolic_largest_ablation_top5_drop": safe_float(largest_drop.get("top5_capture_drop_vs_full")),
+        "symbolic_leave_city_rows": safe_int(len(symbolic_leave_city)),
     }
     return metrics
 
@@ -250,6 +280,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "key_metric": "residual_perturbed_frequency_mass_capture",
             "value": metrics["perturbed_residual_frequency_mass"],
             "interpretation": "Residual finite greedy captures more perturbed LP selection-frequency mass than static greedy, but stable action lists remain parameter-sensitive.",
+        },
+        {
+            "version": "V12",
+            "evidence_step": "Symbolic formula extraction and structure decoupling",
+            "main_question": "Can the action-value field be compressed into a low-complexity law and stable feature groups?",
+            "key_metric": "activated_symbolic_top5_capture",
+            "value": metrics["symbolic_activated_top5_capture"],
+            "interpretation": "The compact activated law sits on the formula Pareto frontier; OD exposure/structure is the largest feature-group contributor in ablation.",
         },
     ]
     return pd.DataFrame(rows)
@@ -391,8 +429,8 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
             },
             {
                 "item": "surrogate_architecture",
-                "current_status": "Current surrogate is normalized ridge/ranking evidence rather than a full graph neural model.",
-                "implication": "The symbolic law is already interpretable, but the neural structure-extractor stage is still lightweight.",
+                "current_status": "Current surrogate is normalized ridge/ranking evidence plus V12 symbolic formula extraction, not a full graph neural model.",
+                "implication": "The symbolic law is now explicit and reproducible, but the neural structure-extractor stage remains lightweight.",
                 "next_step": "Train a factorized graph/action-value surrogate if the paper needs a stronger AI-law-discovery component.",
             },
             {
@@ -505,11 +543,11 @@ def write_report(
     limitations: pd.DataFrame,
 ) -> None:
     lines = [
-        "# Recoverability Law Synthesis V10",
+        "# Recoverability Law Synthesis V12",
         "",
         "## 这版做了什么",
         "",
-        "V10 不再新增一个孤立实验，而是把 V5-V9 的 learning/law 证据链合并成论文可用的 synthesis：从 action-level marginal value，到 finite-budget residual law，再到 event-level top-tail decision-criticality。所有数字都从已有结果表重新读取生成。",
+        "V12 把 V5-V11 的 learning/law 证据链和新的 symbolic formula extraction 合并成论文可用的 synthesis：从 action-level marginal value，到 finite-budget residual law，再到 event-level top-tail decision-criticality，并进一步给出公式复杂度、跨城市泛化和 feature-group ablation 证据。所有数字都从已有结果表重新读取生成。",
         "",
         "## 三条当前可写入论文的 law",
         "",
@@ -531,6 +569,8 @@ def write_report(
         f"- representative non-base static / scenario LP gain = {metrics['scenario_static_fraction_of_lp_gain']:.4f}",
         f"- representative non-base residual / scenario LP gain = {metrics['scenario_residual_fraction_of_lp_gain']:.4f}",
         f"- perturbed optimum residual frequency-mass capture = {metrics['perturbed_residual_frequency_mass']:.4f} versus static = {metrics['perturbed_static_frequency_mass']:.4f}",
+        f"- symbolic activated law top-5% capture = {metrics['symbolic_activated_top5_capture']:.4f}; minimal log-law top-5% capture = {metrics['symbolic_minimal_log_top5_capture']:.4f}",
+        f"- largest symbolic ablation drop = {metrics['symbolic_largest_ablation_drop_group']} ({metrics['symbolic_largest_ablation_top5_drop']:.4f} top-5 capture)",
         f"- event mean top-5% value share = {metrics['event_mean_top5_value_share']:.4f}; marginal-value Gini = {metrics['event_mean_marginal_value_gini']:.4f}",
         "",
         "## Evidence Ladder",
@@ -559,7 +599,7 @@ def write_report(
         "",
         "## 论文写作含义",
         "",
-        "现在可以把 learning/law 部分从“未来要做 law extraction”改成“已经得到一个两层 law”：action-level 的 activated marginal law 与 finite-budget 的 residual allocation law。V11 进一步说明 residual law 比 static law 更接近扰动后 LP 的稳定 action core，但固定 action list 本身仍然对参数敏感。论文中需要谨慎表述的是：资源效率和 diminishing returns 仍是 recovery-regime 参数；V9/V11 是代表性验证，不是全量非 base 与全量 perturbation closure；完整 AI-law-discovery 版本仍可在后续加入 graph surrogate。",
+        "现在可以把 learning/law 部分从“未来要做 law extraction”改成“已经得到一个可复现实证链条”：action-level 的 activated marginal law、finite-budget 的 residual allocation law、event-level 的 top-tail decision-criticality law，以及 V12 的 formula extractor/structure decoupler。V12 说明 compact symbolic law 处在 Pareto frontier 上，且 OD exposure/structure 是 ablation 中最关键的 feature group。论文中需要谨慎表述的是：资源效率和 diminishing returns 仍是 recovery-regime 参数；V9/V11 是代表性验证，不是全量非 base 与全量 perturbation closure；完整 graph neural surrogate 仍可作为后续增强，而不是当前主结论的必要条件。",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
