@@ -64,6 +64,7 @@ def main() -> None:
     event_law = build_event_level_law_table(data["summary"], concentration)
     policy_summary = summarize_policy_simulation(policy_simulation)
     replay_summary = summarize_policy_replay(policy_replay)
+    lp_validation_summary = load_optional_lp_validation_summary(root)
 
     legacy_action_tokens = table_dir / "action_value_tokens.csv"
     if legacy_action_tokens.exists():
@@ -93,6 +94,7 @@ def main() -> None:
         policy_summary,
         policy_replay,
         replay_summary,
+        lp_validation_summary,
     )
     print(f"Wrote law-learning outputs to {output_dir}")
 
@@ -106,6 +108,13 @@ def load_inputs(root: Path) -> dict[str, pd.DataFrame]:
         "dynamics": pd.read_csv(tables / "event_calibration" / "tables" / "event_dynamic_calibration_summary.csv"),
         "abnormal": pd.read_csv(tables / "data_mining" / "tables" / "speed_hourly_abnormal_deficit.csv", parse_dates=["hour"]),
     }
+
+
+def load_optional_lp_validation_summary(root: Path) -> pd.DataFrame:
+    path = root / "results" / "law_learning_lp_validation" / "tables" / "single_action_lp_marginal_summary.csv"
+    if not path.exists():
+        return pd.DataFrame()
+    return pd.read_csv(path)
 
 
 def build_action_token_dataset(
@@ -210,7 +219,13 @@ def build_event_action_frame(
     h_total = params.h.sum(axis=1)
     h_peak = params.h.max(axis=1)
     local_need = np.clip(params.b0 + h_total, 0.02, 1.0)
-    value_eff = effective_output_values(params, passive_b, passive_ell, destination_importance)
+    finite_value_eff = finite_deficit_output_values(params, passive_b, passive_ell, destination_importance)
+    small_signal_eff, active_horizon, active_share = small_signal_output_values(
+        params,
+        passive_b,
+        passive_ell,
+        destination_importance,
+    )
 
     base = pd.DataFrame(
         {
@@ -264,18 +279,29 @@ def build_event_action_frame(
             k_base["eta_per_cost"] = eta / np.maximum(cost, 1e-12)
             k_base["eta_per_cost_rank"] = rank_pct(k_base["eta_per_cost"].to_numpy(dtype=float))
             k_base["u_cap"] = params.u_cap[intervention][:, t]
-            eff_value = value_eff[intervention][:, t]
-            k_base["marginal_effect_value"] = eff_value / max(float(summary_row.baseline_objective), 1e-12)
-            k_base["marginal_resource_value"] = np.where(
-                feasible,
-                eff_value * eta / np.maximum(cost, 1e-12) / max(float(summary_row.baseline_objective), 1e-12),
-                0.0,
-            )
             k_base["law_future_deficit_area"] = np.where(
                 intervention == "S",
                 k_base["access_remaining_area"],
                 k_base["local_remaining_area"],
             )
+            finite_eff_value = finite_value_eff[intervention][:, t]
+            small_eff_value = small_signal_eff[intervention][:, t]
+            k_base["finite_deficit_effect_value"] = finite_eff_value / max(float(summary_row.baseline_objective), 1e-12)
+            k_base["finite_deficit_area_value"] = np.where(
+                feasible,
+                finite_eff_value * eta / np.maximum(cost, 1e-12) / max(float(summary_row.baseline_objective), 1e-12),
+                0.0,
+            )
+            k_base["active_weighted_horizon"] = active_horizon[intervention][:, t]
+            k_base["active_future_loss_share"] = active_share[intervention][:, t]
+            k_base["small_signal_effect_value"] = small_eff_value / max(float(summary_row.baseline_objective), 1e-12)
+            k_base["small_signal_marginal_value"] = np.where(
+                feasible,
+                small_eff_value * eta / np.maximum(cost, 1e-12) / max(float(summary_row.baseline_objective), 1e-12),
+                0.0,
+            )
+            k_base["marginal_effect_value"] = k_base["small_signal_effect_value"]
+            k_base["marginal_resource_value"] = k_base["small_signal_marginal_value"]
             k_base["law_exposure_term"] = np.where(
                 intervention == "S",
                 k_base["origin_exposure"],
@@ -726,7 +752,7 @@ def remaining_area(values: np.ndarray) -> np.ndarray:
     return out
 
 
-def effective_output_values(
+def finite_deficit_output_values(
     params: Any,
     passive_b: np.ndarray,
     passive_ell: np.ndarray,
@@ -749,12 +775,49 @@ def effective_output_values(
     return values
 
 
+def small_signal_output_values(
+    params: Any,
+    passive_b: np.ndarray,
+    passive_ell: np.ndarray,
+    destination_importance: np.ndarray,
+) -> tuple[dict[str, np.ndarray], dict[str, np.ndarray], dict[str, np.ndarray]]:
+    n = params.n_units
+    horizon = params.horizon
+    values = {key: np.zeros((n, horizon), dtype=float) for key in INTERVENTIONS}
+    active_horizon = {key: np.zeros((n, horizon), dtype=float) for key in INTERVENTIONS}
+    active_share = {key: np.zeros((n, horizon), dtype=float) for key in INTERVENTIONS}
+    active_local = passive_b > 1e-10
+    active_access = passive_ell > 1e-10
+    for t in range(horizon):
+        steps = horizon - t
+        k = np.arange(steps, dtype=float)
+        r_decay = params.a[:, None] ** k[None, :]
+        c_decay = (1.0 - params.delta_c) ** k
+        s_decay = (1.0 - params.delta_s) ** k
+        local_future = active_local[:, t + 1 :].astype(float)
+        access_future = active_access[:, t + 1 :].astype(float)
+
+        r_horizon = (r_decay * local_future).sum(axis=1)
+        c_horizon = (c_decay[None, :] * local_future).sum(axis=1)
+        s_horizon = (s_decay[None, :] * access_future).sum(axis=1)
+        values["R"][:, t] = destination_importance * r_horizon
+        values["C"][:, t] = destination_importance * c_horizon
+        values["S"][:, t] = params.p * s_horizon
+        active_horizon["R"][:, t] = r_horizon
+        active_horizon["C"][:, t] = c_horizon
+        active_horizon["S"][:, t] = s_horizon
+        active_share["R"][:, t] = local_future.mean(axis=1)
+        active_share["C"][:, t] = local_future.mean(axis=1)
+        active_share["S"][:, t] = access_future.mean(axis=1)
+    return values, active_horizon, active_share
+
+
 def activated_bottleneck_score(frame: pd.DataFrame, intervention: str) -> np.ndarray:
-    future_deficit_area = frame["law_future_deficit_area"].to_numpy(dtype=float)
     exposure = frame["law_exposure_term"].to_numpy(dtype=float)
     eta_per_cost = frame["eta_per_cost"].to_numpy(dtype=float)
     feasible = frame["delay_feasible"].to_numpy(dtype=float)
-    return feasible * future_deficit_area * exposure * eta_per_cost
+    active_horizon = frame["active_weighted_horizon"].to_numpy(dtype=float)
+    return feasible * active_horizon * exposure * eta_per_cost
 
 
 def choose_token_sample(
@@ -809,8 +872,12 @@ def add_learning_features(tokens: pd.DataFrame) -> pd.DataFrame:
     df["deficit_x_exposure"] = df["local_remaining_rank"] * df["destination_importance_rank"]
     df["access_x_origin"] = df["access_remaining_rank"] * df["origin_exposure_rank"]
     df["deficit_x_exposure_x_scarcity"] = df["deficit_x_exposure"] * (0.1 + df["od_scarcity"])
+    df["log_active_weighted_horizon"] = np.log1p(df["active_weighted_horizon"])
+    df["log_eta_per_cost"] = np.log1p(df["eta_per_cost"])
     df["law_score_log"] = np.log1p(1000.0 * df["activated_bottleneck_score"])
     df["target_log"] = np.log1p(1000.0 * df["marginal_resource_value"])
+    df["small_signal_target_log"] = np.log1p(1000.0 * df["small_signal_marginal_value"])
+    df["finite_deficit_target_log"] = np.log1p(1000.0 * df["finite_deficit_area_value"])
     df["greedy_oracle_target_log"] = np.log1p(1000.0 * df["greedy_oracle_value_proxy"])
     return df
 
@@ -843,11 +910,12 @@ MODEL_FEATURES = [
     "event_peak_positive_abnormal_deficit",
     "weighted_b0",
     "weighted_h_total",
+    "active_future_loss_share",
+    "log_active_weighted_horizon",
+    "log_eta_per_cost",
     "deficit_x_exposure",
     "access_x_origin",
     "deficit_x_exposure_x_scarcity",
-    "activated_bottleneck_score",
-    "law_score_log",
 ]
 
 
@@ -869,7 +937,10 @@ def run_leave_city_out_models(tokens: pd.DataFrame, *, ridge_alpha: float) -> tu
                     "t",
                     "intervention",
                     "marginal_resource_value",
+                    "small_signal_marginal_value",
+                    "finite_deficit_area_value",
                     "activated_bottleneck_score",
+                    "active_weighted_horizon",
                     "predicted_value_surrogate",
                     "selected_by_optimizer",
                     "greedy_selected_by_oracle",
@@ -1075,8 +1146,8 @@ def make_figures(
     ax.set_xscale("symlog", linthresh=1e-8)
     ax.set_yscale("symlog", linthresh=1e-8)
     ax.set_xlabel("Activated-bottleneck law score")
-    ax.set_ylabel("Marginal resource value proxy")
-    ax.set_title("Local law score and action value field")
+    ax.set_ylabel("LP small-signal marginal value")
+    ax.set_title("Local symbolic law score and LP marginal value field")
     ax.grid(True, alpha=0.2)
     fig.tight_layout()
     fig.savefig(figure_dir / "activated_law_vs_action_value.png", dpi=180)
@@ -1177,7 +1248,167 @@ def write_report(
     policy_summary: pd.DataFrame,
     policy_replay: pd.DataFrame,
     replay_summary: pd.DataFrame,
+    lp_validation_summary: pd.DataFrame,
 ) -> None:
+    def metric(frame: pd.DataFrame, row_filter: pd.Series, column: str) -> float:
+        subset = frame[row_filter] if not frame.empty else pd.DataFrame()
+        return float(subset[column].iloc[0]) if not subset.empty and column in subset else np.nan
+
+    loco_top5_mean = float(loco_metrics["top_5pct_value_capture"].mean()) if not loco_metrics.empty else np.nan
+    loco_spearman_mean = float(loco_metrics["spearman"].mean()) if not loco_metrics.empty else np.nan
+    law_top5 = metric(policy_capture, policy_capture["policy_score"].eq("activated_bottleneck_law"), "top_5pct_value_capture")
+    law_spearman = metric(policy_capture, policy_capture["policy_score"].eq("activated_bottleneck_law"), "mean_spearman_by_event")
+    event_top5_mean = float(concentration["top_5pct_value_share"].mean()) if not concentration.empty else np.nan
+    event_gini_mean = float(concentration["marginal_value_gini"].mean()) if not concentration.empty else np.nan
+    greedy_selected_share = float(tokens["greedy_selected_by_oracle"].mean()) if "greedy_selected_by_oracle" in tokens else np.nan
+
+    base_policy = (
+        policy_summary[policy_summary["policy_scenario"].eq("base")]
+        if not policy_summary.empty and "policy_scenario" in policy_summary
+        else pd.DataFrame()
+    )
+    law_base_relative = metric(
+        base_policy,
+        base_policy["policy_score"].eq("activated_bottleneck_law") if not base_policy.empty else pd.Series(dtype=bool),
+        "mean_relative_to_greedy_oracle",
+    )
+    simple_base = base_policy[base_policy["policy_score"].isin(["exposure_only", "deficit_only", "structure_only", "random_positive"])] if not base_policy.empty else pd.DataFrame()
+    best_simple_base = float(simple_base["mean_relative_to_greedy_oracle"].max()) if not simple_base.empty else np.nan
+
+    base_replay = (
+        replay_summary[replay_summary["policy_scenario"].eq("base")]
+        if not replay_summary.empty and "policy_scenario" in replay_summary
+        else pd.DataFrame()
+    )
+    law_replay_fraction = metric(
+        base_replay,
+        base_replay["policy_score"].eq("activated_bottleneck_law") if not base_replay.empty else pd.Series(dtype=bool),
+        "mean_fraction_of_base_lp_gain",
+    )
+    best_simple_replay = base_replay[base_replay["policy_score"].isin(["exposure_only", "deficit_only", "structure_only", "random_positive"])] if not base_replay.empty else pd.DataFrame()
+    best_simple_replay_fraction = float(best_simple_replay["mean_fraction_of_base_lp_gain"].max()) if not best_simple_replay.empty else np.nan
+    optimizer_replay_gap = metric(
+        base_replay,
+        base_replay["policy_score"].eq("lp_optimizer_replay") if not base_replay.empty else pd.Series(dtype=bool),
+        "mean_gap_to_base_lp_recoverable",
+    )
+
+    validation_all = (
+        lp_validation_summary[lp_validation_summary["group"].eq("all")]
+        if not lp_validation_summary.empty and "group" in lp_validation_summary
+        else pd.DataFrame()
+    )
+    finite_spearman = metric(
+        validation_all,
+        validation_all["label"].eq("finite_deficit_area_label") if not validation_all.empty else pd.Series(dtype=bool),
+        "spearman",
+    )
+    derivative_spearman = metric(
+        validation_all,
+        validation_all["label"].eq("small_signal_derivative_label") if not validation_all.empty else pd.Series(dtype=bool),
+        "spearman",
+    )
+    derivative_ratio = metric(
+        validation_all,
+        validation_all["label"].eq("small_signal_derivative_label") if not validation_all.empty else pd.Series(dtype=bool),
+        "median_lp_to_label_ratio",
+    )
+
+    label_compare = tokens[
+        [
+            "marginal_resource_value",
+            "small_signal_marginal_value",
+            "finite_deficit_area_value",
+            "activated_bottleneck_score",
+        ]
+    ].describe(percentiles=[0.5, 0.9, 0.99]).reset_index()
+
+    lines = [
+        "# Learning and Law Discovery V5",
+        "",
+        "## 本版核心变化",
+        "",
+        "V5 把 V4 single-action LP validation 的发现并回主 learning pipeline：主 action label 从旧的 finite-deficit-area proxy 切换为 LP small-signal marginal value。也就是说，`marginal_resource_value` 现在表示在某个 `city-event-unit-time-intervention` 上投入第一小段资源时，每单位成本降低 12 小时加权功能损失的边际值。",
+        "",
+        "旧标签没有删除，而是保留为 `finite_deficit_area_value`，用于说明“可修复总量上限”和“一阶边际价值”不是同一个对象。V4 的代表性 LP 检查显示：旧标签和 single-action LP 的 Spearman 只有 "
+        f"{finite_spearman:.4f}，而 small-signal derivative label 的 Spearman 为 {derivative_spearman:.4f}，中位 LP/label ratio 为 {derivative_ratio:.4f}。",
+        "",
+        "## 新的 action-level law",
+        "",
+        "对第一小段资源，当前 LP 的一阶边际价值可以写成一个很紧凑的 activated-recovery law：",
+        "",
+        "```text",
+        "small_signal_value(i,t,k)",
+        "  ~= active_future_horizon(i,t,k)",
+        "     * OD_exposure_or_origin_weight(i,k)",
+        "     * intervention_efficiency(i,t,k)",
+        "     / passive_event_loss",
+        "```",
+        "",
+        "`active_future_horizon` 表示资源效果能在未来多少仍有正损失的小时里发挥作用，并带有自然恢复或资源衰减权重。`R/C` 使用 destination importance，因为它们降低 destination/local deficit 后会通过 OD dependence 影响 origins；`S` 使用 origin exposure，因为它直接屏蔽 origin experienced loss。",
+        "",
+        "## 数据规模与主结果",
+        "",
+        f"- sampled action tokens: {len(tokens):,}",
+        f"- city-event scenarios: {tokens[['city', 'event_id']].drop_duplicates().shape[0]}",
+        f"- full candidate-action concentration rows: {len(concentration)}",
+        f"- policy stress-test rows: {len(policy_simulation):,}",
+        f"- fixed-policy replay rows: {len(policy_replay):,}",
+        f"- sampled-token greedy oracle selected share: {greedy_selected_share:.4f}",
+        f"- mean event top-5% value share: {event_top5_mean:.4f}",
+        f"- mean event marginal-value gini: {event_gini_mean:.4f}",
+        "",
+        "## 关键指标",
+        "",
+        f"- Leave-one-city-out surrogate mean Spearman: {loco_spearman_mean:.4f}",
+        f"- Leave-one-city-out surrogate mean top-5% value capture: {loco_top5_mean:.4f}",
+        f"- Symbolic activated law top-5% value capture: {law_top5:.4f}",
+        f"- Symbolic activated law mean event Spearman: {law_spearman:.4f}",
+        f"- Base scenario law policy / greedy oracle: {law_base_relative:.4f}",
+        f"- Base scenario best simple baseline / greedy oracle: {best_simple_base:.4f}",
+        f"- Base scenario law replay gain / LP optimized gain: {law_replay_fraction:.4f}",
+        f"- Base scenario best simple replay gain / LP optimized gain: {best_simple_replay_fraction:.4f}",
+        f"- LP optimizer replay mean recoverable-fraction gap: {optimizer_replay_gap:.4g}",
+        "",
+        "## Label 分布对照",
+        "",
+        dataframe_to_markdown(label_compare),
+        "",
+        "## Leave-One-City-Out Surrogate",
+        "",
+        dataframe_to_markdown(loco_metrics),
+        "",
+        "解释：surrogate 没有直接使用 `activated_bottleneck_score` 或 `law_score_log`，避免把 symbolic law 原样喂给模型造成泄漏。因此这里衡量的是 normalized structural components 能否跨城市近似恢复 value field。",
+        "",
+        "## Leave-Regime-Out Surrogate",
+        "",
+        dataframe_to_markdown(regime_metrics),
+        "",
+        "## Law Score 与 Baselines",
+        "",
+        dataframe_to_markdown(policy_capture),
+        "",
+        "## Budget/Delay Policy Validation",
+        "",
+        dataframe_to_markdown(policy_summary, max_rows=40),
+        "",
+        "## Fixed-Policy Replay Validation",
+        "",
+        dataframe_to_markdown(replay_summary, max_rows=40),
+        "",
+        "## Event-Level Top-Tail Law",
+        "",
+        dataframe_to_markdown(event_law.head(15)),
+        "",
+        "## 当前科学解释",
+        "",
+        "V5 的重要结论是：对 LP 的一阶边际问题，恢复价值不是简单等于“哪里损失最大”。只要未来仍存在可被资源影响的正损失，一小段资源的单位价值主要由三个结构量决定：未来有效作用时长、OD 暴露/目的地重要性、单位成本效率。损失强度更多通过 deployment cap、budget exhaustion、diminishing returns 和 finite-cap allocation 进入后续资源分配问题。",
+        "",
+        "因此后续需要继续区分两类 law：第一类是 small-signal marginal law，用于解释第一单位资源投向哪里最值；第二类是 finite-budget allocation law，用于解释在预算、容量、diminishing returns 和互相替代作用下，完整政策如何偏离一阶排序。",
+    ]
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return
+
     loco_top5_mean = float(loco_metrics["top_5pct_value_capture"].mean()) if not loco_metrics.empty else np.nan
     loco_spearman_mean = float(loco_metrics["spearman"].mean()) if not loco_metrics.empty else np.nan
     law_row = policy_capture[policy_capture["policy_score"] == "activated_bottleneck_law"]
