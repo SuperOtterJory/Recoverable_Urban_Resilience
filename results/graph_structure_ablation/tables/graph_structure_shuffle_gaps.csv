@@ -1,0 +1,7 @@
+comparison,observed_model,baseline_or_shuffled_model,observed_top5_capture,baseline_top5_capture,delta_top5_capture,observed_top5_ndcg,baseline_top5_ndcg,delta_top5_ndcg,delta_event_spearman
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,0.982469033,0.6425886727,0.3398803604,0.9709539559,0.6395363276,0.3314176283,0.2910697633
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,0.9627486076,0.6399248318,0.3228237757,0.9528693986,0.6196332017,0.3332361969,0.2807566183
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,0.9624269436,0.6371522835,0.32527466,0.9515042799,0.6330027181,0.3185015618,0.2707831989
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,0.9374546558,0.7016563038,0.235798352,0.9371917168,0.6740723948,0.263119322,0.2922800264
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,0.9624269436,0.6540183596,0.308408584,0.9515042799,0.6201588773,0.3313454025,0.2106826878
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,0.9374546558,0.6540183596,0.2834362962,0.9371917168,0.6201588773,0.3170328395,0.1546724072

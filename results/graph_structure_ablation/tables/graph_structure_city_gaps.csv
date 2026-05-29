@@ -1,0 +1,43 @@
+comparison,city,n_events,mean_delta_top5_capture,median_delta_top5_capture,mean_delta_top5_ndcg,positive_delta_share
+graph_only_alignment,Austin,15,0.3341746387,0.3328722023,0.3206529618,1
+graph_only_alignment,Chicago,13,0.36239187,0.3646457897,0.3959687046,1
+graph_only_alignment,Dallas,10,0.2649285178,0.2662120335,0.2792244471,1
+graph_only_alignment,Houston,4,0.4233602996,0.4245363299,0.4698498529,1
+graph_only_alignment,New York,24,0.3343041679,0.3374214029,0.267914085,1
+graph_only_alignment,Philadelphia,20,0.4170901623,0.4211626124,0.410405401,1
+graph_only_alignment,San Antonio,19,0.2766260153,0.272704075,0.2911459707,1
+exposure_alignment,Austin,15,0.280110089,0.281120433,0.2825217417,1
+exposure_alignment,Chicago,13,0.3653733825,0.3760921675,0.3783957169,1
+exposure_alignment,Dallas,10,0.2192645576,0.2149471426,0.2041823067,1
+exposure_alignment,Houston,4,0.4355538472,0.4337681576,0.4665721748,1
+exposure_alignment,New York,24,0.3713827961,0.3705802083,0.3633777247,1
+exposure_alignment,Philadelphia,20,0.3756999881,0.378370076,0.3795048046,1
+exposure_alignment,San Antonio,19,0.2412075427,0.2319035533,0.2954503672,1
+full_od_graph_alignment,Austin,15,0.319293769,0.3236067804,0.311233934,1
+full_od_graph_alignment,Chicago,13,0.3531469323,0.359585035,0.3773509535,1
+full_od_graph_alignment,Dallas,10,0.2196010993,0.2183760263,0.1859166869,1
+full_od_graph_alignment,Houston,4,0.4424345341,0.4423681861,0.4860665914,1
+full_od_graph_alignment,New York,24,0.3376041631,0.3389560688,0.2946133427,1
+full_od_graph_alignment,Philadelphia,20,0.3779034274,0.3808099756,0.3776741304,1
+full_od_graph_alignment,San Antonio,19,0.2709055294,0.2773290787,0.2863661324,1
+factorized_od_alignment,Austin,15,0.3137143389,0.312653274,0.2983665455,1
+factorized_od_alignment,Chicago,13,0.1738845197,0.1699934738,0.1729624237,1
+factorized_od_alignment,Dallas,10,0.1722258348,0.1649377384,0.129129508,1
+factorized_od_alignment,Houston,4,0.3778520135,0.3775798446,0.4379806773,1
+factorized_od_alignment,New York,24,0.1220096753,0.1034677102,0.1816737325,1
+factorized_od_alignment,Philadelphia,20,0.3687721177,0.3734169769,0.3956310189,1
+factorized_od_alignment,San Antonio,19,0.2239616926,0.2188978696,0.2940795461,1
+observed_graph_over_no_graph,Austin,15,0.206745979,0.2040574614,0.2917339656,1
+observed_graph_over_no_graph,Chicago,13,0.3571736939,0.3612087258,0.3140512769,1
+observed_graph_over_no_graph,Dallas,10,0.2669594708,0.2671613997,0.2181017175,1
+observed_graph_over_no_graph,Houston,4,0.3835441417,0.3757175818,0.4456348977,1
+observed_graph_over_no_graph,New York,24,0.3433211513,0.3411179604,0.3542563812,1
+observed_graph_over_no_graph,Philadelphia,20,0.35324756,0.3719811848,0.3830806926,1
+observed_graph_over_no_graph,San Antonio,19,0.2700012372,0.2627889977,0.3265930219,1
+factorized_observed_over_no_graph,Austin,15,0.2089349991,0.2063658487,0.2940090232,1
+factorized_observed_over_no_graph,Chicago,13,0.3619514315,0.3430743074,0.3315677586,1
+factorized_observed_over_no_graph,Dallas,10,0.1763917893,0.1746691145,0.1306539879,1
+factorized_observed_over_no_graph,Houston,4,0.3555683204,0.3279050771,0.423304175,1
+factorized_observed_over_no_graph,New York,24,0.2734164474,0.2699871388,0.3177954316,1
+factorized_observed_over_no_graph,Philadelphia,20,0.3384597024,0.3779234593,0.3717120642,1
+factorized_observed_over_no_graph,San Antonio,19,0.2844230288,0.25020874,0.3424654586,1

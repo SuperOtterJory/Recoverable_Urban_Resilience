@@ -1,0 +1,631 @@
+comparison,observed_model,baseline_or_shuffled_model,city,event_id,top_5pct_value_capture_observed,top_5pct_value_capture_baseline,delta_top5_capture,top_5pct_ndcg_observed,top_5pct_ndcg_baseline,delta_top5_ndcg
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Austin,478,0.9840897367,0.651297246,0.3327924908,0.9851430596,0.6666294912,0.3185135684
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Austin,479,0.9840897367,0.6512175344,0.3328722023,0.9851430596,0.6637640838,0.3213789758
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Austin,480,0.9840897367,0.652850887,0.3312388497,0.9851430596,0.6644363357,0.3207067239
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Austin,481,0.9840897367,0.6409927462,0.3430969905,0.9851430596,0.6573231093,0.3278199503
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Austin,482,0.9840897367,0.6622972741,0.3217924627,0.9851430596,0.6745160251,0.3106270345
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Austin,483,0.9840897367,0.6448603338,0.3392294029,0.9851430596,0.6593062598,0.3258367998
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Austin,484,0.9840897367,0.6602199296,0.3238698071,0.9851430596,0.6728860193,0.3122570403
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Austin,485,0.9850827179,0.63401816,0.351064558,0.9857709221,0.6526661939,0.3331047282
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Austin,486,0.9840897367,0.6284308051,0.3556589316,0.9851430596,0.6497245855,0.3354184741
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Austin,487,0.9840897367,0.6392446168,0.3448451199,0.9851430596,0.6595164138,0.3256266458
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Austin,488,0.9840897367,0.6536852039,0.3304045328,0.9851430596,0.6647261939,0.3204168657
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Austin,489,0.9840897367,0.6487229221,0.3353668147,0.9851430596,0.6656154035,0.3195276561
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Austin,490,0.9840897367,0.6451698074,0.3389199293,0.9851430596,0.6598155109,0.3253275486
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Austin,491,0.9840897367,0.6722101603,0.3118795764,0.9851430596,0.68104373,0.3040993296
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Austin,492,0.9840897367,0.6645018241,0.3195879126,0.9851430596,0.6760099731,0.3091330865
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Chicago,145,0.9952763551,0.6173264041,0.377949951,0.9936058616,0.5833399462,0.4102659154
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Chicago,146,0.9986704527,0.6509071086,0.3477633442,0.9954240039,0.611672439,0.383751565
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Chicago,147,0.9986704527,0.6598299038,0.338840549,0.9954240039,0.6229638847,0.3724601192
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Chicago,149,0.9988118583,0.6548521754,0.3439596829,0.9953231756,0.6270008957,0.3683222799
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Chicago,150,0.9978648145,0.656939717,0.3409250975,0.99518135,0.6189969412,0.3761844088
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Chicago,152,0.9927559162,0.5800711942,0.412684722,0.9922467206,0.5530742767,0.4391724439
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Chicago,153,0.9951412329,0.6416216738,0.3535195592,0.9934640448,0.60215286,0.3913111849
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Chicago,154,0.9917621414,0.6209785001,0.3707836413,0.9912800261,0.5887456699,0.4025343562
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Chicago,155,0.9952763551,0.6195268069,0.3757495482,0.9936058616,0.5848764439,0.4087294176
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Chicago,156,0.9945608128,0.6299150231,0.3646457897,0.9930476996,0.5927204087,0.4003272909
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Chicago,157,0.9971479136,0.6615791557,0.3355687578,0.9947123321,0.6178980754,0.3768142567
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Chicago,158,0.9948376095,0.6286760888,0.3661615207,0.9932262409,0.5886199719,0.404606269
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Chicago,159,0.9943595587,0.6118174119,0.3825421468,0.9930292664,0.5799156138,0.4131136526
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Dallas,55,0.9608700356,0.7222189871,0.2386510485,0.9595314236,0.6991612719,0.2603701517
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Dallas,56,0.9608700356,0.724439003,0.2364310325,0.9595314236,0.7021228837,0.2574085399
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Dallas,57,0.9608700356,0.6575875523,0.3032824833,0.9595314236,0.6470072281,0.3125241955
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Dallas,58,0.9608700356,0.6814580039,0.2794120317,0.9595314236,0.6697331789,0.2897982447
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Dallas,59,0.9608700356,0.7031049763,0.2577650593,0.9595314236,0.6880328932,0.2714985304
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Dallas,60,0.9608700356,0.6877619386,0.273108097,0.9595314236,0.67592966,0.2836017636
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Dallas,61,0.9608700356,0.7066932758,0.2541767599,0.9595314236,0.6901474721,0.2693839515
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Dallas,62,0.9608700356,0.6972980917,0.2635719439,0.9595314236,0.6800552255,0.2794761981
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Dallas,63,0.9608700356,0.6868354365,0.274034599,0.9595314236,0.6741161404,0.2854152832
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Dallas,64,0.9608700356,0.6920179124,0.2688521231,0.9595314236,0.6767638112,0.2827676124
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Houston,52,0.9969537367,0.57401234,0.4229413967,0.9968987684,0.5251963746,0.4717023938
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Houston,60,0.9969537367,0.5683398724,0.4286138643,0.9968987684,0.5183780882,0.4785206802
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Houston,61,0.9969537367,0.5708224736,0.426131263,0.9968987684,0.5230380331,0.4738607353
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Houston,62,0.9969537367,0.5811990621,0.4157546745,0.9968987684,0.541583166,0.4553156024
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,98,0.9708783433,0.5702268478,0.4006514955,0.9485783189,0.5369197847,0.4116585342
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,99,0.9901759305,0.5896542735,0.400521657,0.9479836719,0.5704485838,0.377535088
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,100,0.9798419915,0.5686693906,0.4111726009,0.9486352933,0.5401964463,0.408438847
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,101,0.9801078688,0.6219265597,0.3581813091,0.9198446622,0.6429384916,0.2769061706
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,102,0.9771934972,0.6441450621,0.3330484351,0.9160396396,0.6769819326,0.2390577071
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,103,0.9801078688,0.6304975935,0.3496102753,0.9198446622,0.6418629088,0.2779817534
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,104,0.9837793904,0.6308489511,0.3529304393,0.9264955613,0.6483498543,0.2781457069
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,105,0.9798348121,0.6366807974,0.3431540147,0.9193072103,0.6560340442,0.2632731662
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,106,0.9864537369,0.6099219082,0.3765318287,0.9384711777,0.6146929913,0.3237781864
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,107,0.9815293229,0.6310381061,0.3504912167,0.9224971237,0.6502783877,0.272218736
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,108,0.9845848803,0.6290973522,0.3554875281,0.9276265602,0.6467880591,0.2808385011
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,109,0.8942149518,0.6324120436,0.2618029082,0.8618148059,0.6506840874,0.2111307185
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,110,0.9771934972,0.6476195942,0.329573903,0.9160396396,0.6797303396,0.2363093001
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,111,0.9809058695,0.6333396868,0.3475661826,0.9210781549,0.6524756392,0.2686025157
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,112,0.9621571156,0.6796630309,0.2824940847,0.8948325974,0.7095734599,0.1852591376
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,113,0.956811441,0.684095872,0.272715569,0.8876640296,0.7170353131,0.1706287165
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,115,0.9686726686,0.6564849092,0.3121877594,0.9246937421,0.6472333105,0.2774604317
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,116,0.9588664294,0.6789280678,0.2799383616,0.8882920239,0.7095563347,0.1787356892
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,117,0.9536034301,0.6910663917,0.2625370384,0.8835839418,0.716431306,0.1671526358
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,119,0.9765568127,0.6575597587,0.318997054,0.9590406042,0.6045964879,0.3544441163
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,120,0.9715470539,0.6501267505,0.3214203034,0.9106006166,0.6770372572,0.2335633594
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,121,0.9802710404,0.6384766697,0.3417943707,0.9203004744,0.6571106601,0.2631898143
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,122,0.9771934972,0.6452910077,0.3319024895,0.9160396396,0.6778764009,0.2381632388
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,New York,123,0.9771934972,0.6486042915,0.3285892057,0.9160396396,0.6805736714,0.2354659683
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Philadelphia,640,0.992346986,0.5921102703,0.4002367158,0.994371704,0.6015730725,0.3927986315
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Philadelphia,641,0.994753356,0.5714580859,0.4232952701,0.9960303157,0.5852976174,0.4107326983
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Philadelphia,642,0.994753356,0.5890321049,0.4057212511,0.9960303157,0.6007583355,0.3952719801
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Philadelphia,643,0.9951687831,0.5739214128,0.4212473703,0.9962628531,0.5863248199,0.4099380332
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Philadelphia,644,0.9900487483,0.5752185308,0.4148302174,0.9923596616,0.5813094485,0.4110502132
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Philadelphia,645,0.988890862,0.5502909504,0.4385999116,0.9913491068,0.558784982,0.4325641247
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Philadelphia,646,0.994753356,0.5716136534,0.4231397026,0.9960303157,0.5858315493,0.4101987663
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Philadelphia,647,0.994753356,0.5650256337,0.4297277223,0.9960303157,0.5805725563,0.4154577593
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Philadelphia,648,0.9926667581,0.5715889035,0.4210778546,0.9942331562,0.5827708751,0.4114622811
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Philadelphia,649,0.9926667581,0.5850450527,0.4076217053,0.9942331562,0.5917527295,0.4024804267
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Philadelphia,650,0.9926548665,0.5764941927,0.4161606739,0.9945086539,0.5890858887,0.4054227652
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Philadelphia,651,0.9926854683,0.5788231109,0.4138623574,0.9942764938,0.5878578496,0.4064186443
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Philadelphia,652,0.9918905961,0.5756501874,0.4162404087,0.9936339597,0.581235551,0.4123984087
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Philadelphia,653,0.9904696564,0.5507951163,0.4396745401,0.9925251901,0.5603754018,0.4321497884
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Philadelphia,654,0.9888501447,0.5476375527,0.441212592,0.991256481,0.5549912709,0.4362652101
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Philadelphia,655,0.9892304361,0.5591416967,0.4300887394,0.9917282823,0.5681881241,0.4235401582
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Philadelphia,656,0.9907821843,0.5644530383,0.426329146,0.9928333974,0.5712532076,0.4215801899
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Philadelphia,657,0.9892304361,0.5611271786,0.4281032576,0.9917282823,0.5691114918,0.4226167905
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Philadelphia,658,0.9573858203,0.6332087208,0.3241770995,0.9614566377,0.6173418712,0.3441147665
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,Philadelphia,659,0.9908495598,0.5703928485,0.4204567112,0.9931053126,0.581458929,0.4116463836
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,San Antonio,491,0.9866073716,0.720540976,0.2660663957,0.9899945246,0.7223504526,0.267644072
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,San Antonio,492,0.9862547178,0.7164523743,0.2698023435,0.9897004558,0.7194377265,0.2702627292
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,San Antonio,493,0.9862547178,0.7119950546,0.2742596632,0.9897004558,0.7140415885,0.2756588673
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,San Antonio,494,0.9861245565,0.7229525189,0.2631720376,0.9897102678,0.7238229779,0.2658872899
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,San Antonio,495,0.9861245565,0.7078989531,0.2782256035,0.9897102678,0.6804464824,0.3092637853
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,San Antonio,496,0.9861245565,0.715635144,0.2704894126,0.9897102678,0.7183916621,0.2713186057
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,San Antonio,497,0.9861245566,0.7157194863,0.2704050703,0.9897102678,0.6906037315,0.2991065363
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,San Antonio,498,0.9866073716,0.7016988232,0.2849085484,0.9899945246,0.6889692242,0.3010253004
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,San Antonio,499,0.9861245565,0.7077108292,0.2784137273,0.9897102678,0.7086212243,0.2810890435
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,San Antonio,500,0.9801441692,0.6596879412,0.320456228,0.9836616749,0.6130196117,0.3706420632
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,San Antonio,501,0.9751344825,0.7024304075,0.272704075,0.9813090309,0.7029632091,0.2783458218
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,San Antonio,502,0.9862547178,0.6917855995,0.2944691183,0.9897004558,0.6670699738,0.322630482
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,San Antonio,503,0.9861245565,0.7058489288,0.2802756278,0.9897102678,0.6751103199,0.3145999479
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,San Antonio,504,0.9861245565,0.7147298521,0.2713947044,0.9897102678,0.7162438325,0.2734664353
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,San Antonio,505,0.9861245565,0.7119595352,0.2741650214,0.9897102678,0.6877188922,0.3019913756
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,San Antonio,506,0.9861245565,0.6978219534,0.2883026031,0.9897102678,0.6929430183,0.2967672495
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,San Antonio,507,0.9861245565,0.7147016749,0.2714228817,0.9897102678,0.7181960846,0.2715141832
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,San Antonio,508,0.9861245565,0.7228786719,0.2632458847,0.9897102678,0.7238665251,0.2658437426
+graph_only_alignment,G2_graph_only_observed,G3_graph_only_shuffled,San Antonio,509,0.9861245565,0.7224092116,0.2637153449,0.9897102678,0.6949943559,0.2947159119
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Austin,478,0.9553460834,0.6742256503,0.281120433,0.9640456016,0.6805790218,0.2834665799
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Austin,479,0.9553460834,0.6721297827,0.2832163007,0.9640456016,0.674375373,0.2896702286
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Austin,480,0.9553460834,0.6714199414,0.283926142,0.9640456016,0.668612887,0.2954327146
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Austin,481,0.9630423338,0.6835925708,0.2794497631,0.9697031125,0.6901476051,0.2795555074
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Austin,482,0.9553460834,0.6762780211,0.2790680623,0.9640456016,0.6827612255,0.2812843762
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Austin,483,0.9553460834,0.6708604248,0.2844856585,0.9640456016,0.646677559,0.3173680426
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Austin,484,0.9553460834,0.6733260945,0.2820199889,0.9640456016,0.6807342717,0.2833113299
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Austin,485,0.9568933373,0.6687911338,0.2881022036,0.9649606098,0.6729559954,0.2920046144
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Austin,486,0.9553460833,0.6671241203,0.2882219631,0.9640456016,0.6728262273,0.2912193743
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Austin,487,0.9553460834,0.6748598821,0.2804862013,0.9640456016,0.6819017342,0.2821438675
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Austin,488,0.9257366861,0.6700414272,0.2556952588,0.8796743197,0.673544084,0.2061302357
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Austin,489,0.9630423338,0.6835435635,0.2794987703,0.9697000974,0.6907043898,0.2789957075
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Austin,490,0.9553460833,0.6727859559,0.2825601274,0.9640456016,0.6640011666,0.300044435
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Austin,491,0.9630423339,0.6870528236,0.2759895103,0.9697031125,0.6929069214,0.2767961912
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Austin,492,0.9553460834,0.6775351309,0.2778109525,0.9640456016,0.6836426811,0.2804029205
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Chicago,145,0.9962060789,0.6093535825,0.3868524964,0.9967593467,0.5879578907,0.408801456
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Chicago,146,0.997583014,0.6424668779,0.3551161361,0.9977954969,0.6220458815,0.3757496153
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Chicago,147,0.997583014,0.6424668779,0.3551161361,0.9977954969,0.6221870453,0.3756084516
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Chicago,149,0.9977090408,0.6291822911,0.3685267497,0.9978856337,0.6305417238,0.3673439099
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Chicago,150,0.9080549244,0.4833669103,0.4246880142,0.8705448158,0.4626177664,0.4079270494
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Chicago,152,0.9244682292,0.5483760617,0.3760921675,0.8859584693,0.5237631502,0.362195319
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Chicago,153,0.9953012683,0.6156885871,0.3796126812,0.9961623789,0.5955720981,0.4005902808
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Chicago,154,0.9917621414,0.6293291946,0.3624329468,0.9935844425,0.6090016112,0.3845828312
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Chicago,155,0.9962060789,0.6093535825,0.3868524964,0.9967593467,0.5879599306,0.4087994161
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Chicago,156,0.7590394171,0.5533777628,0.2056616542,0.7368605023,0.5272477073,0.2096127951
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Chicago,157,0.9962017973,0.6211573792,0.3750444181,0.99681702,0.5977291491,0.399087871
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Chicago,158,0.9955035545,0.616859095,0.3786444595,0.9963156084,0.5918904268,0.4044251816
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Chicago,159,0.9948163987,0.5996027827,0.3952136159,0.995781231,0.5813610886,0.4144201424
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Dallas,55,0.9270453134,0.7148631908,0.2121821226,0.8861428443,0.6976757684,0.1884670758
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Dallas,56,0.9270453133,0.7213439285,0.2057013848,0.8861438575,0.7034588848,0.1826849727
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Dallas,57,0.9270453134,0.6687867854,0.2582585279,0.8861428443,0.6249146101,0.2612282341
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Dallas,58,0.9270453133,0.7024623377,0.2245829757,0.8861428443,0.6851336142,0.2010092301
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Dallas,59,0.9270453134,0.7169342104,0.210111103,0.8861428442,0.6992075297,0.1869353146
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Dallas,60,0.9270453134,0.7060705193,0.220974794,0.8861438576,0.6687208966,0.2174229609
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Dallas,61,0.9270453134,0.7154367357,0.2116085777,0.8861428443,0.698687225,0.1874556193
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Dallas,62,0.9270453134,0.7133599583,0.213685355,0.8861438576,0.6918033354,0.1943405222
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Dallas,63,0.9270453134,0.7108363833,0.2162089301,0.8861438576,0.6920201223,0.1941237353
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Dallas,64,0.9270453134,0.7077135081,0.2193318053,0.8861428443,0.6579874425,0.2281554018
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Houston,52,0.9234859503,0.4776830799,0.4458028704,0.9421657952,0.4518303676,0.4903354276
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Houston,60,0.9943216915,0.5639802361,0.4303414553,0.9952681715,0.5380940728,0.4571740987
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Houston,61,0.9943216915,0.5571268316,0.4371948599,0.9952681715,0.5322316488,0.4630365227
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Houston,62,0.9943216915,0.5654454882,0.4288762032,0.9952681715,0.5395255212,0.4557426503
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,98,0.9819347315,0.5557813529,0.4261533786,0.9838547564,0.5207056905,0.4631490658
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,99,0.9478062695,0.5301735675,0.417632702,0.9121608512,0.4959500642,0.416210787
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,100,0.9655899388,0.4855123127,0.4800776261,0.9379317924,0.453923779,0.4840080133
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,101,0.9794636932,0.5798176849,0.3996460083,0.9241575846,0.5511402604,0.3730173241
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,102,0.9776894636,0.6278322402,0.3498572235,0.9212850108,0.6182598758,0.3030251351
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,103,0.9794636932,0.5972208512,0.3822428419,0.9241575846,0.5633225053,0.3608350793
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,104,0.9791634831,0.5809868339,0.3981766492,0.9276705346,0.544210119,0.3834604156
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,105,0.9983512039,0.6319799434,0.3663712605,0.9977311137,0.5967237407,0.401007373
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,106,0.9445787988,0.5697896426,0.3747891562,0.9076035792,0.5299190869,0.3776844924
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,107,0.9782314642,0.5769924487,0.4012390155,0.9248273889,0.542438651,0.382388738
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,108,0.9784402032,0.5789567375,0.3994834657,0.9276764769,0.5425448332,0.3851316436
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,109,0.9791690263,0.5756714285,0.4034975978,0.9260521153,0.5385491665,0.3875029488
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,110,0.9776894636,0.6317798674,0.3459095963,0.9212850108,0.6279287179,0.293356293
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,111,0.9806595279,0.5845528441,0.3961066837,0.9256112866,0.5486313982,0.3769798884
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,112,0.9979657411,0.646450754,0.3515149871,0.9973012528,0.6446379454,0.3526633074
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,113,0.998920981,0.6870732541,0.3118477269,0.9979033466,0.6875502919,0.3103530547
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,115,0.9736719185,0.6459528353,0.3277190832,0.9781541992,0.6217420708,0.3564121284
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,116,0.9916055025,0.6947555604,0.2968499421,0.989924244,0.6944147553,0.2955094887
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,117,0.9986394535,0.6646534497,0.3339860039,0.9976873165,0.6525375366,0.3451497799
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,119,0.985376769,0.6592462942,0.3261304748,0.9876798225,0.6036212574,0.3840585651
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,120,0.9855728871,0.6450950669,0.3404778202,0.9868040177,0.6203618313,0.3664421864
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,121,0.9797692198,0.5993170311,0.3804521886,0.9246838953,0.5684556244,0.3562282709
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,122,0.9776894636,0.6280067644,0.3496826993,0.9212850108,0.6435306191,0.2777543917
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,New York,123,0.9776894636,0.6243464899,0.3533429738,0.9212850108,0.6325479894,0.2887370214
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Philadelphia,640,0.9934743784,0.6624776016,0.3309967768,0.9952328235,0.6487495202,0.3464833033
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Philadelphia,641,0.9969323817,0.6856936678,0.3112387139,0.9976191991,0.6678316083,0.3297875907
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Philadelphia,642,0.9958764122,0.6959274121,0.2999490001,0.9969181062,0.6758492597,0.3210688465
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Philadelphia,643,0.996311325,0.6822754573,0.3140358676,0.9971770502,0.6657775178,0.3313995324
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Philadelphia,644,0.9899634379,0.5535030411,0.4364603968,0.9925040949,0.5655944295,0.4269096654
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Philadelphia,645,0.9857667477,0.5394766775,0.4462900702,0.9893212863,0.5517589806,0.4375623057
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Philadelphia,646,0.9958764122,0.6779662855,0.3179101267,0.9969181062,0.6621799705,0.3347381357
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Philadelphia,647,0.9969323817,0.7018348446,0.2950975371,0.9976188936,0.68148757,0.3161313236
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Philadelphia,648,0.9937639017,0.5535225172,0.4402413845,0.9951784983,0.5670804306,0.4280980677
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Philadelphia,649,0.9937639017,0.5558812916,0.4378826102,0.9951784983,0.5674455631,0.4277329351
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Philadelphia,650,0.9921910665,0.6575651853,0.3346258812,0.9943501459,0.6445527706,0.3497973753
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Philadelphia,651,0.9926854683,0.5752140125,0.4174714558,0.9944805374,0.5827357412,0.4117447962
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Philadelphia,652,0.9910837829,0.5484854572,0.4425983257,0.9932928248,0.5628775835,0.4304152412
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Philadelphia,653,0.988984158,0.5637147517,0.4252694063,0.9916260754,0.5703852401,0.4212408352
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Philadelphia,654,0.9850620056,0.5288445217,0.4562174839,0.9887284329,0.5418609457,0.4468674872
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Philadelphia,655,0.9895482766,0.5443502083,0.4451980683,0.9921278959,0.557297341,0.4348305548
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Philadelphia,656,0.9881102507,0.5470612073,0.4410490434,0.9912104978,0.5595910801,0.4316194177
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Philadelphia,657,0.8405861885,0.5013174924,0.3392686961,0.8162400913,0.4704037572,0.345836334
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Philadelphia,658,0.9503349222,0.6874295941,0.2629053281,0.9590255479,0.6600298026,0.2989957454
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,Philadelphia,659,0.9506671807,0.6313735916,0.3192935891,0.940250757,0.6214141576,0.3188365994
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,San Antonio,491,0.869257791,0.7176644903,0.1515933007,0.8405457949,0.7150715133,0.1254742817
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,San Antonio,492,0.9871776516,0.7549763113,0.2322013404,0.990434778,0.7354296646,0.2550051134
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,San Antonio,493,0.9744897103,0.7699511712,0.2045385391,0.9814837545,0.7435916647,0.2378920897
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,San Antonio,494,0.971968518,0.7640684953,0.2079000226,0.9800314178,0.7031066898,0.276924728
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,San Antonio,495,0.986263329,0.7870441591,0.19921917,0.9892818155,0.7233180604,0.2659637551
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,San Antonio,496,0.971968518,0.7400649646,0.2319035533,0.9800160401,0.6861345206,0.2938815195
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,San Antonio,497,0.9649153433,0.7342432077,0.2306721356,0.9752731375,0.6848498704,0.2904232671
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,San Antonio,498,0.8579450829,0.7077692791,0.1501758038,0.8302606608,0.6821618559,0.1480988049
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,San Antonio,499,0.986263329,0.7875272914,0.1987360377,0.9892818155,0.7102774562,0.2790043592
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,San Antonio,500,0.9645912588,0.6564326307,0.3081586281,0.9717101018,0.573808188,0.3979019138
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,San Antonio,501,0.9694233956,0.6625950499,0.3068283457,0.9766163586,0.5977845524,0.3788318062
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,San Antonio,502,0.9744897103,0.6857441857,0.2887455246,0.981468792,0.626603664,0.354865128
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,San Antonio,503,0.8483733751,0.4938211255,0.3545522496,0.8701480525,0.4638970981,0.4062509544
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,San Antonio,504,0.8377894159,0.5146887802,0.3231006357,0.8695251251,0.486446255,0.3830788701
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,San Antonio,505,0.971968518,0.7390265631,0.2329419549,0.9800314178,0.6816606823,0.2983707356
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,San Antonio,506,0.986263329,0.7856256625,0.2006376665,0.9892818155,0.7161111423,0.2731706732
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,San Antonio,507,0.971968518,0.718647802,0.253320716,0.9800160401,0.6602993663,0.3197166739
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,San Antonio,508,0.971968518,0.7774487171,0.1945198009,0.9800314178,0.723032855,0.2569985628
+exposure_alignment,G4_local_plus_observed_exposure,G5_local_plus_shuffled_exposure,San Antonio,509,0.8459145679,0.5327166821,0.3131978857,0.8735160878,0.5018123477,0.3717037401
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Austin,478,0.958337158,0.6341365027,0.3242006553,0.9659395679,0.6542818401,0.3116577278
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Austin,479,0.958337158,0.6340567911,0.3242803669,0.9659395679,0.6464429719,0.319496596
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Austin,480,0.958337158,0.6307762355,0.3275609225,0.9659082374,0.620654859,0.3452533783
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Austin,481,0.9624687084,0.6397050758,0.3227636326,0.9695947709,0.6595060541,0.3100887168
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Austin,482,0.958337158,0.6347303776,0.3236067804,0.9659395679,0.6563230168,0.3096165511
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Austin,483,0.958337158,0.6275872124,0.3307499456,0.9659395679,0.6189861207,0.3469534472
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Austin,484,0.958337158,0.6409663947,0.3173707633,0.9659082374,0.6599263587,0.3059818787
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Austin,485,0.9595564631,0.6291814479,0.3303750152,0.9666539354,0.6440164064,0.322637529
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Austin,486,0.958337158,0.6241621652,0.3341749928,0.9659082373,0.6438421127,0.3220661246
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Austin,487,0.958337158,0.6312045502,0.3271326078,0.9659395679,0.6541079051,0.3118316628
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Austin,488,0.9310821038,0.6340133311,0.2970687727,0.8829726464,0.6499840563,0.2329885901
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Austin,489,0.9624687084,0.6663473437,0.2961213647,0.9696029144,0.6774590512,0.2921438631
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Austin,490,0.958337158,0.6422233849,0.316113773,0.9659082373,0.6286770382,0.3372311991
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Austin,491,0.9624687084,0.6601683037,0.3023004047,0.9696029144,0.6734156221,0.2961872923
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Austin,492,0.958337158,0.642750621,0.3155865369,0.9659082373,0.6615337846,0.3043744527
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Chicago,145,0.9952763551,0.6151035049,0.3801728503,0.9957973972,0.5819125911,0.4138848061
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Chicago,146,0.997404532,0.655245801,0.3421587309,0.9973194227,0.6211622292,0.3761571935
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Chicago,147,0.997404532,0.6670762776,0.3303282543,0.9973194227,0.6306731893,0.3666462333
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Chicago,149,0.9988118583,0.6605450919,0.3382667664,0.9982470002,0.6345868918,0.3636601084
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Chicago,150,0.9234364537,0.4901288823,0.4333075713,0.8810614302,0.4677729101,0.4132885201
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Chicago,152,0.9258427546,0.5411289927,0.384713762,0.8870234643,0.5229951307,0.3640283335
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Chicago,153,0.9956447978,0.6360597628,0.359585035,0.9960592774,0.5987755208,0.3972837566
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Chicago,154,0.9917621414,0.6475354472,0.3442266942,0.993314124,0.6141197136,0.3791944104
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Chicago,155,0.9952763551,0.6187740142,0.3765023409,0.9957973972,0.584687998,0.4111093992
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Chicago,156,0.7587017483,0.5542963411,0.2044054073,0.7365717446,0.5262844504,0.2102872942
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Chicago,157,0.9973889601,0.6528309018,0.3445580583,0.997271033,0.612430821,0.384840212
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Chicago,158,0.9956888593,0.6257865416,0.3699023177,0.9960988132,0.5861259575,0.4099728557
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Chicago,159,0.9938417204,0.6110593897,0.3827823307,0.9947910385,0.5795817657,0.4152092728
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Dallas,55,0.919817513,0.7167231097,0.2030944033,0.870027492,0.6958281502,0.1741993418
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Dallas,56,0.919817513,0.7174467338,0.2023707792,0.8700073034,0.6987375321,0.1712697713
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Dallas,57,0.919817513,0.6527626372,0.2670548758,0.8700277703,0.6452271998,0.2248005705
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Dallas,58,0.9198175129,0.6912546327,0.2285628802,0.8700073035,0.6769807806,0.1930265229
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Dallas,59,0.919817513,0.7161835109,0.2036340021,0.8700277703,0.6979825861,0.1720451841
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Dallas,60,0.9198175129,0.6975585674,0.2222589455,0.8700083477,0.6835327454,0.1864756023
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Dallas,61,0.919817513,0.7177085169,0.2021089962,0.8700139326,0.6987824399,0.1712314927
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Dallas,62,0.919817513,0.7031720609,0.2166454521,0.8700083477,0.6845127965,0.1854955513
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Dallas,63,0.919817513,0.6896434544,0.2301740585,0.8700083477,0.6767119382,0.1932964095
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Dallas,64,0.919817513,0.6997109124,0.2201066006,0.8700277703,0.6827013481,0.1873264222
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Houston,52,0.9182650527,0.4805054943,0.4377595583,0.9393166526,0.4475533607,0.4917632919
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Houston,60,0.9976117859,0.5506349721,0.4469768139,0.9973963437,0.5111305071,0.4862658366
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Houston,61,0.997611786,0.5485659492,0.4490458368,0.9973963437,0.5039175825,0.4934787612
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Houston,62,0.9976117859,0.5616558586,0.4359559274,0.9973963437,0.5246378676,0.4727584761
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,98,0.98089402,0.5883765357,0.3925174843,0.9830802559,0.5580999017,0.4249803542
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,99,0.9452941933,0.5795651935,0.3657289998,0.9093708022,0.5859869139,0.3233838883
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,100,0.9646545526,0.5537031862,0.4109513664,0.9365164127,0.5339660582,0.4025503545
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,101,0.9801078688,0.6174524402,0.3626554286,0.9239763323,0.6351529923,0.28882334
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,102,0.9776703195,0.6488104,0.3288599195,0.9206237273,0.6801758916,0.2404478357
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,103,0.9801078688,0.6222348082,0.3578730606,0.9239763323,0.6276284264,0.2963479059
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,104,0.9777472089,0.635664006,0.3420832029,0.9260831009,0.6480508395,0.2780322613
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,105,0.9988041435,0.6511423286,0.3476618149,0.9980739903,0.6681633032,0.3299106871
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,106,0.9424407653,0.6066118306,0.3358289347,0.9052223194,0.6064475991,0.2987747203
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,107,0.9786950393,0.6284880058,0.3502070336,0.924529736,0.6444782735,0.2800514625
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,108,0.9788139324,0.6353106323,0.3435033001,0.927341255,0.647550747,0.2797905081
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,109,0.9778179176,0.6286761229,0.3491417947,0.9244992331,0.6437065004,0.2807927327
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,110,0.9776703195,0.6535117542,0.3241585654,0.9206237273,0.6834314501,0.2371922772
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,111,0.9773372584,0.6259497303,0.3513875281,0.9226859167,0.6431394415,0.2795464752
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,112,0.9984849948,0.686809052,0.3116759428,0.9976742831,0.7157248495,0.2819494336
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,113,0.9989321487,0.6982732133,0.3006589354,0.9979324996,0.7281374584,0.2697950412
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,115,0.9741479196,0.6676079954,0.3065399242,0.9782803697,0.6739645425,0.3043158272
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,116,0.9920294222,0.7014801936,0.2905492286,0.9902273647,0.7174950136,0.2727323511
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,117,0.9986356393,0.6914371828,0.3071984565,0.9977069059,0.7152747292,0.2824321767
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,119,0.9859961308,0.6717587003,0.3142374306,0.9883620516,0.6178446451,0.3705174065
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,120,0.9829351535,0.6670084248,0.3159267287,0.9849351811,0.6846513734,0.3002838077
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,121,0.978699474,0.6341215649,0.3445779091,0.9233191601,0.6498729887,0.2734461714
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,122,0.9776703195,0.6511831677,0.3264871519,0.9206237273,0.681515281,0.2391084463
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,New York,123,0.9776703195,0.6555805466,0.3220897729,0.9206237273,0.6851089674,0.2355147599
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Philadelphia,640,0.9926402503,0.6602330251,0.3324072252,0.9946616196,0.6493087128,0.3453529068
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Philadelphia,641,0.9954632021,0.6194535969,0.3760096052,0.9966294121,0.6217280269,0.3749013852
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Philadelphia,642,0.9954632021,0.6468066217,0.3486565804,0.9966248889,0.6409820359,0.355642853
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Philadelphia,643,0.9936349053,0.6259038163,0.367731089,0.9953690894,0.6238381968,0.3715308926
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Philadelphia,644,0.9899634379,0.5790828236,0.4108806143,0.9924696145,0.5854156484,0.4070539662
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Philadelphia,645,0.9857667477,0.5577813883,0.4279853594,0.9893078988,0.5665881237,0.4227197751
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Philadelphia,646,0.9954632021,0.6343768576,0.3610863445,0.9966294121,0.6312278613,0.3654015508
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Philadelphia,647,0.9954632021,0.6368482521,0.35861495,0.9966294121,0.6320876597,0.3645417524
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Philadelphia,648,0.9937639017,0.573905285,0.4198586167,0.995140483,0.5848580295,0.4102824534
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Philadelphia,649,0.9937639017,0.5945777975,0.3991861043,0.995140483,0.5988000215,0.3963404615
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Philadelphia,650,0.9921910665,0.6230827695,0.3691082969,0.9943212792,0.6213762171,0.3729450621
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Philadelphia,651,0.9926854683,0.5840860705,0.4085993979,0.9944435197,0.5926818329,0.4017616868
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Philadelphia,652,0.9910837829,0.5779385986,0.4131451842,0.9932583605,0.5844013086,0.4088570518
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Philadelphia,653,0.988984158,0.603373812,0.385610346,0.991595382,0.6026603396,0.3889350424
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Philadelphia,654,0.9857449022,0.5558233113,0.4299215909,0.9891917926,0.5636027292,0.4255890634
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Philadelphia,655,0.9879387524,0.5638031688,0.4241355836,0.9910106506,0.5735688718,0.4174417788
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Philadelphia,656,0.9899455329,0.5614744989,0.428471034,0.9924302393,0.5708323089,0.4215979305
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Philadelphia,657,0.8440874964,0.5619308958,0.2821566007,0.823359877,0.5570177743,0.2663421027
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Philadelphia,658,0.9482036646,0.6959719127,0.2522317519,0.9575634576,0.6710851588,0.2864782988
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,Philadelphia,659,0.9495470375,0.5872747655,0.362272272,0.9394691742,0.5897025814,0.3497665928
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,San Antonio,491,0.8836695009,0.7115168438,0.1721526571,0.8501589904,0.7153316837,0.1348273067
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,San Antonio,492,0.9869194677,0.7007195246,0.286199943,0.9902379933,0.7133173541,0.2769206391
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,San Antonio,493,0.9744688802,0.6971398015,0.2773290787,0.9813231321,0.6781654375,0.3031576945
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,San Antonio,494,0.9731631838,0.7078137931,0.2653493908,0.980662638,0.7192438206,0.2614188174
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,San Antonio,495,0.9861245565,0.6983956687,0.2877288879,0.9891574168,0.6780075157,0.3111499011
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,San Antonio,496,0.9731631838,0.7029106124,0.2702525714,0.980662638,0.7150676094,0.2655950286
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,San Antonio,497,0.9684114549,0.6998738405,0.2685376144,0.9775254319,0.683131974,0.2943934578
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,San Antonio,498,0.8569808943,0.7036243336,0.1533565607,0.8314224087,0.7098770055,0.1215454032
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,San Antonio,499,0.9861245565,0.6961689492,0.2899556073,0.9891574168,0.7040264766,0.2851309402
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,San Antonio,500,0.9617724389,0.6482659067,0.3135065322,0.9693533532,0.6023222716,0.3670310817
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,San Antonio,501,0.9659940251,0.6840260223,0.2819680028,0.9740795323,0.6918028539,0.2822766784
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,San Antonio,502,0.9744688802,0.6760901303,0.2983787499,0.9813231321,0.6341688031,0.3471543289
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,San Antonio,503,0.8481928964,0.5034709103,0.3447219862,0.8716139532,0.4657023596,0.4059115936
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,San Antonio,504,0.8329621306,0.5835940053,0.2493681252,0.8660589106,0.5334816386,0.332577272
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,San Antonio,505,0.9731631838,0.6973413288,0.275821855,0.980662638,0.6812695875,0.2993930504
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,San Antonio,506,0.9861245565,0.6957016253,0.2904229312,0.9891574168,0.7035113133,0.2856461035
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,San Antonio,507,0.9731631838,0.7019771433,0.2711860406,0.980662638,0.7153721144,0.2652905236
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,San Antonio,508,0.9731631838,0.707739946,0.2654232378,0.980662638,0.7196011054,0.2610615325
+full_od_graph_alignment,G6_local_plus_observed_od_graph,G7_local_plus_shuffled_od_graph,San Antonio,509,0.834571293,0.5490260063,0.2855452867,0.8665248087,0.5260496461,0.3404751627
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Austin,478,0.9596157869,0.6478268147,0.3117889722,0.9634544686,0.6666032803,0.2968511883
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Austin,479,0.9596157869,0.6401451665,0.3194706204,0.9634544686,0.6613849346,0.302069534
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Austin,480,0.9596157869,0.6469625129,0.312653274,0.9634544686,0.6660287243,0.2974257443
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Austin,481,0.9596157869,0.6492728632,0.3103429237,0.9634544686,0.6673315935,0.2961228751
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Austin,482,0.9596157869,0.6478838008,0.3117319861,0.9634544686,0.6669701593,0.2964843093
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Austin,483,0.9596157869,0.6324964518,0.3271193351,0.9634544686,0.6573276792,0.3061267895
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Austin,484,0.9596157869,0.6465757129,0.313040074,0.9634544687,0.6653440714,0.2981103972
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Austin,485,0.9596305576,0.6308285398,0.3288020178,0.9634295109,0.6537617067,0.3096678043
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Austin,486,0.9596157869,0.6336713763,0.3259444106,0.9634544686,0.6523729657,0.3110815029
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Austin,487,0.9596157869,0.6579596051,0.3016561818,0.9634544686,0.6736947693,0.2897596993
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Austin,488,0.9596157869,0.6408055577,0.3188102292,0.9634544687,0.6640703842,0.2993840844
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Austin,489,0.9596157869,0.6508092432,0.3088065437,0.9634544686,0.6673283473,0.2961261213
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Austin,490,0.9596157869,0.6618395004,0.2977762865,0.9634544686,0.6763678376,0.287086631
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Austin,491,0.9596157869,0.6467591383,0.3128566486,0.9634544686,0.6664777416,0.296976727
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Austin,492,0.9596157869,0.6547002073,0.3049155796,0.9634544686,0.671229695,0.2922247736
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Chicago,145,0.9731293477,0.8085078541,0.1646214936,0.978038015,0.8120930144,0.1659450006
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Chicago,146,0.9772519791,0.8072585053,0.1699934738,0.9816561176,0.8157663102,0.1658898074
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Chicago,147,0.9772519791,0.8081881911,0.169063788,0.9816561176,0.815808845,0.1658472725
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Chicago,149,0.9733152507,0.7917368965,0.1815783542,0.9793483466,0.8074718363,0.1718765103
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Chicago,150,0.9752824487,0.8025523424,0.1727301063,0.9799509776,0.8095958685,0.170355109
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Chicago,152,0.9578615054,0.723491853,0.2343696523,0.9620900409,0.723018044,0.2390719969
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Chicago,153,0.974127131,0.817312735,0.156814396,0.9788684741,0.8183388927,0.1605295814
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Chicago,154,0.9611907487,0.8052232513,0.1559674974,0.967951255,0.8103662271,0.1575850279
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Chicago,155,0.9696705602,0.8099353442,0.1597352161,0.9752188194,0.8139576713,0.1612611481
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Chicago,156,0.9756122409,0.7866746201,0.1889376209,0.9799398485,0.7959426845,0.1839971639
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Chicago,157,0.9757438587,0.8013907842,0.1743530745,0.9802323643,0.8088324136,0.1713999507
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Chicago,158,0.9751091449,0.8181625302,0.1569466147,0.979625625,0.8199450672,0.1596805578
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Chicago,159,0.9630454614,0.7876579928,0.1753874686,0.9698098263,0.7947374447,0.1750723815
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Dallas,55,0.8297309824,0.6664827914,0.1632481911,0.7829067157,0.6607285202,0.1221781955
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Dallas,56,0.8297309824,0.6444216763,0.185309306,0.7829067156,0.645049868,0.1378568477
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Dallas,57,0.8297309824,0.6353360437,0.1943949388,0.7829067157,0.6367453623,0.1461613534
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Dallas,58,0.8249194729,0.663174835,0.161744638,0.7795266481,0.6582417571,0.1212848909
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Dallas,59,0.8297309824,0.6671058551,0.1626251273,0.7829067157,0.661256251,0.1216504647
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Dallas,60,0.8297309824,0.6631036967,0.1666272857,0.7829067157,0.6572324925,0.1256742231
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Dallas,61,0.8297309825,0.6668994403,0.1628315422,0.7829067157,0.6610694267,0.1218372891
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Dallas,62,0.8297309824,0.6489480096,0.1807829728,0.7829067157,0.6479082708,0.1349984449
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Dallas,63,0.8297309824,0.6677344679,0.1619965146,0.7829067157,0.661745849,0.1211608667
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Dallas,64,0.8297309824,0.647033151,0.1826978314,0.7829067157,0.6444142116,0.1384925041
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Houston,52,0.9497992813,0.5706742532,0.379125028,0.9605456983,0.5189660474,0.4415796509
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Houston,60,0.9497992813,0.5726759445,0.3771233368,0.9605456983,0.5244623214,0.4360833769
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Houston,61,0.9497992813,0.5726759445,0.3771233368,0.9605456983,0.5244623214,0.4360833769
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Houston,62,0.9497992813,0.5717629289,0.3780363524,0.9605456983,0.5223693939,0.4381763044
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,98,0.9328036718,0.6446958564,0.2881078154,0.9440428552,0.5898527646,0.3541900906
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,99,0.8948937864,0.6384082495,0.2564855369,0.8991901998,0.5871615176,0.3120286821
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,100,0.9031027022,0.615244689,0.2878580132,0.9125835359,0.5693382486,0.3432452873
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,101,0.9060657658,0.8108689053,0.09519686055,0.9067959958,0.7514440968,0.1553518989
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,102,0.9085927125,0.8641846306,0.04440808183,0.9085538881,0.7979047964,0.1106490916
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,103,0.9060657658,0.8184332931,0.08763247271,0.9067959958,0.7673215706,0.1394744252
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,104,0.9035039074,0.768684722,0.1348191854,0.9049404993,0.7217136615,0.1832268378
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,105,0.9067814604,0.8116499356,0.0951315248,0.9072948694,0.7473185186,0.1599763508
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,106,0.9070272741,0.7135529059,0.1934743681,0.9071726883,0.6613197975,0.2458528908
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,107,0.9043842794,0.7802095149,0.1241747645,0.9055995265,0.7316227253,0.1739768012
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,108,0.9036433246,0.7635193679,0.1401239567,0.9050241695,0.7062214208,0.1988027487
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,109,0.9055184618,0.7812622005,0.1242562613,0.906375681,0.7317102911,0.1746653899
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,110,0.9085927125,0.8611832618,0.04740945071,0.9085538881,0.7994828765,0.1090710116
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,111,0.903985886,0.7821459139,0.1218399721,0.9053444347,0.7325081847,0.1728362499
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,112,0.9309442365,0.8610218962,0.06992234037,0.9233548493,0.7915235895,0.1318312597
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,113,0.9317010966,0.8505681498,0.08113294681,0.9234563423,0.7802245549,0.1432317874
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,115,0.9210817512,0.8150484362,0.106033315,0.9376335571,0.7740017987,0.1636317584
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,116,0.9091703784,0.8419545754,0.06721580306,0.902615474,0.7711072271,0.1315082468
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,117,0.9323697535,0.8256960159,0.1066737376,0.923679114,0.7476506683,0.1760284457
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,119,0.8946001692,0.6731169768,0.2214831924,0.9104814675,0.6109247139,0.2995567536
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,120,0.8880140766,0.8407820843,0.04723199227,0.8982184861,0.7827407492,0.1154777369
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,121,0.9055154379,0.8046133326,0.1009021053,0.9064103281,0.7534586592,0.1529516689
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,122,0.9085927125,0.865436085,0.04315662748,0.9085538881,0.8022234238,0.1063304643
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,New York,123,0.9085927125,0.8650308287,0.04356188382,0.9085538881,0.8022801858,0.1062737023
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Philadelphia,640,0.9775747402,0.5903145502,0.3872601901,0.9803342582,0.5685482989,0.4117859594
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Philadelphia,641,0.981676153,0.6123269781,0.3693491749,0.9831787211,0.5868486413,0.3963300798
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Philadelphia,642,0.981676153,0.6371012279,0.3445749251,0.9831787211,0.6039927203,0.3791860008
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Philadelphia,643,0.9765705646,0.6399919864,0.3365785782,0.9796923081,0.6054072527,0.3742850554
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Philadelphia,644,0.9674571401,0.5807624192,0.3866947209,0.9715637695,0.5617491307,0.4098146388
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Philadelphia,645,0.9575184368,0.5679035661,0.3896148708,0.9640085451,0.5514152653,0.4125932798
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Philadelphia,646,0.981676153,0.6374480226,0.3442281304,0.9831787211,0.6037062506,0.3794724706
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Philadelphia,647,0.981676153,0.6331375252,0.3485386278,0.9831787211,0.6008361984,0.3823425228
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Philadelphia,648,0.9638347974,0.6207708769,0.3430639204,0.9693585722,0.5912648444,0.3780937278
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Philadelphia,649,0.9638347974,0.6100142994,0.353820498,0.9693585722,0.5829108113,0.3864477609
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Philadelphia,650,0.9807861825,0.6119384216,0.3688477609,0.9824019528,0.583986271,0.3984156818
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Philadelphia,651,0.9675039795,0.6034195803,0.3640843992,0.9719330095,0.5788963925,0.393036617
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Philadelphia,652,0.9651716692,0.5700415465,0.3951301227,0.9700636033,0.5547072982,0.4153563051
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Philadelphia,653,0.9603262946,0.5504266308,0.4098996638,0.9663329487,0.538835663,0.4274972857
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Philadelphia,654,0.9602448857,0.5794828079,0.3807620778,0.96570607,0.5599308846,0.4057751854
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Philadelphia,655,0.9669553903,0.5567345211,0.4102208692,0.9710845297,0.5438729306,0.4272115992
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Philadelphia,656,0.9663112702,0.5633387538,0.4029725164,0.9707378301,0.5494194584,0.4213183717
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Philadelphia,657,0.9669553903,0.5583271295,0.4086282608,0.9710845297,0.5451341195,0.4259504102
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Philadelphia,658,0.8699049679,0.6162167012,0.2536882668,0.878824534,0.5952080676,0.2836164664
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,Philadelphia,659,0.9683855444,0.5909007655,0.3774847789,0.9726735599,0.5685826004,0.4040909595
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,San Antonio,491,0.9505627426,0.7336150944,0.2169476482,0.9606685776,0.6711043626,0.289564215
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,San Antonio,492,0.9614452223,0.7276104703,0.233834752,0.9680133853,0.6675702904,0.3004430949
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,San Antonio,493,0.9614452223,0.7425473527,0.2188978696,0.9680133853,0.6772554765,0.2907579088
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,San Antonio,494,0.9573749683,0.7354964598,0.2218785086,0.9655437493,0.672083661,0.2934600882
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,San Antonio,495,0.9494820951,0.7489458481,0.2005362469,0.9600558078,0.681201494,0.2788543138
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,San Antonio,496,0.9573749683,0.7561442831,0.2012306852,0.9655437493,0.6869692083,0.2785745409
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,San Antonio,497,0.9573749684,0.7293830135,0.2279919549,0.9655437493,0.6671718369,0.2983719124
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,San Antonio,498,0.9588422526,0.7483388152,0.2105034374,0.9664327301,0.6817848556,0.2846478745
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,San Antonio,499,0.9573749684,0.7494142261,0.2079607423,0.9655437493,0.6815768756,0.2839668736
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,San Antonio,500,0.9608209173,0.6805884802,0.2802324371,0.9635021253,0.6370187558,0.3264833695
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,San Antonio,501,0.9668696839,0.6961588996,0.2707107843,0.9684471041,0.6461212322,0.3223258719
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,San Antonio,502,0.9614452223,0.7201687629,0.2412764594,0.9680133853,0.6613020702,0.3067113151
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,San Antonio,503,0.9573749684,0.7476319136,0.2097430548,0.9655437493,0.6801589302,0.2853848191
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,San Antonio,504,0.9573749684,0.7504749308,0.2069000376,0.9655437493,0.6825445732,0.2829991761
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,San Antonio,505,0.9573749684,0.7283452433,0.2290297251,0.9655437493,0.6665350838,0.2990086654
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,San Antonio,506,0.9573749683,0.7126478079,0.2447271605,0.9655437493,0.6559505028,0.3095932465
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,San Antonio,507,0.9419524497,0.7345219631,0.2074304866,0.9533993909,0.6713058028,0.2820935881
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,San Antonio,508,0.9573749683,0.754931215,0.2024437533,0.9655437493,0.685996931,0.2795468183
+factorized_od_alignment,G8_factorized_observed_od,G9_factorized_shuffled_od,San Antonio,509,0.9573749684,0.7343785516,0.2229964167,0.9655437493,0.6708200663,0.2947236829
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Austin,478,0.958337158,0.7513734493,0.2069637087,0.9659395679,0.6613416578,0.30459791
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Austin,479,0.958337158,0.7542796966,0.2040574614,0.9659395679,0.6682437451,0.2976958228
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Austin,480,0.958337158,0.7627641746,0.1955729834,0.9659082374,0.6819653379,0.2839428995
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Austin,481,0.9624687084,0.73958402,0.2228846884,0.9695947709,0.6686121144,0.3009826565
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Austin,482,0.958337158,0.7587629713,0.1995741867,0.9659395679,0.6680038221,0.2979357458
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Austin,483,0.958337158,0.7587604522,0.1995767058,0.9659395679,0.6842479216,0.2816916462
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Austin,484,0.958337158,0.7532499382,0.2050872198,0.9659082374,0.6731068466,0.2928013907
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Austin,485,0.9595564631,0.7473968059,0.2121596572,0.9666539354,0.6648654346,0.3017885008
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Austin,486,0.958337158,0.7358646254,0.2224725326,0.9659082373,0.6426327518,0.3232754855
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Austin,487,0.958337158,0.7306929325,0.2276442255,0.9659395679,0.6468543006,0.3190852672
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Austin,488,0.9310821038,0.7292658802,0.2018162235,0.8829726464,0.6600900014,0.222882645
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Austin,489,0.9624687084,0.742233779,0.2202349293,0.9696029144,0.6680125015,0.3015904129
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Austin,490,0.958337158,0.7729285243,0.1854086337,0.9659082373,0.6884352259,0.2774730114
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Austin,491,0.9624687084,0.7615865197,0.2008821887,0.9696029144,0.6803645487,0.2892383657
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Austin,492,0.958337158,0.761482818,0.19685434,0.9659082373,0.6848805134,0.281027724
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Chicago,145,0.9952763551,0.6475574778,0.3477188773,0.9957973972,0.6913698347,0.3044275624
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Chicago,146,0.997404532,0.633738253,0.3636662789,0.9973194227,0.6930331564,0.3042862662
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Chicago,147,0.997404532,0.6331326201,0.3642719118,0.9973194227,0.6921318557,0.305187567
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Chicago,149,0.9988118583,0.6444306592,0.3543811991,0.9982470002,0.7047483844,0.2934986158
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Chicago,150,0.9234364537,0.4910095869,0.4324268668,0.8810614302,0.4851865533,0.3958748769
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Chicago,152,0.9258427546,0.5062249417,0.419617813,0.8870234643,0.4856813779,0.4013420863
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Chicago,153,0.9956447978,0.6344360721,0.3612087258,0.9960592774,0.6825936373,0.3134656401
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Chicago,154,0.9917621414,0.6389568454,0.3528052961,0.993314124,0.6814976583,0.3118164656
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Chicago,155,0.9952763551,0.6475574778,0.3477188773,0.9957973972,0.6913218032,0.304475594
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Chicago,156,0.7587017483,0.5471418618,0.2115598865,0.7365717446,0.5310611071,0.2055106375
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Chicago,157,0.9973889601,0.6246969792,0.3726919809,0.997271033,0.6782053551,0.3190656779
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Chicago,158,0.9956888593,0.6320348375,0.3636540218,0.9960988132,0.6823470183,0.313751795
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Chicago,159,0.9938417204,0.6423054348,0.3515362856,0.9947910385,0.6848272239,0.3099638146
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Dallas,55,0.919817513,0.6507477242,0.2690697888,0.870027492,0.6507510407,0.2192764513
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Dallas,56,0.919817513,0.6589173582,0.2609001547,0.8700073034,0.6560398084,0.2139674951
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Dallas,57,0.919817513,0.6485576675,0.2712598455,0.8700277703,0.6482210047,0.2218067656
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Dallas,58,0.9198175129,0.652183915,0.267633598,0.8700073035,0.651416628,0.2185906755
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Dallas,59,0.919817513,0.6609594579,0.258858055,0.8700277703,0.6585595327,0.2114682376
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Dallas,60,0.9198175129,0.6389176917,0.2808998213,0.8700083477,0.6416417761,0.2283665716
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Dallas,61,0.919817513,0.6606276539,0.2591898591,0.8700139326,0.6584095779,0.2116043547
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Dallas,62,0.919817513,0.6569997808,0.2628177322,0.8700083477,0.6552062295,0.2148021182
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Dallas,63,0.919817513,0.6531283115,0.2666892015,0.8700083477,0.6519573389,0.2180510088
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Dallas,64,0.919817513,0.6475408608,0.2722766522,0.8700277703,0.6469442737,0.2230834965
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Houston,52,0.9182650527,0.5103047148,0.4079603379,0.9393166526,0.476831223,0.4624854296
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Houston,60,0.9976117859,0.6228307204,0.3747810656,0.9973963437,0.5582822655,0.4391140782
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Houston,61,0.997611786,0.6228307204,0.3747810655,0.9973963437,0.5583383552,0.4390579885
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Houston,62,0.9976117859,0.620957688,0.376654098,0.9973963437,0.5555142493,0.4418820944
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,98,0.98089402,0.5693001442,0.4115938758,0.9830802559,0.5292118364,0.4538684195
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,99,0.9452941933,0.5082022888,0.4370919045,0.9093708022,0.4751816432,0.434189159
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,100,0.9646545526,0.4934048599,0.4712496927,0.9365164127,0.4580014943,0.4785149184
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,101,0.9801078688,0.5907086342,0.3893992346,0.9239763323,0.5495680224,0.3744083099
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,102,0.9776703195,0.6438454241,0.3338248954,0.9206237273,0.6042479994,0.3163757279
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,103,0.9801078688,0.6284484229,0.3516594459,0.9239763323,0.5857250967,0.3382512356
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,104,0.9777472089,0.5669477513,0.4107994576,0.9260831009,0.5355381718,0.390544929
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,105,0.9988041435,0.7154508953,0.2833532482,0.9980739903,0.6534794561,0.3445945342
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,106,0.9424407653,0.5099847441,0.4324560212,0.9052223194,0.4810090077,0.4242133117
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,107,0.9786950393,0.5901948754,0.3885001639,0.924529736,0.554172602,0.370357134
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,108,0.9788139324,0.5251089726,0.4537049598,0.927341255,0.5028714752,0.4244697798
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,109,0.9778179176,0.5759932549,0.4018246627,0.9244992331,0.5429096256,0.3815896075
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,110,0.9776703195,0.6511507356,0.3265195839,0.9206237273,0.6108254814,0.3097982459
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,111,0.9773372584,0.5795009579,0.3978363006,0.9226859167,0.5464867626,0.3761991541
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,112,0.9984849948,0.7497852624,0.2486997325,0.9976742831,0.6913884306,0.3062858524
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,113,0.9989321487,0.8109816596,0.1879504892,0.9979324996,0.7356400997,0.2622923999
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,115,0.9741479196,0.6957086198,0.2784392998,0.9782803697,0.6574874409,0.3207929288
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,116,0.9920294222,0.7529053605,0.2391240617,0.9902273647,0.7130184027,0.2772089619
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,117,0.9986356393,0.7739064077,0.2247292316,0.9977069059,0.701670839,0.2960360669
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,119,0.9859961308,0.693992393,0.2920037379,0.9883620516,0.6316232107,0.3567388409
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,120,0.9829351535,0.7040174946,0.2789176589,0.9849351811,0.6687259816,0.3162091995
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,121,0.978699474,0.6302884486,0.3484110254,0.9233191601,0.5880887645,0.3352303955
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,122,0.9776703195,0.6535057906,0.3241645289,0.9206237273,0.6163093023,0.304314425
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,New York,123,0.9776703195,0.6502159001,0.3274544194,0.9206237273,0.6109541165,0.3096696108
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Philadelphia,640,0.9926402503,0.704307319,0.2883329313,0.9946616196,0.6556620374,0.3389995822
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Philadelphia,641,0.9954632021,0.7238159301,0.271647272,0.9966294121,0.6732265854,0.3234028267
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Philadelphia,642,0.9954632021,0.7354389334,0.2600242687,0.9966248889,0.6826277824,0.3139971065
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Philadelphia,643,0.9936349053,0.7213279843,0.2723069211,0.9953690894,0.6712373388,0.3241317505
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Philadelphia,644,0.9899634379,0.5629554519,0.4270079859,0.9924696145,0.5528403621,0.4396292524
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Philadelphia,645,0.9857667477,0.5460139333,0.4397528144,0.9893078988,0.5400638951,0.4492440038
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Philadelphia,646,0.9954632021,0.7585592435,0.2369039586,0.9966294121,0.7015989694,0.2950304427
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Philadelphia,647,0.9954632021,0.7353957887,0.2600674134,0.9966294121,0.682421147,0.3142082651
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Philadelphia,648,0.9937639017,0.590352244,0.4034116577,0.995140483,0.5725944522,0.4225460308
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Philadelphia,649,0.9937639017,0.5796087516,0.4141551501,0.995140483,0.5647798611,0.4303606218
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Philadelphia,650,0.9921910665,0.6623218152,0.3298692513,0.9943212792,0.6237613255,0.3705599536
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Philadelphia,651,0.9926854683,0.5851396142,0.4075458541,0.9944435197,0.5693541998,0.4250893199
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Philadelphia,652,0.9910837829,0.5600590438,0.4310247391,0.9932583605,0.5505150891,0.4427432714
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Philadelphia,653,0.988984158,0.5649077634,0.4240763946,0.991595382,0.5534242547,0.4381711273
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Philadelphia,654,0.9857449022,0.538512075,0.4472328271,0.9891917926,0.5345113128,0.4546804798
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Philadelphia,655,0.9879387524,0.5295130904,0.458425662,0.9910106506,0.5288724407,0.4621382099
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Philadelphia,656,0.9899455329,0.5670143004,0.4229312325,0.9924302393,0.5549811483,0.437449091
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Philadelphia,657,0.8440874964,0.5116650955,0.3324224009,0.823359877,0.4744736981,0.3488861788
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Philadelphia,658,0.9482036646,0.7509419118,0.1972617529,0.9575634576,0.7094989002,0.2480645574
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,Philadelphia,659,0.9495470375,0.6089963256,0.3405507119,0.9394691742,0.557187393,0.3822817812
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,San Antonio,491,0.8836695009,0.6711893571,0.2124801437,0.8501589904,0.6092147748,0.2409442156
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,San Antonio,492,0.9869194677,0.6904756136,0.296443854,0.9902379933,0.6437831106,0.3464548826
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,San Antonio,493,0.9744688802,0.720832808,0.2536360722,0.9813231321,0.6668153968,0.3145077353
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,San Antonio,494,0.9731631838,0.7103741861,0.2627889977,0.980662638,0.657393799,0.323268839
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,San Antonio,495,0.9861245565,0.7864805359,0.1996440206,0.9891574168,0.7150363831,0.2741210338
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,San Antonio,496,0.9731631838,0.7125659727,0.2605972111,0.980662638,0.6588976266,0.3217650114
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,San Antonio,497,0.9684114549,0.7071662284,0.2612452265,0.9775254319,0.6547648584,0.3227605735
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,San Antonio,498,0.8569808943,0.6291104482,0.2278704461,0.8314224087,0.5796855847,0.251736824
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,San Antonio,499,0.9861245565,0.7511631742,0.2349613824,0.9891574168,0.6872914039,0.3018660129
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,San Antonio,500,0.9617724389,0.5940597098,0.3677127291,0.9693533532,0.5747428142,0.3946105391
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,San Antonio,501,0.9659940251,0.54857538,0.4174186451,0.9740795323,0.5435252684,0.430554264
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,San Antonio,502,0.9744688802,0.7010120837,0.2734567965,0.9813231321,0.6517866267,0.3295365053
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,San Antonio,503,0.8481928964,0.5437717069,0.3044211895,0.8716139532,0.4912260832,0.3803878699
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,San Antonio,504,0.8329621306,0.5489011815,0.2840609491,0.8660589106,0.4991677607,0.3668911499
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,San Antonio,505,0.9731631838,0.7087190554,0.2644441284,0.980662638,0.6573979368,0.3232647012
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,San Antonio,506,0.9861245565,0.7789131219,0.2072114346,0.9891574168,0.7070941927,0.2820632241
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,San Antonio,507,0.9731631838,0.7043726525,0.2687905313,0.980662638,0.6517569309,0.3289057071
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,San Antonio,508,0.9731631838,0.7262861056,0.2468770782,0.980662638,0.6695144949,0.3111481431
+observed_graph_over_no_graph,G6_local_plus_observed_od_graph,G1_local_dynamic_no_graph,San Antonio,509,0.834571293,0.5486086235,0.2859626695,0.8665248087,0.5060446241,0.3604801846
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Austin,478,0.9596157869,0.7513734493,0.2082423376,0.9634544686,0.6613416578,0.3021128108
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Austin,479,0.9596157869,0.7542796966,0.2053360903,0.9634544686,0.6682437451,0.2952107235
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Austin,480,0.9596157869,0.7627641746,0.1968516123,0.9634544686,0.6819653379,0.2814891308
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Austin,481,0.9596157869,0.73958402,0.2200317669,0.9634544686,0.6686121144,0.2948423542
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Austin,482,0.9596157869,0.7587629713,0.2008528156,0.9634544686,0.6680038221,0.2954506465
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Austin,483,0.9596157869,0.7587604522,0.2008553347,0.9634544686,0.6842479216,0.279206547
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Austin,484,0.9596157869,0.7532499382,0.2063658487,0.9634544687,0.6731068466,0.290347622
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Austin,485,0.9596305576,0.7473968059,0.2122337517,0.9634295109,0.6648654346,0.2985640764
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Austin,486,0.9596157869,0.7358646254,0.2237511615,0.9634544686,0.6426327518,0.3208217168
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Austin,487,0.9596157869,0.7306929325,0.2289228544,0.9634544686,0.6468543006,0.316600168
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Austin,488,0.9596157869,0.7292658802,0.2303499067,0.9634544687,0.6600900014,0.3033644672
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Austin,489,0.9596157869,0.742233779,0.2173820078,0.9634544686,0.6680125015,0.2954419672
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Austin,490,0.9596157869,0.7729285243,0.1866872626,0.9634544686,0.6884352259,0.2750192427
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Austin,491,0.9596157869,0.7615865197,0.1980292672,0.9634544686,0.6803645487,0.28308992
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Austin,492,0.9596157869,0.761482818,0.1981329689,0.9634544686,0.6848805134,0.2785739553
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Chicago,145,0.9731293477,0.6475574778,0.3255718699,0.978038015,0.6913698347,0.2866681803
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Chicago,146,0.9772519791,0.633738253,0.3435137261,0.9816561176,0.6930331564,0.2886229612
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Chicago,147,0.9772519791,0.6331326201,0.344119359,0.9816561176,0.6921318557,0.2895242619
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Chicago,149,0.9733152507,0.6444306592,0.3288845915,0.9793483466,0.7047483844,0.2745999622
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Chicago,150,0.9752824487,0.4910095869,0.4842728618,0.9799509776,0.4851865533,0.4947644242
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Chicago,152,0.9578615054,0.5062249417,0.4516365637,0.9620900409,0.4856813779,0.4764086629
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Chicago,153,0.974127131,0.6344360721,0.3396910589,0.9788684741,0.6825936373,0.2962748368
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Chicago,154,0.9611907487,0.6389568454,0.3222339034,0.967951255,0.6814976583,0.2864535967
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Chicago,155,0.9696705602,0.6475574778,0.3221130824,0.9752188194,0.6913218032,0.2838970161
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Chicago,156,0.9756122409,0.5471418618,0.4284703791,0.9799398485,0.5310611071,0.4488787414
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Chicago,157,0.9757438587,0.6246969792,0.3510468794,0.9802323643,0.6782053551,0.3020270092
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Chicago,158,0.9751091449,0.6320348375,0.3430743074,0.979625625,0.6823470183,0.2972786068
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Chicago,159,0.9630454614,0.6423054348,0.3207400266,0.9698098263,0.6848272239,0.2849826024
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Dallas,55,0.8297309824,0.6507477242,0.1789832582,0.7829067157,0.6507510407,0.132155675
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Dallas,56,0.8297309824,0.6589173582,0.1708136241,0.7829067156,0.6560398084,0.1268669073
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Dallas,57,0.8297309824,0.6485576675,0.181173315,0.7829067157,0.6482210047,0.134685711
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Dallas,58,0.8249194729,0.652183915,0.172735558,0.7795266481,0.651416628,0.1281100201
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Dallas,59,0.8297309824,0.6609594579,0.1687715245,0.7829067157,0.6585595327,0.124347183
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Dallas,60,0.8297309824,0.6389176917,0.1908132907,0.7829067157,0.6416417761,0.1412649396
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Dallas,61,0.8297309825,0.6606276539,0.1691033286,0.7829067157,0.6584095779,0.1244971378
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Dallas,62,0.8297309824,0.6569997808,0.1727312016,0.7829067157,0.6552062295,0.1277004862
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Dallas,63,0.8297309824,0.6531283115,0.176602671,0.7829067157,0.6519573389,0.1309493768
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Dallas,64,0.8297309824,0.6475408608,0.1821901217,0.7829067157,0.6469442737,0.1359624419
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Houston,52,0.9497992813,0.5103047148,0.4394945665,0.9605456983,0.476831223,0.4837144753
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Houston,60,0.9497992813,0.6228307204,0.3269685609,0.9605456983,0.5582822655,0.4022634328
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Houston,61,0.9497992813,0.6228307204,0.3269685609,0.9605456983,0.5583383552,0.4022073431
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Houston,62,0.9497992813,0.620957688,0.3288415933,0.9605456983,0.5555142493,0.405031449
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,98,0.9328036718,0.5693001442,0.3635035276,0.9440428552,0.5292118364,0.4148310188
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,99,0.8948937864,0.5082022888,0.3866914975,0.8991901998,0.4751816432,0.4240085565
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,100,0.9031027022,0.4934048599,0.4096978422,0.9125835359,0.4580014943,0.4545820415
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,101,0.9060657658,0.5907086342,0.3153571316,0.9067959958,0.5495680224,0.3572279734
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,102,0.9085927125,0.6438454241,0.2647472884,0.9085538881,0.6042479994,0.3043058887
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,103,0.9060657658,0.6284484229,0.2776173429,0.9067959958,0.5857250967,0.321070899
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,104,0.9035039074,0.5669477513,0.3365561561,0.9049404993,0.5355381718,0.3694023275
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,105,0.9067814604,0.7154508953,0.1913305651,0.9072948694,0.6534794561,0.2538154133
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,106,0.9070272741,0.5099847441,0.39704253,0.9071726883,0.4810090077,0.4261636806
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,107,0.9043842794,0.5901948754,0.314189404,0.9055995265,0.554172602,0.3514269245
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,108,0.9036433246,0.5251089726,0.378534352,0.9050241695,0.5028714752,0.4021526943
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,109,0.9055184618,0.5759932549,0.3295252069,0.906375681,0.5429096256,0.3634660555
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,110,0.9085927125,0.6511507356,0.2574419768,0.9085538881,0.6108254814,0.2977284066
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,111,0.903985886,0.5795009579,0.3244849281,0.9053444347,0.5464867626,0.3588576721
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,112,0.9309442365,0.7497852624,0.1811589742,0.9233548493,0.6913884306,0.2319664186
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,113,0.9317010966,0.8109816596,0.120719437,0.9234563423,0.7356400997,0.1878162425
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,115,0.9210817512,0.6957086198,0.2253731313,0.9376335571,0.6574874409,0.2801461162
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,116,0.9091703784,0.7529053605,0.156265018,0.902615474,0.7130184027,0.1895970712
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,117,0.9323697535,0.7739064077,0.1584633458,0.923679114,0.701670839,0.222008275
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,119,0.8946001692,0.693992393,0.2006077762,0.9104814675,0.6316232107,0.2788582567
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,120,0.8880140766,0.7040174946,0.183996582,0.8982184861,0.6687259816,0.2294925045
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,121,0.9055154379,0.6302884486,0.2752269893,0.9064103281,0.5880887645,0.3183215636
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,122,0.9085927125,0.6535057906,0.2550869219,0.9085538881,0.6163093023,0.2922445857
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,New York,123,0.9085927125,0.6502159001,0.2583768124,0.9085538881,0.6109541165,0.2975997716
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Philadelphia,640,0.9775747402,0.704307319,0.2732674213,0.9803342582,0.6556620374,0.3246722208
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Philadelphia,641,0.981676153,0.7238159301,0.2578602229,0.9831787211,0.6732265854,0.3099521357
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Philadelphia,642,0.981676153,0.7354389334,0.2462372197,0.9831787211,0.6826277824,0.3005509387
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Philadelphia,643,0.9765705646,0.7213279843,0.2552425803,0.9796923081,0.6712373388,0.3084549693
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Philadelphia,644,0.9674571401,0.5629554519,0.4045016882,0.9715637695,0.5528403621,0.4187234074
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Philadelphia,645,0.9575184368,0.5460139333,0.4115045035,0.9640085451,0.5400638951,0.42394465
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Philadelphia,646,0.981676153,0.7585592435,0.2231169096,0.9831787211,0.7015989694,0.2815797517
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Philadelphia,647,0.981676153,0.7353957887,0.2462803643,0.9831787211,0.682421147,0.3007575742
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Philadelphia,648,0.9638347974,0.590352244,0.3734825534,0.9693585722,0.5725944522,0.3967641201
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Philadelphia,649,0.9638347974,0.5796087516,0.3842260457,0.9693585722,0.5647798611,0.4045787111
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Philadelphia,650,0.9807861825,0.6623218152,0.3184643673,0.9824019528,0.6237613255,0.3586406272
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Philadelphia,651,0.9675039795,0.5851396142,0.3823643653,0.9719330095,0.5693541998,0.4025788097
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Philadelphia,652,0.9651716692,0.5600590438,0.4051126254,0.9700636033,0.5505150891,0.4195485142
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Philadelphia,653,0.9603262946,0.5649077634,0.3954185312,0.9663329487,0.5534242547,0.412908694
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Philadelphia,654,0.9602448857,0.538512075,0.4217328107,0.96570607,0.5345113128,0.4311947572
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Philadelphia,655,0.9669553903,0.5295130904,0.4374422999,0.9710845297,0.5288724407,0.4422120891
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Philadelphia,656,0.9663112702,0.5670143004,0.3992969698,0.9707378301,0.5549811483,0.4157566818
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Philadelphia,657,0.9669553903,0.5116650955,0.4552902947,0.9710845297,0.4744736981,0.4966108316
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Philadelphia,658,0.8699049679,0.7509419118,0.1189630561,0.878824534,0.7094989002,0.1693256338
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,Philadelphia,659,0.9683855444,0.6089963256,0.3593892188,0.9726735599,0.557187393,0.4154861669
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,San Antonio,491,0.9505627426,0.6711893571,0.2793733854,0.9606685776,0.6092147748,0.3514538028
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,San Antonio,492,0.9614452223,0.6904756136,0.2709696086,0.9680133853,0.6437831106,0.3242302747
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,San Antonio,493,0.9614452223,0.720832808,0.2406124142,0.9680133853,0.6668153968,0.3011979885
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,San Antonio,494,0.9573749683,0.7103741861,0.2470007822,0.9655437493,0.657393799,0.3081499503
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,San Antonio,495,0.9494820951,0.7864805359,0.1630015592,0.9600558078,0.7150363831,0.2450194248
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,San Antonio,496,0.9573749683,0.7125659727,0.2448089957,0.9655437493,0.6588976266,0.3066461227
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,San Antonio,497,0.9573749684,0.7071662284,0.25020874,0.9655437493,0.6547648584,0.3107788909
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,San Antonio,498,0.9588422526,0.6291104482,0.3297318045,0.9664327301,0.5796855847,0.3867471454
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,San Antonio,499,0.9573749684,0.7511631742,0.2062117942,0.9655437493,0.6872914039,0.2782523454
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,San Antonio,500,0.9608209173,0.5940597098,0.3667612075,0.9635021253,0.5747428142,0.3887593111
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,San Antonio,501,0.9668696839,0.54857538,0.4182943038,0.9684471041,0.5435252684,0.4249218357
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,San Antonio,502,0.9614452223,0.7010120837,0.2604331386,0.9680133853,0.6517866267,0.3162267585
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,San Antonio,503,0.9573749684,0.5437717069,0.4136032614,0.9655437493,0.4912260832,0.474317666
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,San Antonio,504,0.9573749684,0.5489011815,0.4084737869,0.9655437493,0.4991677607,0.4663759886
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,San Antonio,505,0.9573749684,0.7087190554,0.2486559129,0.9655437493,0.6573979368,0.3081458125
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,San Antonio,506,0.9573749683,0.7789131219,0.1784618464,0.9655437493,0.7070941927,0.2584495565
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,San Antonio,507,0.9419524497,0.7043726525,0.2375797972,0.9533993909,0.6517569309,0.3016424601
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,San Antonio,508,0.9573749683,0.7262861056,0.2310888627,0.9655437493,0.6695144949,0.2960292544
+factorized_observed_over_no_graph,G8_factorized_observed_od,G1_local_dynamic_no_graph,San Antonio,509,0.9573749684,0.5486086235,0.4087663449,0.9655437493,0.5060446241,0.4594991252

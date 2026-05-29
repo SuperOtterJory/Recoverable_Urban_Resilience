@@ -103,5 +103,16 @@
   "factorized_add_od_delta_top5_capture": 0.1052815805,
   "factorized_add_time_delta_top5_capture": 0.1356033493,
   "factorized_add_highdim_interaction_delta_top5_capture": -0.01134201067,
-  "factorized_add_lowdim_interaction_delta_top5_capture": 0.005164916072
+  "factorized_add_lowdim_interaction_delta_top5_capture": 0.005164916072,
+  "graph_no_graph_top5_capture": 0.6540183596,
+  "graph_observed_full_top5_capture": 0.9624269436,
+  "graph_shuffled_full_top5_capture": 0.6371522835,
+  "graph_factorized_observed_top5_capture": 0.9374546558,
+  "graph_factorized_shuffled_top5_capture": 0.7016563038,
+  "graph_full_alignment_delta_top5_capture": 0.32527466,
+  "graph_full_alignment_delta_top5_ndcg": 0.3185015618,
+  "graph_factorized_alignment_delta_top5_capture": 0.235798352,
+  "graph_factorized_alignment_delta_top5_ndcg": 0.263119322,
+  "graph_observed_over_no_graph_delta_top5_capture": 0.308408584,
+  "graph_observed_over_no_graph_delta_top5_ndcg": 0.3313454025
 }

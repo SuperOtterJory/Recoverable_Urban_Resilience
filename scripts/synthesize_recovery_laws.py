@@ -91,6 +91,8 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "nonobvious_persistence": read_csv(results / "nonobvious_action_laws" / "tables" / "persistence_vs_peak_summary.csv"),
         "factorized_summary": read_csv(results / "factorized_action_surrogate" / "tables" / "factorized_model_summary.csv"),
         "factorized_increments": read_csv(results / "factorized_action_surrogate" / "tables" / "factorized_incremental_gains.csv"),
+        "graph_summary": read_csv(results / "graph_structure_ablation" / "tables" / "graph_structure_model_summary.csv"),
+        "graph_gaps": read_csv(results / "graph_structure_ablation" / "tables" / "graph_structure_shuffle_gaps.csv"),
     }
 
 
@@ -201,6 +203,16 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     factorized_add_time = one_row(factorized_increments, comparison="add_time_feasibility")
     factorized_add_highdim_interaction = one_row(factorized_increments, comparison="add_explicit_interactions")
     factorized_add_lowdim_interaction = one_row(factorized_increments, comparison="factorized_add_interactions")
+    graph_summary = data["graph_summary"]
+    graph_gaps = data["graph_gaps"]
+    graph_no_graph = one_row(graph_summary, model_id="G1_local_dynamic_no_graph")
+    graph_observed_full = one_row(graph_summary, model_id="G6_local_plus_observed_od_graph")
+    graph_shuffled_full = one_row(graph_summary, model_id="G7_local_plus_shuffled_od_graph")
+    graph_factorized_observed = one_row(graph_summary, model_id="G8_factorized_observed_od")
+    graph_factorized_shuffled = one_row(graph_summary, model_id="G9_factorized_shuffled_od")
+    graph_full_alignment = one_row(graph_gaps, comparison="full_od_graph_alignment")
+    graph_factorized_alignment = one_row(graph_gaps, comparison="factorized_od_alignment")
+    graph_observed_over_no_graph = one_row(graph_gaps, comparison="observed_graph_over_no_graph")
 
     metrics: dict[str, Any] = {
         "n_action_tokens": safe_int(policy_capture["n_tokens"].max()) if "n_tokens" in policy_capture else None,
@@ -308,6 +320,17 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "factorized_add_time_delta_top5_capture": safe_float(factorized_add_time.get("delta_top5_value_capture")),
         "factorized_add_highdim_interaction_delta_top5_capture": safe_float(factorized_add_highdim_interaction.get("delta_top5_value_capture")),
         "factorized_add_lowdim_interaction_delta_top5_capture": safe_float(factorized_add_lowdim_interaction.get("delta_top5_value_capture")),
+        "graph_no_graph_top5_capture": safe_float(graph_no_graph.get("mean_event_top_5pct_value_capture")),
+        "graph_observed_full_top5_capture": safe_float(graph_observed_full.get("mean_event_top_5pct_value_capture")),
+        "graph_shuffled_full_top5_capture": safe_float(graph_shuffled_full.get("mean_event_top_5pct_value_capture")),
+        "graph_factorized_observed_top5_capture": safe_float(graph_factorized_observed.get("mean_event_top_5pct_value_capture")),
+        "graph_factorized_shuffled_top5_capture": safe_float(graph_factorized_shuffled.get("mean_event_top_5pct_value_capture")),
+        "graph_full_alignment_delta_top5_capture": safe_float(graph_full_alignment.get("delta_top5_capture")),
+        "graph_full_alignment_delta_top5_ndcg": safe_float(graph_full_alignment.get("delta_top5_ndcg")),
+        "graph_factorized_alignment_delta_top5_capture": safe_float(graph_factorized_alignment.get("delta_top5_capture")),
+        "graph_factorized_alignment_delta_top5_ndcg": safe_float(graph_factorized_alignment.get("delta_top5_ndcg")),
+        "graph_observed_over_no_graph_delta_top5_capture": safe_float(graph_observed_over_no_graph.get("delta_top5_capture")),
+        "graph_observed_over_no_graph_delta_top5_ndcg": safe_float(graph_observed_over_no_graph.get("delta_top5_ndcg")),
     }
     return metrics
 
@@ -422,6 +445,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "key_metric": "low_dim_factorized_top5_capture",
             "value": metrics["factorized_low_dim_top5_capture"],
             "interpretation": "A low-dimensional factorized surrogate captures most top-tail value; OD exposure and time/feasibility add large gains, while unconstrained high-dimensional interactions do not improve leave-city performance.",
+        },
+        {
+            "version": "V17",
+            "evidence_step": "OD graph structure alignment ablation",
+            "main_question": "Does observed OD graph alignment add value beyond local dynamics or shuffled city-level graph distributions?",
+            "key_metric": "observed_vs_shuffled_od_graph_top5_capture_gap",
+            "value": metrics["graph_full_alignment_delta_top5_capture"],
+            "interpretation": "Observed OD graph alignment strongly outperforms a within-city shuffled graph, showing that spatial alignment between action location and OD exposure is part of the recoverability law.",
         },
     ]
     return pd.DataFrame(rows)
@@ -563,9 +594,15 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
             },
             {
                 "item": "surrogate_architecture",
-                "current_status": "V16 adds a factorized leave-one-city action-value surrogate with interaction ablation; it is still not a full graph neural model.",
-                "implication": "The low-dimensional activated structure is strongly supported, while unrestricted interaction terms are not necessary in the current evidence.",
+                "current_status": "V16 adds a factorized leave-one-city action-value surrogate; V17 adds observed-vs-shuffled OD graph alignment ablation.",
+                "implication": "The low-dimensional activated structure is strongly supported, and observed OD alignment is informative beyond shuffled graph-feature distributions.",
                 "next_step": "Use an explicit graph or OD-message-passing surrogate only if the paper needs to test higher-order spatial representations.",
+            },
+            {
+                "item": "graph_structure_scope",
+                "current_status": "V17 tests OD-dependency graph features and within-city shuffled graph alignment, not a unified road-adjacency graph.",
+                "implication": "The paper can claim evidence for OD exposure alignment as city structure, but not yet for full road-topology message passing.",
+                "next_step": "Add road adjacency, TMC-zone linkage, or graph neural baselines if higher-order physical topology becomes a central contribution.",
             },
             {
                 "item": "perturbed_optimum_stability",
@@ -694,6 +731,74 @@ def write_report(
     top_tail_correlations: pd.DataFrame,
     limitations: pd.DataFrame,
 ) -> None:
+    lines = [
+        "# Recoverability Law Synthesis V17",
+        "",
+        "## 本版做了什么",
+        "",
+        "V17 将 OD graph structure ablation 接入 learning/law synthesis。在 V16 的 factorized action-value surrogate 基础上，本版进一步检验：恢复价值是否只依赖城市结构特征的边际分布，还是依赖 action location 与 observed OD-dependency graph 的真实空间对齐。",
+        "",
+        "## 当前可写入论文的 law",
+        "",
+        "1. **Small-signal activated recovery law**：第一小段资源的边际价值由 future recoverable horizon、OD exposure、intervention feasibility 和 efficiency 共同激活。",
+        "",
+        "2. **Residual finite-budget allocation law**：完整预算下，价值必须在每轮投放后按 residual state、remaining budget 和 remaining time 重新评分，以避免饱和和重叠效应。",
+        "",
+        "3. **Top-tail decision-criticality law**：事件是否 decision-critical 不只取决于 observed loss，而取决于 recoverable value 是否集中在少数高价值 action 上。",
+        "",
+        "4. **Non-obvious activation law**：高损失、高流量或高结构中心性都不是充分条件；静态城市结构只有被未来损失、OD 暴露、响应窗口和资源效率同时激活，才转化为 recovery value。",
+        "",
+        "5. **Factorized parsimony result**：跨城市 action-value surrogate 的最大增益来自 OD exposure 和 time/feasibility activation；不受约束的高维 interaction terms 没有提高 full model。",
+        "",
+        "6. **OD graph alignment law**：在城市内打乱 OD graph feature 与 unit 的对应关系会显著降低 top-tail value capture，说明城市结构不是只作为分布统计量起作用，真实空间对齐本身是 recoverability law 的一部分。",
+        "",
+        "## 关键指标",
+        "",
+        f"- action tokens: {metrics['n_action_tokens']:,}",
+        f"- city-event scenarios: {metrics['n_events']}",
+        f"- single-action LP validation: small-signal Spearman = {metrics['single_action_small_signal_spearman']:.4f}, finite-area label Spearman = {metrics['single_action_finite_area_spearman']:.4f}",
+        f"- leave-one-city-out surrogate: mean Spearman = {metrics['leave_city_mean_spearman']:.4f}, top-5% capture = {metrics['leave_city_mean_top5_capture']:.4f}",
+        f"- base finite-budget closure: static greedy / LP gain = {metrics['base_static_fraction_of_lp_gain']:.4f}; residual greedy / LP gain = {metrics['base_residual_fraction_of_lp_gain']:.4f}",
+        f"- representative non-base closure: static / scenario LP gain = {metrics['scenario_static_fraction_of_lp_gain']:.4f}; residual / scenario LP gain = {metrics['scenario_residual_fraction_of_lp_gain']:.4f}",
+        f"- symbolic activated law top-5% capture = {metrics['symbolic_activated_top5_capture']:.4f}; largest feature ablation drop = {metrics['symbolic_largest_ablation_drop_group']} ({metrics['symbolic_largest_ablation_top5_drop']:.4f})",
+        f"- non-obvious action law: false-positive shares are deficit-only {metrics['nonobvious_deficit_false_positive_share']:.1%}, exposure-only {metrics['nonobvious_exposure_false_positive_share']:.1%}, structure-only {metrics['nonobvious_structure_false_positive_share']:.1%}",
+        f"- factorized surrogate: deficit-only top-5% capture = {metrics['factorized_deficit_top5_capture']:.4f}; full additive = {metrics['factorized_full_additive_top5_capture']:.4f}; low-dimensional factorized = {metrics['factorized_low_dim_top5_capture']:.4f}",
+        f"- interaction ablation: adding OD exposure gives {metrics['factorized_add_od_delta_top5_capture']:+.4f}; adding time/feasibility gives {metrics['factorized_add_time_delta_top5_capture']:+.4f}; unrestricted high-dimensional interactions give {metrics['factorized_add_highdim_interaction_delta_top5_capture']:+.4f}",
+        f"- graph structure ablation: no-graph top-5% capture = {metrics['graph_no_graph_top5_capture']:.4f}; observed OD graph = {metrics['graph_observed_full_top5_capture']:.4f}; shuffled OD graph = {metrics['graph_shuffled_full_top5_capture']:.4f}; observed-shuffled gap = {metrics['graph_full_alignment_delta_top5_capture']:+.4f}",
+        f"- factorized graph alignment: observed OD = {metrics['graph_factorized_observed_top5_capture']:.4f}; shuffled OD = {metrics['graph_factorized_shuffled_top5_capture']:.4f}; gap = {metrics['graph_factorized_alignment_delta_top5_capture']:+.4f}",
+        f"- early decision-criticality: best Spearman = {metrics['early_decision_best_spearman']:.4f} at {metrics['early_decision_best_window']}h using {metrics['early_decision_best_feature_group']}; 2h all-early Spearman = {metrics['early_decision_2h_all_spearman']:.4f}",
+        "",
+        "## Evidence Ladder",
+        "",
+        table_to_markdown(evidence),
+        "",
+        "## Policy Closure",
+        "",
+        table_to_markdown(closure),
+        "",
+        "## City Closure",
+        "",
+        table_to_markdown(city_closure),
+        "",
+        "## Top Decision-Critical Events",
+        "",
+        table_to_markdown(decision_examples),
+        "",
+        "## Event-Level Correlations",
+        "",
+        table_to_markdown(top_tail_correlations),
+        "",
+        "## 当前边界与下一步",
+        "",
+        table_to_markdown(limitations),
+        "",
+        "## 论文写作含义",
+        "",
+        "现在 learning/law 部分可以写成一条更完整的证据链：优化模型产生 action-value field；single-action LP 验证 marginal label；cross-city surrogate、factorized surrogate 和 symbolic extraction 说明低维 activated law 可解释；residual greedy 说明有限预算需要动态重评分；event top-tail 说明 decision-criticality 不是 disruption magnitude；V15 给出反直觉证据；V17 进一步说明 OD graph 的空间对齐本身有实证价值。论文中仍需谨慎表述：当前 graph 证据是 OD-dependency graph 的 observed-vs-shuffled ablation，还不是完整 road-adjacency graph 或 GNN closure。",
+    ]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return
     lines = [
         "# Recoverability Law Synthesis V16",
         "",
