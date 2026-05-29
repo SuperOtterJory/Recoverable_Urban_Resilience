@@ -100,6 +100,9 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "parameter_summary": read_csv(results / "parameter_deconfounded_law" / "tables" / "parameter_deconfounded_model_summary.csv"),
         "parameter_increments": read_csv(results / "parameter_deconfounded_law" / "tables" / "parameter_deconfounded_increments.csv"),
         "parameter_channel": read_csv(results / "parameter_deconfounded_law" / "tables" / "channel_neutral_score_summary.csv"),
+        "event_decision_metrics": read_json_table(results / "event_decision_criticality" / "tables" / "event_decision_criticality_metrics.json"),
+        "event_decision_variance": read_csv(results / "event_decision_criticality" / "tables" / "event_variance_decomposition.csv"),
+        "event_decision_phase": read_csv(results / "event_decision_criticality" / "tables" / "event_phase_summary.csv"),
     }
 
 
@@ -107,6 +110,13 @@ def read_csv(path: Path) -> pd.DataFrame:
     if not path.exists():
         return pd.DataFrame()
     return pd.read_csv(path)
+
+
+def read_json_table(path: Path) -> pd.DataFrame:
+    if not path.exists():
+        return pd.DataFrame()
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return pd.DataFrame([data])
 
 
 def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
@@ -256,6 +266,7 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     channel_efficiency = one_row(parameter_channel, score_id="S0_efficiency_only")
     channel_light_activation = one_row(parameter_channel, score_id="S4_parameter_light_activation")
     channel_full_activation = one_row(parameter_channel, score_id="S5_full_activation")
+    event_decision_metrics = one_row(data["event_decision_metrics"])
 
     metrics: dict[str, Any] = {
         "n_action_tokens": safe_int(policy_capture["n_tokens"].max()) if "n_tokens" in policy_capture else None,
@@ -415,6 +426,16 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "parameter_channel_light_activation_top10_capture": safe_float(channel_light_activation.get("mean_top10_value_capture")),
         "parameter_channel_full_activation_top10_capture": safe_float(channel_full_activation.get("mean_top10_value_capture")),
         "parameter_channel_n_groups": safe_int(channel_full_activation.get("n_channels")),
+        "event_decision_v21_decision_vs_loss_spearman": safe_float(event_decision_metrics.get("decision_vs_baseline_loss_spearman")),
+        "event_decision_v21_decision_vs_top5_spearman": safe_float(event_decision_metrics.get("decision_vs_top5_share_spearman")),
+        "event_decision_v21_decision_vs_gini_spearman": safe_float(event_decision_metrics.get("decision_vs_gini_spearman")),
+        "event_decision_v21_top5_between_city_share": safe_float(event_decision_metrics.get("top5_between_city_share")),
+        "event_decision_v21_gini_between_city_share": safe_float(event_decision_metrics.get("gini_between_city_share")),
+        "event_decision_v21_severity_only_loco_spearman": safe_float(event_decision_metrics.get("severity_only_decision_loco_spearman")),
+        "event_decision_v21_top_tail_loco_spearman": safe_float(event_decision_metrics.get("top_tail_decision_loco_spearman")),
+        "event_decision_v21_high_loss_low_decision_count": safe_int(event_decision_metrics.get("high_loss_low_decision_count")),
+        "event_decision_v21_moderate_loss_high_decision_count": safe_int(event_decision_metrics.get("moderate_loss_high_decision_count")),
+        "event_decision_v21_high_rain_low_decision_count": safe_int(event_decision_metrics.get("high_rain_low_decision_count")),
     }
     return metrics
 
@@ -561,6 +582,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "key_metric": "parameter_light_factorized_over_clock_delta_top5_capture",
             "value": metrics["parameter_light_over_clock_delta_top5_capture"],
             "interpretation": "A factorized law without eta/cost still strongly outperforms policy-clock and intervention-type controls, showing that OD exposure and future loss alignment carry structural value beyond action mechanics.",
+        },
+        {
+            "version": "V21",
+            "evidence_step": "Event-level severity decoupling",
+            "main_question": "Are the most severe rainfall-loss events automatically the most decision-critical?",
+            "key_metric": "decision_vs_top5_share_spearman",
+            "value": metrics["event_decision_v21_decision_vs_top5_spearman"],
+            "interpretation": "Decision-criticality aligns with marginal-value top-tail concentration rather than loss magnitude; V21 also shows that the current top-tail signal is partly city-structural because event footprints are not yet region-specific.",
         },
     ]
     return pd.DataFrame(rows)
@@ -719,6 +748,12 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
                 "next_step": "Add unconfounded multi-year observations within the same cities before claiming clean leave-time-period-out generalization.",
             },
             {
+                "item": "event_spatial_footprint_scope",
+                "current_status": "V21 finds event-level top-tail concentration is strongly linked to decision-criticality, but top-5% value share has a sizable between-city variance component.",
+                "implication": "The event-level law is currently a city-structure/top-tail law more than a fully event-specific spatial-footprint law.",
+                "next_step": "Add zone-level speed/rainfall footprint mapping to test whether top-tail concentration varies strongly across events within the same city.",
+            },
+            {
                 "item": "training_objective_scope",
                 "current_status": "V19 compares ordinary log-value, event-centered, top-tail-weighted, rank-percentile, and event-zscore ridge objectives.",
                 "implication": "Top-tail metrics are essential for evaluation, but the compact law does not require a special ranking-loss trick in the current data.",
@@ -852,11 +887,11 @@ def write_report(
     limitations: pd.DataFrame,
 ) -> None:
     lines = [
-        "# Recoverability Law Synthesis V20",
+        "# Recoverability Law Synthesis V21",
         "",
         "## 本版做了什么",
         "",
-        "V20 将 parameter-deconfounded law analysis 接入 learning/law synthesis。在 V17/V18/V19 已经验证 OD graph alignment、event-regime generalization 和 training-objective robustness 的基础上，本版进一步检验：低维 recoverability law 是否只是响应时间、R/C/S 类型、效率、成本等 action-mechanics 的产物。",
+        "V21 将 event-level severity-decoupling analysis 接入 learning/law synthesis。在 V20 已经验证 local action law 不只是 action-mechanics 产物之后，本版进一步检验事件级 Law B：最大雨量、最大速度冲击或最大无干预损失事件是否自动最 decision-critical。",
         "",
         "## 当前可写入论文的 law",
         "",
@@ -878,6 +913,8 @@ def write_report(
         "",
         "9. **Parameter-deconfounded structure result**：只看 action mechanics 明显不足；即使移除 eta/cost efficiency，future-loss horizon 与 OD exposure 的 factorized law 仍显著优于 policy-clock baseline，说明城市结构对齐不是参数设定的同义反复。",
         "",
+        "10. **Event-level severity-decoupling result**：decision-criticality 与 marginal-value top-tail concentration 强相关，而与 baseline loss magnitude 在当前样本中负相关；大损失事件不一定是最高管理价值事件，中等损失事件也可能因为 top-tail 集中而高度 decision-critical。",
+        "",
         "## 关键指标",
         "",
         f"- action tokens: {metrics['n_action_tokens']:,}",
@@ -898,6 +935,9 @@ def write_report(
         f"- parameter-deconfounded law: policy-clock only top-5% capture = {metrics['parameter_policy_clock_top5_capture']:.4f}; clock+efficiency = {metrics['parameter_clock_plus_efficiency_top5_capture']:.4f}; +OD exposure = {metrics['parameter_add_od_exposure_top5_capture']:.4f}; parameter-light factorized = {metrics['parameter_light_factorized_top5_capture']:.4f}",
         f"- parameter-deconfounded increments: adding eta/cost gives {metrics['parameter_add_efficiency_delta_top5_capture']:+.4f}; adding OD exposure gives {metrics['parameter_add_od_delta_top5_capture']:+.4f}; parameter-light factorized over clock gives {metrics['parameter_light_over_clock_delta_top5_capture']:+.4f}",
         f"- fixed-channel first-order diagnostic: {metrics['parameter_channel_n_groups']} event-time-intervention channels; efficiency-only top-10% capture = {metrics['parameter_channel_efficiency_top10_capture']:.4f}; no-eta horizon--OD activation = {metrics['parameter_channel_light_activation_top10_capture']:.4f}; full activation = {metrics['parameter_channel_full_activation_top10_capture']:.4f}",
+        f"- event-level severity decoupling: decision-criticality vs loss Spearman = {metrics['event_decision_v21_decision_vs_loss_spearman']:.4f}; vs top-5% value share = {metrics['event_decision_v21_decision_vs_top5_spearman']:.4f}; vs marginal-value gini = {metrics['event_decision_v21_decision_vs_gini_spearman']:.4f}",
+        f"- event-level counterexamples: high-loss/low-decision events = {metrics['event_decision_v21_high_loss_low_decision_count']}; moderate-loss/high-decision events = {metrics['event_decision_v21_moderate_loss_high_decision_count']}; high-rain/low-decision events = {metrics['event_decision_v21_high_rain_low_decision_count']}",
+        f"- event-footprint boundary: top-5% value-share between-city variance share = {metrics['event_decision_v21_top5_between_city_share']:.4f}; gini between-city share = {metrics['event_decision_v21_gini_between_city_share']:.4f}; severity-only leave-city decision Spearman = {metrics['event_decision_v21_severity_only_loco_spearman']:.4f}; top-tail model = {metrics['event_decision_v21_top_tail_loco_spearman']:.4f}",
         f"- early decision-criticality: best Spearman = {metrics['early_decision_best_spearman']:.4f} at {metrics['early_decision_best_window']}h using {metrics['early_decision_best_feature_group']}; 2h all-early Spearman = {metrics['early_decision_2h_all_spearman']:.4f}",
         "",
         "## Evidence Ladder",

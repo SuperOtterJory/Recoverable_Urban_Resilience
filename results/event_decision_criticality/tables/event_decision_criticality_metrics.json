@@ -1,0 +1,21 @@
+{
+  "n_events": 105,
+  "n_cities": 7,
+  "decision_vs_baseline_loss_spearman": -0.4584698320547376,
+  "decision_vs_top5_share_spearman": 0.7650261684786042,
+  "decision_vs_gini_spearman": 0.8412274391734418,
+  "recoverable_vs_baseline_loss_spearman": -0.6152498444951275,
+  "recoverable_vs_gini_spearman": 0.3709230491539078,
+  "top5_between_city_share": 0.599033146092653,
+  "gini_between_city_share": 0.4341584660946537,
+  "decision_between_city_share": 0.42541584700656615,
+  "severity_only_decision_loco_spearman": -0.040192826041882644,
+  "top_tail_decision_loco_spearman": 0.6789706228346499,
+  "combined_decision_loco_spearman": 0.6534625751606883,
+  "high_loss_low_decision_count": 13,
+  "moderate_loss_high_decision_count": 19,
+  "high_rain_low_decision_count": 16,
+  "high_speed_impact_low_decision_count": 15,
+  "high_decision_not_high_loss_count": 18,
+  "counterexample_rows": 60
+}

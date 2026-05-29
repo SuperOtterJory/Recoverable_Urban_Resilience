@@ -1,0 +1,13 @@
+target,model_id,description,n_events,n_cities,pooled_spearman,pooled_pearson,rmse,mae,mean_city_spearman
+decision_criticality_score,E0_severity_only,rainfall and no-intervention loss severity only,105,7,-0.040192826041882644,0.02890966073013627,0.0047836792176864165,0.003434431172927994,0.46802016279459885
+decision_criticality_score,E1_top_tail_structure,marginal-value top-tail concentration and optimizer selected-value share,105,7,0.6789706228346499,0.7846020929906082,0.0027161771063009908,0.0017678531090172844,0.25548544005633506
+decision_criticality_score,E2_severity_plus_top_tail,severity features plus top-tail concentration,105,7,0.6534625751606883,0.7987977713838287,0.0026338299656698,0.0016633715907176105,0.29718658534448
+recoverable_fraction,E0_severity_only,rainfall and no-intervention loss severity only,105,7,0.403566245075679,0.39866727706412325,0.0320762304029037,0.024455727219036272,0.3784310437301611
+recoverable_fraction,E1_top_tail_structure,marginal-value top-tail concentration and optimizer selected-value share,105,7,0.11875039006971543,0.18792703342882625,0.03540925099586015,0.025830469819591004,0.17926538681764834
+recoverable_fraction,E2_severity_plus_top_tail,severity features plus top-tail concentration,105,7,0.3461538461538461,0.4355248396257168,0.03157634252593204,0.02409596951903641,0.18981270282512522
+lp_minus_random,E0_severity_only,rainfall and no-intervention loss severity only,105,7,0.450767157370931,0.3920826476847466,0.02963233126156739,0.02235796397591162,0.48985244079229046
+lp_minus_random,E1_top_tail_structure,marginal-value top-tail concentration and optimizer selected-value share,105,7,0.07292163567277643,0.1597243593625411,0.03268118656391119,0.023436656232823705,0.10930739939807221
+lp_minus_random,E2_severity_plus_top_tail,severity features plus top-tail concentration,105,7,0.40711175616835993,0.43445085511986437,0.028913327347087785,0.021821943265259165,0.2545261690472543
+law_minus_random,E0_severity_only,rainfall and no-intervention loss severity only,105,7,-0.5271096827700601,-0.5554766169393321,0.023815374395076465,0.01873714158547291,-0.33476042590949423
+law_minus_random,E1_top_tail_structure,marginal-value top-tail concentration and optimizer selected-value share,105,7,-0.23366443644556942,-0.1494400953772987,0.020605635447465805,0.01632219211619777,-0.09518374817733043
+law_minus_random,E2_severity_plus_top_tail,severity features plus top-tail concentration,105,7,-0.4086046029442255,-0.47838648864609645,0.024641406172452862,0.019010981876116446,-0.1638257324020645

@@ -1,0 +1,1261 @@
+city,event_id,target,model_id,heldout_city,observed,predicted
+Austin,478,decision_criticality_score,E0_severity_only,Austin,0.006907263692,0.0101267006741145
+Austin,479,decision_criticality_score,E0_severity_only,Austin,0.008301228557,0.011076346987174211
+Austin,480,decision_criticality_score,E0_severity_only,Austin,0.007997890891,0.011279564431465272
+Austin,481,decision_criticality_score,E0_severity_only,Austin,0.008887576856,0.011993507445525972
+Austin,482,decision_criticality_score,E0_severity_only,Austin,0.007065261453,0.010548769609997477
+Austin,483,decision_criticality_score,E0_severity_only,Austin,0.006975505725,0.011453904888100592
+Austin,484,decision_criticality_score,E0_severity_only,Austin,0.008395102776,0.011489830934680716
+Austin,485,decision_criticality_score,E0_severity_only,Austin,0.01173630535,0.011484554342037968
+Austin,486,decision_criticality_score,E0_severity_only,Austin,0.009201301427,0.010928087946812258
+Austin,487,decision_criticality_score,E0_severity_only,Austin,0.007075298524,0.0097248471969204
+Austin,488,decision_criticality_score,E0_severity_only,Austin,0.007431247723,0.011800942988292405
+Austin,489,decision_criticality_score,E0_severity_only,Austin,0.008157597314,0.011864586427550287
+Austin,490,decision_criticality_score,E0_severity_only,Austin,0.01107102862,0.01196851806080762
+Austin,491,decision_criticality_score,E0_severity_only,Austin,0.009194291116,0.01227982938254688
+Austin,492,decision_criticality_score,E0_severity_only,Austin,0.007593569999,0.011099868218265184
+Chicago,145,decision_criticality_score,E0_severity_only,Chicago,0.0093301288,0.009147509663105959
+Chicago,146,decision_criticality_score,E0_severity_only,Chicago,0.01045197211,0.011442312425413019
+Chicago,147,decision_criticality_score,E0_severity_only,Chicago,0.01043829686,0.011460339674255368
+Chicago,149,decision_criticality_score,E0_severity_only,Chicago,0.01215937493,0.011533993138591525
+Chicago,150,decision_criticality_score,E0_severity_only,Chicago,0.01036837837,0.011069026012795113
+Chicago,152,decision_criticality_score,E0_severity_only,Chicago,0.02116409507,0.011347100234419144
+Chicago,153,decision_criticality_score,E0_severity_only,Chicago,0.01143046856,0.006782493891401108
+Chicago,154,decision_criticality_score,E0_severity_only,Chicago,0.01709188982,0.011747252347861895
+Chicago,155,decision_criticality_score,E0_severity_only,Chicago,0.009526989395,0.010201424243886882
+Chicago,156,decision_criticality_score,E0_severity_only,Chicago,0.00999887907,0.011000100536388759
+Chicago,157,decision_criticality_score,E0_severity_only,Chicago,0.01063606192,0.009180113007256827
+Chicago,158,decision_criticality_score,E0_severity_only,Chicago,0.009888094314,0.009005897043364786
+Chicago,159,decision_criticality_score,E0_severity_only,Chicago,0.01122197306,0.010411012876458708
+Dallas,55,decision_criticality_score,E0_severity_only,Dallas,0.003755167506,0.009586293755519426
+Dallas,56,decision_criticality_score,E0_severity_only,Dallas,0.004970851899,0.009715911518583613
+Dallas,57,decision_criticality_score,E0_severity_only,Dallas,0.003648929301,0.00957442706563338
+Dallas,58,decision_criticality_score,E0_severity_only,Dallas,0.005482867238,0.010183460045407983
+Dallas,59,decision_criticality_score,E0_severity_only,Dallas,0.003845883828,0.006368509356153056
+Dallas,60,decision_criticality_score,E0_severity_only,Dallas,0.004238517995,0.009293477076632558
+Dallas,61,decision_criticality_score,E0_severity_only,Dallas,0.003507890684,0.00848663991736331
+Dallas,62,decision_criticality_score,E0_severity_only,Dallas,0.005214524452,0.011070237403600433
+Dallas,63,decision_criticality_score,E0_severity_only,Dallas,0.004332614517,0.010627996392211084
+Dallas,64,decision_criticality_score,E0_severity_only,Dallas,0.003212408198,0.00951354305482886
+Houston,52,decision_criticality_score,E0_severity_only,Houston,0.007204526209,0.010651436988906677
+Houston,60,decision_criticality_score,E0_severity_only,Houston,0.006194226188,0.007225421419348105
+Houston,61,decision_criticality_score,E0_severity_only,Houston,0.007842874089,0.008574611334789489
+Houston,62,decision_criticality_score,E0_severity_only,Houston,0.007779178095,0.008225139699013116
+New York,98,decision_criticality_score,E0_severity_only,New York,0.03560625421,0.010994725115043274
+New York,99,decision_criticality_score,E0_severity_only,New York,0.01433302948,0.010106745857120722
+New York,100,decision_criticality_score,E0_severity_only,New York,0.0177129754,0.010209353136749815
+New York,101,decision_criticality_score,E0_severity_only,New York,0.01146023169,0.009259645506078306
+New York,102,decision_criticality_score,E0_severity_only,New York,0.01001795691,0.007132564189245244
+New York,103,decision_criticality_score,E0_severity_only,New York,0.01217810177,0.0065486603822622535
+New York,104,decision_criticality_score,E0_severity_only,New York,0.01331791903,0.004904769499661367
+New York,105,decision_criticality_score,E0_severity_only,New York,0.00884401282,0.007775565652212534
+New York,106,decision_criticality_score,E0_severity_only,New York,0.01320802525,0.009894841105798058
+New York,107,decision_criticality_score,E0_severity_only,New York,0.01201082115,0.006390193959786888
+New York,108,decision_criticality_score,E0_severity_only,New York,0.01379337817,0.007453318684699756
+New York,109,decision_criticality_score,E0_severity_only,New York,0.01323738314,0.0027562040571868568
+New York,110,decision_criticality_score,E0_severity_only,New York,0.01025359422,0.003381204288876578
+New York,111,decision_criticality_score,E0_severity_only,New York,0.01045264771,0.007300710537562079
+New York,112,decision_criticality_score,E0_severity_only,New York,0.01179314156,0.010473880295542647
+New York,113,decision_criticality_score,E0_severity_only,New York,0.01056401898,0.010368770764756941
+New York,115,decision_criticality_score,E0_severity_only,New York,0.01727254137,0.010962620727063641
+New York,116,decision_criticality_score,E0_severity_only,New York,0.01333610387,0.010881863079179226
+New York,117,decision_criticality_score,E0_severity_only,New York,0.01103904373,0.010822285367582292
+New York,119,decision_criticality_score,E0_severity_only,New York,0.02600489068,0.010961759416681064
+New York,120,decision_criticality_score,E0_severity_only,New York,0.01224014226,0.010415121857545348
+New York,121,decision_criticality_score,E0_severity_only,New York,0.01108346039,0.004724816082022569
+New York,122,decision_criticality_score,E0_severity_only,New York,0.009720397386,0.005898135772364617
+New York,123,decision_criticality_score,E0_severity_only,New York,0.01043312053,0.007567530063270357
+Philadelphia,640,decision_criticality_score,E0_severity_only,Philadelphia,0.01107967564,0.011853052193418995
+Philadelphia,641,decision_criticality_score,E0_severity_only,Philadelphia,0.01248571581,0.011889750386371817
+Philadelphia,642,decision_criticality_score,E0_severity_only,Philadelphia,0.01319013938,0.011881184026326286
+Philadelphia,643,decision_criticality_score,E0_severity_only,Philadelphia,0.01143861863,0.011266334495008077
+Philadelphia,644,decision_criticality_score,E0_severity_only,Philadelphia,0.009947495959,0.010403957028106292
+Philadelphia,645,decision_criticality_score,E0_severity_only,Philadelphia,0.009023838818,0.01075614703307745
+Philadelphia,646,decision_criticality_score,E0_severity_only,Philadelphia,0.01165946193,0.011570103554732548
+Philadelphia,647,decision_criticality_score,E0_severity_only,Philadelphia,0.01237975842,0.01180850623851061
+Philadelphia,648,decision_criticality_score,E0_severity_only,Philadelphia,0.01137382076,0.010694838942324703
+Philadelphia,649,decision_criticality_score,E0_severity_only,Philadelphia,0.009688416576,0.010722688468632597
+Philadelphia,650,decision_criticality_score,E0_severity_only,Philadelphia,0.01161083493,0.011531619756057774
+Philadelphia,651,decision_criticality_score,E0_severity_only,Philadelphia,0.01066331426,0.010966299127127058
+Philadelphia,652,decision_criticality_score,E0_severity_only,Philadelphia,0.009468044526,0.011031359055723722
+Philadelphia,653,decision_criticality_score,E0_severity_only,Philadelphia,0.01014604049,0.011499597332469162
+Philadelphia,654,decision_criticality_score,E0_severity_only,Philadelphia,0.01306996992,0.011201868578930333
+Philadelphia,655,decision_criticality_score,E0_severity_only,Philadelphia,0.009724847786,0.01109032146156274
+Philadelphia,656,decision_criticality_score,E0_severity_only,Philadelphia,0.009471317502,0.01006762242644401
+Philadelphia,657,decision_criticality_score,E0_severity_only,Philadelphia,0.009112949291,0.01123952523827654
+Philadelphia,658,decision_criticality_score,E0_severity_only,Philadelphia,0.02320796907,0.011807349656608708
+Philadelphia,659,decision_criticality_score,E0_severity_only,Philadelphia,0.01042816986,0.011376963835003579
+San Antonio,491,decision_criticality_score,E0_severity_only,San Antonio,0.007948430021,0.011529054736822624
+San Antonio,492,decision_criticality_score,E0_severity_only,San Antonio,0.007836239284,0.012752298996773543
+San Antonio,493,decision_criticality_score,E0_severity_only,San Antonio,0.008459698594,0.012466159860481937
+San Antonio,494,decision_criticality_score,E0_severity_only,San Antonio,0.008175412251,0.012211750944575089
+San Antonio,495,decision_criticality_score,E0_severity_only,San Antonio,0.008551512284,0.012510623734921376
+San Antonio,496,decision_criticality_score,E0_severity_only,San Antonio,0.00845683085,0.012606092792646718
+San Antonio,497,decision_criticality_score,E0_severity_only,San Antonio,0.008861451313,0.011671184425557504
+San Antonio,498,decision_criticality_score,E0_severity_only,San Antonio,0.008403165436,0.012408085057245239
+San Antonio,499,decision_criticality_score,E0_severity_only,San Antonio,0.009010672946,0.012346404054937718
+San Antonio,500,decision_criticality_score,E0_severity_only,San Antonio,0.01050321659,0.014102331024738657
+San Antonio,501,decision_criticality_score,E0_severity_only,San Antonio,0.007825134659,0.01323580786943354
+San Antonio,502,decision_criticality_score,E0_severity_only,San Antonio,0.007892695683,0.011743593058073492
+San Antonio,503,decision_criticality_score,E0_severity_only,San Antonio,0.008513165612,0.012711081745144204
+San Antonio,504,decision_criticality_score,E0_severity_only,San Antonio,0.008158860126,0.01230769117927708
+San Antonio,505,decision_criticality_score,E0_severity_only,San Antonio,0.009453088635,0.012125727232221314
+San Antonio,506,decision_criticality_score,E0_severity_only,San Antonio,0.009838349952,0.012833407545771433
+San Antonio,507,decision_criticality_score,E0_severity_only,San Antonio,0.009094010224,0.011884443254715053
+San Antonio,508,decision_criticality_score,E0_severity_only,San Antonio,0.00873440627,0.010827188422845305
+San Antonio,509,decision_criticality_score,E0_severity_only,San Antonio,0.009206184937,0.011863873158092559
+Austin,478,decision_criticality_score,E1_top_tail_structure,Austin,0.006907263692,0.009205346736675278
+Austin,479,decision_criticality_score,E1_top_tail_structure,Austin,0.008301228557,0.009135579913332534
+Austin,480,decision_criticality_score,E1_top_tail_structure,Austin,0.007997890891,0.009083123533487355
+Austin,481,decision_criticality_score,E1_top_tail_structure,Austin,0.008887576856,0.008709024449399864
+Austin,482,decision_criticality_score,E1_top_tail_structure,Austin,0.007065261453,0.009238759406661691
+Austin,483,decision_criticality_score,E1_top_tail_structure,Austin,0.006975505725,0.009272318220905955
+Austin,484,decision_criticality_score,E1_top_tail_structure,Austin,0.008395102776,0.00915400468453041
+Austin,485,decision_criticality_score,E1_top_tail_structure,Austin,0.01173630535,0.010065206271825578
+Austin,486,decision_criticality_score,E1_top_tail_structure,Austin,0.009201301427,0.009958249829481526
+Austin,487,decision_criticality_score,E1_top_tail_structure,Austin,0.007075298524,0.009094044586509588
+Austin,488,decision_criticality_score,E1_top_tail_structure,Austin,0.007431247723,0.00929700440872663
+Austin,489,decision_criticality_score,E1_top_tail_structure,Austin,0.008157597314,0.008198670023610603
+Austin,490,decision_criticality_score,E1_top_tail_structure,Austin,0.01107102862,0.009404249793247806
+Austin,491,decision_criticality_score,E1_top_tail_structure,Austin,0.009194291116,0.007838922346902208
+Austin,492,decision_criticality_score,E1_top_tail_structure,Austin,0.007593569999,0.009051994288933505
+Chicago,145,decision_criticality_score,E1_top_tail_structure,Chicago,0.0093301288,0.011032516329083985
+Chicago,146,decision_criticality_score,E1_top_tail_structure,Chicago,0.01045197211,0.010521667030826647
+Chicago,147,decision_criticality_score,E1_top_tail_structure,Chicago,0.01043829686,0.010511585289423935
+Chicago,149,decision_criticality_score,E1_top_tail_structure,Chicago,0.01215937493,0.010177737226840861
+Chicago,150,decision_criticality_score,E1_top_tail_structure,Chicago,0.01036837837,0.010804210614420004
+Chicago,152,decision_criticality_score,E1_top_tail_structure,Chicago,0.02116409507,0.01316442765211666
+Chicago,153,decision_criticality_score,E1_top_tail_structure,Chicago,0.01143046856,0.010956892281413142
+Chicago,154,decision_criticality_score,E1_top_tail_structure,Chicago,0.01709188982,0.01121812303874095
+Chicago,155,decision_criticality_score,E1_top_tail_structure,Chicago,0.009526989395,0.01103007880571543
+Chicago,156,decision_criticality_score,E1_top_tail_structure,Chicago,0.00999887907,0.010922186772152235
+Chicago,157,decision_criticality_score,E1_top_tail_structure,Chicago,0.01063606192,0.010823063515730452
+Chicago,158,decision_criticality_score,E1_top_tail_structure,Chicago,0.009888094314,0.010910111631733473
+Chicago,159,decision_criticality_score,E1_top_tail_structure,Chicago,0.01122197306,0.011113083519549514
+Dallas,55,decision_criticality_score,E1_top_tail_structure,Dallas,0.003755167506,0.006628206991124171
+Dallas,56,decision_criticality_score,E1_top_tail_structure,Dallas,0.004970851899,0.006634579144559297
+Dallas,57,decision_criticality_score,E1_top_tail_structure,Dallas,0.003648929301,0.006628206991124171
+Dallas,58,decision_criticality_score,E1_top_tail_structure,Dallas,0.005482867238,0.0066352529747378585
+Dallas,59,decision_criticality_score,E1_top_tail_structure,Dallas,0.003845883828,0.006628206991124171
+Dallas,60,decision_criticality_score,E1_top_tail_structure,Dallas,0.004238517995,0.006628206991124171
+Dallas,61,decision_criticality_score,E1_top_tail_structure,Dallas,0.003507890684,0.006628206991124171
+Dallas,62,decision_criticality_score,E1_top_tail_structure,Dallas,0.005214524452,0.006635659437724519
+Dallas,63,decision_criticality_score,E1_top_tail_structure,Dallas,0.004332614517,0.006628206991124171
+Dallas,64,decision_criticality_score,E1_top_tail_structure,Dallas,0.003212408198,0.006628206991124171
+Houston,52,decision_criticality_score,E1_top_tail_structure,Houston,0.007204526209,0.00783021316336693
+Houston,60,decision_criticality_score,E1_top_tail_structure,Houston,0.006194226188,0.007660578984644516
+Houston,61,decision_criticality_score,E1_top_tail_structure,Houston,0.007842874089,0.007925745518512342
+Houston,62,decision_criticality_score,E1_top_tail_structure,Houston,0.007779178095,0.007722627003704268
+New York,98,decision_criticality_score,E1_top_tail_structure,New York,0.03560625421,0.020508516227494493
+New York,99,decision_criticality_score,E1_top_tail_structure,New York,0.01433302948,0.014126367270647752
+New York,100,decision_criticality_score,E1_top_tail_structure,New York,0.0177129754,0.015377358974834035
+New York,101,decision_criticality_score,E1_top_tail_structure,New York,0.01146023169,0.012145090685542263
+New York,102,decision_criticality_score,E1_top_tail_structure,New York,0.01001795691,0.012075351615269937
+New York,103,decision_criticality_score,E1_top_tail_structure,New York,0.01217810177,0.01214559870476646
+New York,104,decision_criticality_score,E1_top_tail_structure,New York,0.01331791903,0.012317233213119935
+New York,105,decision_criticality_score,E1_top_tail_structure,New York,0.00884401282,0.012123618007633268
+New York,106,decision_criticality_score,E1_top_tail_structure,New York,0.01320802525,0.012783903205039061
+New York,107,decision_criticality_score,E1_top_tail_structure,New York,0.01201082115,0.01221965738332453
+New York,108,decision_criticality_score,E1_top_tail_structure,New York,0.01379337817,0.012327631641976316
+New York,109,decision_criticality_score,E1_top_tail_structure,New York,0.01323738314,0.01225454941763378
+New York,110,decision_criticality_score,E1_top_tail_structure,New York,0.01025359422,0.012064573319982315
+New York,111,decision_criticality_score,E1_top_tail_structure,New York,0.01045264771,0.012178134412211473
+New York,112,decision_criticality_score,E1_top_tail_structure,New York,0.01179314156,0.011532546616959292
+New York,113,decision_criticality_score,E1_top_tail_structure,New York,0.01056401898,0.011489580471311584
+New York,115,decision_criticality_score,E1_top_tail_structure,New York,0.01727254137,0.015282795324723385
+New York,116,decision_criticality_score,E1_top_tail_structure,New York,0.01333610387,0.011563209872328086
+New York,117,decision_criticality_score,E1_top_tail_structure,New York,0.01103904373,0.011227503795509443
+New York,119,decision_criticality_score,E1_top_tail_structure,New York,0.02600489068,0.02817694506389233
+New York,120,decision_criticality_score,E1_top_tail_structure,New York,0.01224014226,0.012838333902400353
+New York,121,decision_criticality_score,E1_top_tail_structure,New York,0.01108346039,0.01217042003003049
+New York,122,decision_criticality_score,E1_top_tail_structure,New York,0.009720397386,0.012074524177062979
+New York,123,decision_criticality_score,E1_top_tail_structure,New York,0.01043312053,0.012062911995657856
+Philadelphia,640,decision_criticality_score,E1_top_tail_structure,Philadelphia,0.01107967564,0.008325383898351064
+Philadelphia,641,decision_criticality_score,E1_top_tail_structure,Philadelphia,0.01248571581,0.007919701383021855
+Philadelphia,642,decision_criticality_score,E1_top_tail_structure,Philadelphia,0.01319013938,0.007826256261061208
+Philadelphia,643,decision_criticality_score,E1_top_tail_structure,Philadelphia,0.01143861863,0.008332033822764028
+Philadelphia,644,decision_criticality_score,E1_top_tail_structure,Philadelphia,0.009947495959,0.009629738739845947
+Philadelphia,645,decision_criticality_score,E1_top_tail_structure,Philadelphia,0.009023838818,0.010277624600411204
+Philadelphia,646,decision_criticality_score,E1_top_tail_structure,Philadelphia,0.01165946193,0.008063557001385589
+Philadelphia,647,decision_criticality_score,E1_top_tail_structure,Philadelphia,0.01237975842,0.007733162743434667
+Philadelphia,648,decision_criticality_score,E1_top_tail_structure,Philadelphia,0.01137382076,0.009324696520825793
+Philadelphia,649,decision_criticality_score,E1_top_tail_structure,Philadelphia,0.009688416576,0.009358242125380332
+Philadelphia,650,decision_criticality_score,E1_top_tail_structure,Philadelphia,0.01161083493,0.008539008220886263
+Philadelphia,651,decision_criticality_score,E1_top_tail_structure,Philadelphia,0.01066331426,0.009262995259390092
+Philadelphia,652,decision_criticality_score,E1_top_tail_structure,Philadelphia,0.009468044526,0.009580605362919603
+Philadelphia,653,decision_criticality_score,E1_top_tail_structure,Philadelphia,0.01014604049,0.009971196763422467
+Philadelphia,654,decision_criticality_score,E1_top_tail_structure,Philadelphia,0.01306996992,0.010449376079161656
+Philadelphia,655,decision_criticality_score,E1_top_tail_structure,Philadelphia,0.009724847786,0.00983062065473857
+Philadelphia,656,decision_criticality_score,E1_top_tail_structure,Philadelphia,0.009471317502,0.009698512891486549
+Philadelphia,657,decision_criticality_score,E1_top_tail_structure,Philadelphia,0.009112949291,0.009856714100232032
+Philadelphia,658,decision_criticality_score,E1_top_tail_structure,Philadelphia,0.02320796907,0.032877433700024085
+Philadelphia,659,decision_criticality_score,E1_top_tail_structure,Philadelphia,0.01042816986,0.009055150367668569
+San Antonio,491,decision_criticality_score,E1_top_tail_structure,San Antonio,0.007948430021,0.009575877348651039
+San Antonio,492,decision_criticality_score,E1_top_tail_structure,San Antonio,0.007836239284,0.00985260690469848
+San Antonio,493,decision_criticality_score,E1_top_tail_structure,San Antonio,0.008459698594,0.009848300490426929
+San Antonio,494,decision_criticality_score,E1_top_tail_structure,San Antonio,0.008175412251,0.009379616738261405
+San Antonio,495,decision_criticality_score,E1_top_tail_structure,San Antonio,0.008551512284,0.00868145586519615
+San Antonio,496,decision_criticality_score,E1_top_tail_structure,San Antonio,0.00845683085,0.008999505431919321
+San Antonio,497,decision_criticality_score,E1_top_tail_structure,San Antonio,0.008861451313,0.009470743692055392
+San Antonio,498,decision_criticality_score,E1_top_tail_structure,San Antonio,0.008403165436,0.009584803832925945
+San Antonio,499,decision_criticality_score,E1_top_tail_structure,San Antonio,0.009010672946,0.008032954256933728
+San Antonio,500,decision_criticality_score,E1_top_tail_structure,San Antonio,0.01050321659,0.014823410572861361
+San Antonio,501,decision_criticality_score,E1_top_tail_structure,San Antonio,0.007825134659,0.011941641846034658
+San Antonio,502,decision_criticality_score,E1_top_tail_structure,San Antonio,0.007892695683,0.00976977707098435
+San Antonio,503,decision_criticality_score,E1_top_tail_structure,San Antonio,0.008513165612,0.00891264958174322
+San Antonio,504,decision_criticality_score,E1_top_tail_structure,San Antonio,0.008158860126,0.009315790216858992
+San Antonio,505,decision_criticality_score,E1_top_tail_structure,San Antonio,0.009453088635,0.009360095154111082
+San Antonio,506,decision_criticality_score,E1_top_tail_structure,San Antonio,0.009838349952,0.007450251556463497
+San Antonio,507,decision_criticality_score,E1_top_tail_structure,San Antonio,0.009094010224,0.009041428519176626
+San Antonio,508,decision_criticality_score,E1_top_tail_structure,San Antonio,0.00873440627,0.009058327165533729
+San Antonio,509,decision_criticality_score,E1_top_tail_structure,San Antonio,0.009206184937,0.008900746077784934
+Austin,478,decision_criticality_score,E2_severity_plus_top_tail,Austin,0.006907263692,0.008879222912513005
+Austin,479,decision_criticality_score,E2_severity_plus_top_tail,Austin,0.008301228557,0.009044765126481072
+Austin,480,decision_criticality_score,E2_severity_plus_top_tail,Austin,0.007997890891,0.009368254929430098
+Austin,481,decision_criticality_score,E2_severity_plus_top_tail,Austin,0.008887576856,0.009590686051739057
+Austin,482,decision_criticality_score,E2_severity_plus_top_tail,Austin,0.007065261453,0.008374193433664233
+Austin,483,decision_criticality_score,E2_severity_plus_top_tail,Austin,0.006975505725,0.0093843032774567
+Austin,484,decision_criticality_score,E2_severity_plus_top_tail,Austin,0.008395102776,0.009452688775281885
+Austin,485,decision_criticality_score,E2_severity_plus_top_tail,Austin,0.01173630535,0.00975590911055654
+Austin,486,decision_criticality_score,E2_severity_plus_top_tail,Austin,0.009201301427,0.009533351835232172
+Austin,487,decision_criticality_score,E2_severity_plus_top_tail,Austin,0.007075298524,0.008525741719250158
+Austin,488,decision_criticality_score,E2_severity_plus_top_tail,Austin,0.007431247723,0.009609977365224981
+Austin,489,decision_criticality_score,E2_severity_plus_top_tail,Austin,0.008157597314,0.009246526462239557
+Austin,490,decision_criticality_score,E2_severity_plus_top_tail,Austin,0.01107102862,0.009903227621694322
+Austin,491,decision_criticality_score,E2_severity_plus_top_tail,Austin,0.009194291116,0.009031702203213665
+Austin,492,decision_criticality_score,E2_severity_plus_top_tail,Austin,0.007593569999,0.009259850401749346
+Chicago,145,decision_criticality_score,E2_severity_plus_top_tail,Chicago,0.0093301288,0.010741407827139282
+Chicago,146,decision_criticality_score,E2_severity_plus_top_tail,Chicago,0.01045197211,0.011601228734882696
+Chicago,147,decision_criticality_score,E2_severity_plus_top_tail,Chicago,0.01043829686,0.011612564712431822
+Chicago,149,decision_criticality_score,E2_severity_plus_top_tail,Chicago,0.01215937493,0.011502604363491922
+Chicago,150,decision_criticality_score,E2_severity_plus_top_tail,Chicago,0.01036837837,0.011482393864009142
+Chicago,152,decision_criticality_score,E2_severity_plus_top_tail,Chicago,0.02116409507,0.013004831227222435
+Chicago,153,decision_criticality_score,E2_severity_plus_top_tail,Chicago,0.01143046856,0.009310153748647536
+Chicago,154,decision_criticality_score,E2_severity_plus_top_tail,Chicago,0.01709188982,0.012123466058617327
+Chicago,155,decision_criticality_score,E2_severity_plus_top_tail,Chicago,0.009526989395,0.011113034321725643
+Chicago,156,decision_criticality_score,E2_severity_plus_top_tail,Chicago,0.00999887907,0.01156627164536967
+Chicago,157,decision_criticality_score,E2_severity_plus_top_tail,Chicago,0.01063606192,0.01032194636198716
+Chicago,158,decision_criticality_score,E2_severity_plus_top_tail,Chicago,0.009888094314,0.010374745963103577
+Chicago,159,decision_criticality_score,E2_severity_plus_top_tail,Chicago,0.01122197306,0.011296891152524864
+Dallas,55,decision_criticality_score,E2_severity_plus_top_tail,Dallas,0.003755167506,0.004949353722581744
+Dallas,56,decision_criticality_score,E2_severity_plus_top_tail,Dallas,0.004970851899,0.0049994584942646796
+Dallas,57,decision_criticality_score,E2_severity_plus_top_tail,Dallas,0.003648929301,0.005074417591258183
+Dallas,58,decision_criticality_score,E2_severity_plus_top_tail,Dallas,0.005482867238,0.005448774486614794
+Dallas,59,decision_criticality_score,E2_severity_plus_top_tail,Dallas,0.003845883828,0.0033420391961471235
+Dallas,60,decision_criticality_score,E2_severity_plus_top_tail,Dallas,0.004238517995,0.004235951090180459
+Dallas,61,decision_criticality_score,E2_severity_plus_top_tail,Dallas,0.003507890684,0.003974185212772401
+Dallas,62,decision_criticality_score,E2_severity_plus_top_tail,Dallas,0.005214524452,0.006448192858743729
+Dallas,63,decision_criticality_score,E2_severity_plus_top_tail,Dallas,0.004332614517,0.006120569252790653
+Dallas,64,decision_criticality_score,E2_severity_plus_top_tail,Dallas,0.003212408198,0.0045540900775609345
+Houston,52,decision_criticality_score,E2_severity_plus_top_tail,Houston,0.007204526209,0.008434193373901028
+Houston,60,decision_criticality_score,E2_severity_plus_top_tail,Houston,0.006194226188,0.006042823572338872
+Houston,61,decision_criticality_score,E2_severity_plus_top_tail,Houston,0.007842874089,0.007413956600057889
+Houston,62,decision_criticality_score,E2_severity_plus_top_tail,Houston,0.007779178095,0.006909053104347719
+New York,98,decision_criticality_score,E2_severity_plus_top_tail,New York,0.03560625421,0.01922529243671733
+New York,99,decision_criticality_score,E2_severity_plus_top_tail,New York,0.01433302948,0.014440708613305436
+New York,100,decision_criticality_score,E2_severity_plus_top_tail,New York,0.0177129754,0.015046651531038928
+New York,101,decision_criticality_score,E2_severity_plus_top_tail,New York,0.01146023169,0.012505715080062105
+New York,102,decision_criticality_score,E2_severity_plus_top_tail,New York,0.01001795691,0.010498619542824
+New York,103,decision_criticality_score,E2_severity_plus_top_tail,New York,0.01217810177,0.010445239664823672
+New York,104,decision_criticality_score,E2_severity_plus_top_tail,New York,0.01331791903,0.010192454420988026
+New York,105,decision_criticality_score,E2_severity_plus_top_tail,New York,0.00884401282,0.011457321985722007
+New York,106,decision_criticality_score,E2_severity_plus_top_tail,New York,0.01320802525,0.013512916047915683
+New York,107,decision_criticality_score,E2_severity_plus_top_tail,New York,0.01201082115,0.011623345321319103
+New York,108,decision_criticality_score,E2_severity_plus_top_tail,New York,0.01379337817,0.011947446138628385
+New York,109,decision_criticality_score,E2_severity_plus_top_tail,New York,0.01323738314,0.008355094518804678
+New York,110,decision_criticality_score,E2_severity_plus_top_tail,New York,0.01025359422,0.008302732844486536
+New York,111,decision_criticality_score,E2_severity_plus_top_tail,New York,0.01045264771,0.013118346185200929
+New York,112,decision_criticality_score,E2_severity_plus_top_tail,New York,0.01179314156,0.012888889297907503
+New York,113,decision_criticality_score,E2_severity_plus_top_tail,New York,0.01056401898,0.01283623743415193
+New York,115,decision_criticality_score,E2_severity_plus_top_tail,New York,0.01727254137,0.015728254057535494
+New York,116,decision_criticality_score,E2_severity_plus_top_tail,New York,0.01333610387,0.013177440681577555
+New York,117,decision_criticality_score,E2_severity_plus_top_tail,New York,0.01103904373,0.012907944634374089
+New York,119,decision_criticality_score,E2_severity_plus_top_tail,New York,0.02600489068,0.02678897715516221
+New York,120,decision_criticality_score,E2_severity_plus_top_tail,New York,0.01224014226,0.013759273261329434
+New York,121,decision_criticality_score,E2_severity_plus_top_tail,New York,0.01108346039,0.00997369089748167
+New York,122,decision_criticality_score,E2_severity_plus_top_tail,New York,0.009720397386,0.010759393254002705
+New York,123,decision_criticality_score,E2_severity_plus_top_tail,New York,0.01043312053,0.012120043813500266
+Philadelphia,640,decision_criticality_score,E2_severity_plus_top_tail,Philadelphia,0.01107967564,0.009102821935217999
+Philadelphia,641,decision_criticality_score,E2_severity_plus_top_tail,Philadelphia,0.01248571581,0.008748940585723078
+Philadelphia,642,decision_criticality_score,E2_severity_plus_top_tail,Philadelphia,0.01319013938,0.008671177160711599
+Philadelphia,643,decision_criticality_score,E2_severity_plus_top_tail,Philadelphia,0.01143861863,0.008756054868701672
+Philadelphia,644,decision_criticality_score,E2_severity_plus_top_tail,Philadelphia,0.009947495959,0.009268453506435128
+Philadelphia,645,decision_criticality_score,E2_severity_plus_top_tail,Philadelphia,0.009023838818,0.01000366066378791
+Philadelphia,646,decision_criticality_score,E2_severity_plus_top_tail,Philadelphia,0.01165946193,0.008732375550070408
+Philadelphia,647,decision_criticality_score,E2_severity_plus_top_tail,Philadelphia,0.01237975842,0.008559650219372673
+Philadelphia,648,decision_criticality_score,E2_severity_plus_top_tail,Philadelphia,0.01137382076,0.009506980390063417
+Philadelphia,649,decision_criticality_score,E2_severity_plus_top_tail,Philadelphia,0.009688416576,0.00949503345853812
+Philadelphia,650,decision_criticality_score,E2_severity_plus_top_tail,Philadelphia,0.01161083493,0.009244913312027854
+Philadelphia,651,decision_criticality_score,E2_severity_plus_top_tail,Philadelphia,0.01066331426,0.009740882710400496
+Philadelphia,652,decision_criticality_score,E2_severity_plus_top_tail,Philadelphia,0.009468044526,0.00994942115321064
+Philadelphia,653,decision_criticality_score,E2_severity_plus_top_tail,Philadelphia,0.01014604049,0.010652274916588822
+Philadelphia,654,decision_criticality_score,E2_severity_plus_top_tail,Philadelphia,0.01306996992,0.010727118229091146
+Philadelphia,655,decision_criticality_score,E2_severity_plus_top_tail,Philadelphia,0.009724847786,0.01004469487457268
+Philadelphia,656,decision_criticality_score,E2_severity_plus_top_tail,Philadelphia,0.009471317502,0.009365034744198572
+Philadelphia,657,decision_criticality_score,E2_severity_plus_top_tail,Philadelphia,0.009112949291,0.010070308977362701
+Philadelphia,658,decision_criticality_score,E2_severity_plus_top_tail,Philadelphia,0.02320796907,0.03221658151573219
+Philadelphia,659,decision_criticality_score,E2_severity_plus_top_tail,Philadelphia,0.01042816986,0.009543588229377164
+San Antonio,491,decision_criticality_score,E2_severity_plus_top_tail,San Antonio,0.007948430021,0.009570486441339841
+San Antonio,492,decision_criticality_score,E2_severity_plus_top_tail,San Antonio,0.007836239284,0.009993215597581317
+San Antonio,493,decision_criticality_score,E2_severity_plus_top_tail,San Antonio,0.008459698594,0.010258315673523099
+San Antonio,494,decision_criticality_score,E2_severity_plus_top_tail,San Antonio,0.008175412251,0.009723888061341331
+San Antonio,495,decision_criticality_score,E2_severity_plus_top_tail,San Antonio,0.008551512284,0.009462465021620433
+San Antonio,496,decision_criticality_score,E2_severity_plus_top_tail,San Antonio,0.00845683085,0.009366108227978714
+San Antonio,497,decision_criticality_score,E2_severity_plus_top_tail,San Antonio,0.008861451313,0.009594500803702156
+San Antonio,498,decision_criticality_score,E2_severity_plus_top_tail,San Antonio,0.008403165436,0.010132319999741296
+San Antonio,499,decision_criticality_score,E2_severity_plus_top_tail,San Antonio,0.009010672946,0.008962882560799057
+San Antonio,500,decision_criticality_score,E2_severity_plus_top_tail,San Antonio,0.01050321659,0.014114032950388298
+San Antonio,501,decision_criticality_score,E2_severity_plus_top_tail,San Antonio,0.007825134659,0.011543026522264774
+San Antonio,502,decision_criticality_score,E2_severity_plus_top_tail,San Antonio,0.007892695683,0.009208809799052201
+San Antonio,503,decision_criticality_score,E2_severity_plus_top_tail,San Antonio,0.008513165612,0.00962850261551632
+San Antonio,504,decision_criticality_score,E2_severity_plus_top_tail,San Antonio,0.008158860126,0.009789266391142866
+San Antonio,505,decision_criticality_score,E2_severity_plus_top_tail,San Antonio,0.009453088635,0.009994381321316335
+San Antonio,506,decision_criticality_score,E2_severity_plus_top_tail,San Antonio,0.009838349952,0.008787238114640317
+San Antonio,507,decision_criticality_score,E2_severity_plus_top_tail,San Antonio,0.009094010224,0.009084594708930466
+San Antonio,508,decision_criticality_score,E2_severity_plus_top_tail,San Antonio,0.00873440627,0.008627051058734457
+San Antonio,509,decision_criticality_score,E2_severity_plus_top_tail,San Antonio,0.009206184937,0.009685841114357345
+Austin,478,recoverable_fraction,E0_severity_only,Austin,0.1077933755,0.13919843760201764
+Austin,479,recoverable_fraction,E0_severity_only,Austin,0.1295473124,0.13915794096051146
+Austin,480,recoverable_fraction,E0_severity_only,Austin,0.1248134854,0.14215379760869626
+Austin,481,recoverable_fraction,E0_severity_only,Austin,0.1386977466,0.15027798454211938
+Austin,482,recoverable_fraction,E0_severity_only,Austin,0.110259057,0.13814162548673897
+Austin,483,recoverable_fraction,E0_severity_only,Austin,0.108858347,0.14684297475468838
+Austin,484,recoverable_fraction,E0_severity_only,Austin,0.1310122947,0.1439545551790862
+Austin,485,recoverable_fraction,E0_severity_only,Austin,0.1831544337,0.14764621980459913
+Austin,486,recoverable_fraction,E0_severity_only,Austin,0.1435936695,0.13720500120100332
+Austin,487,recoverable_fraction,E0_severity_only,Austin,0.1104156935,0.12874466970289689
+Austin,488,recoverable_fraction,E0_severity_only,Austin,0.1159705655,0.14853075643234542
+Austin,489,recoverable_fraction,E0_severity_only,Austin,0.1273058319,0.15012054645152922
+Austin,490,recoverable_fraction,E0_severity_only,Austin,0.172772258,0.14952743134684188
+Austin,491,recoverable_fraction,E0_severity_only,Austin,0.143484268,0.15335783661385793
+Austin,492,recoverable_fraction,E0_severity_only,Austin,0.1185037345,0.14039275166762216
+Chicago,145,recoverable_fraction,E0_severity_only,Chicago,0.1181618565,0.13109594734155094
+Chicago,146,recoverable_fraction,E0_severity_only,Chicago,0.132369494,0.14735063330736128
+Chicago,147,recoverable_fraction,E0_severity_only,Chicago,0.1321963032,0.1472930866557725
+Chicago,149,recoverable_fraction,E0_severity_only,Chicago,0.1539929777,0.15009921650921498
+Chicago,150,recoverable_fraction,E0_severity_only,Chicago,0.1313108172,0.14394341040056857
+Chicago,152,recoverable_fraction,E0_severity_only,Chicago,0.2680336809,0.1505300370730415
+Chicago,153,recoverable_fraction,E0_severity_only,Chicago,0.1447617086,0.10342065116484668
+Chicago,154,recoverable_fraction,E0_severity_only,Chicago,0.2164610453,0.1512791849176155
+Chicago,155,recoverable_fraction,E0_severity_only,Chicago,0.1206550068,0.13636715405507352
+Chicago,156,recoverable_fraction,E0_severity_only,Chicago,0.1266312759,0.14222795811845768
+Chicago,157,recoverable_fraction,E0_severity_only,Chicago,0.1347009082,0.12143813203182946
+Chicago,158,recoverable_fraction,E0_severity_only,Chicago,0.1252282371,0.12329316719112522
+Chicago,159,recoverable_fraction,E0_severity_only,Chicago,0.1421212074,0.13742238871296308
+Dallas,55,recoverable_fraction,E0_severity_only,Dallas,0.06413741853,0.1110135424264393
+Dallas,56,recoverable_fraction,E0_severity_only,Dallas,0.08490103523,0.12180347462391843
+Dallas,57,recoverable_fraction,E0_severity_only,Dallas,0.06232289383,0.11309976072879538
+Dallas,58,recoverable_fraction,E0_severity_only,Dallas,0.09364614235,0.12275246185447113
+Dallas,59,recoverable_fraction,E0_severity_only,Dallas,0.06568683295,0.09410803872039747
+Dallas,60,recoverable_fraction,E0_severity_only,Dallas,0.07239293644,0.11189805071824165
+Dallas,61,recoverable_fraction,E0_severity_only,Dallas,0.05991398588,0.10460117327510124
+Dallas,62,recoverable_fraction,E0_severity_only,Dallas,0.08906290776,0.13967177894975924
+Dallas,63,recoverable_fraction,E0_severity_only,Dallas,0.07400008392,0.12783626843974394
+Dallas,64,recoverable_fraction,E0_severity_only,Dallas,0.05486721131,0.11293452450928049
+Houston,52,recoverable_fraction,E0_severity_only,Houston,0.1091826237,0.14212025437215356
+Houston,60,recoverable_fraction,E0_severity_only,Houston,0.09387180327,0.10270337936299204
+Houston,61,recoverable_fraction,E0_severity_only,Houston,0.1188566112,0.11080955845662419
+Houston,62,recoverable_fraction,E0_severity_only,Houston,0.1178913158,0.10698878093735163
+New York,98,recoverable_fraction,E0_severity_only,New York,0.2564749584,0.15755460133502952
+New York,99,recoverable_fraction,E0_severity_only,New York,0.1476755773,0.1452247165885193
+New York,100,recoverable_fraction,E0_severity_only,New York,0.169567208,0.14822770215790698
+New York,101,recoverable_fraction,E0_severity_only,New York,0.1280051421,0.134889616571294
+New York,102,recoverable_fraction,E0_severity_only,New York,0.1118956433,0.10885344660243994
+New York,103,recoverable_fraction,E0_severity_only,New York,0.1360233972,0.10248824778113505
+New York,104,recoverable_fraction,E0_severity_only,New York,0.1487545945,0.07957475338505832
+New York,105,recoverable_fraction,E0_severity_only,New York,0.09878326619,0.11590343691107245
+New York,106,recoverable_fraction,E0_severity_only,New York,0.1475271351,0.142478544201991
+New York,107,recoverable_fraction,E0_severity_only,New York,0.1341549552,0.09730022383505396
+New York,108,recoverable_fraction,E0_severity_only,New York,0.1540652389,0.11165151709726526
+New York,109,recoverable_fraction,E0_severity_only,New York,0.1478550483,0.05465167520727821
+New York,110,recoverable_fraction,E0_severity_only,New York,0.114527596,0.061532303385258766
+New York,111,recoverable_fraction,E0_severity_only,New York,0.1167509254,0.10618593098706927
+New York,112,recoverable_fraction,E0_severity_only,New York,0.1317235814,0.14975025417036703
+New York,113,recoverable_fraction,E0_severity_only,New York,0.1179948876,0.1483076558298049
+New York,115,recoverable_fraction,E0_severity_only,New York,0.1517437935,0.15576791305427695
+New York,116,recoverable_fraction,E0_severity_only,New York,0.145082664,0.15464611688112248
+New York,117,recoverable_fraction,E0_severity_only,New York,0.1233006801,0.1537884794333688
+New York,119,recoverable_fraction,E0_severity_only,New York,0.1276266689,0.15668191448456872
+New York,120,recoverable_fraction,E0_severity_only,New York,0.1261122136,0.14795776827712515
+New York,121,recoverable_fraction,E0_severity_only,New York,0.1237967923,0.07691107559697209
+New York,122,recoverable_fraction,E0_severity_only,New York,0.10857205,0.09223330389603462
+New York,123,recoverable_fraction,E0_severity_only,New York,0.1165328165,0.11211348712765694
+Philadelphia,640,recoverable_fraction,E0_severity_only,Philadelphia,0.1650111764,0.14747061473657913
+Philadelphia,641,recoverable_fraction,E0_severity_only,Philadelphia,0.1859515315,0.14740190569284814
+Philadelphia,642,recoverable_fraction,E0_severity_only,Philadelphia,0.1964426113,0.1469954765194218
+Philadelphia,643,recoverable_fraction,E0_severity_only,Philadelphia,0.1703569651,0.13944075334006564
+Philadelphia,644,recoverable_fraction,E0_severity_only,Philadelphia,0.1481494643,0.13651831105903947
+Philadelphia,645,recoverable_fraction,E0_severity_only,Philadelphia,0.1343933078,0.14161424419864257
+Philadelphia,646,recoverable_fraction,E0_severity_only,Philadelphia,0.1736460156,0.14348836903319662
+Philadelphia,647,recoverable_fraction,E0_severity_only,Philadelphia,0.1843734931,0.14631363227358463
+Philadelphia,648,recoverable_fraction,E0_severity_only,Philadelphia,0.1693919213,0.13404261010741275
+Philadelphia,649,recoverable_fraction,E0_severity_only,Philadelphia,0.1442909584,0.13448313359340053
+Philadelphia,650,recoverable_fraction,E0_severity_only,Philadelphia,0.1729218069,0.1421396094171574
+Philadelphia,651,recoverable_fraction,E0_severity_only,Philadelphia,0.1588102475,0.137645839008892
+Philadelphia,652,recoverable_fraction,E0_severity_only,Philadelphia,0.1410089263,0.13997429912157938
+Philadelphia,653,recoverable_fraction,E0_severity_only,Philadelphia,0.1511064161,0.14234628204755267
+Philadelphia,654,recoverable_fraction,E0_severity_only,Philadelphia,0.1946529106,0.14290455105678443
+Philadelphia,655,recoverable_fraction,E0_severity_only,Philadelphia,0.1448335335,0.14132750067465963
+Philadelphia,656,recoverable_fraction,E0_severity_only,Philadelphia,0.1410576712,0.1326275395526953
+Philadelphia,657,recoverable_fraction,E0_severity_only,Philadelphia,0.1357204427,0.1438121346141791
+Philadelphia,658,recoverable_fraction,E0_severity_only,Philadelphia,0.126623227,0.1493289430617891
+Philadelphia,659,recoverable_fraction,E0_severity_only,Philadelphia,0.1553082087,0.14307699790707049
+San Antonio,491,recoverable_fraction,E0_severity_only,San Antonio,0.1250674491,0.14914199416547297
+San Antonio,492,recoverable_fraction,E0_severity_only,San Antonio,0.1233021434,0.15265129688358656
+San Antonio,493,recoverable_fraction,E0_severity_only,San Antonio,0.1331121895,0.15140426202760546
+San Antonio,494,recoverable_fraction,E0_severity_only,San Antonio,0.1286389832,0.14759106415146017
+San Antonio,495,recoverable_fraction,E0_severity_only,San Antonio,0.1345568653,0.15451487621693336
+San Antonio,496,recoverable_fraction,E0_severity_only,San Antonio,0.133067066,0.1497669381536877
+San Antonio,497,recoverable_fraction,E0_severity_only,San Antonio,0.1394337131,0.14863583856115847
+San Antonio,498,recoverable_fraction,E0_severity_only,San Antonio,0.1322226481,0.15219737532698924
+San Antonio,499,recoverable_fraction,E0_severity_only,San Antonio,0.1417816949,0.15442240384486194
+San Antonio,500,recoverable_fraction,E0_severity_only,San Antonio,0.165266663,0.15982428319241873
+San Antonio,501,recoverable_fraction,E0_severity_only,San Antonio,0.1231274136,0.15168914148810766
+San Antonio,502,recoverable_fraction,E0_severity_only,San Antonio,0.124190477,0.14323737258759348
+San Antonio,503,recoverable_fraction,E0_severity_only,San Antonio,0.1339534857,0.15316491042858918
+San Antonio,504,recoverable_fraction,E0_severity_only,San Antonio,0.1283785378,0.15142162279338944
+San Antonio,505,recoverable_fraction,E0_severity_only,San Antonio,0.1487430447,0.1491159630273377
+San Antonio,506,recoverable_fraction,E0_severity_only,San Antonio,0.1548050783,0.15745818303050307
+San Antonio,507,recoverable_fraction,E0_severity_only,San Antonio,0.1430929955,0.1421872203359842
+San Antonio,508,recoverable_fraction,E0_severity_only,San Antonio,0.1374346769,0.1384386783571357
+San Antonio,509,recoverable_fraction,E0_severity_only,San Antonio,0.1448580491,0.14804663706666552
+Austin,478,recoverable_fraction,E1_top_tail_structure,Austin,0.1077933755,0.14262884018082783
+Austin,479,recoverable_fraction,E1_top_tail_structure,Austin,0.1295473124,0.14153641406478132
+Austin,480,recoverable_fraction,E1_top_tail_structure,Austin,0.1248134854,0.14071503913970254
+Austin,481,recoverable_fraction,E1_top_tail_structure,Austin,0.1386977466,0.13485730347301522
+Austin,482,recoverable_fraction,E1_top_tail_structure,Austin,0.110259057,0.14315202400303922
+Austin,483,recoverable_fraction,E1_top_tail_structure,Austin,0.108858347,0.1436774961880617
+Austin,484,recoverable_fraction,E1_top_tail_structure,Austin,0.1310122947,0.14182491367354036
+Austin,485,recoverable_fraction,E1_top_tail_structure,Austin,0.1831544337,0.15609273272062651
+Austin,486,recoverable_fraction,E1_top_tail_structure,Austin,0.1435936695,0.15441798238374996
+Austin,487,recoverable_fraction,E1_top_tail_structure,Austin,0.1104156935,0.14088604367974883
+Austin,488,recoverable_fraction,E1_top_tail_structure,Austin,0.1159705655,0.1440640386016162
+Austin,489,recoverable_fraction,E1_top_tail_structure,Austin,0.1273058319,0.1268660480817074
+Austin,490,recoverable_fraction,E1_top_tail_structure,Austin,0.172772258,0.1457433132663207
+Austin,491,recoverable_fraction,E1_top_tail_structure,Austin,0.143484268,0.12123303028910083
+Austin,492,recoverable_fraction,E1_top_tail_structure,Austin,0.1185037345,0.1402276097557336
+Chicago,145,recoverable_fraction,E1_top_tail_structure,Chicago,0.1181618565,0.13668434261414597
+Chicago,146,recoverable_fraction,E1_top_tail_structure,Chicago,0.132369494,0.12730136383579757
+Chicago,147,recoverable_fraction,E1_top_tail_structure,Chicago,0.1321963032,0.12711618835263036
+Chicago,149,recoverable_fraction,E1_top_tail_structure,Chicago,0.1539929777,0.12098426393363719
+Chicago,150,recoverable_fraction,E1_top_tail_structure,Chicago,0.1313108172,0.13249095782733028
+Chicago,152,recoverable_fraction,E1_top_tail_structure,Chicago,0.2680336809,0.17584203309072058
+Chicago,153,recoverable_fraction,E1_top_tail_structure,Chicago,0.1447617086,0.13529532468488792
+Chicago,154,recoverable_fraction,E1_top_tail_structure,Chicago,0.2164610453,0.14009345724691788
+Chicago,155,recoverable_fraction,E1_top_tail_structure,Chicago,0.1206550068,0.1366395716217674
+Chicago,156,recoverable_fraction,E1_top_tail_structure,Chicago,0.1266312759,0.1346578743487561
+Chicago,157,recoverable_fraction,E1_top_tail_structure,Chicago,0.1347009082,0.13283723680531787
+Chicago,158,recoverable_fraction,E1_top_tail_structure,Chicago,0.1252282371,0.1344360852875176
+Chicago,159,recoverable_fraction,E1_top_tail_structure,Chicago,0.1421212074,0.13816415327640588
+Dallas,55,recoverable_fraction,E1_top_tail_structure,Dallas,0.06413741853,0.12745360680784612
+Dallas,56,recoverable_fraction,E1_top_tail_structure,Dallas,0.08490103523,0.12752828981733427
+Dallas,57,recoverable_fraction,E1_top_tail_structure,Dallas,0.06232289383,0.12745360680784612
+Dallas,58,recoverable_fraction,E1_top_tail_structure,Dallas,0.09364614235,0.12753618725202903
+Dallas,59,recoverable_fraction,E1_top_tail_structure,Dallas,0.06568683295,0.12745360680784612
+Dallas,60,recoverable_fraction,E1_top_tail_structure,Dallas,0.07239293644,0.12745360680784612
+Dallas,61,recoverable_fraction,E1_top_tail_structure,Dallas,0.05991398588,0.12745360680784612
+Dallas,62,recoverable_fraction,E1_top_tail_structure,Dallas,0.08906290776,0.1275409510856998
+Dallas,63,recoverable_fraction,E1_top_tail_structure,Dallas,0.07400008392,0.12745360680784612
+Dallas,64,recoverable_fraction,E1_top_tail_structure,Dallas,0.05486721131,0.12745360680784612
+Houston,52,recoverable_fraction,E1_top_tail_structure,Houston,0.1091826237,0.12241945817250174
+Houston,60,recoverable_fraction,E1_top_tail_structure,Houston,0.09387180327,0.11975254361028408
+Houston,61,recoverable_fraction,E1_top_tail_structure,Houston,0.1188566112,0.12392137618819342
+Houston,62,recoverable_fraction,E1_top_tail_structure,Houston,0.1178913158,0.12072803550014664
+New York,98,recoverable_fraction,E1_top_tail_structure,New York,0.2564749584,0.16546869267812053
+New York,99,recoverable_fraction,E1_top_tail_structure,New York,0.1476755773,0.14618849256781477
+New York,100,recoverable_fraction,E1_top_tail_structure,New York,0.169567208,0.15027168667039287
+New York,101,recoverable_fraction,E1_top_tail_structure,New York,0.1280051421,0.13132458485540813
+New York,102,recoverable_fraction,E1_top_tail_structure,New York,0.1118956433,0.13022976855340593
+New York,103,recoverable_fraction,E1_top_tail_structure,New York,0.1360233972,0.1313325601227326
+New York,104,recoverable_fraction,E1_top_tail_structure,New York,0.1487545945,0.13402700753933486
+New York,105,recoverable_fraction,E1_top_tail_structure,New York,0.09878326619,0.13098749063074167
+New York,106,recoverable_fraction,E1_top_tail_structure,New York,0.1475271351,0.1413531435605521
+New York,107,recoverable_fraction,E1_top_tail_structure,New York,0.1341549552,0.1324951888798052
+New York,108,recoverable_fraction,E1_top_tail_structure,New York,0.1540652389,0.1341902498851637
+New York,109,recoverable_fraction,E1_top_tail_structure,New York,0.1478550483,0.1330429502397232
+New York,110,recoverable_fraction,E1_top_tail_structure,New York,0.114527596,0.1300605627790444
+New York,111,recoverable_fraction,E1_top_tail_structure,New York,0.1167509254,0.13184333009383886
+New York,112,recoverable_fraction,E1_top_tail_structure,New York,0.1317235814,0.1217084080213803
+New York,113,recoverable_fraction,E1_top_tail_structure,New York,0.1179948876,0.12103389319768645
+New York,115,recoverable_fraction,E1_top_tail_structure,New York,0.1517437935,0.12988664342748246
+New York,116,recoverable_fraction,E1_top_tail_structure,New York,0.145082664,0.11701671706719964
+New York,117,recoverable_fraction,E1_top_tail_structure,New York,0.1233006801,0.11691961671074302
+New York,119,recoverable_fraction,E1_top_tail_structure,New York,0.1276266689,0.1843898316270239
+New York,120,recoverable_fraction,E1_top_tail_structure,New York,0.1261122136,0.12596797738782367
+New York,121,recoverable_fraction,E1_top_tail_structure,New York,0.1237967923,0.1317222239285482
+New York,122,recoverable_fraction,E1_top_tail_structure,New York,0.10857205,0.13021677880699348
+New York,123,recoverable_fraction,E1_top_tail_structure,New York,0.1165328165,0.13003448206207716
+Philadelphia,640,recoverable_fraction,E1_top_tail_structure,Philadelphia,0.1650111764,0.11730191188130065
+Philadelphia,641,recoverable_fraction,E1_top_tail_structure,Philadelphia,0.1859515315,0.1108451567882209
+Philadelphia,642,recoverable_fraction,E1_top_tail_structure,Philadelphia,0.1964426113,0.10935790445580706
+Philadelphia,643,recoverable_fraction,E1_top_tail_structure,Philadelphia,0.1703569651,0.11740775063870228
+Philadelphia,644,recoverable_fraction,E1_top_tail_structure,Philadelphia,0.1481494643,0.13806174117581937
+Philadelphia,645,recoverable_fraction,E1_top_tail_structure,Philadelphia,0.1343933078,0.14837335228024276
+Philadelphia,646,recoverable_fraction,E1_top_tail_structure,Philadelphia,0.1736460156,0.11313473166867741
+Philadelphia,647,recoverable_fraction,E1_top_tail_structure,Philadelphia,0.1843734931,0.10787624818186067
+Philadelphia,648,recoverable_fraction,E1_top_tail_structure,Philadelphia,0.1693919213,0.1332067552524935
+Philadelphia,649,recoverable_fraction,E1_top_tail_structure,Philadelphia,0.1442909584,0.1337406598327345
+Philadelphia,650,recoverable_fraction,E1_top_tail_structure,Philadelphia,0.1729218069,0.1207019103540363
+Philadelphia,651,recoverable_fraction,E1_top_tail_structure,Philadelphia,0.1588102475,0.1322247313323817
+Philadelphia,652,recoverable_fraction,E1_top_tail_structure,Philadelphia,0.1410089263,0.13727974498490159
+Philadelphia,653,recoverable_fraction,E1_top_tail_structure,Philadelphia,0.1511064161,0.14349631316128325
+Philadelphia,654,recoverable_fraction,E1_top_tail_structure,Philadelphia,0.1946529106,0.15110691163580445
+Philadelphia,655,recoverable_fraction,E1_top_tail_structure,Philadelphia,0.1448335335,0.14125893424695288
+Philadelphia,656,recoverable_fraction,E1_top_tail_structure,Philadelphia,0.1410576712,0.13915633568531488
+Philadelphia,657,recoverable_fraction,E1_top_tail_structure,Philadelphia,0.1357204427,0.14167423187679817
+Philadelphia,658,recoverable_fraction,E1_top_tail_structure,Philadelphia,0.126623227,0.22071198560381644
+Philadelphia,659,recoverable_fraction,E1_top_tail_structure,Philadelphia,0.1553082087,0.12891671702936316
+San Antonio,491,recoverable_fraction,E1_top_tail_structure,San Antonio,0.1250674491,0.14698891276527717
+San Antonio,492,recoverable_fraction,E1_top_tail_structure,San Antonio,0.1233021434,0.15124380917969568
+San Antonio,493,recoverable_fraction,E1_top_tail_structure,San Antonio,0.1331121895,0.15117759526707739
+San Antonio,494,recoverable_fraction,E1_top_tail_structure,San Antonio,0.1286389832,0.14397127858349398
+San Antonio,495,recoverable_fraction,E1_top_tail_structure,San Antonio,0.1345568653,0.1332366023243979
+San Antonio,496,recoverable_fraction,E1_top_tail_structure,San Antonio,0.133067066,0.13812682070362226
+San Antonio,497,recoverable_fraction,E1_top_tail_structure,San Antonio,0.1394337131,0.14537241460413808
+San Antonio,498,recoverable_fraction,E1_top_tail_structure,San Antonio,0.1322226481,0.14712616325083117
+San Antonio,499,recoverable_fraction,E1_top_tail_structure,San Antonio,0.1417816949,0.12326546947125454
+San Antonio,500,recoverable_fraction,E1_top_tail_structure,San Antonio,0.165266663,0.2276731397020154
+San Antonio,501,recoverable_fraction,E1_top_tail_structure,San Antonio,0.1231274136,0.1833640763764619
+San Antonio,502,recoverable_fraction,E1_top_tail_structure,San Antonio,0.124190477,0.1499702467618934
+San Antonio,503,recoverable_fraction,E1_top_tail_structure,San Antonio,0.1339534857,0.13679135567139342
+San Antonio,504,recoverable_fraction,E1_top_tail_structure,San Antonio,0.1283785378,0.14298990441826612
+San Antonio,505,recoverable_fraction,E1_top_tail_structure,San Antonio,0.1487430447,0.14367112156524348
+San Antonio,506,recoverable_fraction,E1_top_tail_structure,San Antonio,0.1548050783,0.1143060375033959
+San Antonio,507,recoverable_fraction,E1_top_tail_structure,San Antonio,0.1430929955,0.13877141536203264
+San Antonio,508,recoverable_fraction,E1_top_tail_structure,San Antonio,0.1374346769,0.1390312430104427
+San Antonio,509,recoverable_fraction,E1_top_tail_structure,San Antonio,0.1448580491,0.1366083315772759
+Austin,478,recoverable_fraction,E2_severity_plus_top_tail,Austin,0.1077933755,0.14068431434604634
+Austin,479,recoverable_fraction,E2_severity_plus_top_tail,Austin,0.1295473124,0.13868126403380068
+Austin,480,recoverable_fraction,E2_severity_plus_top_tail,Austin,0.1248134854,0.14496106093333538
+Austin,481,recoverable_fraction,E2_severity_plus_top_tail,Austin,0.1386977466,0.1496129964158956
+Austin,482,recoverable_fraction,E2_severity_plus_top_tail,Austin,0.110259057,0.1285038161174949
+Austin,483,recoverable_fraction,E2_severity_plus_top_tail,Austin,0.108858347,0.14583345525868097
+Austin,484,recoverable_fraction,E2_severity_plus_top_tail,Austin,0.1310122947,0.14595699632979117
+Austin,485,recoverable_fraction,E2_severity_plus_top_tail,Austin,0.1831544337,0.1508190548762727
+Austin,486,recoverable_fraction,E2_severity_plus_top_tail,Austin,0.1435936695,0.14554233246118567
+Austin,487,recoverable_fraction,E2_severity_plus_top_tail,Austin,0.1104156935,0.13214790023342202
+Austin,488,recoverable_fraction,E2_severity_plus_top_tail,Austin,0.1159705655,0.14875412053453196
+Austin,489,recoverable_fraction,E2_severity_plus_top_tail,Austin,0.1273058319,0.14522260216103966
+Austin,490,recoverable_fraction,E2_severity_plus_top_tail,Austin,0.172772258,0.15339653088110802
+Austin,491,recoverable_fraction,E2_severity_plus_top_tail,Austin,0.143484268,0.14130300468987747
+Austin,492,recoverable_fraction,E2_severity_plus_top_tail,Austin,0.1185037345,0.14326922936381492
+Chicago,145,recoverable_fraction,E2_severity_plus_top_tail,Chicago,0.1181618565,0.13465474021903748
+Chicago,146,recoverable_fraction,E2_severity_plus_top_tail,Chicago,0.132369494,0.14636821565656533
+Chicago,147,recoverable_fraction,E2_severity_plus_top_tail,Chicago,0.1321963032,0.14684386481333986
+Chicago,149,recoverable_fraction,E2_severity_plus_top_tail,Chicago,0.1539929777,0.14364730806453205
+Chicago,150,recoverable_fraction,E2_severity_plus_top_tail,Chicago,0.1313108172,0.14337855779787467
+Chicago,152,recoverable_fraction,E2_severity_plus_top_tail,Chicago,0.2680336809,0.1766610566264909
+Chicago,153,recoverable_fraction,E2_severity_plus_top_tail,Chicago,0.1447617086,0.11130348288885818
+Chicago,154,recoverable_fraction,E2_severity_plus_top_tail,Chicago,0.2164610453,0.15601755852499238
+Chicago,155,recoverable_fraction,E2_severity_plus_top_tail,Chicago,0.1206550068,0.1373268085233492
+Chicago,156,recoverable_fraction,E2_severity_plus_top_tail,Chicago,0.1266312759,0.14740255528681945
+Chicago,157,recoverable_fraction,E2_severity_plus_top_tail,Chicago,0.1347009082,0.1231887218651206
+Chicago,158,recoverable_fraction,E2_severity_plus_top_tail,Chicago,0.1252282371,0.12535726140595485
+Chicago,159,recoverable_fraction,E2_severity_plus_top_tail,Chicago,0.1421212074,0.14180434245168083
+Dallas,55,recoverable_fraction,E2_severity_plus_top_tail,Dallas,0.06413741853,0.10708873878746598
+Dallas,56,recoverable_fraction,E2_severity_plus_top_tail,Dallas,0.08490103523,0.10426854636901736
+Dallas,57,recoverable_fraction,E2_severity_plus_top_tail,Dallas,0.06232289383,0.10864480285865043
+Dallas,58,recoverable_fraction,E2_severity_plus_top_tail,Dallas,0.09364614235,0.11218675686390389
+Dallas,59,recoverable_fraction,E2_severity_plus_top_tail,Dallas,0.06568683295,0.08314689942772421
+Dallas,60,recoverable_fraction,E2_severity_plus_top_tail,Dallas,0.07239293644,0.09375886353995203
+Dallas,61,recoverable_fraction,E2_severity_plus_top_tail,Dallas,0.05991398588,0.09137702103858494
+Dallas,62,recoverable_fraction,E2_severity_plus_top_tail,Dallas,0.08906290776,0.1246901751242049
+Dallas,63,recoverable_fraction,E2_severity_plus_top_tail,Dallas,0.07400008392,0.12277828903115093
+Dallas,64,recoverable_fraction,E2_severity_plus_top_tail,Dallas,0.05486721131,0.0992254963134064
+Houston,52,recoverable_fraction,E2_severity_plus_top_tail,Houston,0.1091826237,0.13475537140606303
+Houston,60,recoverable_fraction,E2_severity_plus_top_tail,Houston,0.09387180327,0.09369764161925799
+Houston,61,recoverable_fraction,E2_severity_plus_top_tail,Houston,0.1188566112,0.11403176258491209
+Houston,62,recoverable_fraction,E2_severity_plus_top_tail,Houston,0.1178913158,0.10540667550278898
+New York,98,recoverable_fraction,E2_severity_plus_top_tail,New York,0.2564749584,0.14540344112486542
+New York,99,recoverable_fraction,E2_severity_plus_top_tail,New York,0.1476755773,0.15305357574023756
+New York,100,recoverable_fraction,E2_severity_plus_top_tail,New York,0.169567208,0.14683473238148728
+New York,101,recoverable_fraction,E2_severity_plus_top_tail,New York,0.1280051421,0.13884102858822744
+New York,102,recoverable_fraction,E2_severity_plus_top_tail,New York,0.1118956433,0.10754463418604716
+New York,103,recoverable_fraction,E2_severity_plus_top_tail,New York,0.1360233972,0.10449218532595943
+New York,104,recoverable_fraction,E2_severity_plus_top_tail,New York,0.1487545945,0.0968076239944108
+New York,105,recoverable_fraction,E2_severity_plus_top_tail,New York,0.09878326619,0.12142862020993248
+New York,106,recoverable_fraction,E2_severity_plus_top_tail,New York,0.1475271351,0.15432493699934693
+New York,107,recoverable_fraction,E2_severity_plus_top_tail,New York,0.1341549552,0.11885764704631013
+New York,108,recoverable_fraction,E2_severity_plus_top_tail,New York,0.1540652389,0.12635752143133583
+New York,109,recoverable_fraction,E2_severity_plus_top_tail,New York,0.1478550483,0.06678881314870182
+New York,110,recoverable_fraction,E2_severity_plus_top_tail,New York,0.114527596,0.06851746008154826
+New York,111,recoverable_fraction,E2_severity_plus_top_tail,New York,0.1167509254,0.14030236266003507
+New York,112,recoverable_fraction,E2_severity_plus_top_tail,New York,0.1317235814,0.1465287944144361
+New York,113,recoverable_fraction,E2_severity_plus_top_tail,New York,0.1179948876,0.14548886673084854
+New York,115,recoverable_fraction,E2_severity_plus_top_tail,New York,0.1517437935,0.13908596134880835
+New York,116,recoverable_fraction,E2_severity_plus_top_tail,New York,0.145082664,0.14670871407985614
+New York,117,recoverable_fraction,E2_severity_plus_top_tail,New York,0.1233006801,0.14750039262600856
+New York,119,recoverable_fraction,E2_severity_plus_top_tail,New York,0.1276266689,0.16203217173913617
+New York,120,recoverable_fraction,E2_severity_plus_top_tail,New York,0.1261122136,0.14399173112215252
+New York,121,recoverable_fraction,E2_severity_plus_top_tail,New York,0.1237967923,0.09347741136314933
+New York,122,recoverable_fraction,E2_severity_plus_top_tail,New York,0.10857205,0.10636073731950658
+New York,123,recoverable_fraction,E2_severity_plus_top_tail,New York,0.1165328165,0.12856372468620075
+Philadelphia,640,recoverable_fraction,E2_severity_plus_top_tail,Philadelphia,0.1650111764,0.1318276727558643
+Philadelphia,641,recoverable_fraction,E2_severity_plus_top_tail,Philadelphia,0.1859515315,0.12658558983598162
+Philadelphia,642,recoverable_fraction,E2_severity_plus_top_tail,Philadelphia,0.1964426113,0.12545185323924365
+Philadelphia,643,recoverable_fraction,E2_severity_plus_top_tail,Philadelphia,0.1703569651,0.12815564262418364
+Philadelphia,644,recoverable_fraction,E2_severity_plus_top_tail,Philadelphia,0.1481494643,0.1346910777328601
+Philadelphia,645,recoverable_fraction,E2_severity_plus_top_tail,Philadelphia,0.1343933078,0.14563438018197503
+Philadelphia,646,recoverable_fraction,E2_severity_plus_top_tail,Philadelphia,0.1736460156,0.12656901006663607
+Philadelphia,647,recoverable_fraction,E2_severity_plus_top_tail,Philadelphia,0.1843734931,0.1235616189566322
+Philadelphia,648,recoverable_fraction,E2_severity_plus_top_tail,Philadelphia,0.1693919213,0.1383003719619099
+Philadelphia,649,recoverable_fraction,E2_severity_plus_top_tail,Philadelphia,0.1442909584,0.13856412738216337
+Philadelphia,650,recoverable_fraction,E2_severity_plus_top_tail,Philadelphia,0.1729218069,0.13424827258045252
+Philadelphia,651,recoverable_fraction,E2_severity_plus_top_tail,Philadelphia,0.1588102475,0.13999658822085567
+Philadelphia,652,recoverable_fraction,E2_severity_plus_top_tail,Philadelphia,0.1410089263,0.14332941269764723
+Philadelphia,653,recoverable_fraction,E2_severity_plus_top_tail,Philadelphia,0.1511064161,0.15483794544083662
+Philadelphia,654,recoverable_fraction,E2_severity_plus_top_tail,Philadelphia,0.1946529106,0.1557632751718941
+Philadelphia,655,recoverable_fraction,E2_severity_plus_top_tail,Philadelphia,0.1448335335,0.14592599621429378
+Philadelphia,656,recoverable_fraction,E2_severity_plus_top_tail,Philadelphia,0.1410576712,0.13449225961140232
+Philadelphia,657,recoverable_fraction,E2_severity_plus_top_tail,Philadelphia,0.1357204427,0.14644995820587423
+Philadelphia,658,recoverable_fraction,E2_severity_plus_top_tail,Philadelphia,0.126623227,0.20630504658258594
+Philadelphia,659,recoverable_fraction,E2_severity_plus_top_tail,Philadelphia,0.1553082087,0.13824522205232126
+San Antonio,491,recoverable_fraction,E2_severity_plus_top_tail,San Antonio,0.1250674491,0.14938134547698592
+San Antonio,492,recoverable_fraction,E2_severity_plus_top_tail,San Antonio,0.1233021434,0.1511580414043257
+San Antonio,493,recoverable_fraction,E2_severity_plus_top_tail,San Antonio,0.1331121895,0.15659574281603114
+San Antonio,494,recoverable_fraction,E2_severity_plus_top_tail,San Antonio,0.1286389832,0.14766330873432526
+San Antonio,495,recoverable_fraction,E2_severity_plus_top_tail,San Antonio,0.1345568653,0.14629826404266735
+San Antonio,496,recoverable_fraction,E2_severity_plus_top_tail,San Antonio,0.133067066,0.14113540885092243
+San Antonio,497,recoverable_fraction,E2_severity_plus_top_tail,San Antonio,0.1394337131,0.14889192193118597
+San Antonio,498,recoverable_fraction,E2_severity_plus_top_tail,San Antonio,0.1322226481,0.15560864577547298
+San Antonio,499,recoverable_fraction,E2_severity_plus_top_tail,San Antonio,0.1417816949,0.13969561595112104
+San Antonio,500,recoverable_fraction,E2_severity_plus_top_tail,San Antonio,0.165266663,0.20961306490036055
+San Antonio,501,recoverable_fraction,E2_severity_plus_top_tail,San Antonio,0.1231274136,0.17100683387585083
+San Antonio,502,recoverable_fraction,E2_severity_plus_top_tail,San Antonio,0.124190477,0.1386377773112327
+San Antonio,503,recoverable_fraction,E2_severity_plus_top_tail,San Antonio,0.1339534857,0.14692700703991146
+San Antonio,504,recoverable_fraction,E2_severity_plus_top_tail,San Antonio,0.1283785378,0.15035752701068517
+San Antonio,505,recoverable_fraction,E2_severity_plus_top_tail,San Antonio,0.1487430447,0.15356391513148132
+San Antonio,506,recoverable_fraction,E2_severity_plus_top_tail,San Antonio,0.1548050783,0.13650646538450792
+San Antonio,507,recoverable_fraction,E2_severity_plus_top_tail,San Antonio,0.1430929955,0.13631789025038193
+San Antonio,508,recoverable_fraction,E2_severity_plus_top_tail,San Antonio,0.1374346769,0.1324461646388048
+San Antonio,509,recoverable_fraction,E2_severity_plus_top_tail,San Antonio,0.1448580491,0.1499367064908877
+Austin,478,lp_minus_random,E0_severity_only,Austin,0.08693872193999999,0.1170704420809715
+Austin,479,lp_minus_random,E0_severity_only,Austin,0.10369412858,0.1194668788586861
+Austin,480,lp_minus_random,E0_severity_only,Austin,0.10320213856999999,0.12262305187220465
+Austin,481,lp_minus_random,E0_severity_only,Austin,0.1135595405,0.130564737630675
+Austin,482,lp_minus_random,E0_severity_only,Austin,0.08795077311999999,0.11612106082855336
+Austin,483,lp_minus_random,E0_severity_only,Austin,0.08749585963999999,0.12574164043281547
+Austin,484,lp_minus_random,E0_severity_only,Austin,0.10474105721,0.1242822539789964
+Austin,485,lp_minus_random,E0_severity_only,Austin,0.14457323344,0.12566007818676403
+Austin,486,lp_minus_random,E0_severity_only,Austin,0.11314431391999999,0.11740299912981969
+Austin,487,lp_minus_random,E0_severity_only,Austin,0.08867123489999999,0.10885510275751124
+Austin,488,lp_minus_random,E0_severity_only,Austin,0.09236677203999999,0.12798857599037528
+Austin,489,lp_minus_random,E0_severity_only,Austin,0.10708648462,0.13040848465990343
+Austin,490,lp_minus_random,E0_severity_only,Austin,0.13992233727,0.12940528422968178
+Austin,491,lp_minus_random,E0_severity_only,Austin,0.12102736286,0.13358937449644243
+Austin,492,lp_minus_random,E0_severity_only,Austin,0.09471954898,0.12092943237815514
+Chicago,145,lp_minus_random,E0_severity_only,Chicago,0.09988914559999999,0.10922922031859686
+Chicago,146,lp_minus_random,E0_severity_only,Chicago,0.11622394459,0.12747554504451725
+Chicago,147,lp_minus_random,E0_severity_only,Chicago,0.11284020837000001,0.1276617698216612
+Chicago,149,lp_minus_random,E0_severity_only,Chicago,0.13818488681,0.12943365839911095
+Chicago,150,lp_minus_random,E0_severity_only,Chicago,0.11274702771000002,0.1231281934336275
+Chicago,152,lp_minus_random,E0_severity_only,Chicago,0.22939303899000002,0.1281584938728632
+Chicago,153,lp_minus_random,E0_severity_only,Chicago,0.12356495235,0.08408251991693079
+Chicago,154,lp_minus_random,E0_severity_only,Chicago,0.18648886125,0.130375693857349
+Chicago,155,lp_minus_random,E0_severity_only,Chicago,0.10122692489000001,0.11496387674737517
+Chicago,156,lp_minus_random,E0_severity_only,Chicago,0.10787287214,0.12288740778592275
+Chicago,157,lp_minus_random,E0_severity_only,Chicago,0.11451304552,0.10213055266279152
+Chicago,158,lp_minus_random,E0_severity_only,Chicago,0.10614269773,0.10293096535536625
+Chicago,159,lp_minus_random,E0_severity_only,Chicago,0.11992222311,0.11694618894437779
+Dallas,55,lp_minus_random,E0_severity_only,Dallas,0.052619514910000005,0.09430490583673067
+Dallas,56,lp_minus_random,E0_severity_only,Dallas,0.06981023043000001,0.10166592018735583
+Dallas,57,lp_minus_random,E0_severity_only,Dallas,0.05065964133,0.09608674509051983
+Dallas,58,lp_minus_random,E0_severity_only,Dallas,0.07574183011,0.10434906604041431
+Dallas,59,lp_minus_random,E0_severity_only,Dallas,0.052265279799999995,0.0740943987786111
+Dallas,60,lp_minus_random,E0_severity_only,Dallas,0.057115178589999996,0.09211471902896748
+Dallas,61,lp_minus_random,E0_severity_only,Dallas,0.04771040048,0.08552553089135674
+Dallas,62,lp_minus_random,E0_severity_only,Dallas,0.07205724884,0.11985679143810817
+Dallas,63,lp_minus_random,E0_severity_only,Dallas,0.05762920864,0.1105135502708883
+Dallas,64,lp_minus_random,E0_severity_only,Dallas,0.044828071319999996,0.09413044419706966
+Houston,52,lp_minus_random,E0_severity_only,Houston,0.09111465059,0.12111999623547051
+Houston,60,lp_minus_random,E0_severity_only,Houston,0.07609434843,0.08341586390807272
+Houston,61,lp_minus_random,E0_severity_only,Houston,0.09598599966,0.09404646122540498
+Houston,62,lp_minus_random,E0_severity_only,Houston,0.09927051553999999,0.09001765877178036
+New York,98,lp_minus_random,E0_severity_only,New York,0.23466516396,0.1337015895260789
+New York,99,lp_minus_random,E0_severity_only,New York,0.12632737583,0.12284324243612722
+New York,100,lp_minus_random,E0_severity_only,New York,0.14469309711,0.12511257421103347
+New York,101,lp_minus_random,E0_severity_only,New York,0.11030352761,0.11396963911124897
+New York,102,lp_minus_random,E0_severity_only,New York,0.0960333927,0.08820113989635976
+New York,103,lp_minus_random,E0_severity_only,New York,0.11712383028000001,0.08328659552585078
+New York,104,lp_minus_random,E0_severity_only,New York,0.12723451226000002,0.0634821277443133
+New York,105,lp_minus_random,E0_severity_only,New York,0.08580702742,0.09604442669986545
+New York,106,lp_minus_random,E0_severity_only,New York,0.12291369649000002,0.12093092712502504
+New York,107,lp_minus_random,E0_severity_only,New York,0.11518060014,0.08145985687400874
+New York,108,lp_minus_random,E0_severity_only,New York,0.13071313972,0.09359631522884251
+New York,109,lp_minus_random,E0_severity_only,New York,0.12654732837000002,0.0395896451158551
+New York,110,lp_minus_random,E0_severity_only,New York,0.09965150694,0.04492123018077073
+New York,111,lp_minus_random,E0_severity_only,New York,0.10025368898,0.09203937289896645
+New York,112,lp_minus_random,E0_severity_only,New York,0.11659886871000001,0.12821414898063602
+New York,113,lp_minus_random,E0_severity_only,New York,0.1040822467,0.127016349952316
+New York,115,lp_minus_random,E0_severity_only,New York,0.14047937273,0.13378963406327576
+New York,116,lp_minus_random,E0_severity_only,New York,0.13002207583,0.1328551831725739
+New York,117,lp_minus_random,E0_severity_only,New York,0.10930387523,0.13213410286449334
+New York,119,lp_minus_random,E0_severity_only,New York,0.120502473376,0.13364205797965784
+New York,120,lp_minus_random,E0_severity_only,New York,0.11208753990999999,0.12612378292373808
+New York,121,lp_minus_random,E0_severity_only,New York,0.10707061687,0.06102588993203667
+New York,122,lp_minus_random,E0_severity_only,New York,0.09390495402,0.07574584322654251
+New York,123,lp_minus_random,E0_severity_only,New York,0.10041797089,0.0948694198469591
+Philadelphia,640,lp_minus_random,E0_severity_only,Philadelphia,0.15092651379,0.12657136053815815
+Philadelphia,641,lp_minus_random,E0_severity_only,Philadelphia,0.16992450568999998,0.12664800892341868
+Philadelphia,642,lp_minus_random,E0_severity_only,Philadelphia,0.18777182575999998,0.12637142697350742
+Philadelphia,643,lp_minus_random,E0_severity_only,Philadelphia,0.14585507193,0.11961914775697433
+Philadelphia,644,lp_minus_random,E0_severity_only,Philadelphia,0.12318835564,0.11497114238261474
+Philadelphia,645,lp_minus_random,E0_severity_only,Philadelphia,0.11100994878,0.1192596761045414
+Philadelphia,646,lp_minus_random,E0_severity_only,Philadelphia,0.15330283461,0.12318013877636314
+Philadelphia,647,lp_minus_random,E0_severity_only,Philadelphia,0.16247505405,0.12572472062659987
+Philadelphia,648,lp_minus_random,E0_severity_only,Philadelphia,0.14219934314,0.11449220468565567
+Philadelphia,649,lp_minus_random,E0_severity_only,Philadelphia,0.12069350362,0.11482234769292884
+Philadelphia,650,lp_minus_random,E0_severity_only,Philadelphia,0.14814622414,0.12224520987774057
+Philadelphia,651,lp_minus_random,E0_severity_only,Philadelphia,0.13295176802,0.11771780405593613
+Philadelphia,652,lp_minus_random,E0_severity_only,Philadelphia,0.11750592542000002,0.11932790404028079
+Philadelphia,653,lp_minus_random,E0_severity_only,Philadelphia,0.12759198953,0.12231166153147387
+Philadelphia,654,lp_minus_random,E0_severity_only,Philadelphia,0.16039759526,0.12163209930002726
+Philadelphia,655,lp_minus_random,E0_severity_only,Philadelphia,0.11877373892,0.12026498736083774
+Philadelphia,656,lp_minus_random,E0_severity_only,Philadelphia,0.11739799926000001,0.11158867630594081
+Philadelphia,657,lp_minus_random,E0_severity_only,Philadelphia,0.1155142142,0.12226164511657386
+Philadelphia,658,lp_minus_random,E0_severity_only,Philadelphia,0.11937376328900001,0.12754453911884417
+Philadelphia,659,lp_minus_random,E0_severity_only,Philadelphia,0.12857905858000002,0.12230970510327577
+San Antonio,491,lp_minus_random,E0_severity_only,San Antonio,0.10404473565,0.12683030912549415
+San Antonio,492,lp_minus_random,E0_severity_only,San Antonio,0.10110119411999999,0.12865762810077233
+San Antonio,493,lp_minus_random,E0_severity_only,San Antonio,0.11357117085000001,0.12923561546458995
+San Antonio,494,lp_minus_random,E0_severity_only,San Antonio,0.10513319364,0.1256230053995853
+San Antonio,495,lp_minus_random,E0_severity_only,San Antonio,0.11831337607999999,0.13262911220039084
+San Antonio,496,lp_minus_random,E0_severity_only,San Antonio,0.11008149286000002,0.12665847990469573
+San Antonio,497,lp_minus_random,E0_severity_only,San Antonio,0.11312159876999998,0.12661237526419522
+San Antonio,498,lp_minus_random,E0_severity_only,San Antonio,0.11145676337,0.13043985984946332
+San Antonio,499,lp_minus_random,E0_severity_only,San Antonio,0.12413876703000001,0.1329741676286468
+San Antonio,500,lp_minus_random,E0_severity_only,San Antonio,0.14125709003,0.13289559444529578
+San Antonio,501,lp_minus_random,E0_severity_only,San Antonio,0.11003349673,0.1262416272106557
+San Antonio,502,lp_minus_random,E0_severity_only,San Antonio,0.10156402432,0.11889714562361019
+San Antonio,503,lp_minus_random,E0_severity_only,San Antonio,0.11056464924,0.13096943034776554
+San Antonio,504,lp_minus_random,E0_severity_only,San Antonio,0.10829485485,0.12938484263549002
+San Antonio,505,lp_minus_random,E0_severity_only,San Antonio,0.12230528244,0.1283957364631608
+San Antonio,506,lp_minus_random,E0_severity_only,San Antonio,0.146313009476,0.13614418573455403
+San Antonio,507,lp_minus_random,E0_severity_only,San Antonio,0.11787157093999999,0.11978977005417595
+San Antonio,508,lp_minus_random,E0_severity_only,San Antonio,0.11381755941999999,0.11624407365250006
+San Antonio,509,lp_minus_random,E0_severity_only,San Antonio,0.1201988493,0.12820269610347654
+Austin,478,lp_minus_random,E1_top_tail_structure,Austin,0.08693872193999999,0.12006982272319935
+Austin,479,lp_minus_random,E1_top_tail_structure,Austin,0.10369412858,0.11921576680551435
+Austin,480,lp_minus_random,E1_top_tail_structure,Austin,0.10320213856999999,0.11857361800927327
+Austin,481,lp_minus_random,E1_top_tail_structure,Austin,0.1135595405,0.11399405538541915
+Austin,482,lp_minus_random,E1_top_tail_structure,Austin,0.08795077311999999,0.12047884648492867
+Austin,483,lp_minus_random,E1_top_tail_structure,Austin,0.08749585963999999,0.12088965928279681
+Austin,484,lp_minus_random,E1_top_tail_structure,Austin,0.10474105721,0.11944131505494851
+Austin,485,lp_minus_random,E1_top_tail_structure,Austin,0.14457323344,0.13059585915695324
+Austin,486,lp_minus_random,E1_top_tail_structure,Austin,0.11314431391999999,0.12928654366655584
+Austin,487,lp_minus_random,E1_top_tail_structure,Austin,0.08867123489999999,0.1187073089172736
+Austin,488,lp_minus_random,E1_top_tail_structure,Austin,0.09236677203999999,0.12119185714394572
+Austin,489,lp_minus_random,E1_top_tail_structure,Austin,0.10708648462,0.10774651254803431
+Austin,490,lp_minus_random,E1_top_tail_structure,Austin,0.13992233727,0.1225047097421605
+Austin,491,lp_minus_random,E1_top_tail_structure,Austin,0.12102736286,0.10334263377808037
+Austin,492,lp_minus_random,E1_top_tail_structure,Austin,0.09471954898,0.11819254697507024
+Chicago,145,lp_minus_random,E1_top_tail_structure,Chicago,0.09988914559999999,0.11593029207924463
+Chicago,146,lp_minus_random,E1_top_tail_structure,Chicago,0.11622394459,0.1095349958061454
+Chicago,147,lp_minus_random,E1_top_tail_structure,Chicago,0.11284020837000001,0.10940878300045287
+Chicago,149,lp_minus_random,E1_top_tail_structure,Chicago,0.13818488681,0.10522935615636744
+Chicago,150,lp_minus_random,E1_top_tail_structure,Chicago,0.11274702771000002,0.11307214449815058
+Chicago,152,lp_minus_random,E1_top_tail_structure,Chicago,0.22939303899000002,0.1426195810442668
+Chicago,153,lp_minus_random,E1_top_tail_structure,Chicago,0.12356495235,0.11498355848897474
+Chicago,154,lp_minus_random,E1_top_tail_structure,Chicago,0.18648886125,0.11825389299752061
+Chicago,155,lp_minus_random,E1_top_tail_structure,Chicago,0.10122692489000001,0.11589977684869093
+Chicago,156,lp_minus_random,E1_top_tail_structure,Chicago,0.10787287214,0.11454908199113197
+Chicago,157,lp_minus_random,E1_top_tail_structure,Chicago,0.11451304552,0.11330816300673835
+Chicago,158,lp_minus_random,E1_top_tail_structure,Chicago,0.10614269773,0.11439791392497098
+Chicago,159,lp_minus_random,E1_top_tail_structure,Chicago,0.11992222311,0.11693890862168865
+Dallas,55,lp_minus_random,E1_top_tail_structure,Dallas,0.052619514910000005,0.10888158224421461
+Dallas,56,lp_minus_random,E1_top_tail_structure,Dallas,0.06981023043000001,0.10892322894082374
+Dallas,57,lp_minus_random,E1_top_tail_structure,Dallas,0.05065964133,0.10888158224421461
+Dallas,58,lp_minus_random,E1_top_tail_structure,Dallas,0.07574183011,0.10892763291528831
+Dallas,59,lp_minus_random,E1_top_tail_structure,Dallas,0.052265279799999995,0.10888158224421461
+Dallas,60,lp_minus_random,E1_top_tail_structure,Dallas,0.057115178589999996,0.10888158224421461
+Dallas,61,lp_minus_random,E1_top_tail_structure,Dallas,0.04771040048,0.10888158224421461
+Dallas,62,lp_minus_random,E1_top_tail_structure,Dallas,0.07205724884,0.10893028944904266
+Dallas,63,lp_minus_random,E1_top_tail_structure,Dallas,0.05762920864,0.10888158224421461
+Dallas,64,lp_minus_random,E1_top_tail_structure,Dallas,0.044828071319999996,0.10888158224421461
+Houston,52,lp_minus_random,E1_top_tail_structure,Houston,0.09111465059,0.10302692990642612
+Houston,60,lp_minus_random,E1_top_tail_structure,Houston,0.07609434843,0.10104299423492535
+Houston,61,lp_minus_random,E1_top_tail_structure,Houston,0.09598599966,0.10414421681513104
+Houston,62,lp_minus_random,E1_top_tail_structure,Houston,0.09927051553999999,0.10176866920966048
+New York,98,lp_minus_random,E1_top_tail_structure,New York,0.23466516396,0.15118382234675934
+New York,99,lp_minus_random,E1_top_tail_structure,New York,0.12632737583,0.12675140193663512
+New York,100,lp_minus_random,E1_top_tail_structure,New York,0.14469309711,0.13186191483981372
+New York,101,lp_minus_random,E1_top_tail_structure,New York,0.11030352761,0.11356271892822001
+New York,102,lp_minus_random,E1_top_tail_structure,New York,0.0960333927,0.11272635704624899
+New York,103,lp_minus_random,E1_top_tail_structure,New York,0.11712383028000001,0.1135688114659147
+New York,104,lp_minus_random,E1_top_tail_structure,New York,0.12723451226000002,0.11562717788601663
+New York,105,lp_minus_random,E1_top_tail_structure,New York,0.08580702742,0.1133052028868275
+New York,106,lp_minus_random,E1_top_tail_structure,New York,0.12291369649000002,0.12122382537754142
+New York,107,lp_minus_random,E1_top_tail_structure,New York,0.11518060014,0.11445697724634803
+New York,108,lp_minus_random,E1_top_tail_structure,New York,0.13071313972,0.11575188344193965
+New York,109,lp_minus_random,E1_top_tail_structure,New York,0.12654732837000002,0.11487542801385506
+New York,110,lp_minus_random,E1_top_tail_structure,New York,0.09965150694,0.11259709585455266
+New York,111,lp_minus_random,E1_top_tail_structure,New York,0.10025368898,0.11395900344013676
+New York,112,lp_minus_random,E1_top_tail_structure,New York,0.11659886871000001,0.10621664293395
+New York,113,lp_minus_random,E1_top_tail_structure,New York,0.1040822467,0.10570136152433794
+New York,115,lp_minus_random,E1_top_tail_structure,New York,0.14047937273,0.11869084142634088
+New York,116,lp_minus_random,E1_top_tail_structure,New York,0.13002207583,0.10314702593869252
+New York,117,lp_minus_random,E1_top_tail_structure,New York,0.10930387523,0.10255834655527303
+New York,119,lp_minus_random,E1_top_tail_structure,New York,0.120502473376,0.17305080397061998
+New York,120,lp_minus_random,E1_top_tail_structure,New York,0.11208753990999999,0.11130436474927018
+New York,121,lp_minus_random,E1_top_tail_structure,New York,0.10707061687,0.1138664869329058
+New York,122,lp_minus_random,E1_top_tail_structure,New York,0.09390495402,0.11271643380274596
+New York,123,lp_minus_random,E1_top_tail_structure,New York,0.10041797089,0.11257717203949255
+Philadelphia,640,lp_minus_random,E1_top_tail_structure,Philadelphia,0.15092651379,0.09864904868685602
+Philadelphia,641,lp_minus_random,E1_top_tail_structure,Philadelphia,0.16992450568999998,0.09346729541654314
+Philadelphia,642,lp_minus_random,E1_top_tail_structure,Philadelphia,0.18777182575999998,0.0922737276683215
+Philadelphia,643,lp_minus_random,E1_top_tail_structure,Philadelphia,0.14585507193,0.09873398768785353
+Philadelphia,644,lp_minus_random,E1_top_tail_structure,Philadelphia,0.12318835564,0.11530947823502084
+Philadelphia,645,lp_minus_random,E1_top_tail_structure,Philadelphia,0.11100994878,0.12358487722294413
+Philadelphia,646,lp_minus_random,E1_top_tail_structure,Philadelphia,0.15330283461,0.09530475276987337
+Philadelphia,647,lp_minus_random,E1_top_tail_structure,Philadelphia,0.16247505405,0.09108465093669356
+Philadelphia,648,lp_minus_random,E1_top_tail_structure,Philadelphia,0.14219934314,0.11141319615170626
+Philadelphia,649,lp_minus_random,E1_top_tail_structure,Philadelphia,0.12069350362,0.1118416717195134
+Philadelphia,650,lp_minus_random,E1_top_tail_structure,Philadelphia,0.14814622414,0.10137765662554638
+Philadelphia,651,lp_minus_random,E1_top_tail_structure,Philadelphia,0.13295176802,0.11062509042581017
+Philadelphia,652,lp_minus_random,E1_top_tail_structure,Philadelphia,0.11750592542000002,0.11468190118412674
+Philadelphia,653,lp_minus_random,E1_top_tail_structure,Philadelphia,0.12759198953,0.1196708967420679
+Philadelphia,654,lp_minus_random,E1_top_tail_structure,Philadelphia,0.16039759526,0.12577864637263012
+Philadelphia,655,lp_minus_random,E1_top_tail_structure,Philadelphia,0.11877373892,0.1178753283274185
+Philadelphia,656,lp_minus_random,E1_top_tail_structure,Philadelphia,0.11739799926000001,0.11618792547322011
+Philadelphia,657,lp_minus_random,E1_top_tail_structure,Philadelphia,0.1155142142,0.11820861800939987
+Philadelphia,658,lp_minus_random,E1_top_tail_structure,Philadelphia,0.11937376328900001,0.20481643088715001
+Philadelphia,659,lp_minus_random,E1_top_tail_structure,Philadelphia,0.12857905858000002,0.10797030273666895
+San Antonio,491,lp_minus_random,E1_top_tail_structure,San Antonio,0.10404473565,0.12175321518204503
+San Antonio,492,lp_minus_random,E1_top_tail_structure,San Antonio,0.10110119411999999,0.12491761664257196
+San Antonio,493,lp_minus_random,E1_top_tail_structure,San Antonio,0.11357117085000001,0.12486837281113895
+San Antonio,494,lp_minus_random,E1_top_tail_structure,San Antonio,0.10513319364,0.11950897582058558
+San Antonio,495,lp_minus_random,E1_top_tail_structure,San Antonio,0.11831337607999999,0.11152550879246766
+San Antonio,496,lp_minus_random,E1_top_tail_structure,San Antonio,0.11008149286000002,0.11516240442383358
+San Antonio,497,lp_minus_random,E1_top_tail_structure,San Antonio,0.11312159876999998,0.12055101220368024
+San Antonio,498,lp_minus_random,E1_top_tail_structure,San Antonio,0.11145676337,0.12185528949705618
+San Antonio,499,lp_minus_random,E1_top_tail_structure,San Antonio,0.12413876703000001,0.1041098952756091
+San Antonio,500,lp_minus_random,E1_top_tail_structure,San Antonio,0.14125709003,0.181758738394058
+San Antonio,501,lp_minus_random,E1_top_tail_structure,San Antonio,0.11003349673,0.14880572355054072
+San Antonio,502,lp_minus_random,E1_top_tail_structure,San Antonio,0.10156402432,0.12397045779722167
+San Antonio,503,lp_minus_random,E1_top_tail_structure,San Antonio,0.11056464924,0.1141692080949765
+San Antonio,504,lp_minus_random,E1_top_tail_structure,San Antonio,0.10829485485,0.11877911978196452
+San Antonio,505,lp_minus_random,E1_top_tail_structure,San Antonio,0.12230528244,0.11928574657727883
+San Antonio,506,lp_minus_random,E1_top_tail_structure,San Antonio,0.146313009476,0.09744669202851944
+San Antonio,507,lp_minus_random,E1_top_tail_structure,San Antonio,0.11787157093999999,0.11564179477317546
+San Antonio,508,lp_minus_random,E1_top_tail_structure,San Antonio,0.11381755941999999,0.11583503073241713
+San Antonio,509,lp_minus_random,E1_top_tail_structure,San Antonio,0.1201988493,0.11403309157078227
+Austin,478,lp_minus_random,E2_severity_plus_top_tail,Austin,0.08693872193999999,0.11686390277343364
+Austin,479,lp_minus_random,E2_severity_plus_top_tail,Austin,0.10369412858,0.11722447654521648
+Austin,480,lp_minus_random,E2_severity_plus_top_tail,Austin,0.10320213856999999,0.12267788114857178
+Austin,481,lp_minus_random,E2_severity_plus_top_tail,Austin,0.1135595405,0.12784825281343568
+Austin,482,lp_minus_random,E2_severity_plus_top_tail,Austin,0.08795077311999999,0.10765596150029717
+Austin,483,lp_minus_random,E2_severity_plus_top_tail,Austin,0.08749585963999999,0.12312478410620957
+Austin,484,lp_minus_random,E2_severity_plus_top_tail,Austin,0.10474105721,0.12369024110174152
+Austin,485,lp_minus_random,E2_severity_plus_top_tail,Austin,0.14457323344,0.12617580095507858
+Austin,486,lp_minus_random,E2_severity_plus_top_tail,Austin,0.11314431391999999,0.12164614194354449
+Austin,487,lp_minus_random,E2_severity_plus_top_tail,Austin,0.08867123489999999,0.10995114432523956
+Austin,488,lp_minus_random,E2_severity_plus_top_tail,Austin,0.09236677203999999,0.1260822236215652
+Austin,489,lp_minus_random,E2_severity_plus_top_tail,Austin,0.10708648462,0.12465515231571234
+Austin,490,lp_minus_random,E2_severity_plus_top_tail,Austin,0.13992233727,0.13004610315392612
+Austin,491,lp_minus_random,E2_severity_plus_top_tail,Austin,0.12102736286,0.12248009278554804
+Austin,492,lp_minus_random,E2_severity_plus_top_tail,Austin,0.09471954898,0.12109296771349719
+Chicago,145,lp_minus_random,E2_severity_plus_top_tail,Chicago,0.09988914559999999,0.11312836773361126
+Chicago,146,lp_minus_random,E2_severity_plus_top_tail,Chicago,0.11622394459,0.12737291515848154
+Chicago,147,lp_minus_random,E2_severity_plus_top_tail,Chicago,0.11284020837000001,0.12777890741457754
+Chicago,149,lp_minus_random,E2_severity_plus_top_tail,Chicago,0.13818488681,0.12666416039099054
+Chicago,150,lp_minus_random,E2_severity_plus_top_tail,Chicago,0.11274702771000002,0.12358622203938215
+Chicago,152,lp_minus_random,E2_severity_plus_top_tail,Chicago,0.22939303899000002,0.14228359696615892
+Chicago,153,lp_minus_random,E2_severity_plus_top_tail,Chicago,0.12356495235,0.0910319058731982
+Chicago,154,lp_minus_random,E2_severity_plus_top_tail,Chicago,0.18648886125,0.13316717352269666
+Chicago,155,lp_minus_random,E2_severity_plus_top_tail,Chicago,0.10122692489000001,0.11678301839067476
+Chicago,156,lp_minus_random,E2_severity_plus_top_tail,Chicago,0.10787287214,0.1260551919319734
+Chicago,157,lp_minus_random,E2_severity_plus_top_tail,Chicago,0.11451304552,0.10451362104579236
+Chicago,158,lp_minus_random,E2_severity_plus_top_tail,Chicago,0.10614269773,0.10579831878754084
+Chicago,159,lp_minus_random,E2_severity_plus_top_tail,Chicago,0.11992222311,0.12022602062552375
+Dallas,55,lp_minus_random,E2_severity_plus_top_tail,Dallas,0.052619514910000005,0.08765072859649109
+Dallas,56,lp_minus_random,E2_severity_plus_top_tail,Dallas,0.06981023043000001,0.08670136081275413
+Dallas,57,lp_minus_random,E2_severity_plus_top_tail,Dallas,0.05065964133,0.08922352267618631
+Dallas,58,lp_minus_random,E2_severity_plus_top_tail,Dallas,0.07574183011,0.09352798267277469
+Dallas,59,lp_minus_random,E2_severity_plus_top_tail,Dallas,0.052265279799999995,0.06486853685651552
+Dallas,60,lp_minus_random,E2_severity_plus_top_tail,Dallas,0.057115178589999996,0.07656159486911249
+Dallas,61,lp_minus_random,E2_severity_plus_top_tail,Dallas,0.04771040048,0.07348045405201543
+Dallas,62,lp_minus_random,E2_severity_plus_top_tail,Dallas,0.07205724884,0.10634882740851075
+Dallas,63,lp_minus_random,E2_severity_plus_top_tail,Dallas,0.05762920864,0.10315257831113607
+Dallas,64,lp_minus_random,E2_severity_plus_top_tail,Dallas,0.044828071319999996,0.08130874212442962
+Houston,52,lp_minus_random,E2_severity_plus_top_tail,Houston,0.09111465059,0.11423818652609928
+Houston,60,lp_minus_random,E2_severity_plus_top_tail,Houston,0.07609434843,0.0764684209248321
+Houston,61,lp_minus_random,E2_severity_plus_top_tail,Houston,0.09598599966,0.09476087520621723
+Houston,62,lp_minus_random,E2_severity_plus_top_tail,Houston,0.09927051553999999,0.08753815352097186
+New York,98,lp_minus_random,E2_severity_plus_top_tail,New York,0.23466516396,0.13310327082441156
+New York,99,lp_minus_random,E2_severity_plus_top_tail,New York,0.12632737583,0.13338248477157236
+New York,100,lp_minus_random,E2_severity_plus_top_tail,New York,0.14469309711,0.1299144579416896
+New York,101,lp_minus_random,E2_severity_plus_top_tail,New York,0.11030352761,0.12140267440675721
+New York,102,lp_minus_random,E2_severity_plus_top_tail,New York,0.0960333927,0.09231518591245193
+New York,103,lp_minus_random,E2_severity_plus_top_tail,New York,0.11712383028000001,0.0900411332064385
+New York,104,lp_minus_random,E2_severity_plus_top_tail,New York,0.12723451226000002,0.08073289131473264
+New York,105,lp_minus_random,E2_severity_plus_top_tail,New York,0.08580702742,0.10470576271582013
+New York,106,lp_minus_random,E2_severity_plus_top_tail,New York,0.12291369649000002,0.13367036755193806
+New York,107,lp_minus_random,E2_severity_plus_top_tail,New York,0.11518060014,0.10142342492382493
+New York,108,lp_minus_random,E2_severity_plus_top_tail,New York,0.13071313972,0.10874772054973222
+New York,109,lp_minus_random,E2_severity_plus_top_tail,New York,0.12654732837000002,0.05395929111073949
+New York,110,lp_minus_random,E2_severity_plus_top_tail,New York,0.09965150694,0.05536289117632868
+New York,111,lp_minus_random,E2_severity_plus_top_tail,New York,0.10025368898,0.12027110300226779
+New York,112,lp_minus_random,E2_severity_plus_top_tail,New York,0.11659886871000001,0.1304443397647618
+New York,113,lp_minus_random,E2_severity_plus_top_tail,New York,0.1040822467,0.129528854540808
+New York,115,lp_minus_random,E2_severity_plus_top_tail,New York,0.14047937273,0.12811888497861135
+New York,116,lp_minus_random,E2_severity_plus_top_tail,New York,0.13002207583,0.13198908668443454
+New York,117,lp_minus_random,E2_severity_plus_top_tail,New York,0.10930387523,0.13213182041739147
+New York,119,lp_minus_random,E2_severity_plus_top_tail,New York,0.120502473376,0.1531645968153199
+New York,120,lp_minus_random,E2_severity_plus_top_tail,New York,0.11208753990999999,0.1282669825769092
+New York,121,lp_minus_random,E2_severity_plus_top_tail,New York,0.10707061687,0.07776610492723289
+New York,122,lp_minus_random,E2_severity_plus_top_tail,New York,0.09390495402,0.09076274046702291
+New York,123,lp_minus_random,E2_severity_plus_top_tail,New York,0.10041797089,0.11109165271886604
+Philadelphia,640,lp_minus_random,E2_severity_plus_top_tail,Philadelphia,0.15092651379,0.11203972445139701
+Philadelphia,641,lp_minus_random,E2_severity_plus_top_tail,Philadelphia,0.16992450568999998,0.1079978454041521
+Philadelphia,642,lp_minus_random,E2_severity_plus_top_tail,Philadelphia,0.18777182575999998,0.10711826280554292
+Philadelphia,643,lp_minus_random,E2_severity_plus_top_tail,Philadelphia,0.14585507193,0.1083707362201064
+Philadelphia,644,lp_minus_random,E2_severity_plus_top_tail,Philadelphia,0.12318835564,0.11213989716922872
+Philadelphia,645,lp_minus_random,E2_severity_plus_top_tail,Philadelphia,0.11100994878,0.12105285173232952
+Philadelphia,646,lp_minus_random,E2_severity_plus_top_tail,Philadelphia,0.15330283461,0.10760793923101743
+Philadelphia,647,lp_minus_random,E2_severity_plus_top_tail,Philadelphia,0.16247505405,0.10557322439003233
+Philadelphia,648,lp_minus_random,E2_severity_plus_top_tail,Philadelphia,0.14219934314,0.11575601431514214
+Philadelphia,649,lp_minus_random,E2_severity_plus_top_tail,Philadelphia,0.12069350362,0.11591930818841001
+Philadelphia,650,lp_minus_random,E2_severity_plus_top_tail,Philadelphia,0.14814622414,0.11366176999039988
+Philadelphia,651,lp_minus_random,E2_severity_plus_top_tail,Philadelphia,0.13295176802,0.11762384933582205
+Philadelphia,652,lp_minus_random,E2_severity_plus_top_tail,Philadelphia,0.11750592542000002,0.12015666110637432
+Philadelphia,653,lp_minus_random,E2_severity_plus_top_tail,Philadelphia,0.12759198953,0.12980971178696213
+Philadelphia,654,lp_minus_random,E2_severity_plus_top_tail,Philadelphia,0.16039759526,0.12991326577970197
+Philadelphia,655,lp_minus_random,E2_severity_plus_top_tail,Philadelphia,0.11877373892,0.12203404372785405
+Philadelphia,656,lp_minus_random,E2_severity_plus_top_tail,Philadelphia,0.11739799926000001,0.11184947938156704
+Philadelphia,657,lp_minus_random,E2_severity_plus_top_tail,Philadelphia,0.1155142142,0.1225322541290796
+Philadelphia,658,lp_minus_random,E2_severity_plus_top_tail,Philadelphia,0.11937376328900001,0.19138700221274524
+Philadelphia,659,lp_minus_random,E2_severity_plus_top_tail,Philadelphia,0.12857905858000002,0.11647922959526141
+San Antonio,491,lp_minus_random,E2_severity_plus_top_tail,San Antonio,0.10404473565,0.12453406994748799
+San Antonio,492,lp_minus_random,E2_severity_plus_top_tail,San Antonio,0.10110119411999999,0.12438961946887278
+San Antonio,493,lp_minus_random,E2_severity_plus_top_tail,San Antonio,0.11357117085000001,0.12968602161654572
+San Antonio,494,lp_minus_random,E2_severity_plus_top_tail,San Antonio,0.10513319364,0.12258018374403185
+San Antonio,495,lp_minus_random,E2_severity_plus_top_tail,San Antonio,0.11831337607999999,0.12385202555331909
+San Antonio,496,lp_minus_random,E2_severity_plus_top_tail,San Antonio,0.11008149286000002,0.11740720935946906
+San Antonio,497,lp_minus_random,E2_severity_plus_top_tail,San Antonio,0.11312159876999998,0.12417774240253805
+San Antonio,498,lp_minus_random,E2_severity_plus_top_tail,San Antonio,0.11145676337,0.12971071460530337
+San Antonio,499,lp_minus_random,E2_severity_plus_top_tail,San Antonio,0.12413876703000001,0.119791767746353
+San Antonio,500,lp_minus_random,E2_severity_plus_top_tail,San Antonio,0.14125709003,0.16349435269623297
+San Antonio,501,lp_minus_random,E2_severity_plus_top_tail,San Antonio,0.11003349673,0.1360460302021459
+San Antonio,502,lp_minus_random,E2_severity_plus_top_tail,San Antonio,0.10156402432,0.11296558898931915
+San Antonio,503,lp_minus_random,E2_severity_plus_top_tail,San Antonio,0.11056464924,0.12336760402505444
+San Antonio,504,lp_minus_random,E2_severity_plus_top_tail,San Antonio,0.10829485485,0.12562250787484705
+San Antonio,505,lp_minus_random,E2_severity_plus_top_tail,San Antonio,0.12230528244,0.1284431738138406
+San Antonio,506,lp_minus_random,E2_severity_plus_top_tail,San Antonio,0.146313009476,0.11835789827712569
+San Antonio,507,lp_minus_random,E2_severity_plus_top_tail,San Antonio,0.11787157093999999,0.11271858609755021
+San Antonio,508,lp_minus_random,E2_severity_plus_top_tail,San Antonio,0.11381755941999999,0.10979601218916411
+San Antonio,509,lp_minus_random,E2_severity_plus_top_tail,San Antonio,0.1201988493,0.12660262550468124
+Austin,478,law_minus_random,E0_severity_only,Austin,0.07470525851000001,0.09039085332428834
+Austin,479,law_minus_random,E0_severity_only,Austin,0.09178658648,0.085109775630835
+Austin,480,law_minus_random,E0_severity_only,Austin,0.09468031517,0.08725335765822004
+Austin,481,law_minus_random,E0_severity_only,Austin,0.0999151369,0.08946791377741486
+Austin,482,law_minus_random,E0_severity_only,Austin,0.07595744764,0.08403862406726219
+Austin,483,law_minus_random,E0_severity_only,Austin,0.07440715804,0.08760680127925898
+Austin,484,law_minus_random,E0_severity_only,Austin,0.09485104331,0.08684560977401551
+Austin,485,law_minus_random,E0_severity_only,Austin,0.09724441404,0.08605016648763221
+Austin,486,law_minus_random,E0_severity_only,Austin,0.07932920212,0.08388821831406154
+Austin,487,law_minus_random,E0_severity_only,Austin,0.0791686979,0.08646663561194728
+Austin,488,law_minus_random,E0_severity_only,Austin,0.07800402174000001,0.08720113890538066
+Austin,489,law_minus_random,E0_severity_only,Austin,0.09187238562,0.09082298687008065
+Austin,490,law_minus_random,E0_severity_only,Austin,0.11820319987,0.08765194017162448
+Austin,491,law_minus_random,E0_severity_only,Austin,0.08266424986,0.0901527497168276
+Austin,492,law_minus_random,E0_severity_only,Austin,0.08732422708,0.0871503280506635
+Chicago,145,law_minus_random,E0_severity_only,Chicago,0.07858160963,0.08766052616411311
+Chicago,146,law_minus_random,E0_severity_only,Chicago,0.08061128758000001,0.09216925442740016
+Chicago,147,law_minus_random,E0_severity_only,Chicago,0.07457018785,0.09258907383182173
+Chicago,149,law_minus_random,E0_severity_only,Chicago,0.07759014232,0.09237189028807283
+Chicago,150,law_minus_random,E0_severity_only,Chicago,0.10438813161,0.08904718719970706
+Chicago,152,law_minus_random,E0_severity_only,Chicago,0.06765921199,0.08993892192764848
+Chicago,153,law_minus_random,E0_severity_only,Chicago,0.10614468885,0.08303422905633838
+Chicago,154,law_minus_random,E0_severity_only,Chicago,0.08732078965,0.09135760862547632
+Chicago,155,law_minus_random,E0_severity_only,Chicago,0.07979844231,0.08623432810852698
+Chicago,156,law_minus_random,E0_severity_only,Chicago,0.08916410104,0.09151749258723804
+Chicago,157,law_minus_random,E0_severity_only,Chicago,0.10506808622,0.08361638157717106
+Chicago,158,law_minus_random,E0_severity_only,Chicago,0.09078453213,0.0842693563055681
+Chicago,159,law_minus_random,E0_severity_only,Chicago,0.09398969931,0.08808961297858188
+Dallas,55,law_minus_random,E0_severity_only,Dallas,0.052619514910000005,0.11032321055481342
+Dallas,56,law_minus_random,E0_severity_only,Dallas,0.06973439898,0.09777256549072012
+Dallas,57,law_minus_random,E0_severity_only,Dallas,0.05065964133,0.10854840091696658
+Dallas,58,law_minus_random,E0_severity_only,Dallas,0.07425028521,0.10270745879027866
+Dallas,59,law_minus_random,E0_severity_only,Dallas,0.052265279799999995,0.10048794175684544
+Dallas,60,law_minus_random,E0_severity_only,Dallas,0.057115178589999996,0.10214022243404815
+Dallas,61,law_minus_random,E0_severity_only,Dallas,0.04771040048,0.1045905855042202
+Dallas,62,law_minus_random,E0_severity_only,Dallas,0.07171277772,0.09406959005164471
+Dallas,63,law_minus_random,E0_severity_only,Dallas,0.05762920864,0.10401708512183462
+Dallas,64,law_minus_random,E0_severity_only,Dallas,0.044828071319999996,0.10451582428503764
+Houston,52,law_minus_random,E0_severity_only,Houston,0.08035869694,0.09026283124778237
+Houston,60,law_minus_random,E0_severity_only,Houston,0.07261306527,0.08196996263980061
+Houston,61,law_minus_random,E0_severity_only,Houston,0.08365022876,0.08396801100623322
+Houston,62,law_minus_random,E0_severity_only,Houston,0.09463934884,0.08242751085392558
+New York,98,law_minus_random,E0_severity_only,New York,0.12718999026,0.09144988477172902
+New York,99,law_minus_random,E0_severity_only,New York,0.06422580398,0.08984260404712549
+New York,100,law_minus_random,E0_severity_only,New York,0.06471960717,0.08713910404730112
+New York,101,law_minus_random,E0_severity_only,New York,0.10634629411,0.08529026046976165
+New York,102,law_minus_random,E0_severity_only,New York,0.0927406714,0.07647275451608941
+New York,103,law_minus_random,E0_severity_only,New York,0.11392916938,0.0714342225399316
+New York,104,law_minus_random,E0_severity_only,New York,0.11169981695999999,0.06836568694434403
+New York,105,law_minus_random,E0_severity_only,New York,0.08093249054,0.08022407221282847
+New York,106,law_minus_random,E0_severity_only,New York,0.07669228559,0.08870393573956264
+New York,107,law_minus_random,E0_severity_only,New York,0.10666901624,0.0751614018188172
+New York,108,law_minus_random,E0_severity_only,New York,0.11281999262,0.0782668110763256
+New York,109,law_minus_random,E0_severity_only,New York,0.11499809896999999,0.056043467811701074
+New York,110,law_minus_random,E0_severity_only,New York,0.09699939944,0.0612932685310164
+New York,111,law_minus_random,E0_severity_only,New York,0.09197630998,0.08235440238400231
+New York,112,law_minus_random,E0_severity_only,New York,0.08897891911,0.09065974021398555
+New York,113,law_minus_random,E0_severity_only,New York,0.08562829609,0.09038368164172138
+New York,115,law_minus_random,E0_severity_only,New York,0.08295294162,0.09288473577103784
+New York,116,law_minus_random,E0_severity_only,New York,0.08507245523,0.09270116509678979
+New York,117,law_minus_random,E0_severity_only,New York,0.06421285656999999,0.092629620552383
+New York,119,law_minus_random,E0_severity_only,New York,0.08280995180600001,0.09171264349039736
+New York,120,law_minus_random,E0_severity_only,New York,0.09176902981,0.09287415426551256
+New York,121,law_minus_random,E0_severity_only,New York,0.10080630147,0.06844917911215907
+New York,122,law_minus_random,E0_severity_only,New York,0.09063736021999999,0.0716348011295785
+New York,123,law_minus_random,E0_severity_only,New York,0.09802037149000001,0.08010188998925773
+Philadelphia,640,law_minus_random,E0_severity_only,Philadelphia,0.059572217520000005,0.08848111642755452
+Philadelphia,641,law_minus_random,E0_severity_only,Philadelphia,0.07020372562,0.08862510738224881
+Philadelphia,642,law_minus_random,E0_severity_only,Philadelphia,0.06657924373,0.0886667200409557
+Philadelphia,643,law_minus_random,E0_severity_only,Philadelphia,0.09990662413,0.0866480768016134
+Philadelphia,644,law_minus_random,E0_severity_only,Philadelphia,0.10506087034,0.08349366565918373
+Philadelphia,645,law_minus_random,E0_severity_only,Philadelphia,0.07519507549999999,0.08409327829276407
+Philadelphia,646,law_minus_random,E0_severity_only,Philadelphia,0.11520928301000001,0.08785903482551326
+Philadelphia,647,law_minus_random,E0_severity_only,Philadelphia,0.10098269925,0.08857713290122206
+Philadelphia,648,law_minus_random,E0_severity_only,Philadelphia,0.12604419874,0.08578779239836831
+Philadelphia,649,law_minus_random,E0_severity_only,Philadelphia,0.10305359092,0.08555905444248967
+Philadelphia,650,law_minus_random,E0_severity_only,Philadelphia,0.10230414434,0.08809128465891673
+Philadelphia,651,law_minus_random,E0_severity_only,Philadelphia,0.12487899702,0.08730944853634033
+Philadelphia,652,law_minus_random,E0_severity_only,Philadelphia,0.09426842542000001,0.0869079479925599
+Philadelphia,653,law_minus_random,E0_severity_only,Philadelphia,0.08161844443,0.0883060693398515
+Philadelphia,654,law_minus_random,E0_severity_only,Philadelphia,0.10771997315999998,0.0866469467370176
+Philadelphia,655,law_minus_random,E0_severity_only,Philadelphia,0.09304348492,0.08618533664136022
+Philadelphia,656,law_minus_random,E0_severity_only,Philadelphia,0.09072936365999999,0.08372087651021017
+Philadelphia,657,law_minus_random,E0_severity_only,Philadelphia,0.0818099108,0.08621586635526822
+Philadelphia,658,law_minus_random,E0_severity_only,Philadelphia,0.113220086089,0.08784385703039432
+Philadelphia,659,law_minus_random,E0_severity_only,Philadelphia,0.11147924588000001,0.08729179475867545
+San Antonio,491,law_minus_random,E0_severity_only,San Antonio,0.07766215463000001,0.09029531148773043
+San Antonio,492,law_minus_random,E0_severity_only,San Antonio,0.07364850132,0.09047090975315894
+San Antonio,493,law_minus_random,E0_severity_only,San Antonio,0.08689902475,0.09038654804083548
+San Antonio,494,law_minus_random,E0_severity_only,San Antonio,0.08797351703999999,0.08964668392107702
+San Antonio,495,law_minus_random,E0_severity_only,San Antonio,0.07672809780999999,0.09108081172122061
+San Antonio,496,law_minus_random,E0_severity_only,San Antonio,0.09727673915999999,0.08991748128210918
+San Antonio,497,law_minus_random,E0_severity_only,San Antonio,0.09420032837,0.09012684382603937
+San Antonio,498,law_minus_random,E0_severity_only,San Antonio,0.08693824267,0.09060771043576847
+San Antonio,499,law_minus_random,E0_severity_only,San Antonio,0.0687869492,0.09115079291988493
+San Antonio,500,law_minus_random,E0_severity_only,San Antonio,0.05328978664999999,0.09137147934164191
+San Antonio,501,law_minus_random,E0_severity_only,San Antonio,0.059284136259999995,0.08997934845525252
+San Antonio,502,law_minus_random,E0_severity_only,San Antonio,0.07579590476,0.08878614992533222
+San Antonio,503,law_minus_random,E0_severity_only,San Antonio,0.10302029614,0.0906726565826317
+San Antonio,504,law_minus_random,E0_severity_only,San Antonio,0.09085950485,0.09046742165301244
+San Antonio,505,law_minus_random,E0_severity_only,San Antonio,0.10692562644,0.09007723460111228
+San Antonio,506,law_minus_random,E0_severity_only,San Antonio,0.053045495096000005,0.09162139914354561
+San Antonio,507,law_minus_random,E0_severity_only,San Antonio,0.11268610144,0.08855658597820482
+San Antonio,508,law_minus_random,E0_severity_only,San Antonio,0.10276338112,0.08819645440476727
+San Antonio,509,law_minus_random,E0_severity_only,San Antonio,0.1109086692,0.08998682165073962
+Austin,478,law_minus_random,E1_top_tail_structure,Austin,0.07470525851000001,0.0851511206555937
+Austin,479,law_minus_random,E1_top_tail_structure,Austin,0.09178658648,0.08500713705011763
+Austin,480,law_minus_random,E1_top_tail_structure,Austin,0.09468031517,0.08489887844898818
+Austin,481,law_minus_random,E1_top_tail_structure,Austin,0.0999151369,0.08412681900366133
+Austin,482,law_minus_random,E1_top_tail_structure,Austin,0.07595744764,0.08522007716619176
+Austin,483,law_minus_random,E1_top_tail_structure,Austin,0.07440715804,0.08528933528686973
+Austin,484,law_minus_random,E1_top_tail_structure,Austin,0.09485104331,0.08504516178537194
+Austin,485,law_minus_random,E1_top_tail_structure,Austin,0.09724441404,0.08692568441157415
+Austin,486,law_minus_random,E1_top_tail_structure,Austin,0.07932920212,0.08670494949116743
+Austin,487,law_minus_random,E1_top_tail_structure,Austin,0.0791686979,0.08492141713592267
+Austin,488,law_minus_random,E1_top_tail_structure,Austin,0.07800402174000001,0.08534028222923543
+Austin,489,law_minus_random,E1_top_tail_structure,Austin,0.09187238562,0.08307355805848668
+Austin,490,law_minus_random,E1_top_tail_structure,Austin,0.11820319987,0.08556161346368432
+Austin,491,law_minus_random,E1_top_tail_structure,Austin,0.08266424986,0.082331116808157
+Austin,492,law_minus_random,E1_top_tail_structure,Austin,0.08732422708,0.0848346344336832
+Chicago,145,law_minus_random,E1_top_tail_structure,Chicago,0.07858160963,0.08962675446735457
+Chicago,146,law_minus_random,E1_top_tail_structure,Chicago,0.08061128758000001,0.08653820457240473
+Chicago,147,law_minus_random,E1_top_tail_structure,Chicago,0.07457018785,0.08647725125122668
+Chicago,149,law_minus_random,E1_top_tail_structure,Chicago,0.07759014232,0.08445883524842981
+Chicago,150,law_minus_random,E1_top_tail_structure,Chicago,0.10438813161,0.08824643821078476
+Chicago,152,law_minus_random,E1_top_tail_structure,Chicago,0.06765921199,0.10251610268659797
+Chicago,153,law_minus_random,E1_top_tail_structure,Chicago,0.10614468885,0.08916953813117434
+Chicago,154,law_minus_random,E1_top_tail_structure,Chicago,0.08732078965,0.09074891629779763
+Chicago,155,law_minus_random,E1_top_tail_structure,Chicago,0.07979844231,0.0896120174156065
+Chicago,156,law_minus_random,E1_top_tail_structure,Chicago,0.08916410104,0.08895971167678239
+Chicago,157,law_minus_random,E1_top_tail_structure,Chicago,0.10506808622,0.08836042119277282
+Chicago,158,law_minus_random,E1_top_tail_structure,Chicago,0.09078453213,0.08888670644060198
+Chicago,159,law_minus_random,E1_top_tail_structure,Chicago,0.09398969931,0.0901138566098016
+Dallas,55,law_minus_random,E1_top_tail_structure,Dallas,0.052619514910000005,0.09180556256531813
+Dallas,56,law_minus_random,E1_top_tail_structure,Dallas,0.06973439898,0.09177796988181426
+Dallas,57,law_minus_random,E1_top_tail_structure,Dallas,0.05065964133,0.09180556256531813
+Dallas,58,law_minus_random,E1_top_tail_structure,Dallas,0.07425028521,0.09177505206399306
+Dallas,59,law_minus_random,E1_top_tail_structure,Dallas,0.052265279799999995,0.09180556256531813
+Dallas,60,law_minus_random,E1_top_tail_structure,Dallas,0.057115178589999996,0.09180556256531813
+Dallas,61,law_minus_random,E1_top_tail_structure,Dallas,0.04771040048,0.09180556256531813
+Dallas,62,law_minus_random,E1_top_tail_structure,Dallas,0.07171277772,0.09177329199894423
+Dallas,63,law_minus_random,E1_top_tail_structure,Dallas,0.05762920864,0.09180556256531813
+Dallas,64,law_minus_random,E1_top_tail_structure,Dallas,0.044828071319999996,0.09180556256531813
+Houston,52,law_minus_random,E1_top_tail_structure,Houston,0.08035869694,0.08344152718547436
+Houston,60,law_minus_random,E1_top_tail_structure,Houston,0.07261306527,0.08304396805824972
+Houston,61,law_minus_random,E1_top_tail_structure,Houston,0.08365022876,0.08366541932808008
+Houston,62,law_minus_random,E1_top_tail_structure,Houston,0.09463934884,0.08318938542926066
+New York,98,law_minus_random,E1_top_tail_structure,New York,0.12718999026,0.11526021309665473
+New York,99,law_minus_random,E1_top_tail_structure,New York,0.06422580398,0.09127520862498982
+New York,100,law_minus_random,E1_top_tail_structure,New York,0.06471960717,0.09643587134732304
+New York,101,law_minus_random,E1_top_tail_structure,New York,0.10634629411,0.08544673680274156
+New York,102,law_minus_random,E1_top_tail_structure,New York,0.0927406714,0.08530064867992432
+New York,103,law_minus_random,E1_top_tail_structure,New York,0.11392916938,0.08544780099207658
+New York,104,law_minus_random,E1_top_tail_structure,New York,0.11169981695999999,0.08580733780606205
+New York,105,law_minus_random,E1_top_tail_structure,New York,0.08093249054,0.08540175623165945
+New York,106,law_minus_random,E1_top_tail_structure,New York,0.07669228559,0.08678490952917776
+New York,107,law_minus_random,E1_top_tail_structure,New York,0.10666901624,0.08560293775094972
+New York,108,law_minus_random,E1_top_tail_structure,New York,0.11281999262,0.08582912024373932
+New York,109,law_minus_random,E1_top_tail_structure,New York,0.11499809896999999,0.08567602894321266
+New York,110,law_minus_random,E1_top_tail_structure,New York,0.09699939944,0.08527807050502766
+New York,111,law_minus_random,E1_top_tail_structure,New York,0.09197630998,0.08551595619412634
+New York,112,law_minus_random,E1_top_tail_structure,New York,0.08897891911,0.08416359074454646
+New York,113,law_minus_random,E1_top_tail_structure,New York,0.08562829609,0.084073586052229
+New York,115,law_minus_random,E1_top_tail_structure,New York,0.08295294162,0.09925358914413952
+New York,116,law_minus_random,E1_top_tail_structure,New York,0.08507245523,0.08448578860682951
+New York,117,law_minus_random,E1_top_tail_structure,New York,0.06421285656999999,0.08352459264792042
+New York,119,law_minus_random,E1_top_tail_structure,New York,0.08280995180600001,0.12574086532709047
+New York,120,law_minus_random,E1_top_tail_structure,New York,0.09176902981,0.08857705999526956
+New York,121,law_minus_random,E1_top_tail_structure,New York,0.10080630147,0.0854997962481002
+New York,122,law_minus_random,E1_top_tail_structure,New York,0.09063736021999999,0.08529891537757414
+New York,123,law_minus_random,E1_top_tail_structure,New York,0.09802037149000001,0.0852745903933628
+Philadelphia,640,law_minus_random,E1_top_tail_structure,Philadelphia,0.059572217520000005,0.08143979304951059
+Philadelphia,641,law_minus_random,E1_top_tail_structure,Philadelphia,0.07020372562,0.08076136152273292
+Philadelphia,642,law_minus_random,E1_top_tail_structure,Philadelphia,0.06657924373,0.08060509125136013
+Philadelphia,643,law_minus_random,E1_top_tail_structure,Philadelphia,0.09990662413,0.08145091386000147
+Philadelphia,644,law_minus_random,E1_top_tail_structure,Philadelphia,0.10506087034,0.08362109348307036
+Philadelphia,645,law_minus_random,E1_top_tail_structure,Philadelphia,0.07519507549999999,0.08470456683218491
+Philadelphia,646,law_minus_random,E1_top_tail_structure,Philadelphia,0.11520928301000001,0.08100193434289218
+Philadelphia,647,law_minus_random,E1_top_tail_structure,Philadelphia,0.10098269925,0.08044940897541776
+Philadelphia,648,law_minus_random,E1_top_tail_structure,Philadelphia,0.12604419874,0.08311096487125785
+Philadelphia,649,law_minus_random,E1_top_tail_structure,Philadelphia,0.10305359092,0.08316706390154549
+Philadelphia,650,law_minus_random,E1_top_tail_structure,Philadelphia,0.10230414434,0.08179704156236993
+Philadelphia,651,law_minus_random,E1_top_tail_structure,Philadelphia,0.12487899702,0.08300778053518668
+Philadelphia,652,law_minus_random,E1_top_tail_structure,Philadelphia,0.09426842542000001,0.08353892668843581
+Philadelphia,653,law_minus_random,E1_top_tail_structure,Philadelphia,0.08161844443,0.08419212102187744
+Philadelphia,654,law_minus_random,E1_top_tail_structure,Philadelphia,0.10771997315999998,0.08499179049490657
+Philadelphia,655,law_minus_random,E1_top_tail_structure,Philadelphia,0.09304348492,0.08395703259573345
+Philadelphia,656,law_minus_random,E1_top_tail_structure,Philadelphia,0.09072936365999999,0.08373610596435146
+Philadelphia,657,law_minus_random,E1_top_tail_structure,Philadelphia,0.0818099108,0.08400066922141018
+Philadelphia,658,law_minus_random,E1_top_tail_structure,Philadelphia,0.113220086089,0.109623345595532
+Philadelphia,659,law_minus_random,E1_top_tail_structure,Philadelphia,0.11147924588000001,0.08266019708779766
+San Antonio,491,law_minus_random,E1_top_tail_structure,San Antonio,0.07766215463000001,0.08825639163796603
+San Antonio,492,law_minus_random,E1_top_tail_structure,San Antonio,0.07364850132,0.08939504698774002
+San Antonio,493,law_minus_random,E1_top_tail_structure,San Antonio,0.08689902475,0.08937732744336362
+San Antonio,494,law_minus_random,E1_top_tail_structure,San Antonio,0.08797351703999999,0.08744884076713763
+San Antonio,495,law_minus_random,E1_top_tail_structure,San Antonio,0.07672809780999999,0.08457612769494831
+San Antonio,496,law_minus_random,E1_top_tail_structure,San Antonio,0.09727673915999999,0.08588480193204553
+San Antonio,497,law_minus_random,E1_top_tail_structure,San Antonio,0.09420032837,0.08782379960755995
+San Antonio,498,law_minus_random,E1_top_tail_structure,San Antonio,0.08693824267,0.088293121321703
+San Antonio,499,law_minus_random,E1_top_tail_structure,San Antonio,0.0687869492,0.0819077469258972
+San Antonio,500,law_minus_random,E1_top_tail_structure,San Antonio,0.05328978664999999,0.10984834540035886
+San Antonio,501,law_minus_random,E1_top_tail_structure,San Antonio,0.059284136259999995,0.09799077071812985
+San Antonio,502,law_minus_random,E1_top_tail_structure,San Antonio,0.07579590476,0.08905422819474014
+San Antonio,503,law_minus_random,E1_top_tail_structure,San Antonio,0.10302029614,0.08552741734373207
+San Antonio,504,law_minus_random,E1_top_tail_structure,San Antonio,0.09085950485,0.08718621464548165
+San Antonio,505,law_minus_random,E1_top_tail_structure,San Antonio,0.10692562644,0.08736851556969101
+San Antonio,506,law_minus_random,E1_top_tail_structure,San Antonio,0.053045495096000005,0.07951010803001998
+San Antonio,507,law_minus_random,E1_top_tail_structure,San Antonio,0.11268610144,0.0860573022903968
+San Antonio,508,law_minus_random,E1_top_tail_structure,San Antonio,0.10276338112,0.08612683492129207
+San Antonio,509,law_minus_random,E1_top_tail_structure,San Antonio,0.1109086692,0.08547843815749423
+Austin,478,law_minus_random,E2_severity_plus_top_tail,Austin,0.07470525851000001,0.08900347028643747
+Austin,479,law_minus_random,E2_severity_plus_top_tail,Austin,0.09178658648,0.0824405446809991
+Austin,480,law_minus_random,E2_severity_plus_top_tail,Austin,0.09468031517,0.085213597875922
+Austin,481,law_minus_random,E2_severity_plus_top_tail,Austin,0.0999151369,0.08629772250417908
+Austin,482,law_minus_random,E2_severity_plus_top_tail,Austin,0.07595744764,0.07986143555928639
+Austin,483,law_minus_random,E2_severity_plus_top_tail,Austin,0.07440715804,0.08481951490040424
+Austin,484,law_minus_random,E2_severity_plus_top_tail,Austin,0.09485104331,0.08453192627327967
+Austin,485,law_minus_random,E2_severity_plus_top_tail,Austin,0.09724441404,0.08431907817735546
+Austin,486,law_minus_random,E2_severity_plus_top_tail,Austin,0.07932920212,0.08332129616121171
+Austin,487,law_minus_random,E2_severity_plus_top_tail,Austin,0.0791686979,0.08540999416808825
+Austin,488,law_minus_random,E2_severity_plus_top_tail,Austin,0.07800402174000001,0.08443993444524607
+Austin,489,law_minus_random,E2_severity_plus_top_tail,Austin,0.09187238562,0.08675518921082172
+Austin,490,law_minus_random,E2_severity_plus_top_tail,Austin,0.11820319987,0.08558161650997348
+Austin,491,law_minus_random,E2_severity_plus_top_tail,Austin,0.08266424986,0.08424181867423951
+Austin,492,law_minus_random,E2_severity_plus_top_tail,Austin,0.08732422708,0.08520944326025578
+Chicago,145,law_minus_random,E2_severity_plus_top_tail,Chicago,0.07858160963,0.0909485758693853
+Chicago,146,law_minus_random,E2_severity_plus_top_tail,Chicago,0.08061128758000001,0.09156696422552606
+Chicago,147,law_minus_random,E2_severity_plus_top_tail,Chicago,0.07457018785,0.09239748351734911
+Chicago,149,law_minus_random,E2_severity_plus_top_tail,Chicago,0.07759014232,0.08743521153395307
+Chicago,150,law_minus_random,E2_severity_plus_top_tail,Chicago,0.10438813161,0.08885700903959838
+Chicago,152,law_minus_random,E2_severity_plus_top_tail,Chicago,0.06765921199,0.11123645796316012
+Chicago,153,law_minus_random,E2_severity_plus_top_tail,Chicago,0.10614468885,0.08973519554474495
+Chicago,154,law_minus_random,E2_severity_plus_top_tail,Chicago,0.08732078965,0.09539163813235658
+Chicago,155,law_minus_random,E2_severity_plus_top_tail,Chicago,0.07979844231,0.08734717890083676
+Chicago,156,law_minus_random,E2_severity_plus_top_tail,Chicago,0.08916410104,0.09583615530427815
+Chicago,157,law_minus_random,E2_severity_plus_top_tail,Chicago,0.10506808622,0.0852709185025735
+Chicago,158,law_minus_random,E2_severity_plus_top_tail,Chicago,0.09078453213,0.08625769781599898
+Chicago,159,law_minus_random,E2_severity_plus_top_tail,Chicago,0.09398969931,0.09187487263008894
+Dallas,55,law_minus_random,E2_severity_plus_top_tail,Dallas,0.052619514910000005,0.1164418342985158
+Dallas,56,law_minus_random,E2_severity_plus_top_tail,Dallas,0.06973439898,0.09965045107426389
+Dallas,57,law_minus_random,E2_severity_plus_top_tail,Dallas,0.05065964133,0.114003035345095
+Dallas,58,law_minus_random,E2_severity_plus_top_tail,Dallas,0.07425028521,0.10575852049342566
+Dallas,59,law_minus_random,E2_severity_plus_top_tail,Dallas,0.052265279799999995,0.10559439550375611
+Dallas,60,law_minus_random,E2_severity_plus_top_tail,Dallas,0.057115178589999996,0.10611019246591706
+Dallas,61,law_minus_random,E2_severity_plus_top_tail,Dallas,0.04771040048,0.10984788639540873
+Dallas,62,law_minus_random,E2_severity_plus_top_tail,Dallas,0.07171277772,0.09328029799173904
+Dallas,63,law_minus_random,E2_severity_plus_top_tail,Dallas,0.05762920864,0.10690013745465447
+Dallas,64,law_minus_random,E2_severity_plus_top_tail,Dallas,0.044828071319999996,0.10898733468058629
+Houston,52,law_minus_random,E2_severity_plus_top_tail,Houston,0.08035869694,0.0864010174556783
+Houston,60,law_minus_random,E2_severity_plus_top_tail,Houston,0.07261306527,0.07895435172757226
+Houston,61,law_minus_random,E2_severity_plus_top_tail,Houston,0.08365022876,0.08339233554064199
+Houston,62,law_minus_random,E2_severity_plus_top_tail,Houston,0.09463934884,0.08074860012400543
+New York,98,law_minus_random,E2_severity_plus_top_tail,New York,0.12718999026,0.10790561938793271
+New York,99,law_minus_random,E2_severity_plus_top_tail,New York,0.06422580398,0.09353052193160084
+New York,100,law_minus_random,E2_severity_plus_top_tail,New York,0.06471960717,0.09282736380018637
+New York,101,law_minus_random,E2_severity_plus_top_tail,New York,0.10634629411,0.08615754972916992
+New York,102,law_minus_random,E2_severity_plus_top_tail,New York,0.0927406714,0.0778999989128348
+New York,103,law_minus_random,E2_severity_plus_top_tail,New York,0.11392916938,0.07363441184091728
+New York,104,law_minus_random,E2_severity_plus_top_tail,New York,0.11169981695999999,0.07394817110431598
+New York,105,law_minus_random,E2_severity_plus_top_tail,New York,0.08093249054,0.0822949451810697
+New York,106,law_minus_random,E2_severity_plus_top_tail,New York,0.07669228559,0.0902088266019255
+New York,107,law_minus_random,E2_severity_plus_top_tail,New York,0.10666901624,0.08050892819026778
+New York,108,law_minus_random,E2_severity_plus_top_tail,New York,0.11281999262,0.08184963961625147
+New York,109,law_minus_random,E2_severity_plus_top_tail,New York,0.11499809896999999,0.062127076402223404
+New York,110,law_minus_random,E2_severity_plus_top_tail,New York,0.09699939944,0.06633508424130607
+New York,111,law_minus_random,E2_severity_plus_top_tail,New York,0.09197630998,0.08913013594233642
+New York,112,law_minus_random,E2_severity_plus_top_tail,New York,0.08897891911,0.08986278669075531
+New York,113,law_minus_random,E2_severity_plus_top_tail,New York,0.08562829609,0.0897295438321463
+New York,115,law_minus_random,E2_severity_plus_top_tail,New York,0.08295294162,0.1005606775615967
+New York,116,law_minus_random,E2_severity_plus_top_tail,New York,0.08507245523,0.0917653537244148
+New York,117,law_minus_random,E2_severity_plus_top_tail,New York,0.06421285656999999,0.09125066718557423
+New York,119,law_minus_random,E2_severity_plus_top_tail,New York,0.08280995180600001,0.11648392486011003
+New York,120,law_minus_random,E2_severity_plus_top_tail,New York,0.09176902981,0.09499434723691115
+New York,121,law_minus_random,E2_severity_plus_top_tail,New York,0.10080630147,0.0741074869820656
+New York,122,law_minus_random,E2_severity_plus_top_tail,New York,0.09063736021999999,0.07616972607330522
+New York,123,law_minus_random,E2_severity_plus_top_tail,New York,0.09802037149000001,0.08398661067039878
+Philadelphia,640,law_minus_random,E2_severity_plus_top_tail,Philadelphia,0.059572217520000005,0.08371170304577813
+Philadelphia,641,law_minus_random,E2_severity_plus_top_tail,Philadelphia,0.07020372562,0.0830650628494814
+Philadelphia,642,law_minus_random,E2_severity_plus_top_tail,Philadelphia,0.06657924373,0.08295196607714088
+Philadelphia,643,law_minus_random,E2_severity_plus_top_tail,Philadelphia,0.09990662413,0.08211543953351348
+Philadelphia,644,law_minus_random,E2_severity_plus_top_tail,Philadelphia,0.10506087034,0.08146279448157853
+Philadelphia,645,law_minus_random,E2_severity_plus_top_tail,Philadelphia,0.07519507549999999,0.08306934498381964
+Philadelphia,646,law_minus_random,E2_severity_plus_top_tail,Philadelphia,0.11520928301000001,0.08275180259796142
+Philadelphia,647,law_minus_random,E2_severity_plus_top_tail,Philadelphia,0.10098269925,0.0827324556867479
+Philadelphia,648,law_minus_random,E2_severity_plus_top_tail,Philadelphia,0.12604419874,0.08360246739078205
+Philadelphia,649,law_minus_random,E2_severity_plus_top_tail,Philadelphia,0.10305359092,0.08334510162173629
+Philadelphia,650,law_minus_random,E2_severity_plus_top_tail,Philadelphia,0.10230414434,0.08405558109022332
+Philadelphia,651,law_minus_random,E2_severity_plus_top_tail,Philadelphia,0.12487899702,0.08507811393215153
+Philadelphia,652,law_minus_random,E2_severity_plus_top_tail,Philadelphia,0.09426842542000001,0.08507755822575383
+Philadelphia,653,law_minus_random,E2_severity_plus_top_tail,Philadelphia,0.08161844443,0.08717557780447051
+Philadelphia,654,law_minus_random,E2_severity_plus_top_tail,Philadelphia,0.10771997315999998,0.08624292583934011
+Philadelphia,655,law_minus_random,E2_severity_plus_top_tail,Philadelphia,0.09304348492,0.08457296305556379
+Philadelphia,656,law_minus_random,E2_severity_plus_top_tail,Philadelphia,0.09072936365999999,0.08226625416784858
+Philadelphia,657,law_minus_random,E2_severity_plus_top_tail,Philadelphia,0.0818099108,0.08447085026013167
+Philadelphia,658,law_minus_random,E2_severity_plus_top_tail,Philadelphia,0.113220086089,0.10865897372947823
+Philadelphia,659,law_minus_random,E2_severity_plus_top_tail,Philadelphia,0.11147924588000001,0.08415912224583069
+San Antonio,491,law_minus_random,E2_severity_plus_top_tail,San Antonio,0.07766215463000001,0.08831148499768231
+San Antonio,492,law_minus_random,E2_severity_plus_top_tail,San Antonio,0.07364850132,0.08724200420594577
+San Antonio,493,law_minus_random,E2_severity_plus_top_tail,San Antonio,0.08689902475,0.08960177077772141
+San Antonio,494,law_minus_random,E2_severity_plus_top_tail,San Antonio,0.08797351703999999,0.08707698345479203
+San Antonio,495,law_minus_random,E2_severity_plus_top_tail,San Antonio,0.07672809780999999,0.08556904824631875
+San Antonio,496,law_minus_random,E2_severity_plus_top_tail,San Antonio,0.09727673915999999,0.0841054188124403
+San Antonio,497,law_minus_random,E2_severity_plus_top_tail,San Antonio,0.09420032837,0.08802260454879304
+San Antonio,498,law_minus_random,E2_severity_plus_top_tail,San Antonio,0.08693824267,0.08923144666460077
+San Antonio,499,law_minus_random,E2_severity_plus_top_tail,San Antonio,0.0687869492,0.0834030514772116
+San Antonio,500,law_minus_random,E2_severity_plus_top_tail,San Antonio,0.05328978664999999,0.10589572001577217
+San Antonio,501,law_minus_random,E2_severity_plus_top_tail,San Antonio,0.059284136259999995,0.09388907796595873
+San Antonio,502,law_minus_random,E2_severity_plus_top_tail,San Antonio,0.07579590476,0.08484868308066258
+San Antonio,503,law_minus_random,E2_severity_plus_top_tail,San Antonio,0.10302029614,0.0857045022575534
+San Antonio,504,law_minus_random,E2_severity_plus_top_tail,San Antonio,0.09085950485,0.08755259042488257
+San Antonio,505,law_minus_random,E2_severity_plus_top_tail,San Antonio,0.10692562644,0.08911057294980072
+San Antonio,506,law_minus_random,E2_severity_plus_top_tail,San Antonio,0.053045495096000005,0.0814152150177277
+San Antonio,507,law_minus_random,E2_severity_plus_top_tail,San Antonio,0.11268610144,0.08393952590347853
+San Antonio,508,law_minus_random,E2_severity_plus_top_tail,San Antonio,0.10276338112,0.08411856747438058
+San Antonio,509,law_minus_random,E2_severity_plus_top_tail,San Antonio,0.1109086692,0.08820603914146452

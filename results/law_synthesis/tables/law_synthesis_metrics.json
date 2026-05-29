@@ -155,5 +155,15 @@
   "parameter_channel_efficiency_top10_capture": 0.2012001150356395,
   "parameter_channel_light_activation_top10_capture": 0.9999526214946493,
   "parameter_channel_full_activation_top10_capture": 1.0,
-  "parameter_channel_n_groups": 2381
+  "parameter_channel_n_groups": 2381,
+  "event_decision_v21_decision_vs_loss_spearman": -0.4584698320547376,
+  "event_decision_v21_decision_vs_top5_spearman": 0.7650261684786042,
+  "event_decision_v21_decision_vs_gini_spearman": 0.8412274391734418,
+  "event_decision_v21_top5_between_city_share": 0.599033146092653,
+  "event_decision_v21_gini_between_city_share": 0.4341584660946537,
+  "event_decision_v21_severity_only_loco_spearman": -0.040192826041882644,
+  "event_decision_v21_top_tail_loco_spearman": 0.6789706228346499,
+  "event_decision_v21_high_loss_low_decision_count": 13,
+  "event_decision_v21_moderate_loss_high_decision_count": 19,
+  "event_decision_v21_high_rain_low_decision_count": 16
 }
