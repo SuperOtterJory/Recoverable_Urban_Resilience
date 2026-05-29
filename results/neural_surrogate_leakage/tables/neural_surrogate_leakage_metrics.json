@@ -1,0 +1,17 @@
+{
+  "leave_city_factorized_mlp_top5_capture": 0.9328904164694146,
+  "leave_city_full_mlp_top5_capture": 0.9416643489058986,
+  "leave_city_factorized_ridge_top5_capture": 0.9345694288746202,
+  "leave_city_full_ridge_top5_capture": 0.9605476453091839,
+  "leave_city_full_mlp_minus_ridge_top5": -0.018883296403285343,
+  "leave_city_factorized_mlp_minus_ridge_top5": -0.0016790124052056266,
+  "random_event_full_mlp_top5_capture": 0.9572695738180176,
+  "random_event_full_ridge_top5_capture": 0.9669489998884918,
+  "random_event_city_id_mlp_top5_capture": 0.9599719702028624,
+  "random_event_city_id_minus_no_id_top5": 0.0027023963848448185,
+  "random_event_minus_leave_city_full_mlp_top5": 0.01560522491211902,
+  "token_random_full_mlp_spearman": 0.9817151849092646,
+  "token_random_event_id_mlp_spearman": 0.9979588623727074,
+  "token_random_full_ridge_spearman": 0.9552220360386269,
+  "token_random_event_id_minus_no_id_spearman": 0.016243677463442796
+}

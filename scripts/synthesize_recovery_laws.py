@@ -98,6 +98,8 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "temporal_model_summary": read_csv(results / "temporal_generalization" / "tables" / "temporal_model_summary.csv"),
         "temporal_gap_summary": read_csv(results / "temporal_generalization" / "tables" / "temporal_gap_summary.csv"),
         "temporal_metrics": read_json_table(results / "temporal_generalization" / "tables" / "temporal_generalization_metrics.json"),
+        "neural_summary": read_csv(results / "neural_surrogate_leakage" / "tables" / "neural_surrogate_summary.csv"),
+        "neural_metrics": read_json_table(results / "neural_surrogate_leakage" / "tables" / "neural_surrogate_leakage_metrics.json"),
         "objective_summary": read_csv(results / "training_objective_ablation" / "tables" / "objective_model_summary.csv"),
         "objective_improvements": read_csv(results / "training_objective_ablation" / "tables" / "objective_improvement_summary.csv"),
         "parameter_summary": read_csv(results / "parameter_deconfounded_law" / "tables" / "parameter_deconfounded_model_summary.csv"),
@@ -270,6 +272,7 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         temporal_gaps["comparison"].eq("activated_law_vs_deficit_only")
         & temporal_gaps["split_role"].eq("main_within_city_chronological")
     ] if not temporal_gaps.empty and "split_role" in temporal_gaps else pd.DataFrame()
+    neural_metrics = one_row(data["neural_metrics"])
     objective_summary = data["objective_summary"]
     objective_improvements = data["objective_improvements"]
     objective_factorized = one_row(objective_improvements, feature_set="factorized_low_dim")
@@ -463,6 +466,20 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "temporal_factorized_year_confounded_min_top5_capture": safe_float(temporal_factorized_year.get("min_top5_capture")),
         "temporal_full_year_confounded_top5_capture": safe_float(temporal_full_year.get("mean_top5_capture")),
         "temporal_year_holdout_design_note": str(temporal_metrics.get("year_holdout_design_note", "")),
+        "neural_leave_city_factorized_mlp_top5_capture": safe_float(neural_metrics.get("leave_city_factorized_mlp_top5_capture")),
+        "neural_leave_city_full_mlp_top5_capture": safe_float(neural_metrics.get("leave_city_full_mlp_top5_capture")),
+        "neural_leave_city_factorized_ridge_top5_capture": safe_float(neural_metrics.get("leave_city_factorized_ridge_top5_capture")),
+        "neural_leave_city_full_ridge_top5_capture": safe_float(neural_metrics.get("leave_city_full_ridge_top5_capture")),
+        "neural_leave_city_full_mlp_minus_ridge_top5": safe_float(neural_metrics.get("leave_city_full_mlp_minus_ridge_top5")),
+        "neural_leave_city_factorized_mlp_minus_ridge_top5": safe_float(neural_metrics.get("leave_city_factorized_mlp_minus_ridge_top5")),
+        "neural_random_event_full_mlp_top5_capture": safe_float(neural_metrics.get("random_event_full_mlp_top5_capture")),
+        "neural_random_event_full_ridge_top5_capture": safe_float(neural_metrics.get("random_event_full_ridge_top5_capture")),
+        "neural_random_event_city_id_mlp_top5_capture": safe_float(neural_metrics.get("random_event_city_id_mlp_top5_capture")),
+        "neural_random_event_city_id_minus_no_id_top5": safe_float(neural_metrics.get("random_event_city_id_minus_no_id_top5")),
+        "neural_random_event_minus_leave_city_full_mlp_top5": safe_float(neural_metrics.get("random_event_minus_leave_city_full_mlp_top5")),
+        "neural_token_random_full_mlp_spearman": safe_float(neural_metrics.get("token_random_full_mlp_spearman")),
+        "neural_token_random_event_id_mlp_spearman": safe_float(neural_metrics.get("token_random_event_id_mlp_spearman")),
+        "neural_token_random_event_id_minus_no_id_spearman": safe_float(neural_metrics.get("token_random_event_id_minus_no_id_spearman")),
         "objective_factorized_raw_top5_capture": safe_float(objective_factorized.get("raw_log_top5_capture")),
         "objective_factorized_top_tail_weighted_top5_capture": safe_float(objective_factorized.get("top_tail_weighted_top5_capture")),
         "objective_factorized_rank_top5_capture": safe_float(objective_factorized.get("rank_percentile_top5_capture")),
@@ -720,6 +737,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "value": metrics["temporal_factorized_main_top5_capture"],
             "interpretation": "Within each city, early/middle/late and early/late event periods are held out; the compact factorized law keeps high top-tail capture, while year-holdout is reported only as city-confounded audit.",
         },
+        {
+            "version": "V26",
+            "evidence_step": "Neural surrogate and identity-leakage audit",
+            "main_question": "Does a lightweight neural surrogate reveal hidden nonlinear structure, or do random splits and identities inflate apparent performance?",
+            "key_metric": "leave_city_full_mlp_minus_ridge_top5",
+            "value": metrics["neural_leave_city_full_mlp_minus_ridge_top5"],
+            "interpretation": "On strict leave-city top-tail evaluation, the MLP does not beat ridge; city identity adds only a tiny random-event gain, while event identity inflates token-random correlation. This supports compact laws and strict split design.",
+        },
     ]
     return pd.DataFrame(rows)
 
@@ -860,9 +885,9 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
             },
             {
                 "item": "surrogate_architecture",
-                "current_status": "V16 adds a factorized leave-one-city action-value surrogate; V17 adds observed-vs-shuffled OD graph alignment; V22 tests explicit one-hop/two-hop OD message features.",
-                "implication": "The low-dimensional activated structure is strongly supported; V22 shows higher-order OD messages add little beyond scalar OD alignment in the current labels.",
-                "next_step": "Use a neural graph surrogate only if the paper later makes higher-order spatial representation a central contribution.",
+                "current_status": "V16 adds a factorized leave-one-city action-value surrogate; V17 adds observed-vs-shuffled OD graph alignment; V22 tests explicit one-hop/two-hop OD message features; V26 compares ridge and lightweight MLP surrogates under leave-city, random-event, and token-random splits with identity audits.",
+                "implication": "The low-dimensional activated structure is strongly supported; higher-order OD messages add little beyond scalar OD alignment, and the MLP does not beat ridge under strict leave-city top-tail evaluation. Random token splits with event identity can inflate apparent fit.",
+                "next_step": "Use neural graph or listwise surrogates only if the paper later makes higher-order spatial representation or operational prediction a central contribution.",
             },
             {
                 "item": "graph_structure_scope",
@@ -1022,11 +1047,13 @@ def write_report(
     limitations: pd.DataFrame,
 ) -> None:
     lines = [
-        "# Recoverability Law Synthesis V25",
+        "# Recoverability Law Synthesis V26",
+        "",
+        "V26 adds a neural-surrogate and identity-leakage audit on top of the V25 temporal robustness evidence. The audit asks whether a lightweight MLP reveals hidden nonlinear structure beyond the ridge laws, and whether random-event or token-random splits with identity features inflate apparent performance.",
         "",
         "## 本版做了什么",
         "",
-        "V25 将 temporal robustness 接入 learning/law synthesis。在 V24 的 parameter-ensemble LP closure 之后，本版补齐 high-level idea 中的 leave-time-period-out 方向：主检验采用 within-city chronological holdout，因为当前 calendar year 与 city composition 高度混杂；year-holdout 只作为带标签的 confounded audit。",
+        "V26 在 V25 temporal robustness 之后加入 neural surrogate 与 identity-leakage audit：主检验仍以严格 leave-city / leave-event 结构为准，random-event 与 token-random 结果只用于诊断是否存在 split 或 identity 记忆。",
         "",
         "## 当前可写入论文的 law",
         "",
@@ -1058,8 +1085,11 @@ def write_report(
         "",
         "14. **Temporal robustness result**：在 within-city chronological holdout 中，按每个城市的事件发生顺序留出 early/middle/late 或 early/late 时，compact factorized law 仍保持较高 top-tail capture；calendar-year holdout 由于和城市样本组成混杂，只能作为审计而不能单独声称干净时间外推。",
         "",
+        "15. **Neural parsimony and leakage audit**: under strict leave-city top-tail evaluation, a lightweight MLP does not improve on ridge; random-event performance is slightly easier, city identity adds only a small top-tail gain, and event identity inflates token-random correlation. The scientific law should therefore be evaluated with strict city/event splits rather than token-level memorization checks.",
+        "",
         "## 关键指标",
         "",
+        f"- neural surrogate/leakage audit: leave-city full MLP top-5% capture = {metrics['neural_leave_city_full_mlp_top5_capture']:.4f} vs full ridge = {metrics['neural_leave_city_full_ridge_top5_capture']:.4f}; factorized MLP = {metrics['neural_leave_city_factorized_mlp_top5_capture']:.4f} vs factorized ridge = {metrics['neural_leave_city_factorized_ridge_top5_capture']:.4f}; random-event full MLP = {metrics['neural_random_event_full_mlp_top5_capture']:.4f}; city-ID random-event gain = {metrics['neural_random_event_city_id_minus_no_id_top5']:+.4f}; event-ID token-random Spearman gain = {metrics['neural_token_random_event_id_minus_no_id_spearman']:+.4f}",
         f"- action tokens: {metrics['n_action_tokens']:,}",
         f"- city-event scenarios: {metrics['n_events']}",
         f"- single-action LP validation: small-signal Spearman = {metrics['single_action_small_signal_spearman']:.4f}, finite-area label Spearman = {metrics['single_action_finite_area_spearman']:.4f}",
@@ -1113,7 +1143,7 @@ def write_report(
         "",
         "## 论文写作含义",
         "",
-        "现在 learning/law 部分可以写成一条更完整的证据链：优化模型产生 action-value field；single-action LP 验证 marginal label；cross-city surrogate、factorized surrogate 和 symbolic extraction 说明低维 activated law 可解释；residual greedy 说明有限预算需要动态重评分；event top-tail 说明 decision-criticality 不是 disruption magnitude；V15 给出反直觉证据；V17 说明 OD graph 的空间对齐本身有实证价值；V18 说明低维 law 在不同事件 regime 留出时仍能保持较高 top-tail capture；V19 说明低维 law 不是由特殊 ranking objective trick 造出来的；V25 进一步说明同一城市内按事件时间顺序留出时 compact law 仍保持稳定。论文中仍需谨慎表述：当前 graph 证据是 OD-dependency graph 的 observed-vs-shuffled ablation，还不是完整 road-adjacency graph 或 GNN closure；calendar-year holdout 与 city composition 混杂，因此 clean leave-time-period-out 仍需要同城跨多年数据。",
+        "现在 learning/law 部分可以写成一条更完整的证据链：优化模型产生 action-value field；single-action LP 验证 marginal label；cross-city surrogate、factorized surrogate 和 symbolic extraction 说明低维 activated law 可解释；residual greedy 说明有限预算需要动态重评分；event top-tail 说明 decision-criticality 不是 disruption magnitude；V15 给出反直觉证据；V17 说明 OD graph 的空间对齐本身有实证价值；V18 说明低维 law 在不同事件 regime 留出时仍能保持较高 top-tail capture；V19 说明低维 law 不是由特殊 ranking objective trick 造出来的；V25 说明同一城市内按事件时间顺序留出时 compact law 仍保持稳定；V26 进一步说明轻量 neural surrogate 没有在严格 leave-city top-tail 上超过 ridge，并且 token-level identity split 会夸大 apparent fit。论文中仍需谨慎表述：当前 graph 证据是 OD-dependency graph 的 observed-vs-shuffled ablation，还不是完整 road-adjacency graph 或 GNN closure；calendar-year holdout 与 city composition 混杂，因此 clean leave-time-period-out 仍需要同城跨多年数据。",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")

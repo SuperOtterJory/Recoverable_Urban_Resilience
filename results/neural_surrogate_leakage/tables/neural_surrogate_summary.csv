@@ -1,0 +1,12 @@
+split_role,model_id,family,feature_set,description,n_splits,n_features,mean_spearman,mean_pearson,mean_mae,mean_top5_capture,min_top5_capture,mean_top5_ndcg,mean_top5_precision,mean_train_loss
+leave_city,R2_full_ridge,ridge,full_additive,ridge on full additive action features,7,30,0.941870007,0.862231913,0.02605528936,0.9605476453,0.919817513,0.9500769223,0.778652314,
+leave_city,N2_full_mlp,mlp,full_additive,MLP on full additive action features,7,30,0.9315628361,0.8879249553,0.02390675904,0.9416643489,0.8713672446,0.9370143714,0.7049535254,0.0314767294
+leave_city,R1_factorized_ridge,ridge,factorized,ridge on seven factorized law features,7,7,0.6143286783,0.4183855073,0.04256540051,0.9345694289,0.8292498315,0.9326563431,0.6830936156,
+leave_city,N1_factorized_mlp,mlp,factorized,MLP on seven factorized law features,7,7,0.5874701242,0.390802958,0.04125986052,0.9328904165,0.8189200256,0.9299905039,0.6831930653,0.4605516491
+random_event,R2_full_ridge,ridge,full_additive,ridge on full additive action features,5,30,0.9461717584,0.778206359,0.02362639425,0.9669489999,0.9496139723,0.9630557818,0.8049077222,
+random_event,N3_full_city_id_mlp,mlp,full_additive_plus_city_id,MLP with full additive features and city identity; evaluated only where cities appear in train,5,37,0.9771899573,0.894614161,0.01803591502,0.9599719702,0.9427959061,0.9587690272,0.7514195236,0.02409305025
+random_event,N2_full_mlp,mlp,full_additive,MLP on full additive action features,5,30,0.966187192,0.8874979333,0.01918502057,0.9572695738,0.9466243646,0.9518278846,0.746224429,0.0377668447
+random_event,R1_factorized_ridge,ridge,factorized,ridge on seven factorized law features,5,7,0.6591695134,0.3878132855,0.03965841197,0.9247158544,0.9123201008,0.9214700334,0.6735436163,
+token_random,N4_full_event_id_mlp,mlp,full_additive_plus_event_id,MLP with full additive features and event identity under random token split,1,135,0.9979588624,0.9978543269,0.002785741171,,,,,0.004944944451
+token_random,N2_full_mlp,mlp,full_additive,MLP on full additive action features,1,30,0.9817151849,0.8888400078,0.01483696278,,,,,0.03642935352
+token_random,R2_full_ridge,ridge,full_additive,ridge on full additive action features,1,30,0.955222036,0.7111011737,0.02195499558,,,,,
