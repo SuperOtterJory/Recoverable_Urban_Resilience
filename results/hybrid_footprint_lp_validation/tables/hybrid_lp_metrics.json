@@ -1,0 +1,19 @@
+{
+  "n_selected_events": 7,
+  "n_successful_lp_events": 6,
+  "n_optimal_lp_events": 6,
+  "n_cities": 6,
+  "mean_delta_selected_unit_footprint_mass": 0.006809242572599718,
+  "mean_base_selected_unit_footprint_mass": 0.140225224831255,
+  "mean_hybrid_selected_unit_footprint_mass": 0.14703446740385473,
+  "mean_delta_selected_cost_weighted_footprint_score": 0.00032305411251958276,
+  "mean_base_selected_cost_weighted_footprint_score": 0.002378573172071517,
+  "mean_hybrid_selected_cost_weighted_footprint_score": 0.0027016272845911335,
+  "mean_selected_action_jaccard": 0.9227749975663854,
+  "mean_selected_unit_jaccard": 0.9371356104908738,
+  "mean_delta_recoverable_fraction": 0.0012098199042641835,
+  "mean_hybrid_to_base_baseline_objective_ratio": 0.9643959617539251,
+  "mean_v34_delta_finite_top5pct_units_footprint_mass": 0.2931097998556636,
+  "selected_delta_vs_v34_delta_corr": 0.028571428571428574,
+  "largest_selected_footprint_gain_city": "Austin"
+}

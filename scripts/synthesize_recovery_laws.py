@@ -122,6 +122,9 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "spatial_footprint_pairwise": read_csv(results / "event_spatial_footprint_proxy" / "tables" / "event_spatial_footprint_pairwise_summary.csv"),
         "hybrid_footprint_metrics": read_json_table(results / "hybrid_footprint_calibration" / "tables" / "hybrid_footprint_metrics.json"),
         "hybrid_footprint_city": read_csv(results / "hybrid_footprint_calibration" / "tables" / "hybrid_footprint_city_summary.csv"),
+        "hybrid_lp_metrics": read_json_table(results / "hybrid_footprint_lp_validation" / "tables" / "hybrid_lp_metrics.json"),
+        "hybrid_lp_city": read_csv(results / "hybrid_footprint_lp_validation" / "tables" / "hybrid_lp_city_summary.csv"),
+        "hybrid_lp_events": read_csv(results / "hybrid_footprint_lp_validation" / "tables" / "hybrid_lp_event_metrics.csv"),
         "od_message_summary": read_csv(results / "od_message_passing_surrogate" / "tables" / "od_message_model_summary.csv"),
         "od_message_increments": read_csv(results / "od_message_passing_surrogate" / "tables" / "od_message_incremental_gains.csv"),
         "od_message_metrics": read_json_table(results / "od_message_passing_surrogate" / "tables" / "od_message_passing_metrics.json"),
@@ -328,6 +331,7 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     footprint_metrics = one_row(data["footprint_metrics"])
     spatial_footprint_metrics = one_row(data["spatial_footprint_metrics"])
     hybrid_footprint_metrics = one_row(data["hybrid_footprint_metrics"])
+    hybrid_lp_metrics = one_row(data["hybrid_lp_metrics"])
     od_message_metrics = one_row(data["od_message_metrics"])
     od_message_scalar = one_row(data["od_message_summary"], model_id="O1_scalar_od_graph")
     od_message_scalar_plus = one_row(data["od_message_summary"], model_id="O3_scalar_plus_message")
@@ -667,6 +671,21 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "hybrid_footprint_small_zero_variance_city_count": safe_int(hybrid_footprint_metrics.get("hybrid_top5_zero_variance_city_count")),
         "hybrid_footprint_finite_zero_variance_city_count": safe_int(hybrid_footprint_metrics.get("hybrid_finite_top5_zero_variance_city_count")),
         "hybrid_footprint_mean_baseline_objective_ratio": safe_float(hybrid_footprint_metrics.get("mean_hybrid_to_base_baseline_objective_ratio")),
+        "hybrid_lp_n_selected_events": safe_int(hybrid_lp_metrics.get("n_selected_events")),
+        "hybrid_lp_n_successful_events": safe_int(hybrid_lp_metrics.get("n_successful_lp_events")),
+        "hybrid_lp_n_optimal_events": safe_int(hybrid_lp_metrics.get("n_optimal_lp_events")),
+        "hybrid_lp_n_cities": safe_int(hybrid_lp_metrics.get("n_cities")),
+        "hybrid_lp_base_selected_unit_footprint_mass": safe_float(hybrid_lp_metrics.get("mean_base_selected_unit_footprint_mass")),
+        "hybrid_lp_hybrid_selected_unit_footprint_mass": safe_float(hybrid_lp_metrics.get("mean_hybrid_selected_unit_footprint_mass")),
+        "hybrid_lp_delta_selected_unit_footprint_mass": safe_float(hybrid_lp_metrics.get("mean_delta_selected_unit_footprint_mass")),
+        "hybrid_lp_base_cost_weighted_footprint_score": safe_float(hybrid_lp_metrics.get("mean_base_selected_cost_weighted_footprint_score")),
+        "hybrid_lp_hybrid_cost_weighted_footprint_score": safe_float(hybrid_lp_metrics.get("mean_hybrid_selected_cost_weighted_footprint_score")),
+        "hybrid_lp_delta_cost_weighted_footprint_score": safe_float(hybrid_lp_metrics.get("mean_delta_selected_cost_weighted_footprint_score")),
+        "hybrid_lp_selected_action_jaccard": safe_float(hybrid_lp_metrics.get("mean_selected_action_jaccard")),
+        "hybrid_lp_selected_unit_jaccard": safe_float(hybrid_lp_metrics.get("mean_selected_unit_jaccard")),
+        "hybrid_lp_delta_recoverable_fraction": safe_float(hybrid_lp_metrics.get("mean_delta_recoverable_fraction")),
+        "hybrid_lp_mean_v34_delta_finite_top5_mass": safe_float(hybrid_lp_metrics.get("mean_v34_delta_finite_top5pct_units_footprint_mass")),
+        "hybrid_lp_selected_delta_vs_v34_corr": safe_float(hybrid_lp_metrics.get("selected_delta_vs_v34_delta_corr")),
         "od_message_scalar_od_top5_capture": safe_float(od_message_scalar.get("mean_event_top_5pct_value_capture")),
         "od_message_message_only_top5_capture": safe_float(od_message_message_only.get("mean_event_top_5pct_value_capture")),
         "od_message_scalar_plus_top5_capture": safe_float(od_message_scalar_plus.get("mean_event_top_5pct_value_capture")),
@@ -957,6 +976,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "value": metrics["hybrid_footprint_delta_finite_top5_mass"],
             "interpretation": "The current small-signal target is insensitive to footprint magnitude, but the magnitude-aware finite-value field shifts strongly toward observed footprints; full hybrid LP reruns are therefore scientifically justified.",
         },
+        {
+            "version": "V35",
+            "evidence_step": "Representative hybrid-footprint full LP closure",
+            "main_question": "Do first-order footprint shifts become optimized intervention support?",
+            "key_metric": "selected_unit_footprint_mass_gain",
+            "value": metrics["hybrid_lp_delta_selected_unit_footprint_mass"],
+            "interpretation": "Representative hybrid LPs show only a small support shift despite large finite-value shifts, so finite-budget constraints absorb most footprint signal under the current management regime.",
+        },
     ]
     return pd.DataFrame(rows)
 
@@ -1129,9 +1156,9 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
             },
             {
                 "item": "event_spatial_footprint_scope",
-                "current_status": "V21 finds event-level top-tail concentration is strongly linked to decision-criticality; V32 shows top-5% value share has zero within-city variation in 5 of 7 cities under the OD-template calibration; V33 maps raw TMC speed abnormalities to OD zones for all 105 events; V34 shows hybrid footprint calibration leaves the current small-signal target unchanged but strongly changes magnitude-aware finite values.",
-                "implication": "The event-level law is currently a city-structure/top-tail law under the LP's small-signal label, but the data contain usable event-specific spatial signal that enters recoverability once value magnitude is represented.",
-                "next_step": "Rerun full LP optimization and residual law closure under hybrid OD-vulnerability plus TMC-derived footprint calibration to test whether finite-value shifts become actual optimized recovery choices.",
+                "current_status": "V21 finds event-level top-tail concentration is strongly linked to decision-criticality; V32 shows top-5% value share has zero within-city variation in 5 of 7 cities under the OD-template calibration; V33 maps raw TMC speed abnormalities to OD zones for all 105 events; V34 shows hybrid footprint calibration strongly changes magnitude-aware finite values; V35 re-solves one representative hybrid LP per city and finds only a small shift in selected support.",
+                "implication": "The data contain usable event-specific spatial signal, but the current full LP's finite-budget constraints, deployment caps, delays, channel substitution, and diminishing returns absorb most first-order footprint shifts.",
+                "next_step": "If footprint-specific recovery law becomes a main claim, rerun full hybrid LP closure at larger coverage and recalibrate resource caps/costs with the same event-footprint field rather than changing only b0/h spatial allocation.",
             },
             {
                 "item": "training_objective_scope",
@@ -1267,13 +1294,13 @@ def write_report(
     limitations: pd.DataFrame,
 ) -> None:
     lines = [
-        "# Recoverability Law Synthesis V34",
+        "# Recoverability Law Synthesis V35",
         "",
-        "V34 adds a hybrid footprint calibration sensitivity test on top of the V33 TMC-derived event-zone footprint proxy. It checks whether injecting observed event footprints changes the learning target, and separates the current small-signal label from a magnitude-aware finite-value field.",
+        "V35 adds representative full-LP hybrid footprint closure on top of the V34 calibration sensitivity test. It checks whether first-order footprint shifts actually change optimized intervention support.",
         "",
         "## 本版做了什么",
         "",
-        "V34 turns the V33 augmentation path into a calibration sensitivity test. Hybrid OD-template plus TMC-footprint calibration does not move the current small-signal label, because that label only asks whether future loss remains positive. But it strongly moves the magnitude-aware finite-value field, showing that the observed event footprint can enter recoverability once the learning target uses loss magnitude.",
+        "V35 turns the V34 first-order finding into a full-LP boundary test. Hybrid OD-template plus TMC-footprint calibration strongly shifts the magnitude-aware finite-value field, but representative full LP solves show that the final selected support moves only slightly toward observed footprints under the current budget, cap, delay, channel-substitution, and diminishing-return regime.",
         "",
         "## 当前可写入论文的 law",
         "",
@@ -1323,6 +1350,8 @@ def write_report(
         "",
         "23. **Hybrid footprint target-sensitivity result**: injecting observed TMC footprints leaves the current small-signal action target unchanged, but substantially shifts the magnitude-aware finite-value field toward observed footprint zones. This separates a label-design limitation from a data limitation: the footprint signal exists, but the full LP must be rerun with a magnitude-aware hybrid calibration before making final footprint-specific recovery-law claims.",
         "",
+        "24. **Full-LP footprint absorption boundary**: representative hybrid-footprint LP solves show that large first-order finite-value footprint shifts translate into only small changes in optimized selected support under the current management regime. Footprint-specific recoverability therefore requires full finite-budget closure, not just first-order footprint injection.",
+        "",
         "## 关键指标",
         "",
         f"- fine-budget LP closure: {metrics['fine_budget_lp_n_selected_events']} selected events x {metrics['fine_budget_n_scales']} budget scales = {metrics['fine_budget_lp_n_jobs']} LP jobs, {metrics['fine_budget_lp_n_optimal_jobs']} optimal; LP gain peak budget = {metrics['fine_budget_lp_gain_peak_budget']:.2f}; LP gain per budget peak = {metrics['fine_budget_lp_gain_per_budget_peak_budget']:.2f}; law-random / LP-gain peak = {metrics['fine_budget_lp_law_random_fraction_peak_budget']:.2f}; base-budget law / LP gain = {metrics['fine_budget_lp_base_law_fraction_of_lp_gain']:.4f}, random / LP gain = {metrics['fine_budget_lp_base_random_fraction_of_lp_gain']:.4f}; mean law / LP gain across all budget rows = {metrics['fine_budget_lp_mean_law_fraction_of_lp_gain_all_budgets']:.4f}",
@@ -1360,6 +1389,7 @@ def write_report(
         f"- event-footprint identifiability: top-5% value share has zero within-city variation in {metrics['footprint_top5_zero_variance_city_count']}/7 cities ({metrics['footprint_top5_zero_variance_event_share']:.1%} of events); varying cities = {metrics['footprint_top5_variable_cities']}; optimizer-selected value-share mean within-city range = {metrics['footprint_optimizer_selected_value_share_mean_range']:.4f}; top-10 greedy-unit mean Jaccard = {metrics['footprint_top10_unit_pairwise_mean_jaccard']:.4f}",
         f"- observed spatial footprint proxy: {metrics['spatial_footprint_n_events']} events across {metrics['spatial_footprint_n_cities']} cities; footprint-template mean/median cosine = {metrics['spatial_footprint_mean_template_cosine']:.4f}/{metrics['spatial_footprint_median_template_cosine']:.4f}; top-20 footprint/template Jaccard = {metrics['spatial_footprint_mean_top20_template_jaccard']:.4f}; OD-template top-5% captures {metrics['spatial_footprint_template_top5_capture']:.1%} of observed footprint mass; observed footprint top-5% zone share = {metrics['spatial_footprint_top5_zone_share']:.1%}; mean top-20 within-city footprint Jaccard = {metrics['spatial_footprint_top20_within_city_jaccard']:.4f}; mean TMC mapping within 10km = {metrics['spatial_footprint_mapped_within_10km_share']:.1%}",
         f"- hybrid footprint sensitivity: {metrics['hybrid_footprint_n_events']} footprint-covered optimized events across {metrics['hybrid_footprint_n_cities']} cities; small-signal Spearman/Jaccard = {metrics['hybrid_footprint_small_signal_spearman']:.4f}/{metrics['hybrid_footprint_small_signal_top5_jaccard']:.4f}; finite-value Spearman/top-5% Jaccard = {metrics['hybrid_footprint_finite_spearman']:.4f}/{metrics['hybrid_footprint_finite_top5_jaccard']:.4f}; finite top-5% footprint mass = {metrics['hybrid_footprint_base_finite_top5_mass']:.4f} -> {metrics['hybrid_footprint_hybrid_finite_top5_mass']:.4f} (delta {metrics['hybrid_footprint_delta_finite_top5_mass']:+.4f})",
+        f"- hybrid full-LP footprint closure: {metrics['hybrid_lp_n_optimal_events']}/{metrics['hybrid_lp_n_selected_events']} representative city events solved to optimality ({metrics['hybrid_lp_n_successful_events']} feasible); selected-unit footprint mass = {metrics['hybrid_lp_base_selected_unit_footprint_mass']:.4f} -> {metrics['hybrid_lp_hybrid_selected_unit_footprint_mass']:.4f} (delta {metrics['hybrid_lp_delta_selected_unit_footprint_mass']:+.4f}); selected-action/unit Jaccard = {metrics['hybrid_lp_selected_action_jaccard']:.4f}/{metrics['hybrid_lp_selected_unit_jaccard']:.4f}; V34 first-order finite top-5% footprint delta for the same selected events = {metrics['hybrid_lp_mean_v34_delta_finite_top5_mass']:+.4f}",
         f"- early decision-criticality: best Spearman = {metrics['early_decision_best_spearman']:.4f} at {metrics['early_decision_best_window']}h using {metrics['early_decision_best_feature_group']}; 2h all-early Spearman = {metrics['early_decision_2h_all_spearman']:.4f}",
         "",
         "## Evidence Ladder",
@@ -1388,7 +1418,7 @@ def write_report(
         "",
         "## 论文写作含义",
         "",
-        "The current learning/law section can be written as a full evidence chain: optimization produces an action-value field; single-action LPs validate the marginal label; cross-city, factorized, and symbolic surrogates support a compact activated law; residual greedy shows that finite budgets require residual re-scoring; event top-tail tests separate decision-criticality from disruption magnitude; V29/V30 show that non-obvious activation survives parameter perturbations and appears in selected LP support; V31 strengthens representative scenario-specific optimum closure to 26/28 optimal non-base rows; V32 prevents over-claiming by showing that present event top-tail concentration is mostly a city-template signal; V33 shows that raw TMC speed data contain event-zone footprint signal; V34 shows why this signal is invisible to the current small-signal label but visible to a magnitude-aware finite-value field. The remaining caveats are still important: graph evidence is OD-dependency alignment rather than a full road-adjacency/GNN closure; calendar holdout remains city-confounded; intervention parameters remain management-regime assumptions rather than observed causal intervention effects; the two unresolved New York scenario-optimum rows are a computational boundary; and the next major model step is to rerun full LP calibration and residual law closure with a hybrid OD-template plus observed-footprint spatial field.",
+        "The current learning/law section can be written as a full evidence chain: optimization produces an action-value field; single-action LPs validate the marginal label; cross-city, factorized, and symbolic surrogates support a compact activated law; residual greedy shows that finite budgets require residual re-scoring; event top-tail tests separate decision-criticality from disruption magnitude; V29/V30 show that non-obvious activation survives parameter perturbations and appears in selected LP support; V31 strengthens representative scenario-specific optimum closure to 26/28 optimal non-base rows; V32 prevents over-claiming by showing that present event top-tail concentration is mostly a city-template signal; V33 shows that raw TMC speed data contain event-zone footprint signal; V34 shows why this signal is invisible to the current small-signal label but visible to a magnitude-aware finite-value field; V35 shows that full-LP budget/cap/delay interactions absorb most of that first-order footprint shift in representative events. The remaining caveats are still important: graph evidence is OD-dependency alignment rather than a full road-adjacency/GNN closure; calendar holdout remains city-confounded; intervention parameters remain management-regime assumptions rather than observed causal intervention effects; the two unresolved New York scenario-optimum rows and the unresolved New York hybrid-footprint LP row are computational boundaries; and the next major model step is wider hybrid LP closure with resource caps, costs, and response mechanisms calibrated consistently with the event-footprint field.",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
