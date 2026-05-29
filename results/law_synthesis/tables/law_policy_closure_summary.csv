@@ -1,0 +1,11 @@
+scope,comparison,n,mean_fraction_of_lp_gain,median_fraction_of_lp_gain,mean_improvement_over_static
+base_all_105,static_small_signal_vs_base_LP,105,0.8228031029,0.8773586058,0
+base_all_105,residual_finite_greedy_vs_base_LP,105,0.9736342408,0.992121829,0.1508311379
+stress_low_budget_105,residual_finite_greedy_vs_static_reference,105,0.571081886,0.5784976269,0.07520539168
+stress_base_105,residual_finite_greedy_vs_static_reference,105,0.9660102597,0.9893561014,0.1432071913
+stress_high_budget_105,residual_finite_greedy_vs_static_reference,105,1.591643911,1.614690043,0.2623033318
+stress_delay_2h_105,residual_finite_greedy_vs_static_reference,105,0.8780115339,0.883677403,0.1219616465
+stress_delay_4h_105,residual_finite_greedy_vs_static_reference,105,0.7734043806,0.7774530646,0.09296577715
+stress_scarce_and_late_105,residual_finite_greedy_vs_static_reference,105,0.5222431058,0.5298931731,0.06477663526
+representative_nonbase_scenario_LP_23,residual_finite_greedy_vs_scenario_LP,23,0.9411111393,0.9768904604,
+representative_nonbase_scenario_LP_23,static_small_signal_greedy_vs_scenario_LP,23,0.7228499438,0.7797454211,

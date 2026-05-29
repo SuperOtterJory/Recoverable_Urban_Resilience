@@ -1,0 +1,581 @@
+"""Synthesize learning-to-law evidence into paper-ready summaries."""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+from typing import Any
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+from recoverable_resilience.paths import find_repo_root
+
+
+def main() -> None:
+    root = find_repo_root()
+    output_dir = root / "results" / "law_synthesis"
+    table_dir = output_dir / "tables"
+    figure_dir = output_dir / "figures"
+    report_dir = output_dir / "reports"
+    for directory in [table_dir, figure_dir, report_dir]:
+        directory.mkdir(parents=True, exist_ok=True)
+
+    data = load_tables(root)
+    metrics = build_metrics(data)
+    evidence = build_evidence_ladder(metrics)
+    closure = build_policy_closure_table(data)
+    city_closure = build_city_closure_table(data)
+    decision_examples = build_decision_examples(data)
+    top_tail_correlations = build_top_tail_correlations(data)
+    limitations = build_limitations(data)
+
+    write_table(evidence, table_dir / "law_evidence_ladder.csv")
+    write_table(closure, table_dir / "law_policy_closure_summary.csv")
+    write_table(city_closure, table_dir / "law_city_closure_summary.csv")
+    write_table(decision_examples, table_dir / "law_event_decision_examples.csv")
+    write_table(top_tail_correlations, table_dir / "law_top_tail_correlations.csv")
+    write_table(limitations, table_dir / "law_limitations_and_next_steps.csv")
+    (table_dir / "law_synthesis_metrics.json").write_text(
+        json.dumps(metrics, indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    make_figures(data, closure, city_closure, figure_dir)
+    write_report(
+        report_dir / "law_synthesis_report_zh.md",
+        metrics,
+        evidence,
+        closure,
+        city_closure,
+        decision_examples,
+        top_tail_correlations,
+        limitations,
+    )
+    print(f"Wrote law synthesis to {output_dir}")
+
+
+def load_tables(root: Path) -> dict[str, pd.DataFrame]:
+    results = root / "results"
+    return {
+        "lp_validation": read_csv(results / "law_learning_lp_validation" / "tables" / "single_action_lp_marginal_summary.csv"),
+        "policy_capture": read_csv(results / "law_learning" / "tables" / "policy_score_value_capture.csv"),
+        "fixed_replay_summary": read_csv(results / "law_learning" / "tables" / "fixed_policy_replay_summary.csv"),
+        "finite_gap_city": read_csv(results / "finite_budget_gap" / "tables" / "finite_budget_gap_city_summary.csv"),
+        "finite_gap_event": read_csv(results / "finite_budget_gap" / "tables" / "finite_budget_gap_event_metrics.csv"),
+        "residual_event": read_csv(results / "residual_greedy_policy" / "tables" / "residual_greedy_event_metrics.csv"),
+        "residual_city": read_csv(results / "residual_greedy_policy" / "tables" / "residual_greedy_city_summary.csv"),
+        "stress_scenario": read_csv(results / "residual_greedy_stress" / "tables" / "residual_stress_scenario_summary.csv"),
+        "scenario_policy": read_csv(results / "scenario_optimum_validation" / "tables" / "scenario_policy_validation.csv"),
+        "scenario_optima": read_csv(results / "scenario_optimum_validation" / "tables" / "scenario_lp_optima.csv"),
+        "scenario_summary": read_csv(results / "scenario_optimum_validation" / "tables" / "scenario_policy_summary.csv"),
+        "event_law": read_csv(results / "law_learning" / "tables" / "event_level_top_tail_law.csv"),
+        "leave_city": read_csv(results / "law_learning" / "tables" / "leave_city_out_metrics.csv"),
+        "leave_regime": read_csv(results / "law_learning" / "tables" / "leave_regime_out_metrics.csv"),
+    }
+
+
+def read_csv(path: Path) -> pd.DataFrame:
+    if not path.exists():
+        return pd.DataFrame()
+    return pd.read_csv(path)
+
+
+def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
+    lp_validation = data["lp_validation"]
+    small_signal = one_row(lp_validation, label="small_signal_derivative_label", group="all")
+    finite_label = one_row(lp_validation, label="finite_deficit_area_label", group="all")
+
+    policy_capture = data["policy_capture"]
+    law_capture = one_row(policy_capture, policy_score="activated_bottleneck_law")
+    exposure_capture = one_row(policy_capture, policy_score="exposure_only")
+    deficit_capture = one_row(policy_capture, policy_score="deficit_only")
+    structure_capture = one_row(policy_capture, policy_score="structure_only")
+
+    fixed = data["fixed_replay_summary"]
+    fixed_base_law = one_row(fixed, policy_scenario="base", policy_score="activated_bottleneck_law")
+    fixed_base_lp = one_row(fixed, policy_scenario="base", policy_score="lp_optimizer_replay")
+
+    finite_event = data["finite_gap_event"]
+    residual_event = data["residual_event"]
+    stress = data["stress_scenario"]
+    stress_base = one_row(stress, policy_scenario="base")
+    stress_low = one_row(stress, policy_scenario="low_budget")
+    stress_delay4 = one_row(stress, policy_scenario="delay_4h")
+    stress_scarce = one_row(stress, policy_scenario="scarce_and_late")
+
+    scenario_policy = data["scenario_policy"]
+    scenario_pivot = scenario_policy.pivot_table(
+        index=["city", "event_id", "policy_scenario"],
+        columns="policy",
+        values="fraction_of_scenario_lp_gain",
+        aggfunc="first",
+    )
+    if {"static_small_signal_greedy", "residual_finite_greedy"}.issubset(scenario_pivot.columns):
+        scenario_pivot = scenario_pivot.reset_index()
+        scenario_pivot["residual_minus_static"] = (
+            scenario_pivot["residual_finite_greedy"] - scenario_pivot["static_small_signal_greedy"]
+        )
+    else:
+        scenario_pivot = pd.DataFrame()
+
+    optima = data["scenario_optima"]
+    event_law = data["event_law"]
+    leave_city = data["leave_city"]
+    leave_regime = data["leave_regime"]
+
+    metrics: dict[str, Any] = {
+        "n_action_tokens": safe_int(policy_capture["n_tokens"].max()) if "n_tokens" in policy_capture else None,
+        "n_events": safe_int(len(event_law)) if not event_law.empty else None,
+        "single_action_small_signal_spearman": safe_float(small_signal.get("spearman")),
+        "single_action_small_signal_median_lp_to_label_ratio": safe_float(small_signal.get("median_lp_to_label_ratio")),
+        "single_action_finite_area_spearman": safe_float(finite_label.get("spearman")),
+        "leave_city_mean_spearman": safe_float(leave_city["spearman"].mean()) if "spearman" in leave_city else np.nan,
+        "leave_city_mean_top5_capture": safe_float(leave_city["top_5pct_value_capture"].mean()) if "top_5pct_value_capture" in leave_city else np.nan,
+        "leave_regime_mean_spearman": safe_float(leave_regime["spearman"].mean()) if "spearman" in leave_regime else np.nan,
+        "law_top5_value_capture": safe_float(law_capture.get("top_5pct_value_capture")),
+        "exposure_top5_value_capture": safe_float(exposure_capture.get("top_5pct_value_capture")),
+        "deficit_top5_value_capture": safe_float(deficit_capture.get("top_5pct_value_capture")),
+        "structure_top5_value_capture": safe_float(structure_capture.get("top_5pct_value_capture")),
+        "base_lp_recoverable_fraction": safe_float(fixed_base_lp.get("mean_replay_recoverable_fraction")),
+        "base_static_fraction_of_lp_gain": safe_float(fixed_base_law.get("mean_fraction_of_base_lp_gain")),
+        "finite_gap_mean_static_fraction_of_lp_gain": safe_float(finite_event["greedy_fraction_of_lp_gain"].mean()) if "greedy_fraction_of_lp_gain" in finite_event else np.nan,
+        "finite_gap_mean_action_cost_jaccard": safe_float(finite_event["action_cost_jaccard"].mean()) if "action_cost_jaccard" in finite_event else np.nan,
+        "finite_gap_mean_lp_to_greedy_action_count_ratio": safe_float(finite_event["lp_to_greedy_action_count_ratio"].mean()) if "lp_to_greedy_action_count_ratio" in finite_event else np.nan,
+        "base_residual_fraction_of_lp_gain": safe_float(residual_event["residual_fraction_of_lp_gain"].mean()) if "residual_fraction_of_lp_gain" in residual_event else np.nan,
+        "base_residual_median_fraction_of_lp_gain": safe_float(residual_event["residual_fraction_of_lp_gain"].median()) if "residual_fraction_of_lp_gain" in residual_event else np.nan,
+        "base_residual_improvement": safe_float(residual_event["residual_gain_improvement_over_static"].mean()) if "residual_gain_improvement_over_static" in residual_event else np.nan,
+        "base_residual_positive_share": safe_float((residual_event["residual_gain_improvement_over_static"] > 1e-6).mean()) if "residual_gain_improvement_over_static" in residual_event else np.nan,
+        "stress_base_residual_fraction": safe_float(stress_base.get("mean_residual_fraction_of_base_lp_gain")),
+        "stress_low_residual_fraction": safe_float(stress_low.get("mean_residual_fraction_of_base_lp_gain")),
+        "stress_delay4_residual_fraction": safe_float(stress_delay4.get("mean_residual_fraction_of_base_lp_gain")),
+        "stress_scarce_residual_fraction": safe_float(stress_scarce.get("mean_residual_fraction_of_base_lp_gain")),
+        "scenario_optimum_jobs": safe_int(len(optima)),
+        "scenario_optimum_success_jobs": safe_int((optima["status"].astype(str) == "OPTIMAL").sum()) if "status" in optima else None,
+        "scenario_optimum_timeout_jobs": safe_int((optima["status"].astype(str) == "ERROR").sum()) if "status" in optima else None,
+        "scenario_static_fraction_of_lp_gain": safe_float(scenario_pivot["static_small_signal_greedy"].mean()) if not scenario_pivot.empty else np.nan,
+        "scenario_residual_fraction_of_lp_gain": safe_float(scenario_pivot["residual_finite_greedy"].mean()) if not scenario_pivot.empty else np.nan,
+        "scenario_residual_improvement": safe_float(scenario_pivot["residual_minus_static"].mean()) if not scenario_pivot.empty else np.nan,
+        "scenario_residual_tie_or_win_share": safe_float((scenario_pivot["residual_minus_static"] >= -1e-6).mean()) if not scenario_pivot.empty else np.nan,
+        "event_mean_top5_value_share": safe_float(event_law["top_5pct_value_share"].mean()) if "top_5pct_value_share" in event_law else np.nan,
+        "event_mean_marginal_value_gini": safe_float(event_law["marginal_value_gini"].mean()) if "marginal_value_gini" in event_law else np.nan,
+        "event_loss_recoverable_spearman": safe_float(event_law[["baseline_objective", "recoverable_fraction"]].corr(method="spearman").iloc[0, 1]) if {"baseline_objective", "recoverable_fraction"}.issubset(event_law.columns) else np.nan,
+        "event_top_tail_decision_spearman": safe_float(event_law[["top_5pct_value_share", "decision_criticality_score"]].corr(method="spearman").iloc[0, 1]) if {"top_5pct_value_share", "decision_criticality_score"}.issubset(event_law.columns) else np.nan,
+    }
+    return metrics
+
+
+def one_row(df: pd.DataFrame, **filters: Any) -> pd.Series:
+    if df.empty:
+        return pd.Series(dtype=float)
+    mask = pd.Series(True, index=df.index)
+    for column, value in filters.items():
+        if column not in df:
+            return pd.Series(dtype=float)
+        mask &= df[column].astype(str).eq(str(value))
+    if not mask.any():
+        return pd.Series(dtype=float)
+    return df.loc[mask].iloc[0]
+
+
+def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
+    rows = [
+        {
+            "version": "V4/V5",
+            "evidence_step": "Single-action LP validates label",
+            "main_question": "What is the right marginal recovery-value label?",
+            "key_metric": "small_signal_spearman",
+            "value": metrics["single_action_small_signal_spearman"],
+            "interpretation": "The first-segment derivative, not finite deficit area, matches direct single-action LP probes.",
+        },
+        {
+            "version": "V5",
+            "evidence_step": "Cross-city action-value field",
+            "main_question": "Can normalized structural features recover the value ranking?",
+            "key_metric": "leave_city_mean_spearman",
+            "value": metrics["leave_city_mean_spearman"],
+            "interpretation": "A simple surrogate generalizes action-value ranking across held-out cities.",
+        },
+        {
+            "version": "V6",
+            "evidence_step": "Finite-budget gap",
+            "main_question": "Does a static first-order ranking solve the full budget problem?",
+            "key_metric": "static_fraction_of_lp_gain",
+            "value": metrics["finite_gap_mean_static_fraction_of_lp_gain"],
+            "interpretation": "Static small-signal greedy captures substantial value but leaves a finite-budget interaction gap.",
+        },
+        {
+            "version": "V7",
+            "evidence_step": "Residual finite-budget law",
+            "main_question": "Does re-scoring on the residual state close the base LP gap?",
+            "key_metric": "residual_fraction_of_lp_gain",
+            "value": metrics["base_residual_fraction_of_lp_gain"],
+            "interpretation": "Residual replanning nearly closes the base-scenario LP optimum on average.",
+        },
+        {
+            "version": "V8",
+            "evidence_step": "Budget/delay stress test",
+            "main_question": "Is the residual law stable under resource and response perturbations?",
+            "key_metric": "delay4_residual_fraction_of_base_lp_gain",
+            "value": metrics["stress_delay4_residual_fraction"],
+            "interpretation": "Residual replanning remains systematically above static greedy under delayed response.",
+        },
+        {
+            "version": "V9",
+            "evidence_step": "Scenario-specific LP closure",
+            "main_question": "Does the law still approach the true non-base scenario optimum?",
+            "key_metric": "residual_fraction_of_scenario_lp_gain",
+            "value": metrics["scenario_residual_fraction_of_lp_gain"],
+            "interpretation": "Representative non-base LP solves show residual finite greedy close to scenario-specific optima.",
+        },
+    ]
+    return pd.DataFrame(rows)
+
+
+def build_policy_closure_table(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    rows: list[dict[str, Any]] = []
+    residual_event = data["residual_event"]
+    if not residual_event.empty:
+        rows.extend(
+            [
+                {
+                    "scope": "base_all_105",
+                    "comparison": "static_small_signal_vs_base_LP",
+                    "n": len(residual_event),
+                    "mean_fraction_of_lp_gain": residual_event["static_fraction_of_lp_gain"].mean(),
+                    "median_fraction_of_lp_gain": residual_event["static_fraction_of_lp_gain"].median(),
+                    "mean_improvement_over_static": 0.0,
+                },
+                {
+                    "scope": "base_all_105",
+                    "comparison": "residual_finite_greedy_vs_base_LP",
+                    "n": len(residual_event),
+                    "mean_fraction_of_lp_gain": residual_event["residual_fraction_of_lp_gain"].mean(),
+                    "median_fraction_of_lp_gain": residual_event["residual_fraction_of_lp_gain"].median(),
+                    "mean_improvement_over_static": residual_event["residual_gain_improvement_over_static"].mean(),
+                },
+            ]
+        )
+    stress = data["stress_scenario"]
+    if not stress.empty:
+        for row in stress.itertuples(index=False):
+            rows.append(
+                {
+                    "scope": f"stress_{row.policy_scenario}_105",
+                    "comparison": "residual_finite_greedy_vs_static_reference",
+                    "n": int(row.n_events),
+                    "mean_fraction_of_lp_gain": float(row.mean_residual_fraction_of_base_lp_gain),
+                    "median_fraction_of_lp_gain": float(row.median_residual_fraction_of_base_lp_gain),
+                    "mean_improvement_over_static": float(row.mean_residual_minus_static),
+                }
+            )
+    scenario = data["scenario_policy"]
+    if not scenario.empty:
+        for policy, group in scenario.groupby("policy"):
+            rows.append(
+                {
+                    "scope": "representative_nonbase_scenario_LP_23",
+                    "comparison": f"{policy}_vs_scenario_LP",
+                    "n": len(group),
+                    "mean_fraction_of_lp_gain": group["fraction_of_scenario_lp_gain"].mean(),
+                    "median_fraction_of_lp_gain": group["fraction_of_scenario_lp_gain"].median(),
+                    "mean_improvement_over_static": np.nan,
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def build_city_closure_table(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    city = data["residual_city"].copy()
+    if city.empty:
+        return city
+    keep = [
+        "city",
+        "n_events",
+        "mean_static_fraction_of_lp_gain",
+        "mean_residual_fraction_of_lp_gain",
+        "mean_residual_gain_improvement",
+        "mean_residual_gap_to_lp",
+    ]
+    city = city[[column for column in keep if column in city.columns]].copy()
+    return city.sort_values("mean_residual_gain_improvement", ascending=False)
+
+
+def build_decision_examples(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    event_law = data["event_law"].copy()
+    if event_law.empty:
+        return event_law
+    examples = event_law.sort_values("decision_criticality_score", ascending=False).head(15).copy()
+    keep = [
+        "city",
+        "event_id",
+        "event_start",
+        "baseline_objective",
+        "recoverable_fraction",
+        "top_5pct_value_share",
+        "marginal_value_gini",
+        "loss_magnitude_rank",
+        "recoverable_rank",
+        "top_tail_rank",
+        "decision_criticality_score",
+        "event_peak_positive_abnormal_deficit",
+        "event_total_precip",
+    ]
+    return examples[[column for column in keep if column in examples.columns]]
+
+
+def build_top_tail_correlations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    event_law = data["event_law"]
+    if event_law.empty:
+        return pd.DataFrame()
+    targets = ["recoverable_fraction", "decision_criticality_score"]
+    features = [
+        "baseline_objective",
+        "event_peak_positive_abnormal_deficit",
+        "event_total_precip",
+        "top_1pct_value_share",
+        "top_5pct_value_share",
+        "top_10pct_value_share",
+        "marginal_value_gini",
+        "optimizer_selected_value_share",
+    ]
+    rows: list[dict[str, Any]] = []
+    for target in targets:
+        for feature in features:
+            if target in event_law and feature in event_law:
+                pair = event_law[[target, feature]].dropna()
+                corr = pair.corr(method="spearman").iloc[0, 1] if len(pair) > 2 else np.nan
+                rows.append({"target": target, "feature": feature, "spearman": corr})
+    return pd.DataFrame(rows).sort_values(["target", "spearman"], ascending=[True, False])
+
+
+def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    optima = data["scenario_optima"]
+    timeout_count = int((optima["status"].astype(str) == "ERROR").sum()) if "status" in optima else 0
+    return pd.DataFrame(
+        [
+            {
+                "item": "scenario_optimum_coverage",
+                "current_status": f"{len(optima) - timeout_count} successful LP closures; {timeout_count} time-limit/error rows",
+                "implication": "V9 supports representative non-base closure, not full 105-event scenario-optimum closure.",
+                "next_step": "Expand scenario-specific LP validation with resume mode or longer time limits for hard New York/Chicago/Philadelphia cases.",
+            },
+            {
+                "item": "intervention_parameter_identification",
+                "current_status": "R/C/S effectiveness, cost, caps, delays, and diminishing returns are recovery-regime assumptions.",
+                "implication": "The law is conditional on the specified management regime.",
+                "next_step": "Run parameter ensembles or incorporate observed intervention records if available.",
+            },
+            {
+                "item": "surrogate_architecture",
+                "current_status": "Current surrogate is normalized ridge/ranking evidence rather than a full graph neural model.",
+                "implication": "The symbolic law is already interpretable, but the neural structure-extractor stage is still lightweight.",
+                "next_step": "Train a factorized graph/action-value surrogate if the paper needs a stronger AI-law-discovery component.",
+            },
+            {
+                "item": "perturbed_optimum_stability",
+                "current_status": "Action-value labels and residual policies are validated, but perturbed-optimum frequency is not yet generated.",
+                "implication": "Robustness to near-optimal degeneracy is only indirectly covered.",
+                "next_step": "Add cost/effectiveness perturbation solves for a small representative sample.",
+            },
+        ]
+    )
+
+
+def make_figures(
+    data: dict[str, pd.DataFrame],
+    closure: pd.DataFrame,
+    city_closure: pd.DataFrame,
+    figure_dir: Path,
+) -> None:
+    figure_dir.mkdir(parents=True, exist_ok=True)
+    make_evidence_ladder_figure(closure, figure_dir / "law_evidence_ladder.png")
+    make_city_closure_figure(city_closure, figure_dir / "city_residual_closure.png")
+    make_top_tail_phase_figure(data["event_law"], figure_dir / "event_top_tail_phase.png")
+
+
+def make_evidence_ladder_figure(closure: pd.DataFrame, path: Path) -> None:
+    if closure.empty:
+        return
+    selected = closure[closure["scope"].isin(["base_all_105", "representative_nonbase_scenario_LP_23"])].copy()
+    selected["label"] = selected["comparison"].map(
+        {
+            "static_small_signal_vs_base_LP": "Base static",
+            "residual_finite_greedy_vs_base_LP": "Base residual",
+            "static_small_signal_greedy_vs_scenario_LP": "Scenario static",
+            "residual_finite_greedy_vs_scenario_LP": "Scenario residual",
+        }
+    )
+    selected = selected.dropna(subset=["label"])
+    order = ["Base static", "Base residual", "Scenario static", "Scenario residual"]
+    selected["label"] = pd.Categorical(selected["label"], categories=order, ordered=True)
+    selected = selected.sort_values("label")
+    fig, ax = plt.subplots(figsize=(8.8, 5.2))
+    colors = ["#94a3b8" if "static" in label.lower() else "#2563eb" for label in selected["label"].astype(str)]
+    ax.bar(selected["label"].astype(str), selected["mean_fraction_of_lp_gain"], color=colors, width=0.62)
+    ax.axhline(1.0, color="#111827", linestyle="--", linewidth=1, alpha=0.5)
+    ax.set_ylim(0, 1.08)
+    ax.set_ylabel("Policy gain / LP gain")
+    ax.set_title("From first-order ranking to residual finite-budget law")
+    for idx, value in enumerate(selected["mean_fraction_of_lp_gain"]):
+        ax.text(idx, value + 0.025, f"{value:.3f}", ha="center", va="bottom", fontsize=10)
+    fig.tight_layout()
+    fig.savefig(path, dpi=180)
+    plt.close(fig)
+
+
+def make_city_closure_figure(city_closure: pd.DataFrame, path: Path) -> None:
+    if city_closure.empty:
+        return
+    ordered = city_closure.sort_values("mean_residual_gain_improvement", ascending=True)
+    y = np.arange(len(ordered))
+    fig, ax = plt.subplots(figsize=(8.8, 5.6))
+    ax.barh(y - 0.18, ordered["mean_static_fraction_of_lp_gain"], height=0.36, color="#94a3b8", label="static")
+    ax.barh(y + 0.18, ordered["mean_residual_fraction_of_lp_gain"], height=0.36, color="#2563eb", label="residual")
+    ax.axvline(1.0, color="#111827", linestyle="--", linewidth=1, alpha=0.5)
+    ax.set_yticks(y, ordered["city"])
+    ax.set_xlim(0, 1.05)
+    ax.set_xlabel("Base-scenario policy gain / LP gain")
+    ax.set_title("Residual law closes the finite-budget gap across cities")
+    ax.legend(frameon=False)
+    fig.tight_layout()
+    fig.savefig(path, dpi=180)
+    plt.close(fig)
+
+
+def make_top_tail_phase_figure(event_law: pd.DataFrame, path: Path) -> None:
+    if event_law.empty:
+        return
+    fig, ax = plt.subplots(figsize=(8.2, 6.0))
+    scatter = ax.scatter(
+        event_law["baseline_objective"],
+        event_law["recoverable_fraction"],
+        c=event_law["top_5pct_value_share"],
+        s=52,
+        cmap="viridis",
+        alpha=0.82,
+        edgecolor="white",
+        linewidth=0.4,
+    )
+    top = event_law.sort_values("decision_criticality_score", ascending=False).head(6)
+    for row in top.itertuples(index=False):
+        ax.annotate(f"{row.city} {int(row.event_id)}", (row.baseline_objective, row.recoverable_fraction), fontsize=7)
+    ax.set_xscale("log")
+    ax.set_xlabel("No-intervention loss objective, log scale")
+    ax.set_ylabel("Recoverable fraction under base LP")
+    ax.set_title("Decision-criticality separates loss magnitude from recoverable top tail")
+    cbar = fig.colorbar(scatter, ax=ax)
+    cbar.set_label("Top-5% marginal value share")
+    fig.tight_layout()
+    fig.savefig(path, dpi=180)
+    plt.close(fig)
+
+
+def write_report(
+    path: Path,
+    metrics: dict[str, Any],
+    evidence: pd.DataFrame,
+    closure: pd.DataFrame,
+    city_closure: pd.DataFrame,
+    decision_examples: pd.DataFrame,
+    top_tail_correlations: pd.DataFrame,
+    limitations: pd.DataFrame,
+) -> None:
+    lines = [
+        "# Recoverability Law Synthesis V10",
+        "",
+        "## 这版做了什么",
+        "",
+        "V10 不再新增一个孤立实验，而是把 V5-V9 的 learning/law 证据链合并成论文可用的 synthesis：从 action-level marginal value，到 finite-budget residual law，再到 event-level top-tail decision-criticality。所有数字都从已有结果表重新读取生成。",
+        "",
+        "## 三条当前可写入论文的 law",
+        "",
+        "1. **Small-signal activated recovery law**：第一小段资源的边际价值主要由 active future horizon、OD exposure 或 destination importance、intervention efficiency per cost 共同决定，并按 passive event loss 归一化。它回答“第一单位资源投向哪里最值”。",
+        "",
+        "2. **Residual finite-budget allocation law**：完整预算下，价值必须写成 `value(segment | residual state, remaining budget, remaining time)`。每轮投放后要重新计算剩余 `b/rC/rS/ell`，用 `min(segment_effect_decay, residual_loss)` 截断后续边际收益。它回答“整组资源如何避免局部饱和”。",
+        "",
+        "3. **Top-tail decision-criticality law**：事件是否 decision-critical 不只取决于 observed loss 大小，而取决于 recoverable value 是否集中在少数高价值 action 上。高 recoverable fraction 与高 top-tail concentration 共同定义了管理决策的杠杆。",
+        "",
+        "## 关键指标",
+        "",
+        f"- action tokens: {metrics['n_action_tokens']:,}",
+        f"- city-event scenarios: {metrics['n_events']}",
+        f"- single-action LP validation: small-signal Spearman = {metrics['single_action_small_signal_spearman']:.4f}, median LP/label ratio = {metrics['single_action_small_signal_median_lp_to_label_ratio']:.4f}",
+        f"- finite-area label Spearman = {metrics['single_action_finite_area_spearman']:.4f}",
+        f"- leave-one-city-out mean Spearman = {metrics['leave_city_mean_spearman']:.4f}, top-5% capture = {metrics['leave_city_mean_top5_capture']:.4f}",
+        f"- base static greedy / LP gain = {metrics['base_static_fraction_of_lp_gain']:.4f}",
+        f"- base residual greedy / LP gain = {metrics['base_residual_fraction_of_lp_gain']:.4f}",
+        f"- representative non-base static / scenario LP gain = {metrics['scenario_static_fraction_of_lp_gain']:.4f}",
+        f"- representative non-base residual / scenario LP gain = {metrics['scenario_residual_fraction_of_lp_gain']:.4f}",
+        f"- event mean top-5% value share = {metrics['event_mean_top5_value_share']:.4f}; marginal-value Gini = {metrics['event_mean_marginal_value_gini']:.4f}",
+        "",
+        "## Evidence Ladder",
+        "",
+        table_to_markdown(evidence),
+        "",
+        "## Policy Closure",
+        "",
+        table_to_markdown(closure),
+        "",
+        "## City Closure",
+        "",
+        table_to_markdown(city_closure),
+        "",
+        "## Top Decision-Critical Events",
+        "",
+        table_to_markdown(decision_examples),
+        "",
+        "## Event-Level Correlations",
+        "",
+        table_to_markdown(top_tail_correlations),
+        "",
+        "## 当前边界与下一步",
+        "",
+        table_to_markdown(limitations),
+        "",
+        "## 论文写作含义",
+        "",
+        "现在可以把 learning/law 部分从“未来要做 law extraction”改成“已经得到一个两层 law”：action-level 的 activated marginal law 与 finite-budget 的 residual allocation law。论文中需要谨慎表述的是：资源效率和 diminishing returns 仍是 recovery-regime 参数；V9 是代表性 scenario-optimum closure，不是全量非 base LP closure；完整 AI-law-discovery 版本仍可在后续加入 graph surrogate 和 perturbation stability。",
+    ]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def table_to_markdown(df: pd.DataFrame) -> str:
+    if df.empty:
+        return "_empty_"
+    compact = df.copy()
+    for column in compact.columns:
+        if pd.api.types.is_float_dtype(compact[column]):
+            compact[column] = compact[column].map(lambda value: "" if pd.isna(value) else f"{value:.4g}")
+    return compact.to_markdown(index=False)
+
+
+def write_table(df: pd.DataFrame, path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(path, index=False, float_format="%.10g")
+
+
+def safe_float(value: Any) -> float:
+    try:
+        number = float(value)
+        return number if np.isfinite(number) else float("nan")
+    except Exception:
+        return float("nan")
+
+
+def safe_int(value: Any) -> int | None:
+    try:
+        if pd.isna(value):
+            return None
+        return int(value)
+    except Exception:
+        return None
+
+
+if __name__ == "__main__":
+    main()

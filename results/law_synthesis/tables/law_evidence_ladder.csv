@@ -1,0 +1,7 @@
+version,evidence_step,main_question,key_metric,value,interpretation
+V4/V5,Single-action LP validates label,What is the right marginal recovery-value label?,small_signal_spearman,0.8539826594,"The first-segment derivative, not finite deficit area, matches direct single-action LP probes."
+V5,Cross-city action-value field,Can normalized structural features recover the value ranking?,leave_city_mean_spearman,0.8865649636,A simple surrogate generalizes action-value ranking across held-out cities.
+V6,Finite-budget gap,Does a static first-order ranking solve the full budget problem?,static_fraction_of_lp_gain,0.8228030683,Static small-signal greedy captures substantial value but leaves a finite-budget interaction gap.
+V7,Residual finite-budget law,Does re-scoring on the residual state close the base LP gap?,residual_fraction_of_lp_gain,0.9736342408,Residual replanning nearly closes the base-scenario LP optimum on average.
+V8,Budget/delay stress test,Is the residual law stable under resource and response perturbations?,delay4_residual_fraction_of_base_lp_gain,0.7734043806,Residual replanning remains systematically above static greedy under delayed response.
+V9,Scenario-specific LP closure,Does the law still approach the true non-base scenario optimum?,residual_fraction_of_scenario_lp_gain,0.9411111393,Representative non-base LP solves show residual finite greedy close to scenario-specific optima.

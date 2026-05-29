@@ -1,0 +1,72 @@
+The optimization model is used here as a counterfactual probe rather than as the final scientific product. For each city-event, it reveals a recovery-value field over candidate actions indexed by location, time, intervention primitive, and piecewise-linear deployment segment. The learning task is therefore not to predict a binary optimizer selection, which can be unstable under ties and near-optimal alternatives. Instead, the target is the marginal recovery value of action tokens and the lower-dimensional laws that explain where this value appears.
+
+\subsection{Action-Level Marginal Value}
+
+Single-action LP probes show that the correct local label is the small-signal derivative of the recovery objective, not the total finite deficit area available at a location. Across 42 representative probes, the small-signal label has Spearman correlation 0.8540 with direct LP gains and median LP-to-label ratio 1.0000, whereas the finite-area label has Spearman correlation 0.1146. This distinction matters because a location can contain large finite loss but still have low marginal value if the first unit of resource does not reach exposed future loss efficiently.
+
+For the first deployment segment, the recovered law can be written schematically as
+\begin{equation}
+v_{i,t,k}^{(0)}
+  \propto
+  \frac{
+    H_{i,t,k}^{+}
+    \cdot E_{i,k}
+    \cdot \eta_{i,t,k}
+  }{
+    c_{i,t,k} \cdot L_0
+  },
+\end{equation}
+where \(H_{i,t,k}^{+}\) is the active future horizon over which the intervention can still reduce positive loss, \(E_{i,k}\) is the relevant OD exposure term, \(\eta_{i,t,k}/c_{i,t,k}\) is effectiveness per unit cost, and \(L_0\) is the no-intervention event loss used for normalization. For restoration and temporary capacity primitives, the exposure term is destination-side functional importance because reducing a destination deficit propagates through OD dependence. For substitution or control, the exposure term is origin weight because the primitive directly shields origin-level experienced loss.
+
+This gives the first recoverability law:
+\begin{quote}
+Marginal recovery value is activated when future persistent deficit overlaps with exposed OD dependence and feasible intervention efficiency.
+\end{quote}
+
+Simple normalized action features can recover much of this value field across cities. A leave-one-city-out surrogate obtains mean Spearman correlation 0.8866 and mean top-5 percent value capture 0.7640. The symbolic activated law itself captures the top marginal-value field by construction, while exposure-only, deficit-only, and structure-only rankings are weaker and incomplete.
+
+\subsection{Finite-Budget Residual Law}
+
+The first-order action law is not sufficient for the complete resource-allocation problem. Static small-signal greedy allocation captures 0.8228 of base LP recovery gain on average, leaving a finite-budget gap. The gap is explained by local saturation, diminishing returns, overlapping effects on the same loss channel, period-budget constraints, and substitution among the three intervention primitives. In the finite-budget analysis, the LP uses about 1.67 times as many distinct actions as static greedy and has a mean action-cost Jaccard overlap of 0.6127 with it, showing that the optimizer spreads resources more broadly to avoid exhausting high first-order locations.
+
+The corrected finite-budget law is therefore residual rather than static. After each deployment pass, the current residual states \(b\), \(r^C\), \(r^S\), and \(\ell\) are replayed; candidate segments are then re-scored against the remaining loss:
+\begin{equation}
+v_{s \mid x}^{\mathrm{res}}
+  \propto
+  \frac{1}{L_0\,C_s}
+  \sum_{\tau>t_s}
+    W_{s,\tau}
+    \min\{
+      \Delta_s \rho_{s,\tau},
+      R_{s,\tau}(x)
+    \},
+\end{equation}
+where \(s\) is a deployment segment, \(x\) is the current residual state, \(C_s\) is segment cost, \(\Delta_s\rho_{s,\tau}\) is the decayed segment effect at future time \(\tau\), and \(R_{s,\tau}(x)\) is the remaining reducible loss in the relevant channel. This is still an interpretable law rather than a new LP solve: it updates the state, applies a finite-loss truncation, and greedily allocates the next budget batch.
+
+This residual law nearly closes the base-scenario LP gap. Across 105 city-events, residual finite greedy captures 0.9736 of the base LP gain on average, with median 0.9921, compared with 0.8228 for static small-signal greedy. The mean improvement over static greedy is 0.1508 of LP gain, and positive improvement appears in 91.4 percent of events. The gains are largest in cities where static greedy suffered from stronger saturation and interaction effects, including Chicago, Philadelphia, and San Antonio; Dallas is already nearly solved by the static ranking, so residual replanning adds little.
+
+\subsection{Robustness Across Budget and Delay}
+
+The residual law remains stronger than static ranking under budget and response perturbations. In the 105-event stress test, residual replanning captures 0.5711 of base LP gain under low budget, 0.9660 in the base scenario with coarser ten-pass replanning, 1.5916 under high budget measured against the base LP denominator, 0.8780 with two additional hours of delay, 0.7734 with four additional hours of delay, and 0.5222 under scarce-and-late conditions. These stress-test numbers are normalized by the base LP gain, so they show policy stability rather than scenario-specific optimality.
+
+To test scenario-specific closure directly, representative non-base LP optima were re-solved for selected city-events. Among 23 successful non-base LP closures, static small-signal greedy captures 0.7228 of the scenario LP gain on average, while residual finite greedy captures 0.9411. The residual policy weakly dominates or ties static greedy in all successful closures. Five hard non-base cases reached the current time limit, so this result should be read as representative scenario-optimum validation rather than full non-base closure over all 105 events.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.85\linewidth]{../../results/law_synthesis/figures/law_evidence_ladder.png}
+  \caption{Policy gain captured by static and residual laws under base and representative non-base LP closures. Residual replanning turns the first-order marginal law into a finite-budget allocation law.}
+  \label{fig:law-evidence-ladder}
+\end{figure}
+
+\subsection{Event-Level Top-Tail Law}
+
+The action-value field also defines an event-level law. A rainfall event is decision-critical when recoverable value is concentrated in a small top tail of candidate actions. Across the 105 base events, the mean top-5 percent marginal-value share is 0.1645 and the mean marginal-value Gini is 0.4494. Decision-criticality is strongly associated with top-tail inequality: the Spearman correlation between marginal-value Gini and decision-criticality score is 0.8412, and the correlation between top-5 percent value share and decision-criticality is 0.7650. By contrast, baseline loss magnitude has negative Spearman correlation with decision-criticality in this sample. Thus large disruptions are not automatically the most decision-critical; moderate events can have high decision leverage when recoverable value is concentrated on a small set of exposed, intervention-sensitive locations.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.85\linewidth]{../../results/law_synthesis/figures/event_top_tail_phase.png}
+  \caption{Event-level recoverability and top-tail concentration. The highest decision-critical events are not simply the largest loss events; they combine recoverable fraction with a concentrated marginal-value top tail.}
+  \label{fig:event-top-tail-law}
+\end{figure}
+
+Together, the action-level and event-level findings support the paper's central claim: managed recoverability is not determined by disruption magnitude alone. It emerges when persistent functional loss, OD exposure, intervention feasibility, and finite-budget residual interactions align, and intelligent management matters most when this recoverable value forms a heavy top tail.
