@@ -51,6 +51,8 @@ The residual law remains stronger than static ranking under budget and response 
 
 To test scenario-specific closure directly, representative non-base LP optima were re-solved for selected city-events. Among 23 successful non-base LP closures, static small-signal greedy captures 0.7228 of the scenario LP gain on average, while residual finite greedy captures 0.9411. The residual policy weakly dominates or ties static greedy in all successful closures. Five hard non-base cases reached the current time limit, so this result should be read as representative scenario-optimum validation rather than full non-base closure over all 105 events.
 
+We also test whether action importance is stable to near-neighbor optimization problems. For four representative interaction-sensitive events, intervention effectiveness and cost are perturbed three times within a clipped 20 percent range and the LP is re-solved. The original base LP action set captures 0.7954 of the perturbed LP selection-frequency mass, residual finite greedy captures 0.6097, and static small-signal greedy captures 0.4659. Thus residual replanning is closer than static ranking to the perturbed stable action core, but the exact action list remains parameter-sensitive. This supports using the learned result as a value law rather than as a fixed list of universal intervention locations.
+
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.85\linewidth]{../../results/law_synthesis/figures/law_evidence_ladder.png}

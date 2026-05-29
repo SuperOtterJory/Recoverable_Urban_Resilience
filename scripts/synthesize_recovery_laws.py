@@ -73,6 +73,8 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "scenario_policy": read_csv(results / "scenario_optimum_validation" / "tables" / "scenario_policy_validation.csv"),
         "scenario_optima": read_csv(results / "scenario_optimum_validation" / "tables" / "scenario_lp_optima.csv"),
         "scenario_summary": read_csv(results / "scenario_optimum_validation" / "tables" / "scenario_policy_summary.csv"),
+        "perturbed_solves": read_csv(results / "perturbed_optimum_stability" / "tables" / "perturbed_solve_summary.csv"),
+        "perturbed_overlap": read_csv(results / "perturbed_optimum_stability" / "tables" / "perturbed_policy_overlap.csv"),
         "event_law": read_csv(results / "law_learning" / "tables" / "event_level_top_tail_law.csv"),
         "leave_city": read_csv(results / "law_learning" / "tables" / "leave_city_out_metrics.csv"),
         "leave_regime": read_csv(results / "law_learning" / "tables" / "leave_regime_out_metrics.csv"),
@@ -124,6 +126,8 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         scenario_pivot = pd.DataFrame()
 
     optima = data["scenario_optima"]
+    perturbed_solves = data["perturbed_solves"]
+    perturbed_overlap = data["perturbed_overlap"]
     event_law = data["event_law"]
     leave_city = data["leave_city"]
     leave_regime = data["leave_regime"]
@@ -161,6 +165,13 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "scenario_residual_fraction_of_lp_gain": safe_float(scenario_pivot["residual_finite_greedy"].mean()) if not scenario_pivot.empty else np.nan,
         "scenario_residual_improvement": safe_float(scenario_pivot["residual_minus_static"].mean()) if not scenario_pivot.empty else np.nan,
         "scenario_residual_tie_or_win_share": safe_float((scenario_pivot["residual_minus_static"] >= -1e-6).mean()) if not scenario_pivot.empty else np.nan,
+        "perturbed_solve_rows": safe_int(len(perturbed_solves)),
+        "perturbed_success_rows": safe_int((perturbed_solves["status"].astype(str) == "OPTIMAL").sum()) if "status" in perturbed_solves else None,
+        "perturbed_base_frequency_mass": policy_metric(perturbed_overlap, "base_lp", "frequency_mass_capture"),
+        "perturbed_static_frequency_mass": policy_metric(perturbed_overlap, "static_small_signal_greedy", "frequency_mass_capture"),
+        "perturbed_residual_frequency_mass": policy_metric(perturbed_overlap, "residual_finite_greedy", "frequency_mass_capture"),
+        "perturbed_static_stable50_recall": policy_metric(perturbed_overlap, "static_small_signal_greedy", "stable50_recall"),
+        "perturbed_residual_stable50_recall": policy_metric(perturbed_overlap, "residual_finite_greedy", "stable50_recall"),
         "event_mean_top5_value_share": safe_float(event_law["top_5pct_value_share"].mean()) if "top_5pct_value_share" in event_law else np.nan,
         "event_mean_marginal_value_gini": safe_float(event_law["marginal_value_gini"].mean()) if "marginal_value_gini" in event_law else np.nan,
         "event_loss_recoverable_spearman": safe_float(event_law[["baseline_objective", "recoverable_fraction"]].corr(method="spearman").iloc[0, 1]) if {"baseline_objective", "recoverable_fraction"}.issubset(event_law.columns) else np.nan,
@@ -231,6 +242,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "key_metric": "residual_fraction_of_scenario_lp_gain",
             "value": metrics["scenario_residual_fraction_of_lp_gain"],
             "interpretation": "Representative non-base LP solves show residual finite greedy close to scenario-specific optima.",
+        },
+        {
+            "version": "V11",
+            "evidence_step": "Perturbed-optimum stability",
+            "main_question": "Are recovery-critical actions stable under small cost/effectiveness perturbations?",
+            "key_metric": "residual_perturbed_frequency_mass_capture",
+            "value": metrics["perturbed_residual_frequency_mass"],
+            "interpretation": "Residual finite greedy captures more perturbed LP selection-frequency mass than static greedy, but stable action lists remain parameter-sensitive.",
         },
     ]
     return pd.DataFrame(rows)
@@ -378,9 +397,9 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
             },
             {
                 "item": "perturbed_optimum_stability",
-                "current_status": "Action-value labels and residual policies are validated, but perturbed-optimum frequency is not yet generated.",
-                "implication": "Robustness to near-optimal degeneracy is only indirectly covered.",
-                "next_step": "Add cost/effectiveness perturbation solves for a small representative sample.",
+                "current_status": "Representative perturbation solves are available for 4 events with 3 cost/effectiveness perturbations each.",
+                "implication": "The perturbation evidence supports stable value principles, but not yet full-sample action-list stability.",
+                "next_step": "Increase perturbation count and city-event coverage if action stability becomes a central claim.",
             },
         ]
     )
@@ -511,6 +530,7 @@ def write_report(
         f"- base residual greedy / LP gain = {metrics['base_residual_fraction_of_lp_gain']:.4f}",
         f"- representative non-base static / scenario LP gain = {metrics['scenario_static_fraction_of_lp_gain']:.4f}",
         f"- representative non-base residual / scenario LP gain = {metrics['scenario_residual_fraction_of_lp_gain']:.4f}",
+        f"- perturbed optimum residual frequency-mass capture = {metrics['perturbed_residual_frequency_mass']:.4f} versus static = {metrics['perturbed_static_frequency_mass']:.4f}",
         f"- event mean top-5% value share = {metrics['event_mean_top5_value_share']:.4f}; marginal-value Gini = {metrics['event_mean_marginal_value_gini']:.4f}",
         "",
         "## Evidence Ladder",
@@ -539,7 +559,7 @@ def write_report(
         "",
         "## 论文写作含义",
         "",
-        "现在可以把 learning/law 部分从“未来要做 law extraction”改成“已经得到一个两层 law”：action-level 的 activated marginal law 与 finite-budget 的 residual allocation law。论文中需要谨慎表述的是：资源效率和 diminishing returns 仍是 recovery-regime 参数；V9 是代表性 scenario-optimum closure，不是全量非 base LP closure；完整 AI-law-discovery 版本仍可在后续加入 graph surrogate 和 perturbation stability。",
+        "现在可以把 learning/law 部分从“未来要做 law extraction”改成“已经得到一个两层 law”：action-level 的 activated marginal law 与 finite-budget 的 residual allocation law。V11 进一步说明 residual law 比 static law 更接近扰动后 LP 的稳定 action core，但固定 action list 本身仍然对参数敏感。论文中需要谨慎表述的是：资源效率和 diminishing returns 仍是 recovery-regime 参数；V9/V11 是代表性验证，不是全量非 base 与全量 perturbation closure；完整 AI-law-discovery 版本仍可在后续加入 graph surrogate。",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -575,6 +595,13 @@ def safe_int(value: Any) -> int | None:
         return int(value)
     except Exception:
         return None
+
+
+def policy_metric(df: pd.DataFrame, policy: str, column: str) -> float:
+    if df.empty or "policy" not in df or column not in df:
+        return float("nan")
+    match = df[df["policy"].astype(str).eq(policy)]
+    return safe_float(match[column].mean()) if not match.empty else float("nan")
 
 
 if __name__ == "__main__":
