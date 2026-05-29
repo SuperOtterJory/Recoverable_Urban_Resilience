@@ -1,0 +1,15 @@
+{
+  "n_events_with_footprint": 105,
+  "n_cities_with_footprint": 7,
+  "mean_footprint_template_cosine": 0.35867387777375653,
+  "median_footprint_template_cosine": 0.32147711857024486,
+  "mean_top20_footprint_template_jaccard": 0.011098084782295308,
+  "mean_template_top_5pct_captures_footprint_share": 0.048056155340728345,
+  "mean_footprint_top_5pct_zone_share": 0.4952110879360481,
+  "mean_footprint_effective_zone_count": 71.87070105618056,
+  "mean_top20_within_city_footprint_jaccard": 0.77925153905347,
+  "min_city_top20_within_city_footprint_jaccard": 0.6016807932393998,
+  "max_city_top20_within_city_footprint_jaccard": 0.8641696467783424,
+  "mean_mapped_within_10km_share": 0.8936446258186618,
+  "lowest_template_alignment_city": "New York"
+}

@@ -117,6 +117,9 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "footprint_metrics": read_json_table(results / "event_footprint_identifiability" / "tables" / "event_footprint_identifiability_metrics.json"),
         "footprint_city": read_csv(results / "event_footprint_identifiability" / "tables" / "event_footprint_city_summary.csv"),
         "footprint_jaccard": read_csv(results / "event_footprint_identifiability" / "tables" / "event_footprint_unit_jaccard_summary.csv"),
+        "spatial_footprint_metrics": read_json_table(results / "event_spatial_footprint_proxy" / "tables" / "event_spatial_footprint_metrics.json"),
+        "spatial_footprint_city": read_csv(results / "event_spatial_footprint_proxy" / "tables" / "event_spatial_footprint_city_summary.csv"),
+        "spatial_footprint_pairwise": read_csv(results / "event_spatial_footprint_proxy" / "tables" / "event_spatial_footprint_pairwise_summary.csv"),
         "od_message_summary": read_csv(results / "od_message_passing_surrogate" / "tables" / "od_message_model_summary.csv"),
         "od_message_increments": read_csv(results / "od_message_passing_surrogate" / "tables" / "od_message_incremental_gains.csv"),
         "od_message_metrics": read_json_table(results / "od_message_passing_surrogate" / "tables" / "od_message_passing_metrics.json"),
@@ -321,6 +324,7 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     channel_full_activation = one_row(parameter_channel, score_id="S5_full_activation")
     event_decision_metrics = one_row(data["event_decision_metrics"])
     footprint_metrics = one_row(data["footprint_metrics"])
+    spatial_footprint_metrics = one_row(data["spatial_footprint_metrics"])
     od_message_metrics = one_row(data["od_message_metrics"])
     od_message_scalar = one_row(data["od_message_summary"], model_id="O1_scalar_od_graph")
     od_message_scalar_plus = one_row(data["od_message_summary"], model_id="O3_scalar_plus_message")
@@ -633,6 +637,17 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "footprint_gini_zero_variance_event_share": safe_float(footprint_metrics.get("gini_zero_variance_event_share")),
         "footprint_optimizer_selected_value_share_mean_range": safe_float(footprint_metrics.get("optimizer_selected_value_share_mean_range")),
         "footprint_top10_unit_pairwise_mean_jaccard": safe_float(footprint_metrics.get("top10_unit_pairwise_mean_jaccard")),
+        "spatial_footprint_n_events": safe_int(spatial_footprint_metrics.get("n_events_with_footprint")),
+        "spatial_footprint_n_cities": safe_int(spatial_footprint_metrics.get("n_cities_with_footprint")),
+        "spatial_footprint_mean_template_cosine": safe_float(spatial_footprint_metrics.get("mean_footprint_template_cosine")),
+        "spatial_footprint_median_template_cosine": safe_float(spatial_footprint_metrics.get("median_footprint_template_cosine")),
+        "spatial_footprint_mean_top20_template_jaccard": safe_float(spatial_footprint_metrics.get("mean_top20_footprint_template_jaccard")),
+        "spatial_footprint_template_top5_capture": safe_float(spatial_footprint_metrics.get("mean_template_top_5pct_captures_footprint_share")),
+        "spatial_footprint_top5_zone_share": safe_float(spatial_footprint_metrics.get("mean_footprint_top_5pct_zone_share")),
+        "spatial_footprint_effective_zone_count": safe_float(spatial_footprint_metrics.get("mean_footprint_effective_zone_count")),
+        "spatial_footprint_top20_within_city_jaccard": safe_float(spatial_footprint_metrics.get("mean_top20_within_city_footprint_jaccard")),
+        "spatial_footprint_mapped_within_10km_share": safe_float(spatial_footprint_metrics.get("mean_mapped_within_10km_share")),
+        "spatial_footprint_lowest_template_alignment_city": str(spatial_footprint_metrics.get("lowest_template_alignment_city", "")),
         "od_message_scalar_od_top5_capture": safe_float(od_message_scalar.get("mean_event_top_5pct_value_capture")),
         "od_message_message_only_top5_capture": safe_float(od_message_message_only.get("mean_event_top_5pct_value_capture")),
         "od_message_scalar_plus_top5_capture": safe_float(od_message_scalar_plus.get("mean_event_top_5pct_value_capture")),
@@ -907,6 +922,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "value": metrics["footprint_top5_zero_variance_city_count"],
             "interpretation": "Five of seven cities have zero within-city variation in top-5% marginal-value share, so the present event-level law should be framed as a city-structure/top-tail law until zone-level event footprints are added.",
         },
+        {
+            "version": "V33",
+            "evidence_step": "TMC-derived event-zone footprint proxy",
+            "main_question": "Is there observed within-city spatial footprint signal beyond the OD vulnerability template?",
+            "key_metric": "top20_footprint_template_jaccard",
+            "value": metrics["spatial_footprint_mean_top20_template_jaccard"],
+            "interpretation": "Raw TMC speed records mapped to OD zones show that observed event footprints are far from the current OD-template top zones; spatial signal exists, but the present LP calibration has not yet absorbed it.",
+        },
     ]
     return pd.DataFrame(rows)
 
@@ -1079,9 +1102,9 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
             },
             {
                 "item": "event_spatial_footprint_scope",
-                "current_status": "V21 finds event-level top-tail concentration is strongly linked to decision-criticality; V32 shows top-5% value share has zero within-city variation in 5 of 7 cities, covering 58.1% of events.",
-                "implication": "The event-level law is currently a city-structure/top-tail law under the OD-vulnerability spatial template, not a fully event-specific spatial-footprint law.",
-                "next_step": "Add zone-level speed/rainfall footprint mapping or calibrated spatial footprint augmentation before claiming within-city rainfall-footprint-specific recovery laws.",
+                "current_status": "V21 finds event-level top-tail concentration is strongly linked to decision-criticality; V32 shows top-5% value share has zero within-city variation in 5 of 7 cities under the OD-template calibration; V33 maps raw TMC speed abnormalities to OD zones for all 105 events and finds low overlap between observed footprint top zones and OD-template top zones.",
+                "implication": "The event-level law is currently a city-structure/top-tail law under the LP's OD-vulnerability spatial template, but V33 shows there is usable event-specific spatial signal that could change b0_i and h_i,t once incorporated.",
+                "next_step": "Upgrade event calibration to a hybrid OD-vulnerability plus TMC-derived footprint field, then rerun action-value learning and LP closure to test whether within-city rainfall-footprint-specific recovery laws emerge.",
             },
             {
                 "item": "training_objective_scope",
@@ -1217,13 +1240,13 @@ def write_report(
     limitations: pd.DataFrame,
 ) -> None:
     lines = [
-        "# Recoverability Law Synthesis V32",
+        "# Recoverability Law Synthesis V33",
         "",
-        "V32 adds an event spatial-footprint identifiability audit on top of the V31 scenario-closure repair. It checks whether the event-level top-tail law is resolving within-city rainfall footprints or mostly reflecting the current city-level OD vulnerability template.",
+        "V33 adds a TMC-derived event-zone speed footprint proxy on top of the V32 identifiability audit. It checks whether raw speed records contain within-city event footprint signal that is not captured by the current OD vulnerability spatial template.",
         "",
         "## 本版做了什么",
         "",
-        "V32 quantifies the current event-footprint boundary: top-tail concentration is exactly invariant within five of seven cities under the present spatial calibration, while optimizer-selected value share still varies across events. This strengthens the wording discipline around Law B: it is a city-structure/top-tail law until zone-level event footprints are added.",
+        "V33 turns the V32 boundary into a testable augmentation path: all 105 observed events receive a TMC-to-OD-zone footprint proxy. The observed footprint top zones have very low overlap with the current OD-template top zones, which means the data contain event-specific spatial signal that the current LP calibration is not yet using.",
         "",
         "## 当前可写入论文的 law",
         "",
@@ -1269,6 +1292,8 @@ def write_report(
         "",
         "21. **Event-footprint identifiability boundary**: current event-level top-tail concentration is largely fixed by the city spatial template. Five of seven cities have zero within-city variation in top-5% value share and marginal-value Gini, so within-city rainfall-footprint claims require additional zone-level footprint data or augmentation.",
         "",
+        "22. **Observed footprint augmentation path**: raw TMC speed records can be mapped to OD zones to produce event-zone abnormal-speed footprints for all 105 events. These observed footprints are concentrated in event-specific zones whose top-20 sets barely overlap the OD vulnerability template, so the next scientific step is to rerun calibration and law learning with a hybrid OD-template plus observed-footprint spatial field.",
+        "",
         "## 关键指标",
         "",
         f"- fine-budget LP closure: {metrics['fine_budget_lp_n_selected_events']} selected events x {metrics['fine_budget_n_scales']} budget scales = {metrics['fine_budget_lp_n_jobs']} LP jobs, {metrics['fine_budget_lp_n_optimal_jobs']} optimal; LP gain peak budget = {metrics['fine_budget_lp_gain_peak_budget']:.2f}; LP gain per budget peak = {metrics['fine_budget_lp_gain_per_budget_peak_budget']:.2f}; law-random / LP-gain peak = {metrics['fine_budget_lp_law_random_fraction_peak_budget']:.2f}; base-budget law / LP gain = {metrics['fine_budget_lp_base_law_fraction_of_lp_gain']:.4f}, random / LP gain = {metrics['fine_budget_lp_base_random_fraction_of_lp_gain']:.4f}; mean law / LP gain across all budget rows = {metrics['fine_budget_lp_mean_law_fraction_of_lp_gain_all_budgets']:.4f}",
@@ -1304,6 +1329,7 @@ def write_report(
         f"- event-level counterexamples: high-loss/low-decision events = {metrics['event_decision_v21_high_loss_low_decision_count']}; moderate-loss/high-decision events = {metrics['event_decision_v21_moderate_loss_high_decision_count']}; high-rain/low-decision events = {metrics['event_decision_v21_high_rain_low_decision_count']}",
         f"- event-footprint boundary: top-5% value-share between-city variance share = {metrics['event_decision_v21_top5_between_city_share']:.4f}; gini between-city share = {metrics['event_decision_v21_gini_between_city_share']:.4f}; severity-only leave-city decision Spearman = {metrics['event_decision_v21_severity_only_loco_spearman']:.4f}; top-tail model = {metrics['event_decision_v21_top_tail_loco_spearman']:.4f}",
         f"- event-footprint identifiability: top-5% value share has zero within-city variation in {metrics['footprint_top5_zero_variance_city_count']}/7 cities ({metrics['footprint_top5_zero_variance_event_share']:.1%} of events); varying cities = {metrics['footprint_top5_variable_cities']}; optimizer-selected value-share mean within-city range = {metrics['footprint_optimizer_selected_value_share_mean_range']:.4f}; top-10 greedy-unit mean Jaccard = {metrics['footprint_top10_unit_pairwise_mean_jaccard']:.4f}",
+        f"- observed spatial footprint proxy: {metrics['spatial_footprint_n_events']} events across {metrics['spatial_footprint_n_cities']} cities; footprint-template mean/median cosine = {metrics['spatial_footprint_mean_template_cosine']:.4f}/{metrics['spatial_footprint_median_template_cosine']:.4f}; top-20 footprint/template Jaccard = {metrics['spatial_footprint_mean_top20_template_jaccard']:.4f}; OD-template top-5% captures {metrics['spatial_footprint_template_top5_capture']:.1%} of observed footprint mass; observed footprint top-5% zone share = {metrics['spatial_footprint_top5_zone_share']:.1%}; mean top-20 within-city footprint Jaccard = {metrics['spatial_footprint_top20_within_city_jaccard']:.4f}; mean TMC mapping within 10km = {metrics['spatial_footprint_mapped_within_10km_share']:.1%}",
         f"- early decision-criticality: best Spearman = {metrics['early_decision_best_spearman']:.4f} at {metrics['early_decision_best_window']}h using {metrics['early_decision_best_feature_group']}; 2h all-early Spearman = {metrics['early_decision_2h_all_spearman']:.4f}",
         "",
         "## Evidence Ladder",
@@ -1332,7 +1358,7 @@ def write_report(
         "",
         "## 论文写作含义",
         "",
-        "The current learning/law section can be written as a full evidence chain: optimization produces an action-value field; single-action LPs validate the marginal label; cross-city, factorized, and symbolic surrogates support a compact activated law; residual greedy shows that finite budgets require residual re-scoring; event top-tail tests separate decision-criticality from disruption magnitude; V29/V30 show that non-obvious activation survives parameter perturbations and appears in selected LP support; V31 strengthens representative scenario-specific optimum closure to 26/28 optimal non-base rows; V32 prevents over-claiming by showing that present event top-tail concentration is mostly a city-template signal. The remaining caveats are still important: graph evidence is OD-dependency alignment rather than a full road-adjacency/GNN closure; calendar holdout remains city-confounded; intervention parameters remain management-regime assumptions rather than observed causal intervention effects; the two unresolved New York scenario-optimum rows are a computational boundary; and event-specific spatial-footprint laws require zone-level footprint data or calibrated spatial augmentation.",
+        "The current learning/law section can be written as a full evidence chain: optimization produces an action-value field; single-action LPs validate the marginal label; cross-city, factorized, and symbolic surrogates support a compact activated law; residual greedy shows that finite budgets require residual re-scoring; event top-tail tests separate decision-criticality from disruption magnitude; V29/V30 show that non-obvious activation survives parameter perturbations and appears in selected LP support; V31 strengthens representative scenario-specific optimum closure to 26/28 optimal non-base rows; V32 prevents over-claiming by showing that present event top-tail concentration is mostly a city-template signal; V33 shows that raw TMC speed data contain event-zone footprint signal that the current calibration has not yet used. The remaining caveats are still important: graph evidence is OD-dependency alignment rather than a full road-adjacency/GNN closure; calendar holdout remains city-confounded; intervention parameters remain management-regime assumptions rather than observed causal intervention effects; the two unresolved New York scenario-optimum rows are a computational boundary; and the next major model step is to rerun LP calibration and law learning with a hybrid OD-template plus observed-footprint spatial field.",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
