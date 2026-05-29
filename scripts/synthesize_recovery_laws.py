@@ -106,6 +106,10 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "od_message_summary": read_csv(results / "od_message_passing_surrogate" / "tables" / "od_message_model_summary.csv"),
         "od_message_increments": read_csv(results / "od_message_passing_surrogate" / "tables" / "od_message_incremental_gains.csv"),
         "od_message_metrics": read_json_table(results / "od_message_passing_surrogate" / "tables" / "od_message_passing_metrics.json"),
+        "parameter_ensemble_metrics": read_json_table(results / "parameter_ensemble_stability" / "tables" / "parameter_ensemble_stability_metrics.json"),
+        "parameter_ensemble_model": read_csv(results / "parameter_ensemble_stability" / "tables" / "parameter_ensemble_model_summary.csv"),
+        "parameter_ensemble_score": read_csv(results / "parameter_ensemble_stability" / "tables" / "parameter_ensemble_score_summary.csv"),
+        "parameter_ensemble_token": read_csv(results / "parameter_ensemble_stability" / "tables" / "parameter_ensemble_token_summary.csv"),
     }
 
 
@@ -278,6 +282,7 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     od_message_message_only = one_row(data["od_message_summary"], model_id="O2_message_only_od")
     od_message_over_scalar = one_row(data["od_message_increments"], comparison="message_over_scalar_od")
     od_message_over_factorized = one_row(data["od_message_increments"], comparison="message_over_factorized")
+    parameter_ensemble_metrics = one_row(data["parameter_ensemble_metrics"])
 
     metrics: dict[str, Any] = {
         "n_action_tokens": safe_int(policy_capture["n_tokens"].max()) if "n_tokens" in policy_capture else None,
@@ -458,6 +463,16 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "od_message_message_over_factorized_delta_event_spearman": safe_float(od_message_over_factorized.get("delta_event_spearman")),
         "od_message_metrics_message_over_scalar_delta_top5": safe_float(od_message_metrics.get("message_over_scalar_od_delta_top5")),
         "od_message_metrics_message_over_factorized_delta_top5": safe_float(od_message_metrics.get("message_over_factorized_delta_top5")),
+        "parameter_ensemble_n_scenarios": safe_int(parameter_ensemble_metrics.get("n_parameter_scenarios")),
+        "parameter_ensemble_base_transfer_light_mean_top5_capture": safe_float(parameter_ensemble_metrics.get("base_transfer_parameter_light_mean_top5_capture")),
+        "parameter_ensemble_base_transfer_light_min_top5_capture": safe_float(parameter_ensemble_metrics.get("base_transfer_parameter_light_min_top5_capture")),
+        "parameter_ensemble_base_transfer_full_mean_top5_capture": safe_float(parameter_ensemble_metrics.get("base_transfer_factorized_mean_top5_capture")),
+        "parameter_ensemble_base_transfer_full_min_top5_capture": safe_float(parameter_ensemble_metrics.get("base_transfer_factorized_min_top5_capture")),
+        "parameter_ensemble_base_transfer_centered_mean_top5_capture": safe_float(parameter_ensemble_metrics.get("base_transfer_centered_factorized_mean_top5_capture")),
+        "parameter_ensemble_base_transfer_centered_min_top5_capture": safe_float(parameter_ensemble_metrics.get("base_transfer_centered_factorized_min_top5_capture")),
+        "parameter_ensemble_base_transfer_full_worst_scenario": str(parameter_ensemble_metrics.get("worst_base_transfer_factorized_scenario", "")),
+        "parameter_ensemble_full_activation_score_mean_top5_capture": safe_float(parameter_ensemble_metrics.get("full_activation_score_mean_top5_capture")),
+        "parameter_ensemble_light_activation_score_mean_top5_capture": safe_float(parameter_ensemble_metrics.get("light_activation_score_mean_top5_capture")),
     }
     return metrics
 
@@ -621,6 +636,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "value": metrics["od_message_message_over_scalar_delta_top5_capture"],
             "interpretation": "OD message-only features are informative, but adding them on top of scalar OD exposure/structure gives only a tiny top-tail gain and adding them to the low-dimensional factorized law slightly lowers top-5% capture; higher-order OD message passing is therefore not necessary for the current compact recoverability law.",
         },
+        {
+            "version": "V23",
+            "evidence_step": "Parameter-ensemble action-law stability",
+            "main_question": "Does the compact law survive changes in intervention effectiveness, cost, and response delay assumptions?",
+            "key_metric": "base_trained_parameter_light_factorized_mean_top5_capture",
+            "value": metrics["parameter_ensemble_base_transfer_light_mean_top5_capture"],
+            "interpretation": "Across 11 eta/cost/delay scenarios, a base-trained parameter-light factorized law transfers with high top-tail capture; parameter-dependent ridge features are more scale-sensitive, so scenario augmentation is important for parameter-sensitive surrogates.",
+        },
     ]
     return pd.DataFrame(rows)
 
@@ -755,8 +778,8 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
             },
             {
                 "item": "intervention_parameter_identification",
-                "current_status": "R/C/S effectiveness, cost, caps, delays, and diminishing returns are recovery-regime assumptions; V20 adds parameter-deconfounded action-token tests.",
-                "implication": "The law is still conditional on the specified management regime, but OD exposure and future-loss alignment remain informative beyond action mechanics.",
+                "current_status": "R/C/S effectiveness, cost, caps, delays, and diminishing returns are recovery-regime assumptions; V20 adds parameter-deconfounded action-token tests and V23 adds first-order eta/cost/delay parameter-ensemble stability.",
+                "implication": "The law is still conditional on a management regime, but future-loss and OD-exposure alignment transfer across moderate parameter perturbations; absolute eta/cost features need augmentation or careful normalization for robust parameter-sensitive surrogates.",
                 "next_step": "Run full LP parameter ensembles or incorporate observed intervention records if parameter identification becomes a central claim.",
             },
             {
@@ -792,7 +815,7 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
             {
                 "item": "perturbed_optimum_stability",
                 "current_status": "Representative perturbation solves are available for 4 events with 3 cost/effectiveness perturbations each.",
-                "implication": "The perturbation evidence supports stable value principles, but not yet full-sample action-list stability.",
+                "implication": "V23 expands first-order action-value parameter stability, but full LP action-list stability remains limited to the representative perturbation sample.",
                 "next_step": "Increase perturbation count and city-event coverage if action stability becomes a central claim.",
             },
             {
@@ -917,11 +940,11 @@ def write_report(
     limitations: pd.DataFrame,
 ) -> None:
     lines = [
-        "# Recoverability Law Synthesis V22",
+        "# Recoverability Law Synthesis V23",
         "",
         "## 本版做了什么",
         "",
-        "V22 将 OD message-passing surrogate 接入 learning/law synthesis。在 V21 已经验证 event-level decision-criticality 不等于 rainfall/loss severity 之后，本版进一步检验显式一跳/两跳 OD-neighborhood 信息是否有必要成为主 law 或 graph surrogate 的核心。",
+        "V23 将 parameter-ensemble stability 接入 learning/law synthesis。在 V20 已经证明 action mechanics 不能单独解释 recovery value、V22 已经说明显式 OD message passing 并非当前主 law 必需之后，本版进一步检验 compact law 在 eta/cost/delay 和 channel-favored 参数扰动下是否仍然保持 top-tail value capture。",
         "",
         "## 当前可写入论文的 law",
         "",
@@ -947,6 +970,8 @@ def write_report(
         "",
         "11. **OD message-passing parsimony result**：一跳/两跳 OD message features 本身有信息，但在 scalar OD exposure/structure 已经进入模型后只带来极小 top-tail 增益；加到低维 factorized law 上还略微降低 top-5% capture。因此当前 law 需要真实 OD 空间对齐，但不需要把显式 message passing 作为主模型。",
         "",
+        "12. **Parameter-ensemble stability result**：在 11 组 eta/cost/delay 扰动下，只用 delay、future horizon、OD exposure 和 intervention type 的 base-trained parameter-light law 仍保持较高 top-tail capture；含绝对 eta/cost 的 ridge surrogate 对参数尺度外推更敏感，说明后续参数敏感 surrogate 需要 scenario augmentation。",
+        "",
         "## 关键指标",
         "",
         f"- action tokens: {metrics['n_action_tokens']:,}",
@@ -962,6 +987,7 @@ def write_report(
         f"- graph structure ablation: no-graph top-5% capture = {metrics['graph_no_graph_top5_capture']:.4f}; observed OD graph = {metrics['graph_observed_full_top5_capture']:.4f}; shuffled OD graph = {metrics['graph_shuffled_full_top5_capture']:.4f}; observed-shuffled gap = {metrics['graph_full_alignment_delta_top5_capture']:+.4f}",
         f"- factorized graph alignment: observed OD = {metrics['graph_factorized_observed_top5_capture']:.4f}; shuffled OD = {metrics['graph_factorized_shuffled_top5_capture']:.4f}; gap = {metrics['graph_factorized_alignment_delta_top5_capture']:+.4f}",
         f"- OD message passing: message-only top-5% capture = {metrics['od_message_message_only_top5_capture']:.4f}; scalar OD = {metrics['od_message_scalar_od_top5_capture']:.4f}; scalar+message = {metrics['od_message_scalar_plus_top5_capture']:.4f}; message-over-scalar delta = {metrics['od_message_message_over_scalar_delta_top5_capture']:+.4f}; factorized+message delta = {metrics['od_message_message_over_factorized_delta_top5_capture']:+.4f}",
+        f"- parameter ensemble stability: {metrics['parameter_ensemble_n_scenarios']} eta/cost/delay scenarios; base-trained parameter-light factorized mean/min top-5% capture = {metrics['parameter_ensemble_base_transfer_light_mean_top5_capture']:.4f}/{metrics['parameter_ensemble_base_transfer_light_min_top5_capture']:.4f}; full factorized mean/min = {metrics['parameter_ensemble_base_transfer_full_mean_top5_capture']:.4f}/{metrics['parameter_ensemble_base_transfer_full_min_top5_capture']:.4f}; centered-efficiency mean/min = {metrics['parameter_ensemble_base_transfer_centered_mean_top5_capture']:.4f}/{metrics['parameter_ensemble_base_transfer_centered_min_top5_capture']:.4f}; weakest full scenario = {metrics['parameter_ensemble_base_transfer_full_worst_scenario']}",
         f"- event-regime generalization: {metrics['regime_factorized_n_splits']} held-out regimes; factorized mean top-5% capture = {metrics['regime_factorized_mean_top5_capture']:.4f}; worst = {metrics['regime_factorized_hardest_split_family']} / {metrics['regime_factorized_hardest_heldout']} at {metrics['regime_factorized_min_top5_capture']:.4f}; full additive mean = {metrics['regime_full_mean_top5_capture']:.4f}",
         f"- training-objective ablation: factorized raw log-value capture = {metrics['objective_factorized_raw_top5_capture']:.4f}; best objective = {metrics['objective_factorized_best_objective']} at {metrics['objective_factorized_best_top5_capture']:.4f}; top-tail weighted = {metrics['objective_factorized_top_tail_weighted_top5_capture']:.4f}; rank-percentile = {metrics['objective_factorized_rank_top5_capture']:.4f}",
         f"- training-objective ablation: full additive best objective = {metrics['objective_full_best_objective']} at {metrics['objective_full_best_top5_capture']:.4f}, improvement over raw = {metrics['objective_full_best_minus_raw_top5_capture']:+.4f}",

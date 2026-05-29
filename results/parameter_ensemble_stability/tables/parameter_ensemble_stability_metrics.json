@@ -1,0 +1,15 @@
+{
+  "n_parameter_scenarios": 11,
+  "base_transfer_factorized_mean_top5_capture": 0.8774252737589877,
+  "base_transfer_factorized_min_top5_capture": 0.7273443731986526,
+  "base_transfer_parameter_light_mean_top5_capture": 0.9095122040682923,
+  "base_transfer_parameter_light_min_top5_capture": 0.753681183874978,
+  "base_transfer_centered_factorized_mean_top5_capture": 0.8191322881428011,
+  "base_transfer_centered_factorized_min_top5_capture": 0.39738695559074866,
+  "worst_base_transfer_factorized_scenario": "cheap_all",
+  "worst_base_transfer_factorized_top5_capture": 0.7273443731986526,
+  "full_activation_score_mean_top5_capture": 1.0,
+  "full_activation_score_min_top5_capture": 1.0,
+  "light_activation_score_mean_top5_capture": 0.8159966473276643,
+  "light_activation_score_min_top5_capture": 0.5925627485477108
+}

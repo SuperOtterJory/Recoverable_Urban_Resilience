@@ -176,5 +176,15 @@
   "od_message_message_over_scalar_delta_event_spearman": 0.0005848783061921,
   "od_message_message_over_factorized_delta_event_spearman": 0.0189012835683435,
   "od_message_metrics_message_over_scalar_delta_top5": 0.003913938310696974,
-  "od_message_metrics_message_over_factorized_delta_top5": -0.006070759104400136
+  "od_message_metrics_message_over_factorized_delta_top5": -0.006070759104400136,
+  "parameter_ensemble_n_scenarios": 11,
+  "parameter_ensemble_base_transfer_light_mean_top5_capture": 0.9095122040682923,
+  "parameter_ensemble_base_transfer_light_min_top5_capture": 0.753681183874978,
+  "parameter_ensemble_base_transfer_full_mean_top5_capture": 0.8774252737589877,
+  "parameter_ensemble_base_transfer_full_min_top5_capture": 0.7273443731986526,
+  "parameter_ensemble_base_transfer_centered_mean_top5_capture": 0.8191322881428011,
+  "parameter_ensemble_base_transfer_centered_min_top5_capture": 0.39738695559074866,
+  "parameter_ensemble_base_transfer_full_worst_scenario": "cheap_all",
+  "parameter_ensemble_full_activation_score_mean_top5_capture": 1.0,
+  "parameter_ensemble_light_activation_score_mean_top5_capture": 0.8159966473276643
 }

@@ -1,0 +1,12 @@
+parameter_scenario,description,n_tokens,n_events,positive_value_share,mean_target_value,total_target_value,mean_eta_per_cost,mean_delay_fraction
+base,original calibrated eta/cost/delay,170137,105,0.9731216608,0.05512495108,9378.793802,0.370753036,0.06420022296
+low_efficiency_all,all intervention effectiveness reduced by 25%,170137,105,0.9731216608,0.04134371331,7034.095352,0.278064777,0.06420022296
+high_efficiency_all,all intervention effectiveness increased by 25%,170137,105,0.9731216608,0.06890618885,11723.49225,0.463441295,0.06420022296
+expensive_all,all intervention costs increased by 25%,170137,105,0.9731216608,0.04409996086,7503.035042,0.2966024288,0.06420022296
+cheap_all,all intervention costs reduced by 25%,170137,105,0.9731216608,0.07349993477,12505.0584,0.4943373813,0.06420022296
+fast_response,each intervention can start one hour earlier when possible,170137,105,0.9910013695,0.05569816319,9476.31839,0.370753036,0.01615168952
+slow_response_2h,each intervention is delayed by two additional hours,170137,105,0.7576482482,0.04252172064,7234.517985,0.370753036,0.2308668896
+slow_response_4h,each intervention is delayed by four additional hours,170137,105,0.5501919042,0.03024516646,5145.821886,0.370753036,0.3975335563
+R_favored,durable restoration is relatively more efficient and cheaper,170137,105,0.9731216608,0.04849038193,8250.00811,0.3246433364,0.06420022296
+C_favored,temporary capacity is relatively more efficient and cheaper,170137,105,0.9731216608,0.0668160281,11367.87857,0.409390941,0.06420022296
+S_favored,substitution/control is relatively more efficient and cheaper,170137,105,0.9731216608,0.06244944827,10624.96178,0.4614955658,0.06420022296
