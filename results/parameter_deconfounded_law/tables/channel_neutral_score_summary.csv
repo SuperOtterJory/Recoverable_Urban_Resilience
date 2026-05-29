@@ -1,0 +1,7 @@
+score_id,description,n_channels,mean_spearman,median_spearman,mean_top10_value_capture,median_top10_value_capture,mean_top10_ndcg,mean_top10_precision
+S0_efficiency_only,within-channel calibrated efficiency per cost only,2381,-0.7835321768398157,-0.9994903160040777,0.20120011503563956,0.14931947727727926,0.17251437167770547,0.0033547683899118044
+S1_deficit_only,within-channel local/access deficit only,2381,0.7147426948149366,0.9994903160040777,0.8824634758860507,1.0,0.8693040958557772,0.6662869268701137
+S2_exposure_only,within-channel OD exposure only,2381,0.998665594652232,0.9999999999999999,0.9999526214946491,1.0,0.9998273691110453,0.986476206646859
+S3_structure_only,within-channel static OD structure only,2381,-0.2426684742539892,-0.25846153846153846,0.5632437766078346,0.5741190148186428,0.5436590677774079,0.02692297228156067
+S4_parameter_light_activation,"within-channel future horizon times OD exposure, no eta/cost",2381,0.998665594652232,0.9999999999999999,0.9999526214946491,1.0,0.9998273691110453,0.986476206646859
+S5_full_activation,within-channel activated bottleneck score with eta/cost,2381,1.0,1.0,1.0,1.0,1.0,1.0

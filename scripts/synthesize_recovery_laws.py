@@ -97,6 +97,9 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "regime_gap_summary": read_csv(results / "event_regime_generalization" / "tables" / "regime_gap_summary.csv"),
         "objective_summary": read_csv(results / "training_objective_ablation" / "tables" / "objective_model_summary.csv"),
         "objective_improvements": read_csv(results / "training_objective_ablation" / "tables" / "objective_improvement_summary.csv"),
+        "parameter_summary": read_csv(results / "parameter_deconfounded_law" / "tables" / "parameter_deconfounded_model_summary.csv"),
+        "parameter_increments": read_csv(results / "parameter_deconfounded_law" / "tables" / "parameter_deconfounded_increments.csv"),
+        "parameter_channel": read_csv(results / "parameter_deconfounded_law" / "tables" / "channel_neutral_score_summary.csv"),
     }
 
 
@@ -235,6 +238,24 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         feature_set="full_additive",
         objective_id=str(objective_full.get("best_objective_id", "")),
     )
+    parameter_summary = data["parameter_summary"]
+    parameter_increments = data["parameter_increments"]
+    parameter_channel = data["parameter_channel"]
+    parameter_clock = one_row(parameter_summary, model_id="P0_policy_clock_only")
+    parameter_efficiency = one_row(parameter_summary, model_id="P1_clock_plus_efficiency")
+    parameter_exposure = one_row(parameter_summary, model_id="P3_add_od_exposure")
+    parameter_structure = one_row(parameter_summary, model_id="P4_add_structure_scarcity")
+    parameter_light_factorized = one_row(parameter_summary, model_id="P5_parameter_light_factorized")
+    parameter_full_factorized = one_row(parameter_summary, model_id="P6_full_factorized")
+    parameter_full_additive = one_row(parameter_summary, model_id="P7_full_additive")
+    parameter_add_efficiency = one_row(parameter_increments, comparison="add_calibrated_efficiency")
+    parameter_add_od = one_row(parameter_increments, comparison="add_od_exposure")
+    parameter_light_over_clock = one_row(parameter_increments, comparison="parameter_light_factorized_over_clock")
+    parameter_eff_to_factorized = one_row(parameter_increments, comparison="add_efficiency_to_factorized_law")
+    parameter_full_over_clock = one_row(parameter_increments, comparison="full_additive_over_clock")
+    channel_efficiency = one_row(parameter_channel, score_id="S0_efficiency_only")
+    channel_light_activation = one_row(parameter_channel, score_id="S4_parameter_light_activation")
+    channel_full_activation = one_row(parameter_channel, score_id="S5_full_activation")
 
     metrics: dict[str, Any] = {
         "n_action_tokens": safe_int(policy_capture["n_tokens"].max()) if "n_tokens" in policy_capture else None,
@@ -378,6 +399,22 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "objective_full_best_top5_regret": safe_float(objective_full_best.get("mean_event_top_5pct_regret")),
         "objective_interaction_best_top5_capture": safe_float(objective_interaction.get("best_top5_capture")),
         "objective_interaction_best_minus_raw_top5_capture": safe_float(objective_interaction.get("best_minus_raw_top5_capture")),
+        "parameter_policy_clock_top5_capture": safe_float(parameter_clock.get("mean_event_top_5pct_value_capture")),
+        "parameter_clock_plus_efficiency_top5_capture": safe_float(parameter_efficiency.get("mean_event_top_5pct_value_capture")),
+        "parameter_add_od_exposure_top5_capture": safe_float(parameter_exposure.get("mean_event_top_5pct_value_capture")),
+        "parameter_add_structure_top5_capture": safe_float(parameter_structure.get("mean_event_top_5pct_value_capture")),
+        "parameter_light_factorized_top5_capture": safe_float(parameter_light_factorized.get("mean_event_top_5pct_value_capture")),
+        "parameter_full_factorized_top5_capture": safe_float(parameter_full_factorized.get("mean_event_top_5pct_value_capture")),
+        "parameter_full_additive_top5_capture": safe_float(parameter_full_additive.get("mean_event_top_5pct_value_capture")),
+        "parameter_add_efficiency_delta_top5_capture": safe_float(parameter_add_efficiency.get("delta_top5_value_capture")),
+        "parameter_add_od_delta_top5_capture": safe_float(parameter_add_od.get("delta_top5_value_capture")),
+        "parameter_light_over_clock_delta_top5_capture": safe_float(parameter_light_over_clock.get("delta_top5_value_capture")),
+        "parameter_efficiency_to_factorized_delta_top5_capture": safe_float(parameter_eff_to_factorized.get("delta_top5_value_capture")),
+        "parameter_full_over_clock_delta_top5_capture": safe_float(parameter_full_over_clock.get("delta_top5_value_capture")),
+        "parameter_channel_efficiency_top10_capture": safe_float(channel_efficiency.get("mean_top10_value_capture")),
+        "parameter_channel_light_activation_top10_capture": safe_float(channel_light_activation.get("mean_top10_value_capture")),
+        "parameter_channel_full_activation_top10_capture": safe_float(channel_full_activation.get("mean_top10_value_capture")),
+        "parameter_channel_n_groups": safe_int(channel_full_activation.get("n_channels")),
     }
     return metrics
 
@@ -517,6 +554,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "value": metrics["objective_factorized_best_minus_raw_top5_capture"],
             "interpretation": "For the compact factorized law, ordinary log-value regression is already the best top-tail objective; ranking-aware variants are useful robustness checks rather than the source of the law.",
         },
+        {
+            "version": "V20",
+            "evidence_step": "Parameter-deconfounded structure test",
+            "main_question": "Is the law only a reflection of intervention timing, cost, and effectiveness parameters?",
+            "key_metric": "parameter_light_factorized_over_clock_delta_top5_capture",
+            "value": metrics["parameter_light_over_clock_delta_top5_capture"],
+            "interpretation": "A factorized law without eta/cost still strongly outperforms policy-clock and intervention-type controls, showing that OD exposure and future loss alignment carry structural value beyond action mechanics.",
+        },
     ]
     return pd.DataFrame(rows)
 
@@ -651,9 +696,9 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
             },
             {
                 "item": "intervention_parameter_identification",
-                "current_status": "R/C/S effectiveness, cost, caps, delays, and diminishing returns are recovery-regime assumptions.",
-                "implication": "The law is conditional on the specified management regime.",
-                "next_step": "Run parameter ensembles or incorporate observed intervention records if available.",
+                "current_status": "R/C/S effectiveness, cost, caps, delays, and diminishing returns are recovery-regime assumptions; V20 adds parameter-deconfounded action-token tests.",
+                "implication": "The law is still conditional on the specified management regime, but OD exposure and future-loss alignment remain informative beyond action mechanics.",
+                "next_step": "Run full LP parameter ensembles or incorporate observed intervention records if parameter identification becomes a central claim.",
             },
             {
                 "item": "surrogate_architecture",
@@ -807,11 +852,11 @@ def write_report(
     limitations: pd.DataFrame,
 ) -> None:
     lines = [
-        "# Recoverability Law Synthesis V19",
+        "# Recoverability Law Synthesis V20",
         "",
         "## 本版做了什么",
         "",
-        "V19 将 training-objective ablation 接入 learning/law synthesis。在 V17/V18 已经验证 OD graph alignment 和 event-regime generalization 的基础上，本版进一步检验：低维 recoverability law 是否依赖特殊的 ranking/top-tail training objective，还是主要由稳定的 feature structure 支撑。",
+        "V20 将 parameter-deconfounded law analysis 接入 learning/law synthesis。在 V17/V18/V19 已经验证 OD graph alignment、event-regime generalization 和 training-objective robustness 的基础上，本版进一步检验：低维 recoverability law 是否只是响应时间、R/C/S 类型、效率、成本等 action-mechanics 的产物。",
         "",
         "## 当前可写入论文的 law",
         "",
@@ -831,6 +876,8 @@ def write_report(
         "",
         "8. **Training-objective robustness result**：top-tail capture 和 regret 是核心评价指标，但低维 factorized law 不依赖特殊 ranking-loss trick；普通 log-value regression 已经给出最高 top-tail capture。",
         "",
+        "9. **Parameter-deconfounded structure result**：只看 action mechanics 明显不足；即使移除 eta/cost efficiency，future-loss horizon 与 OD exposure 的 factorized law 仍显著优于 policy-clock baseline，说明城市结构对齐不是参数设定的同义反复。",
+        "",
         "## 关键指标",
         "",
         f"- action tokens: {metrics['n_action_tokens']:,}",
@@ -848,6 +895,9 @@ def write_report(
         f"- event-regime generalization: {metrics['regime_factorized_n_splits']} held-out regimes; factorized mean top-5% capture = {metrics['regime_factorized_mean_top5_capture']:.4f}; worst = {metrics['regime_factorized_hardest_split_family']} / {metrics['regime_factorized_hardest_heldout']} at {metrics['regime_factorized_min_top5_capture']:.4f}; full additive mean = {metrics['regime_full_mean_top5_capture']:.4f}",
         f"- training-objective ablation: factorized raw log-value capture = {metrics['objective_factorized_raw_top5_capture']:.4f}; best objective = {metrics['objective_factorized_best_objective']} at {metrics['objective_factorized_best_top5_capture']:.4f}; top-tail weighted = {metrics['objective_factorized_top_tail_weighted_top5_capture']:.4f}; rank-percentile = {metrics['objective_factorized_rank_top5_capture']:.4f}",
         f"- training-objective ablation: full additive best objective = {metrics['objective_full_best_objective']} at {metrics['objective_full_best_top5_capture']:.4f}, improvement over raw = {metrics['objective_full_best_minus_raw_top5_capture']:+.4f}",
+        f"- parameter-deconfounded law: policy-clock only top-5% capture = {metrics['parameter_policy_clock_top5_capture']:.4f}; clock+efficiency = {metrics['parameter_clock_plus_efficiency_top5_capture']:.4f}; +OD exposure = {metrics['parameter_add_od_exposure_top5_capture']:.4f}; parameter-light factorized = {metrics['parameter_light_factorized_top5_capture']:.4f}",
+        f"- parameter-deconfounded increments: adding eta/cost gives {metrics['parameter_add_efficiency_delta_top5_capture']:+.4f}; adding OD exposure gives {metrics['parameter_add_od_delta_top5_capture']:+.4f}; parameter-light factorized over clock gives {metrics['parameter_light_over_clock_delta_top5_capture']:+.4f}",
+        f"- fixed-channel first-order diagnostic: {metrics['parameter_channel_n_groups']} event-time-intervention channels; efficiency-only top-10% capture = {metrics['parameter_channel_efficiency_top10_capture']:.4f}; no-eta horizon--OD activation = {metrics['parameter_channel_light_activation_top10_capture']:.4f}; full activation = {metrics['parameter_channel_full_activation_top10_capture']:.4f}",
         f"- early decision-criticality: best Spearman = {metrics['early_decision_best_spearman']:.4f} at {metrics['early_decision_best_window']}h using {metrics['early_decision_best_feature_group']}; 2h all-early Spearman = {metrics['early_decision_2h_all_spearman']:.4f}",
         "",
         "## Evidence Ladder",

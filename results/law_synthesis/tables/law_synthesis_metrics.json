@@ -139,5 +139,21 @@
   "objective_full_best_minus_raw_top5_capture": 0.01623893938,
   "objective_full_best_top5_regret": 0.02133411704,
   "objective_interaction_best_top5_capture": 0.9736891136,
-  "objective_interaction_best_minus_raw_top5_capture": 0.02260418065
+  "objective_interaction_best_minus_raw_top5_capture": 0.02260418065,
+  "parameter_policy_clock_top5_capture": 0.4997056332466246,
+  "parameter_clock_plus_efficiency_top5_capture": 0.577942905818141,
+  "parameter_add_od_exposure_top5_capture": 0.8332660333056534,
+  "parameter_add_structure_top5_capture": 0.8314379001672582,
+  "parameter_light_factorized_top5_capture": 0.939730077756986,
+  "parameter_full_factorized_top5_capture": 0.9374546558174094,
+  "parameter_full_additive_top5_capture": 0.9624269435834124,
+  "parameter_add_efficiency_delta_top5_capture": 0.0782372725715163,
+  "parameter_add_od_delta_top5_capture": 0.2433976857649075,
+  "parameter_light_over_clock_delta_top5_capture": 0.4400244445103615,
+  "parameter_efficiency_to_factorized_delta_top5_capture": -0.0022754219395767,
+  "parameter_full_over_clock_delta_top5_capture": 0.4627213103367876,
+  "parameter_channel_efficiency_top10_capture": 0.2012001150356395,
+  "parameter_channel_light_activation_top10_capture": 0.9999526214946493,
+  "parameter_channel_full_activation_top10_capture": 1.0,
+  "parameter_channel_n_groups": 2381
 }

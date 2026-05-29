@@ -1,0 +1,22 @@
+{
+  "policy_clock_top5_capture": 0.49970563324662465,
+  "clock_plus_efficiency_top5_capture": 0.577942905818141,
+  "mechanics_deficit_exposure_top5_capture": 0.8332660333056534,
+  "mechanics_deficit_exposure_structure_top5_capture": 0.8314379001672582,
+  "parameter_light_factorized_top5_capture": 0.9397300777569861,
+  "full_factorized_top5_capture": 0.9374546558174094,
+  "full_additive_top5_capture": 0.9624269435834123,
+  "add_efficiency_delta_top5_capture": 0.07823727257151636,
+  "add_local_deficit_delta_top5_capture": 0.011925441722604901,
+  "add_od_exposure_delta_top5_capture": 0.2433976857649075,
+  "add_structure_scarcity_delta_top5_capture": -0.0018281331383952493,
+  "parameter_light_factorized_over_clock_delta_top5_capture": 0.4400244445103615,
+  "add_efficiency_to_factorized_delta_top5_capture": -0.0022754219395767494,
+  "full_additive_over_clock_delta_top5_capture": 0.46272131033678765,
+  "channel_efficiency_only_top10_capture": 0.20120011503563956,
+  "channel_parameter_light_activation_top10_capture": 0.9999526214946491,
+  "channel_full_activation_top10_capture": 1.0,
+  "channel_activation_minus_efficiency_top10_capture": 0.7987998849643605,
+  "channel_light_activation_minus_efficiency_top10_capture": 0.7987525064590095,
+  "channel_n_groups": 2381
+}
