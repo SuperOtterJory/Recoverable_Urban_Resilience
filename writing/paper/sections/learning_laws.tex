@@ -58,6 +58,15 @@ This residual law nearly closes the base-scenario LP gap. Across 105 city-events
 
 The residual law remains stronger than static ranking under budget and response perturbations. In the 105-event stress test, residual replanning captures 0.5711 of base LP gain under low budget, 0.9660 in the base scenario with coarser ten-pass replanning, 1.5916 under high budget measured against the base LP denominator, 0.8780 with two additional hours of delay, 0.7734 with four additional hours of delay, and 0.5222 under scarce-and-late conditions. These stress-test numbers are normalized by the base LP gain, so they show policy stability rather than scenario-specific optimality.
 
+A separate budget-leverage phase analysis tests whether decision leverage is highest at an intermediate resource level. In the current low/base/high budget scan, this specific interior-peak hypothesis is not supported. The absolute law-versus-random proxy advantage rises from 0.0750 to 0.1272 to 0.2094 as budget scale increases from 0.5 to 1.0 to 2.0. However, the relative law/random advantage falls from 7.87 to 6.81 to 5.79, and residual-versus-static replay leverage per unit cost falls from 0.0311 to 0.0268 to 0.0243. Thus the better budget law in this sample is scale-dependent diminishing leverage: larger budgets increase the total amount of recoverable value captured, but each additional unit of budget carries less incremental decision advantage.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.84\linewidth]{../../results/budget_leverage_phase/figures/budget_leverage_curve.png}
+  \caption{Budget-leverage phase analysis. Absolute law-guided advantage grows with budget, while relative and per-cost leverage decline.}
+  \label{fig:budget-leverage-phase}
+\end{figure}
+
 To test scenario-specific closure directly, representative non-base LP optima were re-solved for selected city-events. Among 23 successful non-base LP closures, static small-signal greedy captures 0.7228 of the scenario LP gain on average, while residual finite greedy captures 0.9411. The residual policy weakly dominates or ties static greedy in all successful closures. Five hard non-base cases reached the current time limit, so this result should be read as representative scenario-optimum validation rather than full non-base closure over all 105 events.
 
 We also test whether action importance is stable to near-neighbor optimization problems. For four representative interaction-sensitive events, intervention effectiveness and cost are perturbed three times within a clipped 20 percent range and the LP is re-solved. The original base LP action set captures 0.7954 of the perturbed LP selection-frequency mass, residual finite greedy captures 0.6097, and static small-signal greedy captures 0.4659. Thus residual replanning is closer than static ranking to the perturbed stable action core, but the exact action list remains parameter-sensitive. This supports using the learned result as a value law rather than as a fixed list of universal intervention locations.

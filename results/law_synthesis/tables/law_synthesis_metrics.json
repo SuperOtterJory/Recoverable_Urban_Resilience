@@ -51,5 +51,16 @@
   "symbolic_without_od_top5_capture": 0.08245003577,
   "symbolic_largest_ablation_drop_group": "od_exposure_structure",
   "symbolic_largest_ablation_top5_drop": 0.02758128237,
-  "symbolic_leave_city_rows": 63
+  "symbolic_leave_city_rows": 63,
+  "budget_abs_random_peak_budget": "high",
+  "budget_abs_random_interior_peak_supported": false,
+  "budget_ratio_random_peak_budget": "low",
+  "budget_ratio_random_monotone_decreasing": true,
+  "budget_residual_per_cost_peak_budget": "low",
+  "budget_low_proxy_leverage_vs_random": 0.0750344024,
+  "budget_base_proxy_leverage_vs_random": 0.1272031682,
+  "budget_high_proxy_leverage_vs_random": 0.2093583986,
+  "budget_low_residual_static_per_cost": 0.03109226066,
+  "budget_base_residual_static_per_cost": 0.02679072486,
+  "budget_high_residual_static_per_cost": 0.0243100078
 }

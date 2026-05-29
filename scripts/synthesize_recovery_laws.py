@@ -81,6 +81,8 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "symbolic_formula": read_csv(results / "symbolic_law_extraction" / "tables" / "symbolic_formula_metrics.csv"),
         "symbolic_ablation": read_csv(results / "symbolic_law_extraction" / "tables" / "feature_group_ablation.csv"),
         "symbolic_leave_city": read_csv(results / "symbolic_law_extraction" / "tables" / "formula_leave_city_metrics.csv"),
+        "budget_phase_summary": read_csv(results / "budget_leverage_phase" / "tables" / "budget_leverage_summary.csv"),
+        "budget_phase_tests": read_csv(results / "budget_leverage_phase" / "tables" / "budget_phase_tests.csv"),
     }
 
 
@@ -137,6 +139,8 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     symbolic = data["symbolic_formula"]
     symbolic_ablation = data["symbolic_ablation"]
     symbolic_leave_city = data["symbolic_leave_city"]
+    budget_phase = data["budget_phase_summary"]
+    budget_tests = data["budget_phase_tests"]
     activated_symbolic = one_row(symbolic, formula_id="F7_activated_recovery_law")
     minimal_log_symbolic = one_row(symbolic, formula_id="R7_minimal_log_law")
     exposure_symbolic = one_row(symbolic, formula_id="F2_exposure")
@@ -151,6 +155,12 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         largest_drop = leave_group_rows.sort_values("top5_capture_drop_vs_full", ascending=False).iloc[0]
     else:
         largest_drop = pd.Series(dtype=float)
+    budget_abs_random = one_row(budget_tests, metric="mean_proxy_leverage_vs_random_positive")
+    budget_ratio_random = one_row(budget_tests, metric="mean_proxy_ratio_vs_random_positive")
+    budget_per_cost = one_row(budget_tests, metric="mean_residual_minus_static_per_cost")
+    budget_low = one_row(budget_phase, budget_scale=0.5)
+    budget_base = one_row(budget_phase, budget_scale=1.0)
+    budget_high = one_row(budget_phase, budget_scale=2.0)
 
     metrics: dict[str, Any] = {
         "n_action_tokens": safe_int(policy_capture["n_tokens"].max()) if "n_tokens" in policy_capture else None,
@@ -206,6 +216,17 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "symbolic_largest_ablation_drop_group": str(largest_drop.get("removed_group", "")),
         "symbolic_largest_ablation_top5_drop": safe_float(largest_drop.get("top5_capture_drop_vs_full")),
         "symbolic_leave_city_rows": safe_int(len(symbolic_leave_city)),
+        "budget_abs_random_peak_budget": str(budget_abs_random.get("peak_budget", "")),
+        "budget_abs_random_interior_peak_supported": parse_bool(budget_abs_random.get("interior_peak_supported")),
+        "budget_ratio_random_peak_budget": str(budget_ratio_random.get("peak_budget", "")),
+        "budget_ratio_random_monotone_decreasing": parse_bool(budget_ratio_random.get("monotone_decreasing")),
+        "budget_residual_per_cost_peak_budget": str(budget_per_cost.get("peak_budget", "")),
+        "budget_low_proxy_leverage_vs_random": safe_float(budget_low.get("mean_proxy_leverage_vs_random_positive")),
+        "budget_base_proxy_leverage_vs_random": safe_float(budget_base.get("mean_proxy_leverage_vs_random_positive")),
+        "budget_high_proxy_leverage_vs_random": safe_float(budget_high.get("mean_proxy_leverage_vs_random_positive")),
+        "budget_low_residual_static_per_cost": safe_float(budget_low.get("mean_residual_minus_static_per_cost")),
+        "budget_base_residual_static_per_cost": safe_float(budget_base.get("mean_residual_minus_static_per_cost")),
+        "budget_high_residual_static_per_cost": safe_float(budget_high.get("mean_residual_minus_static_per_cost")),
     }
     return metrics
 
@@ -288,6 +309,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "key_metric": "activated_symbolic_top5_capture",
             "value": metrics["symbolic_activated_top5_capture"],
             "interpretation": "The compact activated law sits on the formula Pareto frontier; OD exposure/structure is the largest feature-group contributor in ablation.",
+        },
+        {
+            "version": "V13",
+            "evidence_step": "Budget-leverage phase analysis",
+            "main_question": "Is decision leverage highest at intermediate budget levels?",
+            "key_metric": "interior_budget_peak_supported",
+            "value": float(metrics["budget_abs_random_interior_peak_supported"]),
+            "interpretation": "The current low/base/high scan does not support an interior absolute-leverage peak; absolute leverage rises with budget while per-budget leverage diminishes.",
         },
     ]
     return pd.DataFrame(rows)
@@ -439,6 +468,12 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
                 "implication": "The perturbation evidence supports stable value principles, but not yet full-sample action-list stability.",
                 "next_step": "Increase perturbation count and city-event coverage if action stability becomes a central claim.",
             },
+            {
+                "item": "budget_phase_coverage",
+                "current_status": "Budget-leverage phase analysis currently uses low/base/high budget scales from existing policy replay and proxy tables.",
+                "implication": "The current evidence rejects an interior peak over these three scales, but a finer budget sweep would be needed to rule out a narrower nonmonotonic peak.",
+                "next_step": "Run additional budget scales or scenario-specific LP closures if budget phase shape becomes a central contribution.",
+            },
         ]
     )
 
@@ -543,11 +578,11 @@ def write_report(
     limitations: pd.DataFrame,
 ) -> None:
     lines = [
-        "# Recoverability Law Synthesis V12",
+        "# Recoverability Law Synthesis V13",
         "",
         "## 这版做了什么",
         "",
-        "V12 把 V5-V11 的 learning/law 证据链和新的 symbolic formula extraction 合并成论文可用的 synthesis：从 action-level marginal value，到 finite-budget residual law，再到 event-level top-tail decision-criticality，并进一步给出公式复杂度、跨城市泛化和 feature-group ablation 证据。所有数字都从已有结果表重新读取生成。",
+        "V13 把 V5-V12 的 learning/law 证据链和新的 budget-leverage phase analysis 合并成论文可用的 synthesis：从 action-level marginal value，到 finite-budget residual law，再到 event-level top-tail decision-criticality，并进一步给出公式复杂度、跨城市泛化、feature-group ablation 和预算相图证据。所有数字都从已有结果表重新读取生成。",
         "",
         "## 三条当前可写入论文的 law",
         "",
@@ -571,6 +606,8 @@ def write_report(
         f"- perturbed optimum residual frequency-mass capture = {metrics['perturbed_residual_frequency_mass']:.4f} versus static = {metrics['perturbed_static_frequency_mass']:.4f}",
         f"- symbolic activated law top-5% capture = {metrics['symbolic_activated_top5_capture']:.4f}; minimal log-law top-5% capture = {metrics['symbolic_minimal_log_top5_capture']:.4f}",
         f"- largest symbolic ablation drop = {metrics['symbolic_largest_ablation_drop_group']} ({metrics['symbolic_largest_ablation_top5_drop']:.4f} top-5 capture)",
+        f"- budget phase: absolute law-vs-random leverage peaks at {metrics['budget_abs_random_peak_budget']}; interior peak supported = {metrics['budget_abs_random_interior_peak_supported']}",
+        f"- budget phase: residual-vs-static per-cost leverage = {metrics['budget_low_residual_static_per_cost']:.4f} / {metrics['budget_base_residual_static_per_cost']:.4f} / {metrics['budget_high_residual_static_per_cost']:.4f} for low/base/high",
         f"- event mean top-5% value share = {metrics['event_mean_top5_value_share']:.4f}; marginal-value Gini = {metrics['event_mean_marginal_value_gini']:.4f}",
         "",
         "## Evidence Ladder",
@@ -599,7 +636,7 @@ def write_report(
         "",
         "## 论文写作含义",
         "",
-        "现在可以把 learning/law 部分从“未来要做 law extraction”改成“已经得到一个可复现实证链条”：action-level 的 activated marginal law、finite-budget 的 residual allocation law、event-level 的 top-tail decision-criticality law，以及 V12 的 formula extractor/structure decoupler。V12 说明 compact symbolic law 处在 Pareto frontier 上，且 OD exposure/structure 是 ablation 中最关键的 feature group。论文中需要谨慎表述的是：资源效率和 diminishing returns 仍是 recovery-regime 参数；V9/V11 是代表性验证，不是全量非 base 与全量 perturbation closure；完整 graph neural surrogate 仍可作为后续增强，而不是当前主结论的必要条件。",
+        "现在可以把 learning/law 部分从“未来要做 law extraction”改成“已经得到一个可复现实证链条”：action-level 的 activated marginal law、finite-budget 的 residual allocation law、event-level 的 top-tail decision-criticality law，以及 V12 的 formula extractor/structure decoupler。V13 进一步修正了一个预期命题：当前 low/base/high 三点预算扫描不支持“中等预算绝对 decision leverage 最高”，而支持“绝对杠杆随预算增加、单位预算杠杆递减”。论文中需要谨慎表述的是：资源效率和 diminishing returns 仍是 recovery-regime 参数；V9/V11 是代表性验证，不是全量非 base 与全量 perturbation closure；完整 graph neural surrogate 仍可作为后续增强，而不是当前主结论的必要条件。",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -642,6 +679,14 @@ def policy_metric(df: pd.DataFrame, policy: str, column: str) -> float:
         return float("nan")
     match = df[df["policy"].astype(str).eq(policy)]
     return safe_float(match[column].mean()) if not match.empty else float("nan")
+
+
+def parse_bool(value: Any) -> bool:
+    if isinstance(value, bool):
+        return value
+    if pd.isna(value):
+        return False
+    return str(value).strip().lower() in {"true", "1", "yes"}
 
 
 if __name__ == "__main__":

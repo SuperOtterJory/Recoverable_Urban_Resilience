@@ -1,0 +1,9 @@
+metric,low,base,high,peak_budget,interior_peak_supported,monotone_increasing,monotone_decreasing
+mean_proxy_leverage_vs_random_positive,0.0750344024,0.1272031682,0.2093583986,high,False,True,False
+mean_proxy_ratio_vs_random_positive,7.872562145,6.811369819,5.791433312,low,False,False,True
+mean_proxy_leverage_vs_exposure_only,0.01924369504,0.03111746525,0.0502901036,high,False,True,False
+mean_proxy_ratio_vs_exposure_only,1.293426755,1.265815708,1.24748259,low,False,False,True
+mean_proxy_leverage_per_cost_vs_random_positive,0.1179800262,0.1028886446,0.08719780095,low,False,False,True
+mean_residual_minus_static_fraction_of_base_lp_gain,0.07520539169,0.1432071913,0.2623033318,high,False,True,False
+mean_residual_minus_static_recoverable_fraction,0.01182103802,0.02210617338,0.03987348259,high,False,True,False
+mean_residual_minus_static_per_cost,0.03109226066,0.02679072486,0.0243100078,low,False,False,True
