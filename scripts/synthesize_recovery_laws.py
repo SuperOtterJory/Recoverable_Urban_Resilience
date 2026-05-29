@@ -95,6 +95,9 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "graph_gaps": read_csv(results / "graph_structure_ablation" / "tables" / "graph_structure_shuffle_gaps.csv"),
         "regime_model_summary": read_csv(results / "event_regime_generalization" / "tables" / "regime_model_summary.csv"),
         "regime_gap_summary": read_csv(results / "event_regime_generalization" / "tables" / "regime_gap_summary.csv"),
+        "temporal_model_summary": read_csv(results / "temporal_generalization" / "tables" / "temporal_model_summary.csv"),
+        "temporal_gap_summary": read_csv(results / "temporal_generalization" / "tables" / "temporal_gap_summary.csv"),
+        "temporal_metrics": read_json_table(results / "temporal_generalization" / "tables" / "temporal_generalization_metrics.json"),
         "objective_summary": read_csv(results / "training_objective_ablation" / "tables" / "objective_model_summary.csv"),
         "objective_improvements": read_csv(results / "training_objective_ablation" / "tables" / "objective_improvement_summary.csv"),
         "parameter_summary": read_csv(results / "parameter_deconfounded_law" / "tables" / "parameter_deconfounded_model_summary.csv"),
@@ -247,6 +250,26 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     regime_interaction = one_row(regime_summary, model_id="R3_full_interaction")
     regime_factorized_vs_full = regime_gaps[regime_gaps["comparison"].eq("factorized_vs_full_additive")]
     regime_interaction_vs_full = regime_gaps[regime_gaps["comparison"].eq("full_interaction_vs_full_additive")]
+    temporal_summary = data["temporal_model_summary"]
+    temporal_gaps = data["temporal_gap_summary"]
+    temporal_metrics = one_row(data["temporal_metrics"])
+    temporal_factorized_main = one_row(temporal_summary, scope="main", model_id="R1_factorized_low_dim")
+    temporal_full_main = one_row(temporal_summary, scope="main", model_id="R2_full_additive")
+    temporal_interaction_main = one_row(temporal_summary, scope="main", model_id="R3_full_interaction")
+    temporal_activated_main = one_row(temporal_summary, scope="main", model_id="H4_activated_law")
+    temporal_deficit_main = one_row(temporal_summary, scope="main", model_id="H1_deficit_only")
+    temporal_factorized_forward = one_row(temporal_summary, scope="forward", model_id="R1_factorized_low_dim")
+    temporal_full_forward = one_row(temporal_summary, scope="forward", model_id="R2_full_additive")
+    temporal_factorized_year = one_row(temporal_summary, scope="year_confounded", model_id="R1_factorized_low_dim")
+    temporal_full_year = one_row(temporal_summary, scope="year_confounded", model_id="R2_full_additive")
+    temporal_factorized_vs_full_main = temporal_gaps[
+        temporal_gaps["comparison"].eq("factorized_vs_full_additive")
+        & temporal_gaps["split_role"].eq("main_within_city_chronological")
+    ] if not temporal_gaps.empty and "split_role" in temporal_gaps else pd.DataFrame()
+    temporal_activated_vs_deficit_main = temporal_gaps[
+        temporal_gaps["comparison"].eq("activated_law_vs_deficit_only")
+        & temporal_gaps["split_role"].eq("main_within_city_chronological")
+    ] if not temporal_gaps.empty and "split_role" in temporal_gaps else pd.DataFrame()
     objective_summary = data["objective_summary"]
     objective_improvements = data["objective_improvements"]
     objective_factorized = one_row(objective_improvements, feature_set="factorized_low_dim")
@@ -417,6 +440,29 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "regime_factorized_minus_full_mean_top5_delta": safe_float(regime_factorized_vs_full["delta_top5_capture"].mean()) if not regime_factorized_vs_full.empty else np.nan,
         "regime_factorized_minus_full_min_top5_delta": safe_float(regime_factorized_vs_full["delta_top5_capture"].min()) if not regime_factorized_vs_full.empty else np.nan,
         "regime_interaction_minus_full_mean_top5_delta": safe_float(regime_interaction_vs_full["delta_top5_capture"].mean()) if not regime_interaction_vs_full.empty else np.nan,
+        "temporal_n_splits": safe_int(temporal_metrics.get("n_temporal_splits")),
+        "temporal_main_n_splits": safe_int(temporal_metrics.get("n_main_within_city_splits")),
+        "temporal_forward_n_splits": safe_int(temporal_metrics.get("n_forward_splits")),
+        "temporal_year_n_splits": safe_int(temporal_metrics.get("n_year_confounded_splits")),
+        "temporal_factorized_main_top5_capture": safe_float(temporal_factorized_main.get("mean_top5_capture")),
+        "temporal_factorized_main_min_top5_capture": safe_float(temporal_factorized_main.get("min_top5_capture")),
+        "temporal_factorized_main_spearman": safe_float(temporal_factorized_main.get("mean_spearman")),
+        "temporal_factorized_main_hardest_split": str(temporal_factorized_main.get("hardest_split_family", "")),
+        "temporal_factorized_main_hardest_heldout": str(temporal_factorized_main.get("hardest_heldout_period", "")),
+        "temporal_full_main_top5_capture": safe_float(temporal_full_main.get("mean_top5_capture")),
+        "temporal_full_main_min_top5_capture": safe_float(temporal_full_main.get("min_top5_capture")),
+        "temporal_interaction_main_top5_capture": safe_float(temporal_interaction_main.get("mean_top5_capture")),
+        "temporal_activated_main_top5_capture": safe_float(temporal_activated_main.get("mean_top5_capture")),
+        "temporal_deficit_main_top5_capture": safe_float(temporal_deficit_main.get("mean_top5_capture")),
+        "temporal_factorized_minus_full_main_top5_delta": safe_float(temporal_factorized_vs_full_main["delta_top5_capture"].mean()) if not temporal_factorized_vs_full_main.empty else np.nan,
+        "temporal_activated_minus_deficit_main_top5_delta": safe_float(temporal_activated_vs_deficit_main["delta_top5_capture"].mean()) if not temporal_activated_vs_deficit_main.empty else np.nan,
+        "temporal_factorized_forward_top5_capture": safe_float(temporal_factorized_forward.get("mean_top5_capture")),
+        "temporal_factorized_forward_min_top5_capture": safe_float(temporal_factorized_forward.get("min_top5_capture")),
+        "temporal_full_forward_top5_capture": safe_float(temporal_full_forward.get("mean_top5_capture")),
+        "temporal_factorized_year_confounded_top5_capture": safe_float(temporal_factorized_year.get("mean_top5_capture")),
+        "temporal_factorized_year_confounded_min_top5_capture": safe_float(temporal_factorized_year.get("min_top5_capture")),
+        "temporal_full_year_confounded_top5_capture": safe_float(temporal_full_year.get("mean_top5_capture")),
+        "temporal_year_holdout_design_note": str(temporal_metrics.get("year_holdout_design_note", "")),
         "objective_factorized_raw_top5_capture": safe_float(objective_factorized.get("raw_log_top5_capture")),
         "objective_factorized_top_tail_weighted_top5_capture": safe_float(objective_factorized.get("top_tail_weighted_top5_capture")),
         "objective_factorized_rank_top5_capture": safe_float(objective_factorized.get("rank_percentile_top5_capture")),
@@ -666,6 +712,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "value": metrics["parameter_lp_mean_residual_fraction_of_scenario_lp_gain"],
             "interpretation": "Across 20 representative parameter-scenario LP closures, residual finite greedy captures most scenario-specific LP gain and dominates static small-signal ranking in every tested event-scenario.",
         },
+        {
+            "version": "V25",
+            "evidence_step": "Within-city temporal holdout robustness",
+            "main_question": "Does the action-value law survive chronological event splits without relying on same-period leakage?",
+            "key_metric": "factorized_within_city_temporal_top5_capture",
+            "value": metrics["temporal_factorized_main_top5_capture"],
+            "interpretation": "Within each city, early/middle/late and early/late event periods are held out; the compact factorized law keeps high top-tail capture, while year-holdout is reported only as city-confounded audit.",
+        },
     ]
     return pd.DataFrame(rows)
 
@@ -823,6 +877,12 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
                 "next_step": "Add unconfounded multi-year observations within the same cities before claiming clean leave-time-period-out generalization.",
             },
             {
+                "item": "temporal_generalization_scope",
+                "current_status": "V25 adds within-city chronological holdouts over early/middle/late and early/late event-order periods, plus forward chronological audits and a separately labeled year-holdout audit.",
+                "implication": "The law is robust to same-city event-order holdout, but calendar-year holdout still mixes temporal extrapolation with city composition.",
+                "next_step": "Collect repeated months or years for the same cities so a future leave-time-period-out test can hold time fixed independently from city identity.",
+            },
+            {
                 "item": "event_spatial_footprint_scope",
                 "current_status": "V21 finds event-level top-tail concentration is strongly linked to decision-criticality, but top-5% value share has a sizable between-city variance component.",
                 "implication": "The event-level law is currently a city-structure/top-tail law more than a fully event-specific spatial-footprint law.",
@@ -962,11 +1022,11 @@ def write_report(
     limitations: pd.DataFrame,
 ) -> None:
     lines = [
-        "# Recoverability Law Synthesis V24",
+        "# Recoverability Law Synthesis V25",
         "",
         "## 本版做了什么",
         "",
-        "V24 将 parameter-ensemble LP optimum closure 接入 learning/law synthesis。在 V23 已经证明 compact first-order action law 能跨 eta/cost/delay 参数扰动保持 top-tail value capture 之后，本版进一步对代表性 city-event 重新求解完整参数扰动 LP optimum，检验 residual finite-budget law 是否仍接近对应场景的真实优化上界。",
+        "V25 将 temporal robustness 接入 learning/law synthesis。在 V24 的 parameter-ensemble LP closure 之后，本版补齐 high-level idea 中的 leave-time-period-out 方向：主检验采用 within-city chronological holdout，因为当前 calendar year 与 city composition 高度混杂；year-holdout 只作为带标签的 confounded audit。",
         "",
         "## 当前可写入论文的 law",
         "",
@@ -996,6 +1056,8 @@ def write_report(
         "",
         "13. **Parameter-ensemble LP closure result**：在 4 个代表事件、5 类参数扰动、20 个重新求解的完整 LP 场景中，residual finite greedy 平均捕获 0.9662 的 scenario-specific LP gain，显著高于 static small-signal greedy 的 0.7451；说明 residual law 不只是 first-order ranking，在有限预算和参数扰动下仍接近完整优化上界。",
         "",
+        "14. **Temporal robustness result**：在 within-city chronological holdout 中，按每个城市的事件发生顺序留出 early/middle/late 或 early/late 时，compact factorized law 仍保持较高 top-tail capture；calendar-year holdout 由于和城市样本组成混杂，只能作为审计而不能单独声称干净时间外推。",
+        "",
         "## 关键指标",
         "",
         f"- action tokens: {metrics['n_action_tokens']:,}",
@@ -1014,6 +1076,7 @@ def write_report(
         f"- parameter ensemble stability: {metrics['parameter_ensemble_n_scenarios']} eta/cost/delay scenarios; base-trained parameter-light factorized mean/min top-5% capture = {metrics['parameter_ensemble_base_transfer_light_mean_top5_capture']:.4f}/{metrics['parameter_ensemble_base_transfer_light_min_top5_capture']:.4f}; full factorized mean/min = {metrics['parameter_ensemble_base_transfer_full_mean_top5_capture']:.4f}/{metrics['parameter_ensemble_base_transfer_full_min_top5_capture']:.4f}; centered-efficiency mean/min = {metrics['parameter_ensemble_base_transfer_centered_mean_top5_capture']:.4f}/{metrics['parameter_ensemble_base_transfer_centered_min_top5_capture']:.4f}; weakest full scenario = {metrics['parameter_ensemble_base_transfer_full_worst_scenario']}",
         f"- parameter LP closure: {metrics['parameter_lp_n_selected_events']} events x {metrics['parameter_lp_n_parameter_scenarios']} parameter scenarios = {metrics['parameter_lp_n_successful_lp_scenarios']} successful LP closures; residual / scenario LP gain = {metrics['parameter_lp_mean_residual_fraction_of_scenario_lp_gain']:.4f} mean and {metrics['parameter_lp_median_residual_fraction_of_scenario_lp_gain']:.4f} median; static = {metrics['parameter_lp_mean_static_fraction_of_scenario_lp_gain']:.4f}; residual-minus-static = {metrics['parameter_lp_mean_residual_minus_static']:+.4f}; weakest residual scenario = {metrics['parameter_lp_worst_residual_parameter_scenario']} at {metrics['parameter_lp_worst_residual_mean_fraction_of_scenario_lp_gain']:.4f}",
         f"- event-regime generalization: {metrics['regime_factorized_n_splits']} held-out regimes; factorized mean top-5% capture = {metrics['regime_factorized_mean_top5_capture']:.4f}; worst = {metrics['regime_factorized_hardest_split_family']} / {metrics['regime_factorized_hardest_heldout']} at {metrics['regime_factorized_min_top5_capture']:.4f}; full additive mean = {metrics['regime_full_mean_top5_capture']:.4f}",
+        f"- temporal generalization: {metrics['temporal_main_n_splits']} within-city chronological splits; factorized mean/min top-5% capture = {metrics['temporal_factorized_main_top5_capture']:.4f}/{metrics['temporal_factorized_main_min_top5_capture']:.4f}; full additive mean/min = {metrics['temporal_full_main_top5_capture']:.4f}/{metrics['temporal_full_main_min_top5_capture']:.4f}; hardest factorized split = {metrics['temporal_factorized_main_hardest_split']} / {metrics['temporal_factorized_main_hardest_heldout']}; year audit note: {metrics['temporal_year_holdout_design_note']}",
         f"- training-objective ablation: factorized raw log-value capture = {metrics['objective_factorized_raw_top5_capture']:.4f}; best objective = {metrics['objective_factorized_best_objective']} at {metrics['objective_factorized_best_top5_capture']:.4f}; top-tail weighted = {metrics['objective_factorized_top_tail_weighted_top5_capture']:.4f}; rank-percentile = {metrics['objective_factorized_rank_top5_capture']:.4f}",
         f"- training-objective ablation: full additive best objective = {metrics['objective_full_best_objective']} at {metrics['objective_full_best_top5_capture']:.4f}, improvement over raw = {metrics['objective_full_best_minus_raw_top5_capture']:+.4f}",
         f"- parameter-deconfounded law: policy-clock only top-5% capture = {metrics['parameter_policy_clock_top5_capture']:.4f}; clock+efficiency = {metrics['parameter_clock_plus_efficiency_top5_capture']:.4f}; +OD exposure = {metrics['parameter_add_od_exposure_top5_capture']:.4f}; parameter-light factorized = {metrics['parameter_light_factorized_top5_capture']:.4f}",
@@ -1050,7 +1113,7 @@ def write_report(
         "",
         "## 论文写作含义",
         "",
-        "现在 learning/law 部分可以写成一条更完整的证据链：优化模型产生 action-value field；single-action LP 验证 marginal label；cross-city surrogate、factorized surrogate 和 symbolic extraction 说明低维 activated law 可解释；residual greedy 说明有限预算需要动态重评分；event top-tail 说明 decision-criticality 不是 disruption magnitude；V15 给出反直觉证据；V17 说明 OD graph 的空间对齐本身有实证价值；V18 说明低维 law 在不同事件 regime 留出时仍能保持较高 top-tail capture；V19 说明低维 law 不是由特殊 ranking objective trick 造出来的。论文中仍需谨慎表述：当前 graph 证据是 OD-dependency graph 的 observed-vs-shuffled ablation，还不是完整 road-adjacency graph 或 GNN closure；当前 temporal split 与 city/year 混杂，不能声称已经完成干净的 leave-time-period-out。",
+        "现在 learning/law 部分可以写成一条更完整的证据链：优化模型产生 action-value field；single-action LP 验证 marginal label；cross-city surrogate、factorized surrogate 和 symbolic extraction 说明低维 activated law 可解释；residual greedy 说明有限预算需要动态重评分；event top-tail 说明 decision-criticality 不是 disruption magnitude；V15 给出反直觉证据；V17 说明 OD graph 的空间对齐本身有实证价值；V18 说明低维 law 在不同事件 regime 留出时仍能保持较高 top-tail capture；V19 说明低维 law 不是由特殊 ranking objective trick 造出来的；V25 进一步说明同一城市内按事件时间顺序留出时 compact law 仍保持稳定。论文中仍需谨慎表述：当前 graph 证据是 OD-dependency graph 的 observed-vs-shuffled ablation，还不是完整 road-adjacency graph 或 GNN closure；calendar-year holdout 与 city composition 混杂，因此 clean leave-time-period-out 仍需要同城跨多年数据。",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")

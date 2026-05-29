@@ -1,0 +1,33 @@
+scope,model_id,family,description,n_splits,mean_top5_capture,median_top5_capture,min_top5_capture,mean_top5_ndcg,mean_spearman,hardest_split_family,hardest_heldout_period,hardest_split_role
+all,H4_activated_law,direct_law,hand-built activated bottleneck score,13,1,1,1,1,0.6323281511,calendar_year_group,year_2019,confounded_year_audit
+all,R2_full_additive,trained_surrogate,full additive action-value surrogate,13,0.9664146682,0.975165705,0.9409523953,0.9648014344,0.930668364,calendar_day_phase,late_month,supporting_calendar_phase
+all,R3_full_interaction,trained_surrogate,full additive surrogate plus explicit interaction terms,13,0.9559247393,0.959321983,0.9224483592,0.9503088018,0.930533491,calendar_day_phase,late_month,supporting_calendar_phase
+all,R4_factorized_interaction,trained_surrogate,factorized law plus compact interaction terms,13,0.9387815199,0.9380571733,0.9096416955,0.9287385518,0.6471116775,calendar_year_group,year_2024,confounded_year_audit
+all,R1_factorized_low_dim,trained_surrogate,seven-feature factorized activated law,13,0.9325336766,0.9303193795,0.9073554907,0.9314147223,0.646998521,within_city_forward_cut,after_50pct,forward_chronological_audit
+all,H2_exposure_only,heuristic,OD exposure-only one-factor score,13,0.870387779,0.8702269514,0.8085829157,0.8601705336,0.3472221102,calendar_year_group,year_2023,confounded_year_audit
+all,H1_deficit_only,heuristic,deficit-only one-factor score,13,0.8497700143,0.8508936775,0.8274342582,0.8418222072,0.2586505371,calendar_year_group,year_2023,confounded_year_audit
+all,H3_structure_only,heuristic,static structure-only one-factor score,13,0.4996120572,0.5064934021,0.4117391294,0.4831081792,-0.04459647666,calendar_year_group,year_2023,confounded_year_audit
+forward,H4_activated_law,direct_law,hand-built activated bottleneck score,2,1,1,1,1,0.653233486,within_city_forward_cut,after_50pct,forward_chronological_audit
+forward,R2_full_additive,trained_surrogate,full additive action-value surrogate,2,0.9569307862,0.9569307862,0.9544721132,0.9529819412,0.9514679938,within_city_forward_cut,after_67pct,forward_chronological_audit
+forward,R3_full_interaction,trained_surrogate,full additive surrogate plus explicit interaction terms,2,0.9450550115,0.9450550115,0.9435666915,0.9394109422,0.9528115885,within_city_forward_cut,after_67pct,forward_chronological_audit
+forward,R4_factorized_interaction,trained_surrogate,factorized law plus compact interaction terms,2,0.9388974007,0.9388974007,0.9345201239,0.9315321519,0.6729335257,within_city_forward_cut,after_50pct,forward_chronological_audit
+forward,R1_factorized_low_dim,trained_surrogate,seven-feature factorized activated law,2,0.9148272021,0.9148272021,0.9073554907,0.9125376072,0.6761006271,within_city_forward_cut,after_50pct,forward_chronological_audit
+forward,H2_exposure_only,heuristic,OD exposure-only one-factor score,2,0.8689413348,0.8689413348,0.8676557181,0.8547967445,0.3351199867,within_city_forward_cut,after_67pct,forward_chronological_audit
+forward,H1_deficit_only,heuristic,deficit-only one-factor score,2,0.8489739414,0.8489739414,0.8470542054,0.8370980107,0.2567954031,within_city_forward_cut,after_67pct,forward_chronological_audit
+forward,H3_structure_only,heuristic,static structure-only one-factor score,2,0.5074149959,0.5074149959,0.5064934021,0.4896185478,-0.02359849951,within_city_forward_cut,after_67pct,forward_chronological_audit
+main,H4_activated_law,direct_law,hand-built activated bottleneck score,5,1,1,1,1,0.6238307122,within_city_order_half,early_half,main_within_city_chronological
+main,R2_full_additive,trained_surrogate,full additive action-value surrogate,5,0.9705395297,0.9760425656,0.9544721132,0.9681365595,0.9377453636,within_city_order_tertile,late_tertile,main_within_city_chronological
+main,R3_full_interaction,trained_surrogate,full additive surrogate plus explicit interaction terms,5,0.9553469566,0.959321983,0.9435666915,0.9481953354,0.9386758757,within_city_order_tertile,late_tertile,main_within_city_chronological
+main,R4_factorized_interaction,trained_surrogate,factorized law plus compact interaction terms,5,0.9376051423,0.9394013021,0.9309511055,0.9314546838,0.6572098,within_city_order_tertile,early_tertile,main_within_city_chronological
+main,R1_factorized_low_dim,trained_surrogate,seven-feature factorized activated law,5,0.9248436166,0.9222989135,0.9073554907,0.9217615455,0.6543899867,within_city_order_half,late_half,main_within_city_chronological
+main,H2_exposure_only,heuristic,OD exposure-only one-factor score,5,0.8737512,0.8747134225,0.8676557181,0.8637960469,0.2741590559,within_city_order_tertile,late_tertile,main_within_city_chronological
+main,H1_deficit_only,heuristic,deficit-only one-factor score,5,0.8514152669,0.8520205748,0.8470542054,0.8435643758,0.2013820748,within_city_order_tertile,late_tertile,main_within_city_chronological
+main,H3_structure_only,heuristic,static structure-only one-factor score,5,0.503897887,0.5064934021,0.4944774502,0.4875094024,-0.03615022841,within_city_order_tertile,early_tertile,main_within_city_chronological
+year_confounded,H4_activated_law,direct_law,hand-built activated bottleneck score,3,1,1,1,1,0.6009969262,calendar_year_group,year_2019,confounded_year_audit
+year_confounded,R2_full_additive,trained_surrogate,full additive action-value surrogate,3,0.9657543088,0.975165705,0.9420073306,0.9687598766,0.9036349026,calendar_year_group,year_2024,confounded_year_audit
+year_confounded,R3_full_interaction,trained_surrogate,full additive surrogate plus explicit interaction terms,3,0.9657209081,0.9727794719,0.9397522035,0.9627988207,0.8999104789,calendar_year_group,year_2024,confounded_year_audit
+year_confounded,R1_factorized_low_dim,trained_surrogate,seven-feature factorized activated law,3,0.9591543013,0.9582043121,0.9539565586,0.9631472244,0.5691515028,calendar_year_group,year_2024,confounded_year_audit
+year_confounded,R4_factorized_interaction,trained_surrogate,factorized law plus compact interaction terms,3,0.939492785,0.9377092624,0.9096416955,0.9169517408,0.564676372,calendar_year_group,year_2024,confounded_year_audit
+year_confounded,H2_exposure_only,heuristic,OD exposure-only one-factor score,3,0.8632522796,0.8838671434,0.8085829157,0.8540199282,0.5317126866,calendar_year_group,year_2023,confounded_year_audit
+year_confounded,H1_deficit_only,heuristic,deficit-only one-factor score,3,0.8447953646,0.8352082467,0.8274342582,0.8387286647,0.3978487256,calendar_year_group,year_2023,confounded_year_audit
+year_confounded,H3_structure_only,heuristic,static structure-only one-factor score,3,0.4900277446,0.5116195069,0.4117391294,0.4743585133,-0.07108624639,calendar_year_group,year_2023,confounded_year_audit
