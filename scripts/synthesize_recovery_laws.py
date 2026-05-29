@@ -103,6 +103,9 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "event_decision_metrics": read_json_table(results / "event_decision_criticality" / "tables" / "event_decision_criticality_metrics.json"),
         "event_decision_variance": read_csv(results / "event_decision_criticality" / "tables" / "event_variance_decomposition.csv"),
         "event_decision_phase": read_csv(results / "event_decision_criticality" / "tables" / "event_phase_summary.csv"),
+        "od_message_summary": read_csv(results / "od_message_passing_surrogate" / "tables" / "od_message_model_summary.csv"),
+        "od_message_increments": read_csv(results / "od_message_passing_surrogate" / "tables" / "od_message_incremental_gains.csv"),
+        "od_message_metrics": read_json_table(results / "od_message_passing_surrogate" / "tables" / "od_message_passing_metrics.json"),
     }
 
 
@@ -267,6 +270,14 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     channel_light_activation = one_row(parameter_channel, score_id="S4_parameter_light_activation")
     channel_full_activation = one_row(parameter_channel, score_id="S5_full_activation")
     event_decision_metrics = one_row(data["event_decision_metrics"])
+    od_message_metrics = one_row(data["od_message_metrics"])
+    od_message_scalar = one_row(data["od_message_summary"], model_id="O1_scalar_od_graph")
+    od_message_scalar_plus = one_row(data["od_message_summary"], model_id="O3_scalar_plus_message")
+    od_message_factorized = one_row(data["od_message_summary"], model_id="O4_factorized_low_dim")
+    od_message_factorized_plus = one_row(data["od_message_summary"], model_id="O5_factorized_plus_message")
+    od_message_message_only = one_row(data["od_message_summary"], model_id="O2_message_only_od")
+    od_message_over_scalar = one_row(data["od_message_increments"], comparison="message_over_scalar_od")
+    od_message_over_factorized = one_row(data["od_message_increments"], comparison="message_over_factorized")
 
     metrics: dict[str, Any] = {
         "n_action_tokens": safe_int(policy_capture["n_tokens"].max()) if "n_tokens" in policy_capture else None,
@@ -436,6 +447,17 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "event_decision_v21_high_loss_low_decision_count": safe_int(event_decision_metrics.get("high_loss_low_decision_count")),
         "event_decision_v21_moderate_loss_high_decision_count": safe_int(event_decision_metrics.get("moderate_loss_high_decision_count")),
         "event_decision_v21_high_rain_low_decision_count": safe_int(event_decision_metrics.get("high_rain_low_decision_count")),
+        "od_message_scalar_od_top5_capture": safe_float(od_message_scalar.get("mean_event_top_5pct_value_capture")),
+        "od_message_message_only_top5_capture": safe_float(od_message_message_only.get("mean_event_top_5pct_value_capture")),
+        "od_message_scalar_plus_top5_capture": safe_float(od_message_scalar_plus.get("mean_event_top_5pct_value_capture")),
+        "od_message_factorized_top5_capture": safe_float(od_message_factorized.get("mean_event_top_5pct_value_capture")),
+        "od_message_factorized_plus_top5_capture": safe_float(od_message_factorized_plus.get("mean_event_top_5pct_value_capture")),
+        "od_message_message_over_scalar_delta_top5_capture": safe_float(od_message_over_scalar.get("delta_top5_value_capture")),
+        "od_message_message_over_factorized_delta_top5_capture": safe_float(od_message_over_factorized.get("delta_top5_value_capture")),
+        "od_message_message_over_scalar_delta_event_spearman": safe_float(od_message_over_scalar.get("delta_event_spearman")),
+        "od_message_message_over_factorized_delta_event_spearman": safe_float(od_message_over_factorized.get("delta_event_spearman")),
+        "od_message_metrics_message_over_scalar_delta_top5": safe_float(od_message_metrics.get("message_over_scalar_od_delta_top5")),
+        "od_message_metrics_message_over_factorized_delta_top5": safe_float(od_message_metrics.get("message_over_factorized_delta_top5")),
     }
     return metrics
 
@@ -591,6 +613,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "value": metrics["event_decision_v21_decision_vs_top5_spearman"],
             "interpretation": "Decision-criticality aligns with marginal-value top-tail concentration rather than loss magnitude; V21 also shows that the current top-tail signal is partly city-structural because event footprints are not yet region-specific.",
         },
+        {
+            "version": "V22",
+            "evidence_step": "OD message-passing surrogate",
+            "main_question": "Do explicit one-hop/two-hop OD-neighborhood messages add value beyond compact structural laws?",
+            "key_metric": "message_over_scalar_od_delta_top5_capture",
+            "value": metrics["od_message_message_over_scalar_delta_top5_capture"],
+            "interpretation": "OD message-only features are informative, but adding them on top of scalar OD exposure/structure gives only a tiny top-tail gain and adding them to the low-dimensional factorized law slightly lowers top-5% capture; higher-order OD message passing is therefore not necessary for the current compact recoverability law.",
+        },
     ]
     return pd.DataFrame(rows)
 
@@ -731,14 +761,14 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
             },
             {
                 "item": "surrogate_architecture",
-                "current_status": "V16 adds a factorized leave-one-city action-value surrogate; V17 adds observed-vs-shuffled OD graph alignment ablation.",
-                "implication": "The low-dimensional activated structure is strongly supported, and observed OD alignment is informative beyond shuffled graph-feature distributions.",
-                "next_step": "Use an explicit graph or OD-message-passing surrogate only if the paper needs to test higher-order spatial representations.",
+                "current_status": "V16 adds a factorized leave-one-city action-value surrogate; V17 adds observed-vs-shuffled OD graph alignment; V22 tests explicit one-hop/two-hop OD message features.",
+                "implication": "The low-dimensional activated structure is strongly supported; V22 shows higher-order OD messages add little beyond scalar OD alignment in the current labels.",
+                "next_step": "Use a neural graph surrogate only if the paper later makes higher-order spatial representation a central contribution.",
             },
             {
                 "item": "graph_structure_scope",
-                "current_status": "V17 tests OD-dependency graph features and within-city shuffled graph alignment, not a unified road-adjacency graph.",
-                "implication": "The paper can claim evidence for OD exposure alignment as city structure, but not yet for full road-topology message passing.",
+                "current_status": "V17 tests OD-dependency graph features and within-city shuffled graph alignment; V22 tests deterministic OD-neighborhood message summaries, but not a unified road-adjacency graph.",
+                "implication": "The paper can claim evidence for OD exposure alignment as city structure and show that simple OD message passing is not currently needed, but not yet claim full road-topology or GNN closure.",
                 "next_step": "Add road adjacency, TMC-zone linkage, or graph neural baselines if higher-order physical topology becomes a central contribution.",
             },
             {
@@ -887,11 +917,11 @@ def write_report(
     limitations: pd.DataFrame,
 ) -> None:
     lines = [
-        "# Recoverability Law Synthesis V21",
+        "# Recoverability Law Synthesis V22",
         "",
         "## 本版做了什么",
         "",
-        "V21 将 event-level severity-decoupling analysis 接入 learning/law synthesis。在 V20 已经验证 local action law 不只是 action-mechanics 产物之后，本版进一步检验事件级 Law B：最大雨量、最大速度冲击或最大无干预损失事件是否自动最 decision-critical。",
+        "V22 将 OD message-passing surrogate 接入 learning/law synthesis。在 V21 已经验证 event-level decision-criticality 不等于 rainfall/loss severity 之后，本版进一步检验显式一跳/两跳 OD-neighborhood 信息是否有必要成为主 law 或 graph surrogate 的核心。",
         "",
         "## 当前可写入论文的 law",
         "",
@@ -915,6 +945,8 @@ def write_report(
         "",
         "10. **Event-level severity-decoupling result**：decision-criticality 与 marginal-value top-tail concentration 强相关，而与 baseline loss magnitude 在当前样本中负相关；大损失事件不一定是最高管理价值事件，中等损失事件也可能因为 top-tail 集中而高度 decision-critical。",
         "",
+        "11. **OD message-passing parsimony result**：一跳/两跳 OD message features 本身有信息，但在 scalar OD exposure/structure 已经进入模型后只带来极小 top-tail 增益；加到低维 factorized law 上还略微降低 top-5% capture。因此当前 law 需要真实 OD 空间对齐，但不需要把显式 message passing 作为主模型。",
+        "",
         "## 关键指标",
         "",
         f"- action tokens: {metrics['n_action_tokens']:,}",
@@ -929,6 +961,7 @@ def write_report(
         f"- interaction ablation: adding OD exposure gives {metrics['factorized_add_od_delta_top5_capture']:+.4f}; adding time/feasibility gives {metrics['factorized_add_time_delta_top5_capture']:+.4f}; unrestricted high-dimensional interactions give {metrics['factorized_add_highdim_interaction_delta_top5_capture']:+.4f}",
         f"- graph structure ablation: no-graph top-5% capture = {metrics['graph_no_graph_top5_capture']:.4f}; observed OD graph = {metrics['graph_observed_full_top5_capture']:.4f}; shuffled OD graph = {metrics['graph_shuffled_full_top5_capture']:.4f}; observed-shuffled gap = {metrics['graph_full_alignment_delta_top5_capture']:+.4f}",
         f"- factorized graph alignment: observed OD = {metrics['graph_factorized_observed_top5_capture']:.4f}; shuffled OD = {metrics['graph_factorized_shuffled_top5_capture']:.4f}; gap = {metrics['graph_factorized_alignment_delta_top5_capture']:+.4f}",
+        f"- OD message passing: message-only top-5% capture = {metrics['od_message_message_only_top5_capture']:.4f}; scalar OD = {metrics['od_message_scalar_od_top5_capture']:.4f}; scalar+message = {metrics['od_message_scalar_plus_top5_capture']:.4f}; message-over-scalar delta = {metrics['od_message_message_over_scalar_delta_top5_capture']:+.4f}; factorized+message delta = {metrics['od_message_message_over_factorized_delta_top5_capture']:+.4f}",
         f"- event-regime generalization: {metrics['regime_factorized_n_splits']} held-out regimes; factorized mean top-5% capture = {metrics['regime_factorized_mean_top5_capture']:.4f}; worst = {metrics['regime_factorized_hardest_split_family']} / {metrics['regime_factorized_hardest_heldout']} at {metrics['regime_factorized_min_top5_capture']:.4f}; full additive mean = {metrics['regime_full_mean_top5_capture']:.4f}",
         f"- training-objective ablation: factorized raw log-value capture = {metrics['objective_factorized_raw_top5_capture']:.4f}; best objective = {metrics['objective_factorized_best_objective']} at {metrics['objective_factorized_best_top5_capture']:.4f}; top-tail weighted = {metrics['objective_factorized_top_tail_weighted_top5_capture']:.4f}; rank-percentile = {metrics['objective_factorized_rank_top5_capture']:.4f}",
         f"- training-objective ablation: full additive best objective = {metrics['objective_full_best_objective']} at {metrics['objective_full_best_top5_capture']:.4f}, improvement over raw = {metrics['objective_full_best_minus_raw_top5_capture']:+.4f}",

@@ -1,0 +1,13 @@
+{
+  "local_top5_capture": 0.6540183595990723,
+  "scalar_od_top5_capture": 0.9624269435834123,
+  "message_od_top5_capture": 0.8835431189654336,
+  "scalar_plus_message_top5_capture": 0.9663408818941093,
+  "factorized_top5_capture": 0.9374546558174094,
+  "factorized_plus_message_top5_capture": 0.9313838967130093,
+  "full_reference_top5_capture": 0.9510849329096491,
+  "scalar_od_over_local_delta_top5": 0.30840858398434,
+  "message_od_over_local_delta_top5": 0.2295247593663613,
+  "message_over_scalar_od_delta_top5": 0.003913938310696974,
+  "message_over_factorized_delta_top5": -0.006070759104400136
+}
