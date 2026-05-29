@@ -1,0 +1,19 @@
+city,event_id,support_group,unit_count,footprint_mass
+Austin,484,common_units,43,0.3018180320922182
+Austin,484,base_only_units,0,0.0
+Austin,484,hybrid_only_units,5,0.016137448567554762
+Chicago,157,common_units,98,0.19166467959149255
+Chicago,157,base_only_units,1,0.0007037776502097274
+Chicago,157,hybrid_only_units,0,0.0
+Dallas,64,common_units,33,0.048431689723460514
+Dallas,64,base_only_units,0,0.0
+Dallas,64,hybrid_only_units,0,0.0
+Houston,52,common_units,38,0.09042427007515308
+Houston,52,base_only_units,0,0.0
+Houston,52,hybrid_only_units,2,0.0019621629881539366
+Philadelphia,641,common_units,65,0.049511726762526784
+Philadelphia,641,base_only_units,0,0.0
+Philadelphia,641,hybrid_only_units,11,0.009621350624773057
+San Antonio,499,common_units,41,0.15879717309246938
+San Antonio,499,base_only_units,0,0.0
+San Antonio,499,hybrid_only_units,3,0.013838270905326416

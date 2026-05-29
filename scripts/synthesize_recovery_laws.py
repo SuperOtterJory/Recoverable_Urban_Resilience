@@ -125,6 +125,9 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "hybrid_lp_metrics": read_json_table(results / "hybrid_footprint_lp_validation" / "tables" / "hybrid_lp_metrics.json"),
         "hybrid_lp_city": read_csv(results / "hybrid_footprint_lp_validation" / "tables" / "hybrid_lp_city_summary.csv"),
         "hybrid_lp_events": read_csv(results / "hybrid_footprint_lp_validation" / "tables" / "hybrid_lp_event_metrics.csv"),
+        "hybrid_absorption_metrics": read_json_table(results / "hybrid_absorption_mechanisms" / "tables" / "hybrid_absorption_metrics.json"),
+        "hybrid_absorption_city": read_csv(results / "hybrid_absorption_mechanisms" / "tables" / "hybrid_absorption_city_summary.csv"),
+        "hybrid_absorption_events": read_csv(results / "hybrid_absorption_mechanisms" / "tables" / "hybrid_absorption_event_metrics.csv"),
         "od_message_summary": read_csv(results / "od_message_passing_surrogate" / "tables" / "od_message_model_summary.csv"),
         "od_message_increments": read_csv(results / "od_message_passing_surrogate" / "tables" / "od_message_incremental_gains.csv"),
         "od_message_metrics": read_json_table(results / "od_message_passing_surrogate" / "tables" / "od_message_passing_metrics.json"),
@@ -332,6 +335,7 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     spatial_footprint_metrics = one_row(data["spatial_footprint_metrics"])
     hybrid_footprint_metrics = one_row(data["hybrid_footprint_metrics"])
     hybrid_lp_metrics = one_row(data["hybrid_lp_metrics"])
+    hybrid_absorption_metrics = one_row(data["hybrid_absorption_metrics"])
     od_message_metrics = one_row(data["od_message_metrics"])
     od_message_scalar = one_row(data["od_message_summary"], model_id="O1_scalar_od_graph")
     od_message_scalar_plus = one_row(data["od_message_summary"], model_id="O3_scalar_plus_message")
@@ -686,6 +690,26 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "hybrid_lp_delta_recoverable_fraction": safe_float(hybrid_lp_metrics.get("mean_delta_recoverable_fraction")),
         "hybrid_lp_mean_v34_delta_finite_top5_mass": safe_float(hybrid_lp_metrics.get("mean_v34_delta_finite_top5pct_units_footprint_mass")),
         "hybrid_lp_selected_delta_vs_v34_corr": safe_float(hybrid_lp_metrics.get("selected_delta_vs_v34_delta_corr")),
+        "hybrid_absorption_n_events": safe_int(hybrid_absorption_metrics.get("n_events")),
+        "hybrid_absorption_n_cities": safe_int(hybrid_absorption_metrics.get("n_cities")),
+        "hybrid_absorption_mean_transfer_ratio": safe_float(hybrid_absorption_metrics.get("mean_first_order_to_lp_transfer_ratio")),
+        "hybrid_absorption_median_transfer_ratio": safe_float(hybrid_absorption_metrics.get("median_first_order_to_lp_transfer_ratio")),
+        "hybrid_absorption_total_budget_usage": safe_float(hybrid_absorption_metrics.get("mean_hybrid_total_budget_usage")),
+        "hybrid_absorption_period_binding_share": safe_float(hybrid_absorption_metrics.get("mean_hybrid_binding_period_share_95pct")),
+        "hybrid_absorption_cap_ratio": safe_float(hybrid_absorption_metrics.get("mean_hybrid_cost_weighted_selected_u_cap_ratio")),
+        "hybrid_absorption_cap_saturated_share": safe_float(hybrid_absorption_metrics.get("mean_hybrid_selected_cost_share_cap_saturated_95pct")),
+        "hybrid_absorption_diminishing_cost_share": safe_float(hybrid_absorption_metrics.get("mean_hybrid_selected_cost_share_beyond_first_segment")),
+        "hybrid_absorption_footprint_top5_selected_share": safe_float(hybrid_absorption_metrics.get("mean_footprint_top5pct_selected_unit_share")),
+        "hybrid_absorption_footprint_top5_finite_share": safe_float(hybrid_absorption_metrics.get("mean_footprint_top5pct_finite_unit_share")),
+        "hybrid_absorption_finite_top5_selected_share": safe_float(hybrid_absorption_metrics.get("mean_finite_top5pct_selected_unit_share")),
+        "hybrid_absorption_small_top5_selected_share": safe_float(hybrid_absorption_metrics.get("mean_small_top5pct_selected_unit_share")),
+        "hybrid_absorption_footprint_top5_small_rank": safe_float(hybrid_absorption_metrics.get("footprint_top5_mean_small_signal_rank")),
+        "hybrid_absorption_footprint_top5_finite_rank": safe_float(hybrid_absorption_metrics.get("footprint_top5_mean_finite_rank")),
+        "hybrid_absorption_selected_small_rank": safe_float(hybrid_absorption_metrics.get("hybrid_selected_mean_small_signal_rank")),
+        "hybrid_absorption_selected_finite_rank": safe_float(hybrid_absorption_metrics.get("hybrid_selected_mean_finite_rank")),
+        "hybrid_absorption_channel_C_share": safe_float(hybrid_absorption_metrics.get("hybrid_channel_cost_share_C")),
+        "hybrid_absorption_channel_R_share": safe_float(hybrid_absorption_metrics.get("hybrid_channel_cost_share_R")),
+        "hybrid_absorption_channel_S_share": safe_float(hybrid_absorption_metrics.get("hybrid_channel_cost_share_S")),
         "od_message_scalar_od_top5_capture": safe_float(od_message_scalar.get("mean_event_top_5pct_value_capture")),
         "od_message_message_only_top5_capture": safe_float(od_message_message_only.get("mean_event_top_5pct_value_capture")),
         "od_message_scalar_plus_top5_capture": safe_float(od_message_scalar_plus.get("mean_event_top_5pct_value_capture")),
@@ -984,6 +1008,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "value": metrics["hybrid_lp_delta_selected_unit_footprint_mass"],
             "interpretation": "Representative hybrid LPs show only a small support shift despite large finite-value shifts, so finite-budget constraints absorb most footprint signal under the current management regime.",
         },
+        {
+            "version": "V36",
+            "evidence_step": "Hybrid-footprint absorption mechanism audit",
+            "main_question": "Which mechanism explains why footprint finite-value shifts do not become LP support?",
+            "key_metric": "first_order_to_lp_transfer_ratio",
+            "value": metrics["hybrid_absorption_mean_transfer_ratio"],
+            "interpretation": "Only a small share of finite footprint gain transfers to selected support; total budget is binding, but period budgets, caps, and diminishing returns are not the dominant explanation. The main gap is that footprint top units have high finite rank but much weaker small-signal/OD action-value rank.",
+        },
     ]
     return pd.DataFrame(rows)
 
@@ -1156,9 +1188,9 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
             },
             {
                 "item": "event_spatial_footprint_scope",
-                "current_status": "V21 finds event-level top-tail concentration is strongly linked to decision-criticality; V32 shows top-5% value share has zero within-city variation in 5 of 7 cities under the OD-template calibration; V33 maps raw TMC speed abnormalities to OD zones for all 105 events; V34 shows hybrid footprint calibration strongly changes magnitude-aware finite values; V35 re-solves one representative hybrid LP per city and finds only a small shift in selected support.",
-                "implication": "The data contain usable event-specific spatial signal, but the current full LP's finite-budget constraints, deployment caps, delays, channel substitution, and diminishing returns absorb most first-order footprint shifts.",
-                "next_step": "If footprint-specific recovery law becomes a main claim, rerun full hybrid LP closure at larger coverage and recalibrate resource caps/costs with the same event-footprint field rather than changing only b0/h spatial allocation.",
+                "current_status": "V21 finds event-level top-tail concentration is strongly linked to decision-criticality; V32 shows top-5% value share has zero within-city variation in 5 of 7 cities under the OD-template calibration; V33 maps raw TMC speed abnormalities to OD zones for all 105 events; V34 shows hybrid footprint calibration strongly changes magnitude-aware finite values; V35 re-solves one representative hybrid LP per city and finds only a small shift in selected support; V36 audits the absorption mechanism.",
+                "implication": "The data contain usable event-specific spatial signal, but V36 shows the main barrier is not period-budget/cap saturation. Footprint top units become finite-value rich but remain weaker in small-signal OD action value than the final selected support.",
+                "next_step": "If footprint-specific recovery law becomes a main claim, rerun broader hybrid LP closure and design a magnitude-aware finite-budget label that jointly represents event footprint, OD exposure, future-loss horizon, and residual budget feasibility.",
             },
             {
                 "item": "training_objective_scope",
@@ -1294,13 +1326,13 @@ def write_report(
     limitations: pd.DataFrame,
 ) -> None:
     lines = [
-        "# Recoverability Law Synthesis V35",
+        "# Recoverability Law Synthesis V36",
         "",
-        "V35 adds representative full-LP hybrid footprint closure on top of the V34 calibration sensitivity test. It checks whether first-order footprint shifts actually change optimized intervention support.",
+        "V36 adds a mechanism audit for the V35 hybrid-footprint full-LP boundary. It asks why large first-order footprint shifts mostly fail to become optimized selected support.",
         "",
         "## 本版做了什么",
         "",
-        "V35 turns the V34 first-order finding into a full-LP boundary test. Hybrid OD-template plus TMC-footprint calibration strongly shifts the magnitude-aware finite-value field, but representative full LP solves show that the final selected support moves only slightly toward observed footprints under the current budget, cap, delay, channel-substitution, and diminishing-return regime.",
+        "V36 turns the V35 boundary into a mechanism test. It rebuilds the base and hybrid action-value fields for the representative hybrid LP events, joins them to selected support, and checks budget usage, period-budget binding, deployment caps, diminishing-return segments, channel mix, and footprint-vs-small-signal rank alignment.",
         "",
         "## 当前可写入论文的 law",
         "",
@@ -1352,6 +1384,8 @@ def write_report(
         "",
         "24. **Full-LP footprint absorption boundary**: representative hybrid-footprint LP solves show that large first-order finite-value footprint shifts translate into only small changes in optimized selected support under the current management regime. Footprint-specific recoverability therefore requires full finite-budget closure, not just first-order footprint injection.",
         "",
+        "25. **Footprint absorption mechanism result**: the V35 absorption is not mainly explained by period-budget binding, deployment-cap saturation, or heavy diminishing returns. Total budget is binding, but footprint top units are selected weakly because their finite-value rank is high while their small-signal/OD action-value rank remains much lower than the final selected support.",
+        "",
         "## 关键指标",
         "",
         f"- fine-budget LP closure: {metrics['fine_budget_lp_n_selected_events']} selected events x {metrics['fine_budget_n_scales']} budget scales = {metrics['fine_budget_lp_n_jobs']} LP jobs, {metrics['fine_budget_lp_n_optimal_jobs']} optimal; LP gain peak budget = {metrics['fine_budget_lp_gain_peak_budget']:.2f}; LP gain per budget peak = {metrics['fine_budget_lp_gain_per_budget_peak_budget']:.2f}; law-random / LP-gain peak = {metrics['fine_budget_lp_law_random_fraction_peak_budget']:.2f}; base-budget law / LP gain = {metrics['fine_budget_lp_base_law_fraction_of_lp_gain']:.4f}, random / LP gain = {metrics['fine_budget_lp_base_random_fraction_of_lp_gain']:.4f}; mean law / LP gain across all budget rows = {metrics['fine_budget_lp_mean_law_fraction_of_lp_gain_all_budgets']:.4f}",
@@ -1390,6 +1424,7 @@ def write_report(
         f"- observed spatial footprint proxy: {metrics['spatial_footprint_n_events']} events across {metrics['spatial_footprint_n_cities']} cities; footprint-template mean/median cosine = {metrics['spatial_footprint_mean_template_cosine']:.4f}/{metrics['spatial_footprint_median_template_cosine']:.4f}; top-20 footprint/template Jaccard = {metrics['spatial_footprint_mean_top20_template_jaccard']:.4f}; OD-template top-5% captures {metrics['spatial_footprint_template_top5_capture']:.1%} of observed footprint mass; observed footprint top-5% zone share = {metrics['spatial_footprint_top5_zone_share']:.1%}; mean top-20 within-city footprint Jaccard = {metrics['spatial_footprint_top20_within_city_jaccard']:.4f}; mean TMC mapping within 10km = {metrics['spatial_footprint_mapped_within_10km_share']:.1%}",
         f"- hybrid footprint sensitivity: {metrics['hybrid_footprint_n_events']} footprint-covered optimized events across {metrics['hybrid_footprint_n_cities']} cities; small-signal Spearman/Jaccard = {metrics['hybrid_footprint_small_signal_spearman']:.4f}/{metrics['hybrid_footprint_small_signal_top5_jaccard']:.4f}; finite-value Spearman/top-5% Jaccard = {metrics['hybrid_footprint_finite_spearman']:.4f}/{metrics['hybrid_footprint_finite_top5_jaccard']:.4f}; finite top-5% footprint mass = {metrics['hybrid_footprint_base_finite_top5_mass']:.4f} -> {metrics['hybrid_footprint_hybrid_finite_top5_mass']:.4f} (delta {metrics['hybrid_footprint_delta_finite_top5_mass']:+.4f})",
         f"- hybrid full-LP footprint closure: {metrics['hybrid_lp_n_optimal_events']}/{metrics['hybrid_lp_n_selected_events']} representative city events solved to optimality ({metrics['hybrid_lp_n_successful_events']} feasible); selected-unit footprint mass = {metrics['hybrid_lp_base_selected_unit_footprint_mass']:.4f} -> {metrics['hybrid_lp_hybrid_selected_unit_footprint_mass']:.4f} (delta {metrics['hybrid_lp_delta_selected_unit_footprint_mass']:+.4f}); selected-action/unit Jaccard = {metrics['hybrid_lp_selected_action_jaccard']:.4f}/{metrics['hybrid_lp_selected_unit_jaccard']:.4f}; V34 first-order finite top-5% footprint delta for the same selected events = {metrics['hybrid_lp_mean_v34_delta_finite_top5_mass']:+.4f}",
+        f"- hybrid absorption mechanism audit: {metrics['hybrid_absorption_n_events']} events; first-order-to-LP transfer ratio mean/median = {metrics['hybrid_absorption_mean_transfer_ratio']:.4f}/{metrics['hybrid_absorption_median_transfer_ratio']:.4f}; total budget usage = {metrics['hybrid_absorption_total_budget_usage']:.4f}; period-budget binding share >95% = {metrics['hybrid_absorption_period_binding_share']:.4f}; cost-weighted cap ratio = {metrics['hybrid_absorption_cap_ratio']:.4f}; cost beyond first diminishing segment = {metrics['hybrid_absorption_diminishing_cost_share']:.4f}; footprint top-5% selected share = {metrics['hybrid_absorption_footprint_top5_selected_share']:.4f}; footprint top-5% finite/small-signal rank = {metrics['hybrid_absorption_footprint_top5_finite_rank']:.4f}/{metrics['hybrid_absorption_footprint_top5_small_rank']:.4f}; selected units small-signal rank = {metrics['hybrid_absorption_selected_small_rank']:.4f}",
         f"- early decision-criticality: best Spearman = {metrics['early_decision_best_spearman']:.4f} at {metrics['early_decision_best_window']}h using {metrics['early_decision_best_feature_group']}; 2h all-early Spearman = {metrics['early_decision_2h_all_spearman']:.4f}",
         "",
         "## Evidence Ladder",
@@ -1418,7 +1453,7 @@ def write_report(
         "",
         "## 论文写作含义",
         "",
-        "The current learning/law section can be written as a full evidence chain: optimization produces an action-value field; single-action LPs validate the marginal label; cross-city, factorized, and symbolic surrogates support a compact activated law; residual greedy shows that finite budgets require residual re-scoring; event top-tail tests separate decision-criticality from disruption magnitude; V29/V30 show that non-obvious activation survives parameter perturbations and appears in selected LP support; V31 strengthens representative scenario-specific optimum closure to 26/28 optimal non-base rows; V32 prevents over-claiming by showing that present event top-tail concentration is mostly a city-template signal; V33 shows that raw TMC speed data contain event-zone footprint signal; V34 shows why this signal is invisible to the current small-signal label but visible to a magnitude-aware finite-value field; V35 shows that full-LP budget/cap/delay interactions absorb most of that first-order footprint shift in representative events. The remaining caveats are still important: graph evidence is OD-dependency alignment rather than a full road-adjacency/GNN closure; calendar holdout remains city-confounded; intervention parameters remain management-regime assumptions rather than observed causal intervention effects; the two unresolved New York scenario-optimum rows and the unresolved New York hybrid-footprint LP row are computational boundaries; and the next major model step is wider hybrid LP closure with resource caps, costs, and response mechanisms calibrated consistently with the event-footprint field.",
+        "The current learning/law section can be written as a full evidence chain: optimization produces an action-value field; single-action LPs validate the marginal label; cross-city, factorized, and symbolic surrogates support a compact activated law; residual greedy shows that finite budgets require residual re-scoring; event top-tail tests separate decision-criticality from disruption magnitude; V29/V30 show that non-obvious activation survives parameter perturbations and appears in selected LP support; V31 strengthens representative scenario-specific optimum closure to 26/28 optimal non-base rows; V32 prevents over-claiming by showing that present event top-tail concentration is mostly a city-template signal; V33 shows that raw TMC speed data contain event-zone footprint signal; V34 shows why this signal is invisible to the current small-signal label but visible to a magnitude-aware finite-value field; V35 shows that full LP support only weakly shifts toward footprints; V36 explains that the weak transfer is mainly a mismatch between finite footprint magnitude and small-signal OD action value, not simple period-budget or cap saturation. The remaining caveats are still important: graph evidence is OD-dependency alignment rather than a full road-adjacency/GNN closure; calendar holdout remains city-confounded; intervention parameters remain management-regime assumptions rather than observed causal intervention effects; the two unresolved New York scenario-optimum rows and the unresolved New York hybrid-footprint LP row are computational boundaries; and the next major model step is wider hybrid LP closure with a magnitude-aware finite-budget label that jointly represents event footprint, OD exposure, future-loss horizon, and residual budget feasibility.",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
