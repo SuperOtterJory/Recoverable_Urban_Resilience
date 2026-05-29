@@ -85,6 +85,10 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "budget_phase_tests": read_csv(results / "budget_leverage_phase" / "tables" / "budget_phase_tests.csv"),
         "early_metrics": read_csv(results / "early_predictability" / "tables" / "early_predictability_metrics.csv"),
         "early_best": read_csv(results / "early_predictability" / "tables" / "early_best_metrics_by_target.csv"),
+        "nonobvious_summary": read_csv(results / "nonobvious_action_laws" / "tables" / "heuristic_failure_summary.csv"),
+        "nonobvious_hidden": read_csv(results / "nonobvious_action_laws" / "tables" / "hidden_gem_summary.csv"),
+        "nonobvious_reasons": read_csv(results / "nonobvious_action_laws" / "tables" / "heuristic_failure_reason_summary.csv"),
+        "nonobvious_persistence": read_csv(results / "nonobvious_action_laws" / "tables" / "persistence_vs_peak_summary.csv"),
     }
 
 
@@ -172,6 +176,18 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     early_decision_static_1h = one_row(early_metrics, target="decision_criticality_score", feature_group="static_city", window_hours=1)
     early_decision_speed_1h = one_row(early_metrics, target="decision_criticality_score", feature_group="early_speed", window_hours=1)
     early_decision_rain_1h = one_row(early_metrics, target="decision_criticality_score", feature_group="early_rain", window_hours=1)
+    nonobvious_summary = data["nonobvious_summary"]
+    nonobvious_hidden = data["nonobvious_hidden"]
+    nonobvious_reasons = data["nonobvious_reasons"]
+    nonobvious_persistence = data["nonobvious_persistence"]
+    nonobvious_deficit = one_row(nonobvious_summary, heuristic="deficit_only")
+    nonobvious_exposure = one_row(nonobvious_summary, heuristic="exposure_only")
+    nonobvious_structure = one_row(nonobvious_summary, heuristic="structure_only")
+    nonobvious_hidden_all = one_row(nonobvious_hidden, scope="all_events")
+    nonobvious_deficit_reasons = one_row(nonobvious_reasons, heuristic="deficit_only")
+    nonobvious_structure_reasons = one_row(nonobvious_reasons, heuristic="structure_only")
+    nonobvious_peak = one_row(nonobvious_persistence, feature="peak_event_disturbance")
+    nonobvious_remaining = one_row(nonobvious_persistence, feature="remaining_local_area")
 
     metrics: dict[str, Any] = {
         "n_action_tokens": safe_int(policy_capture["n_tokens"].max()) if "n_tokens" in policy_capture else None,
@@ -250,6 +266,21 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "early_decision_static_1h_spearman": safe_float(early_decision_static_1h.get("spearman")),
         "early_decision_speed_1h_spearman": safe_float(early_decision_speed_1h.get("spearman")),
         "early_decision_rain_1h_spearman": safe_float(early_decision_rain_1h.get("spearman")),
+        "nonobvious_deficit_false_positive_share": safe_float(nonobvious_deficit.get("mean_false_positive_share")),
+        "nonobvious_exposure_false_positive_share": safe_float(nonobvious_exposure.get("mean_false_positive_share")),
+        "nonobvious_structure_false_positive_share": safe_float(nonobvious_structure.get("mean_false_positive_share")),
+        "nonobvious_deficit_top5_relative_to_oracle": safe_float(nonobvious_deficit.get("mean_top5_relative_to_oracle")),
+        "nonobvious_exposure_top5_relative_to_oracle": safe_float(nonobvious_exposure.get("mean_top5_relative_to_oracle")),
+        "nonobvious_structure_top5_relative_to_oracle": safe_float(nonobvious_structure.get("mean_top5_relative_to_oracle")),
+        "nonobvious_hidden_from_simple_top5_share": safe_float(nonobvious_hidden_all.get("hidden_from_all_simple_top5_share")),
+        "nonobvious_hidden_from_simple_top20_share": safe_float(nonobvious_hidden_all.get("hidden_from_all_simple_top20_share")),
+        "nonobvious_target_top5_low_structure_top20_share": safe_float(nonobvious_hidden_all.get("target_top5_low_structure_top20_share")),
+        "nonobvious_deficit_failure_low_horizon_share": safe_float(nonobvious_deficit_reasons.get("below_median_future_horizon_share")),
+        "nonobvious_deficit_failure_low_efficiency_share": safe_float(nonobvious_deficit_reasons.get("below_median_efficiency_share")),
+        "nonobvious_structure_failure_low_exposure_share": safe_float(nonobvious_structure_reasons.get("below_median_exposure_share")),
+        "nonobvious_structure_failure_low_efficiency_share": safe_float(nonobvious_structure_reasons.get("below_median_efficiency_share")),
+        "nonobvious_peak_top5_relative_to_oracle": safe_float(nonobvious_peak.get("mean_top5_relative_to_oracle")),
+        "nonobvious_remaining_area_top5_relative_to_oracle": safe_float(nonobvious_remaining.get("mean_top5_relative_to_oracle")),
     }
     return metrics
 
@@ -348,6 +379,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "key_metric": "2h_all_early_decision_spearman",
             "value": metrics["early_decision_2h_all_spearman"],
             "interpretation": "Decision-criticality is partly identifiable from early speed and static structure, but rainfall-only signals are insufficient; the main claim remains hindsight counterfactual recoverability.",
+        },
+        {
+            "version": "V15",
+            "evidence_step": "Non-obvious action-law failures",
+            "main_question": "Are highest-deficit, highest-exposure, or highest-bottleneck actions sufficient recovery rules?",
+            "key_metric": "structure_only_false_positive_share",
+            "value": metrics["nonobvious_structure_false_positive_share"],
+            "interpretation": "One-factor heuristics miss the activation mechanism: static bottlenecks become valuable only when future loss, OD exposure, feasibility, and efficiency align.",
         },
     ]
     return pd.DataFrame(rows)
@@ -511,6 +550,12 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
                 "implication": "Early decision-criticality signals are supplementary and should not be framed as a full online control policy.",
                 "next_step": "Use rolling operational forecasts or causal nowcasting data before making real-time deployment claims.",
             },
+            {
+                "item": "nonobvious_action_scope",
+                "current_status": "V15 compares simple action heuristics against optimizer-derived marginal-value tokens inside each observed city-event.",
+                "implication": "The failure examples support the activated-law mechanism, but they are ranking diagnostics rather than independent causal evidence about real interventions.",
+                "next_step": "Validate the same non-obvious patterns under parameter ensembles and, if available, observed intervention records.",
+            },
         ]
     )
 
@@ -614,6 +659,68 @@ def write_report(
     top_tail_correlations: pd.DataFrame,
     limitations: pd.DataFrame,
 ) -> None:
+    lines = [
+        "# Recoverability Law Synthesis V15",
+        "",
+        "## 这一版做了什么",
+        "",
+        "V15 把前面 action-level marginal law、finite-budget residual law、event-level top-tail law、symbolic formula extraction、budget phase 和 early predictability 合并后，又补上一个非显然 action-law 诊断：检查 highest deficit、highest OD exposure、highest structural bottleneck 这些单因素规则何时失败。",
+        "",
+        "## 当前可写入论文的 law",
+        "",
+        "1. **Small-signal activated recovery law**：第一小段资源的边际价值由 future recoverable horizon、OD exposure、intervention feasibility 和 efficiency 共同激活。",
+        "",
+        "2. **Residual finite-budget allocation law**：完整预算下，价值必须在每轮投放后按 residual state、remaining budget 和 remaining time 重新评分，以避免饱和和重叠效应。",
+        "",
+        "3. **Top-tail decision-criticality law**：事件是否 decision-critical 不只取决于 observed loss，而取决于 recoverable value 是否集中在少数高价值 action 上。",
+        "",
+        "4. **Non-obvious activation law**：高损失、高流量或高结构中心性都不是充分条件；静态城市结构只有被事件中的未来损失、OD 暴露、响应窗口和资源效率同时激活，才转化为 recovery value。",
+        "",
+        "## 关键指标",
+        "",
+        f"- action tokens: {metrics['n_action_tokens']:,}",
+        f"- city-event scenarios: {metrics['n_events']}",
+        f"- single-action LP validation: small-signal Spearman = {metrics['single_action_small_signal_spearman']:.4f}, finite-area label Spearman = {metrics['single_action_finite_area_spearman']:.4f}",
+        f"- leave-one-city-out surrogate: mean Spearman = {metrics['leave_city_mean_spearman']:.4f}, top-5% capture = {metrics['leave_city_mean_top5_capture']:.4f}",
+        f"- base finite-budget closure: static greedy / LP gain = {metrics['base_static_fraction_of_lp_gain']:.4f}; residual greedy / LP gain = {metrics['base_residual_fraction_of_lp_gain']:.4f}",
+        f"- representative non-base closure: static / scenario LP gain = {metrics['scenario_static_fraction_of_lp_gain']:.4f}; residual / scenario LP gain = {metrics['scenario_residual_fraction_of_lp_gain']:.4f}",
+        f"- symbolic activated law top-5% capture = {metrics['symbolic_activated_top5_capture']:.4f}; largest feature ablation drop = {metrics['symbolic_largest_ablation_drop_group']} ({metrics['symbolic_largest_ablation_top5_drop']:.4f})",
+        f"- budget phase: interior absolute-leverage peak supported = {metrics['budget_abs_random_interior_peak_supported']}; residual-vs-static per-cost leverage falls from {metrics['budget_low_residual_static_per_cost']:.4f} to {metrics['budget_high_residual_static_per_cost']:.4f}",
+        f"- early decision-criticality: best Spearman = {metrics['early_decision_best_spearman']:.4f} at {metrics['early_decision_best_window']}h using {metrics['early_decision_best_feature_group']}; 2h all-early Spearman = {metrics['early_decision_2h_all_spearman']:.4f}",
+        f"- non-obvious action law: false-positive shares are deficit-only {metrics['nonobvious_deficit_false_positive_share']:.1%}, exposure-only {metrics['nonobvious_exposure_false_positive_share']:.1%}, structure-only {metrics['nonobvious_structure_false_positive_share']:.1%}",
+        f"- non-obvious action law: target top-5% actions hidden from every simple top-5% rank = {metrics['nonobvious_hidden_from_simple_top5_share']:.1%}; target top-5% below structure-only top-20% = {metrics['nonobvious_target_top5_low_structure_top20_share']:.1%}",
+        "",
+        "## Evidence Ladder",
+        "",
+        table_to_markdown(evidence),
+        "",
+        "## Policy Closure",
+        "",
+        table_to_markdown(closure),
+        "",
+        "## City Closure",
+        "",
+        table_to_markdown(city_closure),
+        "",
+        "## Top Decision-Critical Events",
+        "",
+        table_to_markdown(decision_examples),
+        "",
+        "## Event-Level Correlations",
+        "",
+        table_to_markdown(top_tail_correlations),
+        "",
+        "## 当前边界与下一步",
+        "",
+        table_to_markdown(limitations),
+        "",
+        "## 论文写作含义",
+        "",
+        "现在 learning/law 部分可以写成一条完整的证据链：优化模型产生 action-value field；single-action LP 验证 marginal label；cross-city surrogate 和 symbolic extraction 说明低维结构可解释；residual greedy 说明有限预算需要动态重评分；event top-tail 说明 decision-criticality 不是 disruption magnitude；V15 进一步给出反直觉证据，说明城市结构不是静态优先级，而是需要被事件和干预条件激活的 latent leverage。",
+    ]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return
     lines = [
         "# Recoverability Law Synthesis V14",
         "",

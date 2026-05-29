@@ -27,6 +27,19 @@ Simple normalized action features can recover much of this value field across ci
 
 The formula-extraction stage makes this law explicit rather than leaving it as an informal interpretation. Candidate symbolic scores and leave-one-city log-linear formulas were evaluated on 170,137 action tokens from 105 city-events. The compact activated law lies on the accuracy--simplicity Pareto frontier; within the formula-extraction metric it has top-5 percent marginal-value capture 0.1121, compared with 0.0995 for the exposure-only symbolic term and 0.1026 for the minimal leave-city log-law. A feature-group ablation further shows that removing OD exposure and structural variables produces the largest top-tail capture drop, 0.0276. Thus the dominant empirical structure is not rainfall severity or budget alone, but the activation of future recoverable loss by OD exposure and feasible intervention efficiency.
 
+The same action-token field also reveals why the law is not reducible to a one-factor heuristic. Ranking each city-event's candidate actions by highest remaining deficit captures 0.8520 of the oracle top-5 percent marginal value on average, but 24.3 percent of its top-ranked actions fall outside the true value top-20 percent. Exposure-only ranking is stronger, capturing 0.8706 of oracle top-tail value, but still has a 14.6 percent false-positive share. Structure-only ranking is the clearest counterexample: it captures only 0.5039 of oracle top-tail value, and 81.7 percent of its top-5 percent actions are outside the true value top-20 percent. Conversely, 34.2 percent of true top-5 percent actions do not appear in any simple top-5 percent ranking, and 83.9 percent of true top-5 percent actions are below the structure-only top-20 percent. The failure modes are also interpretable: deficit-only false positives commonly have below-median future horizon or low intervention efficiency, while structure-only false positives often lack the relevant OD exposure or efficient action channel.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.84\linewidth]{../../results/nonobvious_action_laws/figures/heuristic_false_positive_rates.png}
+  \caption{One-factor action heuristics create false recovery priorities. High deficit and high exposure are informative but incomplete; static structure alone is especially unreliable unless activated by persistent future loss, OD exposure, feasibility, and efficiency.}
+  \label{fig:nonobvious-action-failures}
+\end{figure}
+
+The intervention mix of the true top-tail further clarifies the mechanism. Among target top-5 percent action tokens, temporary capacity \(C\) accounts for 66.5 percent of actions and 77.1 percent of top-tail value, substitution/control \(S\) accounts for 15.7 percent of actions and 17.1 percent of value, and durable restoration \(R\) accounts for 17.8 percent of actions but only 5.8 percent of value in the first-order field. This does not mean \(R\) is unimportant in the finite-budget LP; rather, it shows that short-window marginal value is strongly shaped by response delay, immediate feasibility, and the channel through which loss propagates.
+
+The current data do not yet cleanly separate peak disturbance from cumulative disturbance at the region level, because the observed event signal is projected spatially through the same destination-vulnerability profile. Therefore the peak-versus-persistence result should be framed cautiously: the robust finding is not that the peak term is irrelevant, but that action value depends on future remaining reducible loss after accounting for OD exposure, timing, and resource efficiency.
+
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.82\linewidth]{../../results/symbolic_law_extraction/figures/formula_complexity_capture.png}

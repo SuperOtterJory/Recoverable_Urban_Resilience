@@ -1,0 +1,4 @@
+heuristic,heuristic_label,failure_action_count,delay_blocked_share,below_median_future_horizon_share,below_median_exposure_share,below_median_efficiency_share,short_remaining_window_share
+deficit_only,Highest remaining deficit,1984,0.01512096774,0.4611895161,0.1955645161,0.7368951613,0.5751008065
+exposure_only,Highest OD exposure,1196,0.02591973244,0.4423076923,0,0.7658862876,0.758361204
+structure_only,Highest structural bottleneck,6991,0.02117007581,0.3091117151,0.4560148763,0.7422400229,0.379487913

@@ -1,0 +1,7 @@
+feature,column,n_events,mean_event_spearman,median_event_spearman,mean_top5_relative_to_oracle,median_top5_relative_to_oracle
+peak_event_disturbance,h_peak,99,0.747910505,0.7680369532,0.838574468,0.841614452
+total_event_disturbance,h_total,99,0.747910505,0.7680369532,0.838574468,0.841614452
+remaining_local_area,local_remaining_area,105,0.3896603281,0.3800450119,0.7253697312,0.7377542617
+instantaneous_deficit,passive_b_t,105,0.2823737821,0.2791302091,0.646270089,0.6487543498
+remaining_access_area,access_remaining_area,105,0.2429028473,0.2334198976,0.5446704964,0.5161223388
+active_weighted_horizon,active_weighted_horizon,105,0.1304700267,0.1277242574,0.364018986,0.2781829769

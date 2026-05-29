@@ -74,5 +74,20 @@
   "early_recoverable_2h_all_spearman": 0.5989840348,
   "early_decision_static_1h_spearman": 0.7675027566,
   "early_decision_speed_1h_spearman": 0.5271615177,
-  "early_decision_rain_1h_spearman": -0.7865650806
+  "early_decision_rain_1h_spearman": -0.7865650806,
+  "nonobvious_deficit_false_positive_share": 0.2434857861,
+  "nonobvious_exposure_false_positive_share": 0.1459705139,
+  "nonobvious_structure_false_positive_share": 0.8168044522,
+  "nonobvious_deficit_top5_relative_to_oracle": 0.8520465635,
+  "nonobvious_exposure_top5_relative_to_oracle": 0.8706153682,
+  "nonobvious_structure_top5_relative_to_oracle": 0.5039437288,
+  "nonobvious_hidden_from_simple_top5_share": 0.3423149016,
+  "nonobvious_hidden_from_simple_top20_share": 0.009606373008,
+  "nonobvious_target_top5_low_structure_top20_share": 0.8391518276,
+  "nonobvious_deficit_failure_low_horizon_share": 0.4611895161,
+  "nonobvious_deficit_failure_low_efficiency_share": 0.7368951613,
+  "nonobvious_structure_failure_low_exposure_share": 0.4560148763,
+  "nonobvious_structure_failure_low_efficiency_share": 0.7422400229,
+  "nonobvious_peak_top5_relative_to_oracle": 0.838574468,
+  "nonobvious_remaining_area_top5_relative_to_oracle": 0.7253697312
 }

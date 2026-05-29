@@ -1,0 +1,5 @@
+heuristic,heuristic_label,n_events,mean_top5_relative_to_oracle,median_top5_relative_to_oracle,mean_top5_share_of_total_value,mean_false_positive_share,weighted_false_positive_share,mean_zero_value_share,weighted_zero_value_share,mean_target_top5_precision,mean_target_top5_recall,mean_target_top5_missed_by_top20_share
+deficit_only,Highest remaining deficit,105,0.8520465635,0.8423113024,0.0953691515,0.2434857861,0.2324273664,0.004031765429,0.00351452671,0.5283285518,0.5283285518,0.1589791896
+exposure_only,Highest OD exposure,105,0.8706153682,0.8857470841,0.09748387138,0.1459705139,0.1401124649,0.004048782858,0.003631677601,0.5077937228,0.5077937228,0.02909090909
+structure_only,Highest structural bottleneck,105,0.5039437288,0.5018128653,0.05622053195,0.8168044522,0.8190018744,0.0195977277,0.01733833177,0.01099703585,0.01099703585,0.8326368601
+activated_law,Activated law reference,105,1,1,0.1120621975,0,0,0,0,1,1,0
