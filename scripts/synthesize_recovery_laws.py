@@ -110,6 +110,9 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "parameter_ensemble_model": read_csv(results / "parameter_ensemble_stability" / "tables" / "parameter_ensemble_model_summary.csv"),
         "parameter_ensemble_score": read_csv(results / "parameter_ensemble_stability" / "tables" / "parameter_ensemble_score_summary.csv"),
         "parameter_ensemble_token": read_csv(results / "parameter_ensemble_stability" / "tables" / "parameter_ensemble_token_summary.csv"),
+        "parameter_lp_summary": read_csv(results / "parameter_ensemble_optimum_validation" / "tables" / "parameter_policy_summary.csv"),
+        "parameter_lp_optima": read_csv(results / "parameter_ensemble_optimum_validation" / "tables" / "parameter_lp_optima.csv"),
+        "parameter_lp_metrics": read_json_table(results / "parameter_ensemble_optimum_validation" / "tables" / "parameter_ensemble_optimum_metrics.json"),
     }
 
 
@@ -283,6 +286,7 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     od_message_over_scalar = one_row(data["od_message_increments"], comparison="message_over_scalar_od")
     od_message_over_factorized = one_row(data["od_message_increments"], comparison="message_over_factorized")
     parameter_ensemble_metrics = one_row(data["parameter_ensemble_metrics"])
+    parameter_lp_metrics = one_row(data["parameter_lp_metrics"])
 
     metrics: dict[str, Any] = {
         "n_action_tokens": safe_int(policy_capture["n_tokens"].max()) if "n_tokens" in policy_capture else None,
@@ -473,6 +477,16 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "parameter_ensemble_base_transfer_full_worst_scenario": str(parameter_ensemble_metrics.get("worst_base_transfer_factorized_scenario", "")),
         "parameter_ensemble_full_activation_score_mean_top5_capture": safe_float(parameter_ensemble_metrics.get("full_activation_score_mean_top5_capture")),
         "parameter_ensemble_light_activation_score_mean_top5_capture": safe_float(parameter_ensemble_metrics.get("light_activation_score_mean_top5_capture")),
+        "parameter_lp_n_selected_events": safe_int(parameter_lp_metrics.get("n_selected_events")),
+        "parameter_lp_n_parameter_scenarios": safe_int(parameter_lp_metrics.get("n_parameter_scenarios")),
+        "parameter_lp_n_successful_lp_scenarios": safe_int(parameter_lp_metrics.get("n_successful_lp_scenarios")),
+        "parameter_lp_mean_residual_fraction_of_scenario_lp_gain": safe_float(parameter_lp_metrics.get("mean_residual_fraction_of_scenario_lp_gain")),
+        "parameter_lp_median_residual_fraction_of_scenario_lp_gain": safe_float(parameter_lp_metrics.get("median_residual_fraction_of_scenario_lp_gain")),
+        "parameter_lp_mean_static_fraction_of_scenario_lp_gain": safe_float(parameter_lp_metrics.get("mean_static_fraction_of_scenario_lp_gain")),
+        "parameter_lp_mean_residual_minus_static": safe_float(parameter_lp_metrics.get("mean_residual_minus_static")),
+        "parameter_lp_positive_residual_improvement_share": safe_float(parameter_lp_metrics.get("positive_residual_improvement_share")),
+        "parameter_lp_worst_residual_parameter_scenario": str(parameter_lp_metrics.get("worst_residual_parameter_scenario", "")),
+        "parameter_lp_worst_residual_mean_fraction_of_scenario_lp_gain": safe_float(parameter_lp_metrics.get("worst_residual_mean_fraction_of_scenario_lp_gain")),
     }
     return metrics
 
@@ -644,6 +658,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "value": metrics["parameter_ensemble_base_transfer_light_mean_top5_capture"],
             "interpretation": "Across 11 eta/cost/delay scenarios, a base-trained parameter-light factorized law transfers with high top-tail capture; parameter-dependent ridge features are more scale-sensitive, so scenario augmentation is important for parameter-sensitive surrogates.",
         },
+        {
+            "version": "V24",
+            "evidence_step": "Parameter-ensemble LP optimum closure",
+            "main_question": "Does residual replanning remain close to full LP optima under eta/cost/delay/channel-favored parameter ensembles?",
+            "key_metric": "residual_fraction_of_parameter_scenario_lp_gain",
+            "value": metrics["parameter_lp_mean_residual_fraction_of_scenario_lp_gain"],
+            "interpretation": "Across 20 representative parameter-scenario LP closures, residual finite greedy captures most scenario-specific LP gain and dominates static small-signal ranking in every tested event-scenario.",
+        },
     ]
     return pd.DataFrame(rows)
 
@@ -778,9 +800,9 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
             },
             {
                 "item": "intervention_parameter_identification",
-                "current_status": "R/C/S effectiveness, cost, caps, delays, and diminishing returns are recovery-regime assumptions; V20 adds parameter-deconfounded action-token tests and V23 adds first-order eta/cost/delay parameter-ensemble stability.",
-                "implication": "The law is still conditional on a management regime, but future-loss and OD-exposure alignment transfer across moderate parameter perturbations; absolute eta/cost features need augmentation or careful normalization for robust parameter-sensitive surrogates.",
-                "next_step": "Run full LP parameter ensembles or incorporate observed intervention records if parameter identification becomes a central claim.",
+                "current_status": "R/C/S effectiveness, cost, caps, delays, and diminishing returns are recovery-regime assumptions; V20 adds parameter-deconfounded action-token tests, V23 adds first-order eta/cost/delay parameter-ensemble stability, and V24 adds representative full-LP parameter-ensemble closure.",
+                "implication": "The law is still conditional on a management regime, but future-loss and OD-exposure alignment transfer across moderate parameter perturbations; residual replanning remains close to representative perturbed LP optima.",
+                "next_step": "Expand full LP parameter ensembles across more city-events or incorporate observed intervention records if parameter identification becomes a central claim.",
             },
             {
                 "item": "surrogate_architecture",
@@ -815,7 +837,7 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
             {
                 "item": "perturbed_optimum_stability",
                 "current_status": "Representative perturbation solves are available for 4 events with 3 cost/effectiveness perturbations each.",
-                "implication": "V23 expands first-order action-value parameter stability, but full LP action-list stability remains limited to the representative perturbation sample.",
+                "implication": "V23 expands first-order action-value parameter stability and V24 adds 20 representative full-LP parameter-scenario closures, but exact action-list stability remains limited to representative samples.",
                 "next_step": "Increase perturbation count and city-event coverage if action stability becomes a central claim.",
             },
             {
@@ -940,11 +962,11 @@ def write_report(
     limitations: pd.DataFrame,
 ) -> None:
     lines = [
-        "# Recoverability Law Synthesis V23",
+        "# Recoverability Law Synthesis V24",
         "",
         "## 本版做了什么",
         "",
-        "V23 将 parameter-ensemble stability 接入 learning/law synthesis。在 V20 已经证明 action mechanics 不能单独解释 recovery value、V22 已经说明显式 OD message passing 并非当前主 law 必需之后，本版进一步检验 compact law 在 eta/cost/delay 和 channel-favored 参数扰动下是否仍然保持 top-tail value capture。",
+        "V24 将 parameter-ensemble LP optimum closure 接入 learning/law synthesis。在 V23 已经证明 compact first-order action law 能跨 eta/cost/delay 参数扰动保持 top-tail value capture 之后，本版进一步对代表性 city-event 重新求解完整参数扰动 LP optimum，检验 residual finite-budget law 是否仍接近对应场景的真实优化上界。",
         "",
         "## 当前可写入论文的 law",
         "",
@@ -972,6 +994,8 @@ def write_report(
         "",
         "12. **Parameter-ensemble stability result**：在 11 组 eta/cost/delay 扰动下，只用 delay、future horizon、OD exposure 和 intervention type 的 base-trained parameter-light law 仍保持较高 top-tail capture；含绝对 eta/cost 的 ridge surrogate 对参数尺度外推更敏感，说明后续参数敏感 surrogate 需要 scenario augmentation。",
         "",
+        "13. **Parameter-ensemble LP closure result**：在 4 个代表事件、5 类参数扰动、20 个重新求解的完整 LP 场景中，residual finite greedy 平均捕获 0.9662 的 scenario-specific LP gain，显著高于 static small-signal greedy 的 0.7451；说明 residual law 不只是 first-order ranking，在有限预算和参数扰动下仍接近完整优化上界。",
+        "",
         "## 关键指标",
         "",
         f"- action tokens: {metrics['n_action_tokens']:,}",
@@ -988,6 +1012,7 @@ def write_report(
         f"- factorized graph alignment: observed OD = {metrics['graph_factorized_observed_top5_capture']:.4f}; shuffled OD = {metrics['graph_factorized_shuffled_top5_capture']:.4f}; gap = {metrics['graph_factorized_alignment_delta_top5_capture']:+.4f}",
         f"- OD message passing: message-only top-5% capture = {metrics['od_message_message_only_top5_capture']:.4f}; scalar OD = {metrics['od_message_scalar_od_top5_capture']:.4f}; scalar+message = {metrics['od_message_scalar_plus_top5_capture']:.4f}; message-over-scalar delta = {metrics['od_message_message_over_scalar_delta_top5_capture']:+.4f}; factorized+message delta = {metrics['od_message_message_over_factorized_delta_top5_capture']:+.4f}",
         f"- parameter ensemble stability: {metrics['parameter_ensemble_n_scenarios']} eta/cost/delay scenarios; base-trained parameter-light factorized mean/min top-5% capture = {metrics['parameter_ensemble_base_transfer_light_mean_top5_capture']:.4f}/{metrics['parameter_ensemble_base_transfer_light_min_top5_capture']:.4f}; full factorized mean/min = {metrics['parameter_ensemble_base_transfer_full_mean_top5_capture']:.4f}/{metrics['parameter_ensemble_base_transfer_full_min_top5_capture']:.4f}; centered-efficiency mean/min = {metrics['parameter_ensemble_base_transfer_centered_mean_top5_capture']:.4f}/{metrics['parameter_ensemble_base_transfer_centered_min_top5_capture']:.4f}; weakest full scenario = {metrics['parameter_ensemble_base_transfer_full_worst_scenario']}",
+        f"- parameter LP closure: {metrics['parameter_lp_n_selected_events']} events x {metrics['parameter_lp_n_parameter_scenarios']} parameter scenarios = {metrics['parameter_lp_n_successful_lp_scenarios']} successful LP closures; residual / scenario LP gain = {metrics['parameter_lp_mean_residual_fraction_of_scenario_lp_gain']:.4f} mean and {metrics['parameter_lp_median_residual_fraction_of_scenario_lp_gain']:.4f} median; static = {metrics['parameter_lp_mean_static_fraction_of_scenario_lp_gain']:.4f}; residual-minus-static = {metrics['parameter_lp_mean_residual_minus_static']:+.4f}; weakest residual scenario = {metrics['parameter_lp_worst_residual_parameter_scenario']} at {metrics['parameter_lp_worst_residual_mean_fraction_of_scenario_lp_gain']:.4f}",
         f"- event-regime generalization: {metrics['regime_factorized_n_splits']} held-out regimes; factorized mean top-5% capture = {metrics['regime_factorized_mean_top5_capture']:.4f}; worst = {metrics['regime_factorized_hardest_split_family']} / {metrics['regime_factorized_hardest_heldout']} at {metrics['regime_factorized_min_top5_capture']:.4f}; full additive mean = {metrics['regime_full_mean_top5_capture']:.4f}",
         f"- training-objective ablation: factorized raw log-value capture = {metrics['objective_factorized_raw_top5_capture']:.4f}; best objective = {metrics['objective_factorized_best_objective']} at {metrics['objective_factorized_best_top5_capture']:.4f}; top-tail weighted = {metrics['objective_factorized_top_tail_weighted_top5_capture']:.4f}; rank-percentile = {metrics['objective_factorized_rank_top5_capture']:.4f}",
         f"- training-objective ablation: full additive best objective = {metrics['objective_full_best_objective']} at {metrics['objective_full_best_top5_capture']:.4f}, improvement over raw = {metrics['objective_full_best_minus_raw_top5_capture']:+.4f}",

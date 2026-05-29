@@ -1,0 +1,6 @@
+parameter_scenario,description,eta_scale_R,cost_scale_R,delay_add_R,eta_scale_C,cost_scale_C,delay_add_C,eta_scale_S,cost_scale_S,delay_add_S
+cheap_all,all intervention costs reduced by 25%,1,0.75,0,1,0.75,0,1,0.75,0
+slow_response_4h,each intervention is delayed by four additional hours,1,1,4,1,1,4,1,1,4
+R_favored,durable restoration is relatively more efficient and cheaper,1.35,0.85,0,0.9,1.1,0,0.9,1.1,0
+C_favored,temporary capacity is relatively more efficient and cheaper,0.9,1.1,0,1.35,0.85,0,0.9,1.1,0
+S_favored,substitution/control is relatively more efficient and cheaper,0.9,1.1,0,0.9,1.1,0,1.35,0.85,0

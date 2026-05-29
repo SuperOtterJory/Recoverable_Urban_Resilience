@@ -1,0 +1,9 @@
+city,policy,n_event_scenarios,mean_fraction_of_scenario_lp_gain,median_fraction_of_scenario_lp_gain,mean_gap_to_scenario_lp_gain
+Chicago,residual_finite_greedy,5,0.9928308735,0.9944521702,0.007169126507
+Philadelphia,residual_finite_greedy,5,0.9733883575,0.984790004,0.02661164252
+Austin,residual_finite_greedy,5,0.9592475635,0.9669593551,0.04075243654
+San Antonio,residual_finite_greedy,5,0.9393786484,0.9373847902,0.06062135159
+Chicago,static_small_signal_greedy,5,0.8812405716,0.8810782807,0.1187594284
+Philadelphia,static_small_signal_greedy,5,0.8802298482,0.9084278353,0.1197701518
+Austin,static_small_signal_greedy,5,0.7393887202,0.746445446,0.2606112798
+San Antonio,static_small_signal_greedy,5,0.4796928704,0.5139431681,0.5203071296

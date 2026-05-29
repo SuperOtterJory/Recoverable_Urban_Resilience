@@ -1,0 +1,15 @@
+{
+  "n_selected_events": 4,
+  "n_parameter_scenarios": 5,
+  "n_successful_lp_scenarios": 20,
+  "n_policy_rows": 40,
+  "mean_lp_runtime_seconds": 24.188700008050006,
+  "max_lp_runtime_seconds": 54.49900007,
+  "mean_residual_fraction_of_scenario_lp_gain": 0.96621136073,
+  "median_residual_fraction_of_scenario_lp_gain": 0.9704633739499999,
+  "mean_static_fraction_of_scenario_lp_gain": 0.7451380026000001,
+  "mean_residual_minus_static": 0.22107335813,
+  "positive_residual_improvement_share": 1.0,
+  "worst_residual_parameter_scenario": "R_favored",
+  "worst_residual_mean_fraction_of_scenario_lp_gain": 0.9515996061
+}

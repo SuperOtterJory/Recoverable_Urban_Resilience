@@ -186,5 +186,15 @@
   "parameter_ensemble_base_transfer_centered_min_top5_capture": 0.39738695559074866,
   "parameter_ensemble_base_transfer_full_worst_scenario": "cheap_all",
   "parameter_ensemble_full_activation_score_mean_top5_capture": 1.0,
-  "parameter_ensemble_light_activation_score_mean_top5_capture": 0.8159966473276643
+  "parameter_ensemble_light_activation_score_mean_top5_capture": 0.8159966473276643,
+  "parameter_lp_n_selected_events": 4,
+  "parameter_lp_n_parameter_scenarios": 5,
+  "parameter_lp_n_successful_lp_scenarios": 20,
+  "parameter_lp_mean_residual_fraction_of_scenario_lp_gain": 0.96621136073,
+  "parameter_lp_median_residual_fraction_of_scenario_lp_gain": 0.9704633739499999,
+  "parameter_lp_mean_static_fraction_of_scenario_lp_gain": 0.7451380026000001,
+  "parameter_lp_mean_residual_minus_static": 0.22107335813,
+  "parameter_lp_positive_residual_improvement_share": 1.0,
+  "parameter_lp_worst_residual_parameter_scenario": "R_favored",
+  "parameter_lp_worst_residual_mean_fraction_of_scenario_lp_gain": 0.9515996061
 }
