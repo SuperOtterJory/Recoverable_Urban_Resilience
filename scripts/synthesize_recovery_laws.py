@@ -145,6 +145,10 @@ def load_tables(root: Path) -> dict[str, pd.DataFrame]:
         "multiobjective_footprint_lp_summary": read_csv(results / "multiobjective_footprint_lp_validation" / "tables" / "multiobjective_lp_summary.csv"),
         "multiobjective_footprint_lp_frontier": read_csv(results / "multiobjective_footprint_lp_validation" / "tables" / "multiobjective_lp_frontier.csv"),
         "multiobjective_footprint_lp_events": read_csv(results / "multiobjective_footprint_lp_validation" / "tables" / "multiobjective_lp_event_best.csv"),
+        "broader_multiobjective_footprint_lp_metrics": read_json_table(results / "broader_multiobjective_footprint_lp_validation" / "tables" / "broader_multiobjective_lp_metrics.json"),
+        "broader_multiobjective_footprint_lp_summary": read_csv(results / "broader_multiobjective_footprint_lp_validation" / "tables" / "broader_multiobjective_lp_summary.csv"),
+        "broader_multiobjective_footprint_lp_frontier": read_csv(results / "broader_multiobjective_footprint_lp_validation" / "tables" / "broader_multiobjective_lp_frontier.csv"),
+        "broader_multiobjective_footprint_lp_events": read_csv(results / "broader_multiobjective_footprint_lp_validation" / "tables" / "broader_multiobjective_lp_event_best.csv"),
         "od_message_summary": read_csv(results / "od_message_passing_surrogate" / "tables" / "od_message_model_summary.csv"),
         "od_message_increments": read_csv(results / "od_message_passing_surrogate" / "tables" / "od_message_incremental_gains.csv"),
         "od_message_metrics": read_json_table(results / "od_message_passing_surrogate" / "tables" / "od_message_passing_metrics.json"),
@@ -358,6 +362,7 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     residual_footprint_metrics = one_row(data["residual_footprint_metrics"])
     residual_footprint_tradeoff_metrics = one_row(data["residual_footprint_tradeoff_metrics"])
     multiobjective_footprint_lp_metrics = one_row(data["multiobjective_footprint_lp_metrics"])
+    broader_multiobjective_footprint_lp_metrics = one_row(data["broader_multiobjective_footprint_lp_metrics"])
     od_message_metrics = one_row(data["od_message_metrics"])
     od_message_scalar = one_row(data["od_message_summary"], model_id="O1_scalar_od_graph")
     od_message_scalar_plus = one_row(data["od_message_summary"], model_id="O3_scalar_plus_message")
@@ -859,6 +864,24 @@ def build_metrics(data: dict[str, pd.DataFrame]) -> dict[str, Any]:
         "multiobjective_footprint_lp_best_delta_top5_loss_0p01": safe_float(multiobjective_footprint_lp_metrics.get("best_delta_top5_footprint_loss_le_0p01")),
         "multiobjective_footprint_lp_event_mean_delta_top5_loss_0p01": safe_float(multiobjective_footprint_lp_metrics.get("event_mean_delta_top5_loss_le_0p01")),
         "multiobjective_footprint_lp_event_positive_delta_share_loss_0p01": safe_float(multiobjective_footprint_lp_metrics.get("event_positive_delta_share_loss_le_0p01")),
+        "broader_multiobjective_footprint_lp_n_selected_events": safe_int(broader_multiobjective_footprint_lp_metrics.get("n_selected_events")),
+        "broader_multiobjective_footprint_lp_n_events": safe_int(broader_multiobjective_footprint_lp_metrics.get("n_events")),
+        "broader_multiobjective_footprint_lp_n_lambdas": safe_int(broader_multiobjective_footprint_lp_metrics.get("n_lambdas")),
+        "broader_multiobjective_footprint_lp_frontier_points": safe_int(broader_multiobjective_footprint_lp_metrics.get("pareto_frontier_points")),
+        "broader_multiobjective_footprint_lp_lambda0_fraction": safe_float(broader_multiobjective_footprint_lp_metrics.get("lambda0_fraction")),
+        "broader_multiobjective_footprint_lp_lambda0_top5_mass": safe_float(broader_multiobjective_footprint_lp_metrics.get("lambda0_top5_footprint_mass")),
+        "broader_multiobjective_footprint_lp_max_footprint_lambda": safe_float(broader_multiobjective_footprint_lp_metrics.get("max_footprint_lambda")),
+        "broader_multiobjective_footprint_lp_max_footprint_fraction": safe_float(broader_multiobjective_footprint_lp_metrics.get("max_footprint_fraction")),
+        "broader_multiobjective_footprint_lp_max_footprint_top5_mass": safe_float(broader_multiobjective_footprint_lp_metrics.get("max_footprint_top5_mass")),
+        "broader_multiobjective_footprint_lp_best_lambda_loss_0p005": safe_float(broader_multiobjective_footprint_lp_metrics.get("best_lambda_loss_le_0p005")),
+        "broader_multiobjective_footprint_lp_best_fraction_loss_0p005": safe_float(broader_multiobjective_footprint_lp_metrics.get("best_fraction_loss_le_0p005")),
+        "broader_multiobjective_footprint_lp_best_delta_fraction_loss_0p005": safe_float(broader_multiobjective_footprint_lp_metrics.get("best_delta_fraction_loss_le_0p005")),
+        "broader_multiobjective_footprint_lp_best_top5_loss_0p005": safe_float(broader_multiobjective_footprint_lp_metrics.get("best_top5_footprint_loss_le_0p005")),
+        "broader_multiobjective_footprint_lp_best_delta_top5_loss_0p005": safe_float(broader_multiobjective_footprint_lp_metrics.get("best_delta_top5_footprint_loss_le_0p005")),
+        "broader_multiobjective_footprint_lp_best_lambda_loss_0p02": safe_float(broader_multiobjective_footprint_lp_metrics.get("best_lambda_loss_le_0p02")),
+        "broader_multiobjective_footprint_lp_best_delta_fraction_loss_0p02": safe_float(broader_multiobjective_footprint_lp_metrics.get("best_delta_fraction_loss_le_0p02")),
+        "broader_multiobjective_footprint_lp_best_delta_top5_loss_0p02": safe_float(broader_multiobjective_footprint_lp_metrics.get("best_delta_top5_footprint_loss_le_0p02")),
+        "broader_multiobjective_footprint_lp_excluded_cities": str(broader_multiobjective_footprint_lp_metrics.get("excluded_cities", "")),
         "od_message_scalar_od_top5_capture": safe_float(od_message_scalar.get("mean_event_top_5pct_value_capture")),
         "od_message_message_only_top5_capture": safe_float(od_message_message_only.get("mean_event_top_5pct_value_capture")),
         "od_message_scalar_plus_top5_capture": safe_float(od_message_scalar_plus.get("mean_event_top_5pct_value_capture")),
@@ -1205,6 +1228,14 @@ def build_evidence_ladder(metrics: dict[str, Any]) -> pd.DataFrame:
             "value": metrics["multiobjective_footprint_lp_best_delta_top5_loss_0p005"],
             "interpretation": "Solving 42 explicit multi-objective LPs confirms the boundary: a small footprint objective weight can raise observed-footprint coverage with almost no true-loss penalty, while larger footprint coverage requires a real sacrifice in recovery gain.",
         },
+        {
+            "version": "V42",
+            "evidence_step": "Broader explicit multi-objective footprint LP closure",
+            "main_question": "Does the explicit recovery-footprint frontier generalize beyond the six representative hybrid events?",
+            "key_metric": "broader_0p005_loss_explicit_lp_footprint_mass_gain",
+            "value": metrics["broader_multiobjective_footprint_lp_best_delta_top5_loss_0p005"],
+            "interpretation": "Solving 36 additional explicit LPs across 12 footprint-sensitive non-New-York city-events preserves the same structure: lambda=0.02 raises footprint coverage with less than 0.001 LP-gain loss, while lambda=0.05 buys larger footprint coverage at a visible recovery-gain cost.",
+        },
     ]
     return pd.DataFrame(rows)
 
@@ -1377,9 +1408,9 @@ def build_limitations(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
             },
             {
                 "item": "event_spatial_footprint_scope",
-                "current_status": "V21 finds event-level top-tail concentration is strongly linked to decision-criticality; V32 shows top-5% value share has zero within-city variation in 5 of 7 cities under the OD-template calibration; V33 maps raw TMC speed abnormalities to OD zones for all 105 events; V34 shows hybrid footprint calibration strongly changes magnitude-aware finite values; V35 re-solves one representative hybrid LP per city and finds only a small shift in selected support; V36 audits the absorption mechanism; V37 tests footprint-aware score frontiers; V38 validates footprint-aware scores as static finite-budget replay policies; V39 tests adaptive residual footprint-aware policies; V40 scans a residual recovery-footprint lambda frontier; V41 solves 42 explicit multi-objective footprint LPs.",
+                "current_status": "V21 finds event-level top-tail concentration is strongly linked to decision-criticality; V32 shows top-5% value share has zero within-city variation in 5 of 7 cities under the OD-template calibration; V33 maps raw TMC speed abnormalities to OD zones for all 105 events; V34 shows hybrid footprint calibration strongly changes magnitude-aware finite values; V35 re-solves one representative hybrid LP per city and finds only a small shift in selected support; V36 audits the absorption mechanism; V37 tests footprint-aware score frontiers; V38 validates footprint-aware scores as static finite-budget replay policies; V39 tests adaptive residual footprint-aware policies; V40 scans a residual recovery-footprint lambda frontier; V41 solves 42 explicit multi-objective footprint LPs; V42 adds 36 broader explicit LPs across 12 footprint-sensitive non-New-York events.",
                 "implication": "The data contain usable event-specific spatial signal. Footprint-only ranking is not a recovery-action law; tiny footprint weighting can work as a secondary tie-breaker, while larger footprint coverage is a real recovery-vs-footprint frontier when optimized directly in the LP.",
-                "next_step": "If footprint-specific recovery law becomes a main claim, expand explicit multi-objective LP closure beyond the six representative hybrid events and test city-specific social-preference weights.",
+                "next_step": "If footprint-specific recovery law becomes a main claim, include the unresolved New York-scale cases and test city-specific social-preference weights.",
             },
             {
                 "item": "training_objective_scope",
@@ -1515,13 +1546,13 @@ def write_report(
     limitations: pd.DataFrame,
 ) -> None:
     lines = [
-        "# Recoverability Law Synthesis V41",
+        "# Recoverability Law Synthesis V42",
         "",
-        "V41 moves the footprint question from replay-policy scoring into the LP objective itself. It asks whether the recovery-footprint frontier remains when observed-footprint coverage is optimized as an explicit secondary objective.",
+        "V42 broadens the explicit footprint objective test beyond the six representative hybrid events. It asks whether the recovery-footprint frontier remains visible across more footprint-sensitive city-events at full-zone scale.",
         "",
         "## 本版做了什么",
         "",
-        "V41 solves 42 explicit multi-objective LPs on the six representative hybrid events. Each LP minimizes true recovery loss minus a cost-normalized observed-footprint deployment reward, then reports the frontier using the original true-loss objective rather than the modified objective.",
+        "V42 keeps the V41 explicit LP objective and adds 36 broader LP solves on 12 non-New-York footprint-sensitive events. Each LP minimizes true recovery loss minus a cost-normalized observed-footprint deployment reward, then reports the frontier using the original true-loss objective rather than the modified objective.",
         "",
         "## 当前可写入论文的 law",
         "",
@@ -1585,6 +1616,8 @@ def write_report(
         "",
         "30. **Direct LP recovery-footprint frontier law**: when footprint enters the LP objective directly, lambda=0.02 raises top-5% allocated-unit footprint mass from about 0.0482 to 0.0734 while losing only 0.0004 of LP-gain fraction; larger weights raise footprint further but sharply reduce true recovery gain. This confirms that footprint is a secondary preference frontier, not a free recovery-value substitute.",
         "",
+        "31. **Broader explicit footprint frontier law**: across 12 additional footprint-sensitive city-events, lambda=0.02 raises top-5% allocated-unit footprint mass from 0.0583 to 0.0754 while losing only 0.0008 of LP-gain fraction; lambda=0.05 raises footprint mass to 0.1085 but lowers gain/LP to 0.9887. This strengthens the claim that footprint is a stable secondary objective frontier across city structures, not an artifact of six representative events.",
+        "",
         "## 关键指标",
         "",
         f"- fine-budget LP closure: {metrics['fine_budget_lp_n_selected_events']} selected events x {metrics['fine_budget_n_scales']} budget scales = {metrics['fine_budget_lp_n_jobs']} LP jobs, {metrics['fine_budget_lp_n_optimal_jobs']} optimal; LP gain peak budget = {metrics['fine_budget_lp_gain_peak_budget']:.2f}; LP gain per budget peak = {metrics['fine_budget_lp_gain_per_budget_peak_budget']:.2f}; law-random / LP-gain peak = {metrics['fine_budget_lp_law_random_fraction_peak_budget']:.2f}; base-budget law / LP gain = {metrics['fine_budget_lp_base_law_fraction_of_lp_gain']:.4f}, random / LP gain = {metrics['fine_budget_lp_base_random_fraction_of_lp_gain']:.4f}; mean law / LP gain across all budget rows = {metrics['fine_budget_lp_mean_law_fraction_of_lp_gain_all_budgets']:.4f}",
@@ -1629,6 +1662,7 @@ def write_report(
         f"- adaptive residual footprint policy: {metrics['residual_footprint_n_events']} events, {metrics['residual_footprint_n_policies']} policies; pure residual gain/LP = {metrics['residual_footprint_fraction']:.4f}, footprint mass = {metrics['residual_footprint_top5_mass']:.4f}; weak footprint `{metrics['residual_footprint_weak_policy']}` reaches gain/LP {metrics['residual_footprint_weak_fraction']:.4f}, footprint mass {metrics['residual_footprint_weak_top5_mass']:.4f} (delta gain {metrics['residual_footprint_weak_delta_fraction']:+.4f}, delta footprint {metrics['residual_footprint_weak_delta_top5']:+.4f}); best near-no-loss score `{metrics['residual_footprint_best_near_no_loss_policy']}` reaches gain/LP {metrics['residual_footprint_best_near_no_loss_fraction']:.4f}, footprint mass {metrics['residual_footprint_best_near_no_loss_top5_mass']:.4f} (delta gain {metrics['residual_footprint_best_near_no_loss_delta_fraction']:+.4f}, delta footprint {metrics['residual_footprint_best_near_no_loss_delta_top5']:+.4f}); strict nonnegative-gain footprint candidate = {metrics['residual_footprint_best_nonnegative_policy'] or 'none'}",
         f"- explicit residual footprint trade-off: {metrics['residual_footprint_tradeoff_n_events']} events, {metrics['residual_footprint_tradeoff_n_lambdas']} lambda values, {metrics['residual_footprint_tradeoff_frontier_points']} Pareto points; lambda=0 gain/LP = {metrics['residual_footprint_tradeoff_lambda0_fraction']:.4f}, footprint mass = {metrics['residual_footprint_tradeoff_lambda0_top5_mass']:.4f}; max-gain lambda = {metrics['residual_footprint_tradeoff_max_gain_lambda']:.2f} with gain/LP {metrics['residual_footprint_tradeoff_max_gain_fraction']:.4f} and footprint mass {metrics['residual_footprint_tradeoff_max_gain_top5_mass']:.4f}; <=0.01 gain-loss best lambda = {metrics['residual_footprint_tradeoff_best_lambda_loss_0p01']:.2f}, footprint delta = {metrics['residual_footprint_tradeoff_best_delta_top5_loss_0p01']:+.4f}, gain delta = {metrics['residual_footprint_tradeoff_best_delta_fraction_loss_0p01']:+.4f}",
         f"- explicit multi-objective footprint LP: {metrics['multiobjective_footprint_lp_n_events']} events x {metrics['multiobjective_footprint_lp_n_lambdas']} lambdas = {metrics['multiobjective_footprint_lp_n_events'] * metrics['multiobjective_footprint_lp_n_lambdas']} LP solves; lambda=0 gain/LP = {metrics['multiobjective_footprint_lp_lambda0_fraction']:.4f}, footprint mass = {metrics['multiobjective_footprint_lp_lambda0_top5_mass']:.4f}; <=0.005 gain-loss best lambda = {metrics['multiobjective_footprint_lp_best_lambda_loss_0p005']:.3f}, footprint delta = {metrics['multiobjective_footprint_lp_best_delta_top5_loss_0p005']:+.4f}, gain delta = {metrics['multiobjective_footprint_lp_best_delta_fraction_loss_0p005']:+.4f}; max-footprint lambda = {metrics['multiobjective_footprint_lp_max_footprint_lambda']:.2f}, footprint mass = {metrics['multiobjective_footprint_lp_max_footprint_top5_mass']:.4f}, gain/LP = {metrics['multiobjective_footprint_lp_max_footprint_fraction']:.4f}",
+        f"- broader explicit multi-objective footprint LP: {metrics['broader_multiobjective_footprint_lp_n_events']} events x {metrics['broader_multiobjective_footprint_lp_n_lambdas']} lambdas = {metrics['broader_multiobjective_footprint_lp_n_events'] * metrics['broader_multiobjective_footprint_lp_n_lambdas']} LP solves; lambda=0 gain/LP = {metrics['broader_multiobjective_footprint_lp_lambda0_fraction']:.4f}, footprint mass = {metrics['broader_multiobjective_footprint_lp_lambda0_top5_mass']:.4f}; <=0.005 gain-loss best lambda = {metrics['broader_multiobjective_footprint_lp_best_lambda_loss_0p005']:.3f}, footprint delta = {metrics['broader_multiobjective_footprint_lp_best_delta_top5_loss_0p005']:+.4f}, gain delta = {metrics['broader_multiobjective_footprint_lp_best_delta_fraction_loss_0p005']:+.4f}; max-footprint lambda = {metrics['broader_multiobjective_footprint_lp_max_footprint_lambda']:.2f}, footprint mass = {metrics['broader_multiobjective_footprint_lp_max_footprint_top5_mass']:.4f}, gain/LP = {metrics['broader_multiobjective_footprint_lp_max_footprint_fraction']:.4f}",
         f"- early decision-criticality: best Spearman = {metrics['early_decision_best_spearman']:.4f} at {metrics['early_decision_best_window']}h using {metrics['early_decision_best_feature_group']}; 2h all-early Spearman = {metrics['early_decision_2h_all_spearman']:.4f}",
         "",
         "## Evidence Ladder",
@@ -1657,7 +1691,7 @@ def write_report(
         "",
         "## 论文写作含义",
         "",
-        "The current learning/law section can be written as a full evidence chain: optimization produces an action-value field; single-action LPs validate the marginal label; cross-city, factorized, and symbolic surrogates support a compact activated law; residual greedy shows that finite budgets require residual re-scoring; event top-tail tests separate decision-criticality from disruption magnitude; V29/V30 show that non-obvious activation survives parameter perturbations and appears in selected LP support; V31 strengthens representative scenario-specific optimum closure to 26/28 optimal non-base rows; V32 prevents over-claiming by showing that present event top-tail concentration is mostly a city-template signal; V33 shows that raw TMC speed data contain event-zone footprint signal; V34 shows why this signal is invisible to the current small-signal label but visible to a magnitude-aware finite-value field; V35 shows that full LP support only weakly shifts toward footprints; V36 explains that the weak transfer is mainly a mismatch between finite footprint magnitude and small-signal OD action value, not simple period-budget or cap saturation; V37 shows that footprint can enter as a gated refinement rather than a replacement law; V38 shows that this refinement must remain weak in static finite-budget replay because strong footprint/finite weighting sacrifices recovery gain; V39 shows that adaptive residual re-scoring captures most recovery gain already; V40 makes the replay frontier explicit; V41 confirms the same boundary inside the LP objective itself, where small footprint weights act as near-free tie-breakers but larger footprint coverage requires true recovery-gain loss. The remaining caveats are still important: graph evidence is OD-dependency alignment rather than a full road-adjacency/GNN closure; calendar holdout remains city-confounded; intervention parameters remain management-regime assumptions rather than observed causal intervention effects; the two unresolved New York scenario-optimum rows and the unresolved New York hybrid-footprint LP row are computational boundaries; and the next major model step is broader explicit multi-objective LP closure if footprint coverage becomes a primary claim.",
+        "The current learning/law section can be written as a full evidence chain: optimization produces an action-value field; single-action LPs validate the marginal label; cross-city, factorized, and symbolic surrogates support a compact activated law; residual greedy shows that finite budgets require residual re-scoring; event top-tail tests separate decision-criticality from disruption magnitude; V29/V30 show that non-obvious activation survives parameter perturbations and appears in selected LP support; V31 strengthens representative scenario-specific optimum closure to 26/28 optimal non-base rows; V32 prevents over-claiming by showing that present event top-tail concentration is mostly a city-template signal; V33 shows that raw TMC speed data contain event-zone footprint signal; V34 shows why this signal is invisible to the current small-signal label but visible to a magnitude-aware finite-value field; V35 shows that full LP support only weakly shifts toward footprints; V36 explains that the weak transfer is mainly a mismatch between finite footprint magnitude and small-signal OD action value, not simple period-budget or cap saturation; V37 shows that footprint can enter as a gated refinement rather than a replacement law; V38 shows that this refinement must remain weak in static finite-budget replay because strong footprint/finite weighting sacrifices recovery gain; V39 shows that adaptive residual re-scoring captures most recovery gain already; V40 makes the replay frontier explicit; V41 confirms the same boundary inside the LP objective itself; V42 shows the direct LP frontier persists across 12 additional footprint-sensitive city-events, where small footprint weights act as near-free tie-breakers but larger footprint coverage requires true recovery-gain loss. The remaining caveats are still important: graph evidence is OD-dependency alignment rather than a full road-adjacency/GNN closure; calendar holdout remains city-confounded; intervention parameters remain management-regime assumptions rather than observed causal intervention effects; the two unresolved New York scenario-optimum rows and the unresolved New York hybrid-footprint LP row are computational boundaries; and the next major model step is New York-scale explicit multi-objective closure if footprint coverage becomes a primary claim.",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")

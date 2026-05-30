@@ -468,6 +468,20 @@ def add_lambda0_deltas(event_metrics: pd.DataFrame) -> pd.DataFrame:
     if event_metrics.empty:
         return event_metrics
     out = event_metrics.copy()
+    derived_cols = [
+        col
+        for col in out.columns
+        if col.startswith("lambda0_")
+        or col
+        in {
+            "delta_fraction_vs_lambda0",
+            "delta_top5_allocated_mass_vs_lambda0",
+            "delta_selected_mass_vs_lambda0",
+            "delta_cost_weighted_mass_vs_lambda0",
+        }
+    ]
+    if derived_cols:
+        out = out.drop(columns=derived_cols)
     ok = out[out["status"].astype(str).isin(SUCCESS_STATUSES)].copy()
     lambda0 = ok[np.isclose(ok["lambda_footprint"], 0.0)].copy()
     keep = [
@@ -508,7 +522,7 @@ def build_summary(event_metrics: pd.DataFrame, lambdas: list[float]) -> pd.DataF
         rows.append(
             {
                 "lambda_footprint": float(lambda_value),
-                "n_events": int(group["event_id"].nunique()) if not group.empty else 0,
+                "n_events": count_city_events(group),
                 "mean_fraction_of_reference_lp_gain": safe_mean(group, "fraction_of_reference_lp_gain"),
                 "mean_delta_fraction_vs_lambda0": safe_mean(group, "delta_fraction_vs_lambda0"),
                 "mean_recoverable_fraction": safe_mean(group, "recoverable_fraction"),
@@ -524,6 +538,14 @@ def build_summary(event_metrics: pd.DataFrame, lambdas: list[float]) -> pd.DataF
             }
         )
     return pd.DataFrame(rows)
+
+
+def count_city_events(frame: pd.DataFrame) -> int:
+    if frame.empty:
+        return 0
+    if {"city", "event_id"}.issubset(frame.columns):
+        return int(frame[["city", "event_id"]].drop_duplicates().shape[0])
+    return int(frame["event_id"].nunique()) if "event_id" in frame.columns else int(len(frame))
 
 
 def build_pareto_frontier(summary: pd.DataFrame) -> pd.DataFrame:
