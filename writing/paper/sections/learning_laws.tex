@@ -29,6 +29,8 @@ To test whether this structure requires a complex black-box surrogate, we train 
 
 A broader explicit LP closure strengthens this interpretation beyond the six representative hybrid events. On 12 additional footprint-sensitive non-New-York city-events, all 36 LPs solve to optimality. The near-free \(\lambda=0.02\) point raises top-5 percent allocated footprint mass from 0.0583 to 0.0754 with only 0.0008 LP-gain loss, while \(\lambda=0.05\) raises mass to 0.1085 but lowers gain/LP to 0.9887. The city-structure conclusion is therefore not that observed footprint is itself the recovery objective; it is that OD-activated recovery value and observed footprint define a stable secondary-objective frontier.
 
+A New York-scale boundary audit prevents the remaining gap from being misread. Among the five most footprint-sensitive New York events, hybrid finite-value top-5 percent footprint mass rises from 0.0527 to 0.4042 on average, so the unresolved case is not caused by absent event-footprint signal. The largest New York footprint LP contains 1,940 zones, about 475,300 variables, 550,973 constraints, and 9.20 million access-loss nonzero terms---roughly 2.2 times the largest V42 closed model by variables and 2.1 times by access terms. The previous direct hybrid-footprint LP attempt for New York event 117 ended at the solver time limit before returning a feasible optimized solution. We therefore treat New York-scale direct footprint closure as a computational boundary, while keeping the smaller full-zone frontier result as the current positive evidence.
+
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.88\linewidth]{../../results/factorized_action_surrogate/figures/factorized_model_ladder.png}
